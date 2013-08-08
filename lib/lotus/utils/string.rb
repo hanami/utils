@@ -15,6 +15,15 @@ module Lotus
           gsub(/([a-z\d])([A-Z])/,'\1_\2').
           downcase
       end
+
+      def tokenize(&blk)
+        template = gsub(/\((.*)\)/, "%{token}")
+        tokens   = Array(( $1 || self ).split('|'))
+
+        tokens.each do |token|
+          blk.call(template % {token: token})
+        end
+      end
     end
   end
 end
