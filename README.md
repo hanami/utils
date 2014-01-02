@@ -1,6 +1,6 @@
 # Lotus::Utils
 
-Ruby core extentions and class utilities for Lotus
+Ruby core extentions and class utilities for [Lotus](http://lotusrb.org)
 
 ## Installation
 
@@ -18,7 +18,11 @@ Or install it yourself as:
 
 ## Usage
 
-This gem doesn't preload any class, it's up to the developer to require the needed features
+Lotus::Utils is designed to enhance Ruby's code and stdlib.
+By default this gem doesn't load any code, only require what you need.
+
+Please read the documentation of each module, in order to understand how to use
+each feature.
 
 ## Contributing
 
