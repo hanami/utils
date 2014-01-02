@@ -1,7 +1,7 @@
-require "lotus/utils/version"
+require 'lotus/utils/version'
 
 module Lotus
+  # Ruby core extentions and Louts utilities
   module Utils
-    # Your code goes here...
   end
 end
