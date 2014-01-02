@@ -1,7 +1,7 @@
 module Lotus
   module Utils
     # Inheritable class level variable accessors.
-    # (see Lotus::Utils::ClassAttribute::ClassMethods)
+    # @see Lotus::Utils::ClassAttribute::ClassMethods
     module ClassAttribute
       def self.included(base)
         base.class_eval do
@@ -10,16 +10,17 @@ module Lotus
       end
 
       module ClassMethods
-        # Public: Defines a class level accessor for the given attribute(s).
+        # Defines a class level accessor for the given attribute(s).
         #
         # A value set for a superclass is automatically available by their
         # subclasses, unless a different value is explicitely set within the
         # inheritance chain.
         #
-        # @param attributes [Symbol] a single or multiple attribute name(s)
+        # @param attributes [Array<Symbol>] a single or multiple attribute name(s)
         #
-        # Examples:
+        # @return [void]
         #
+        # @example
         #   require 'lotus/utils/class_attribute'
         #
         #   class Vehicle
@@ -76,7 +77,8 @@ module Lotus
         end
 
         private
-        # Internal: accessor for class attributes.
+        # Class accessor for class attributes.
+        # @private
         def class_attributes
           @class_attributes ||= Set.new
         end
