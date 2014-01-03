@@ -36,4 +36,33 @@ describe Lotus::Utils::String do
       string.underscore.must_equal 'lotus/view'
     end
   end
+
+  describe '#tokenize' do
+    before do
+      @logger = []
+    end
+
+    it 'calls the given block for each token occurrence' do
+      string = Lotus::Utils::String.new('Lotus::(Utils|App)')
+      string.tokenize do |token|
+        @logger.push token
+      end
+
+      @logger.must_equal(['Lotus::Utils', 'Lotus::App'])
+    end
+
+    it "guarantees the block to be called even when the token conditions aren't met" do
+      string = Lotus::Utils::String.new('Lotus')
+      string.tokenize do |token|
+        @logger.push token
+      end
+
+      @logger.must_equal(['Lotus'])
+    end
+
+    it 'returns nil' do
+      result = Lotus::Utils::String.new('Lotus::(Utils|App)').tokenize { }
+      result.must_be_nil
+    end
+  end
 end

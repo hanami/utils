@@ -65,6 +65,7 @@ module Lotus
           class_attributes.merge(attributes)
         end
 
+        protected
         # Internal: Overrides `Class#inherited`.
         def inherited(subclass)
           class_attributes.each do |attr|

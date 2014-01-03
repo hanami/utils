@@ -4,9 +4,9 @@ module Lotus
     class Hash < ::Hash
       # Initialize the hash
       #
-      # @param hash [::Hash] the value we want to use to initialize this instance
+      # @param hash [::Hash, Hash] the value we want to use to initialize this instance
       #
-      # @return [void]
+      # @return [Hash] self
       def initialize(hash = {})
         merge! hash
       end

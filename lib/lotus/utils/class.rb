@@ -14,6 +14,8 @@ module Lotus
       #
       # @raise [NameError] if no constant can be found.
       #
+      # @see Lotus::Utils::String#tokenize
+      #
       # @example
       #   require 'lotus/utils/class'
       #
