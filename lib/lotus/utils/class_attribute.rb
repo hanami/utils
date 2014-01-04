@@ -66,7 +66,7 @@ module Lotus
         end
 
         protected
-        # Internal: Overrides `Class#inherited`.
+        # @see Class#inherited
         def inherited(subclass)
           class_attributes.each do |attr|
             value = send(attr)
