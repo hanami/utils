@@ -32,7 +32,7 @@ module Lotus
         def add(*callbacks, &blk)
           callbacks.push blk if block_given?
           callbacks.each do |c|
-            push Callback.fabricate(c)
+            push Factory.fabricate(c)
           end
 
           uniq!
@@ -88,29 +88,73 @@ module Lotus
         end
       end
 
-      # Proc callback
-      class Callback
-        attr_reader :callback
-
+      # Callback factory
+      class Factory
+        # Instantiates a `Callback` according to if it responds to #call.
+        #
+        # @param callback [Object] the object that needs to be wrapped
+        #
+        # @return [Callback, MethodCallback]
+        #
+        # @example
+        #   require 'lotus/utils/callbacks'
+        #
+        #   callable = Proc.new{} # it responds to #call
+        #   method   = :upcase    # it doesn't responds to #call
+        #
+        #   Lotus::Utils::Callbacks::Factory.fabricate(callable).class
+        #     # => Lotus::Utils::Callbacks::Callback
+        #
+        #   Lotus::Utils::Callbacks::Factory.fabricate(method).class
+        #     # => Lotus::Utils::Callbacks::MethodCallback
         def self.fabricate(callback)
           if callback.respond_to?(:call)
-            new(callback)
+            Callback.new(callback)
           else
             MethodCallback.new(callback)
           end
         end
+      end
 
+      # Proc callback
+      # It wraps an object that responds to #call
+      class Callback
+        attr_reader :callback
+
+        # Initialize by wrapping the given callback
+        #
+        # @param callback [Object] the original callback that needs to be wrapped
+        #
+        # @return [Callback] self
         def initialize(callback)
           @callback = callback
         end
 
+        # Executes the callback within the given context and passing the given arguments.
+        #
+        # @param context [Object] the context within we want to execute the callback.
+        # @param args [Array] an array of arguments that will be available within the execution.
+        #
+        # @return [void, Object] It may return a value, it depends on the callback.
+        #
+        # @see Lotus::Utils::Callbacks::Chain#run
         def call(context, *args)
           context.instance_exec(*args, &callback)
         end
       end
 
       # Method callback
+      # It wraps a symbol or a string representing a method name that is implemented by the context within it will be called.
       class MethodCallback < Callback
+        # Executes the callback within the given context and eventually passing the given arguments.
+        # Those arguments will be passed according to the arity of the target method.
+        #
+        # @param context [Object] the context within we want to execute the callback.
+        # @param args [Array] an array of arguments that will be available within the execution.
+        #
+        # @return [void, Object] It may return a value, it depends on the callback.
+        #
+        # @see Lotus::Utils::Callbacks::Chain#run
         def call(context, *args)
           method = context.method(callback)
 

@@ -140,12 +140,74 @@ describe Lotus::Utils::Callbacks::Chain do
         set_article.must_equal "set_article: #{ params[:id] }"
       end
     end
-
   end
 end
 
-# describe Lotus::Utils::Callbacks::Callback do
-# end
+describe Lotus::Utils::Callbacks::Factory do
+  describe '.fabricate' do
+    before do
+      @callback = Lotus::Utils::Callbacks::Factory.fabricate(callback)
+    end
 
-# describe Lotus::Utils::Callbacks::MethodCallback do
-# end
+    describe 'when a callable is passed' do
+      let(:callback) { Callable.new }
+
+      it 'fabricates a Callback' do
+        @callback.must_be_kind_of(Lotus::Utils::Callbacks::Callback)
+      end
+
+      it 'wraps the given callback' do
+        @callback.callback.must_equal(callback)
+      end
+    end
+
+    describe 'when a symbol is passed' do
+      let(:callback) { :symbolize! }
+
+      it 'fabricates a MethodCallback' do
+        @callback.must_be_kind_of(Lotus::Utils::Callbacks::MethodCallback)
+      end
+
+      it 'wraps the given callback' do
+        @callback.callback.must_equal(callback)
+      end
+    end
+  end
+end
+
+describe Lotus::Utils::Callbacks::Callback do
+  before do
+    @callback = Lotus::Utils::Callbacks::Callback.new(callback)
+  end
+
+  let(:callback) { Proc.new{|params| logger.push("set_article: #{ params[:id] }") } }
+
+  it 'executes self within the given context' do
+    context = Action.new
+    @callback.call(context, { id: 23 })
+
+    invokation = context.logger.shift
+    invokation.must_equal("set_article: 23")
+  end
+end
+
+describe Lotus::Utils::Callbacks::MethodCallback do
+  before do
+    @callback = Lotus::Utils::Callbacks::MethodCallback.new(callback)
+  end
+
+  let(:callback) { :set_article }
+
+  it 'executes self within the given context' do
+    context = Action.new
+    @callback.call(context, { id: 23 })
+
+    invokation = context.logger.shift
+    invokation.must_equal("set_article: 23")
+  end
+
+  it 'implements #hash' do
+    cb = Lotus::Utils::Callbacks::MethodCallback.new(callback)
+    cb.send(:hash).must_equal(@callback.send(:hash))
+  end
+end
