@@ -1,12 +1,15 @@
 module Lotus
   module Utils
     # Hash on steroids
+    # @since 0.1.0
     class Hash < ::Hash
       # Initialize the hash
       #
       # @param hash [::Hash, Hash] the value we want to use to initialize this instance
       #
       # @return [Hash] self
+      #
+      # @since 0.1.0
       def initialize(hash = {})
         merge! hash
       end
@@ -14,6 +17,8 @@ module Lotus
       # Convert in-place all the keys to Symbol instances, nested hashes are converted too.
       #
       # @return [Hash] self
+      #
+      # @since 0.1.0
       #
       # @example
       #   require 'lotus/utils/hash'

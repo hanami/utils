@@ -1,6 +1,8 @@
 module Lotus
   module Utils
     # Inheritable class level variable accessors.
+    # @since 0.1.0
+    #
     # @see Lotus::Utils::ClassAttribute::ClassMethods
     module ClassAttribute
       def self.included(base)
@@ -19,6 +21,8 @@ module Lotus
         # @param attributes [Array<Symbol>] a single or multiple attribute name(s)
         #
         # @return [void]
+        #
+        # @since 0.1.0
         #
         # @example
         #   require 'lotus/utils/class_attribute'

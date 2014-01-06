@@ -1,8 +1,14 @@
 module Lotus
   module Utils
     # Before and After callbacks
+    #
+    # @since 0.1.0
+    # @private
     module Callbacks
       # Series of callbacks to be executed
+      #
+      # @since 0.1.0
+      # @private
       class Chain < ::Array
         # Adds the given callbacks to the chain
         #
@@ -14,6 +20,8 @@ module Lotus
         # @see #run
         # @see Lotus::Utils::Callbacks::Callback
         # @see Lotus::Utils::Callbacks::MethodCallback
+        #
+        # @since 0.1.0
         #
         # @example
         #   require 'lotus/utils/callbacks'
@@ -43,6 +51,8 @@ module Lotus
         #
         # @param context [Object] the context where we want the chain to be invoked.
         # @param args [Array] the arguments that we want to pass to each single callback.
+        #
+        # @since 0.1.0
         #
         # @example
         #   require 'lotus/utils/callbacks'
@@ -89,12 +99,17 @@ module Lotus
       end
 
       # Callback factory
+      #
+      # @since 0.1.0
+      # @private
       class Factory
         # Instantiates a `Callback` according to if it responds to #call.
         #
         # @param callback [Object] the object that needs to be wrapped
         #
         # @return [Callback, MethodCallback]
+        #
+        # @since 0.1.0
         #
         # @example
         #   require 'lotus/utils/callbacks'
@@ -118,6 +133,9 @@ module Lotus
 
       # Proc callback
       # It wraps an object that responds to #call
+      #
+      # @since 0.1.0
+      # @private
       class Callback
         attr_reader :callback
 
@@ -126,6 +144,9 @@ module Lotus
         # @param callback [Object] the original callback that needs to be wrapped
         #
         # @return [Callback] self
+        #
+        # @since 0.1.0
+        #
         def initialize(callback)
           @callback = callback
         end
@@ -137,6 +158,8 @@ module Lotus
         #
         # @return [void, Object] It may return a value, it depends on the callback.
         #
+        # @since 0.1.0
+        #
         # @see Lotus::Utils::Callbacks::Chain#run
         def call(context, *args)
           context.instance_exec(*args, &callback)
@@ -145,6 +168,9 @@ module Lotus
 
       # Method callback
       # It wraps a symbol or a string representing a method name that is implemented by the context within it will be called.
+      #
+      # @since 0.1.0
+      # @private
       class MethodCallback < Callback
         # Executes the callback within the given context and eventually passing the given arguments.
         # Those arguments will be passed according to the arity of the target method.
@@ -153,6 +179,8 @@ module Lotus
         # @param args [Array] an array of arguments that will be available within the execution.
         #
         # @return [void, Object] It may return a value, it depends on the callback.
+        #
+        # @since 0.1.0
         #
         # @see Lotus::Utils::Callbacks::Chain#run
         def call(context, *args)

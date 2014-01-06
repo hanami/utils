@@ -1,12 +1,16 @@
 module Lotus
   module Utils
     # String on steroids
+    #
+    # @since 0.1.0
     class String < ::String
       # Initialize the string
       #
       # @param string [::String, Symbol] the value we want to initialize
       #
       # @return [String] self
+      #
+      # @since 0.1.0
       def initialize(string)
         super(string.to_s)
       end
@@ -14,6 +18,8 @@ module Lotus
       # Return a CamelCase version of the string
       #
       # @return [String] the transformed string
+      #
+      # @since 0.1.0
       #
       # @example
       #   require 'lotus/utils/string'
@@ -31,6 +37,8 @@ module Lotus
       #
       # @return [String] the transformed string
       #
+      # @since 0.1.0
+      #
       # @example
       #   require 'lotus/utils/string'
       #
@@ -46,9 +54,11 @@ module Lotus
       # It iterates thru the tokens and calls the given block.
       # A token is a substring wrapped by `()` and separated by `|`.
       #
-      # @param &blk [Proc, #call] the block that is called for each token.
+      # @param blk [Proc, #call] the block that is called for each token.
       #
       # @return [void]
+      #
+      # @since 0.1.0
       #
       # @example
       #   require 'lotus/utils/string'

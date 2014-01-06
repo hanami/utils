@@ -1,6 +1,8 @@
 module Lotus
   module Utils
     # Prefixed string
+    #
+    # @since 0.1.0
     class PathPrefix < ::String
       # Initialize the path prefix
       #
@@ -8,6 +10,8 @@ module Lotus
       # @param separator [::String] the separator used between tokens
       #
       # @return [PathPrefix] self
+      #
+      # @since 0.1.0
       def initialize(string = nil, separator = '/')
         @separator = separator
         super(string.to_s)
@@ -19,6 +23,8 @@ module Lotus
       # @param string [::String] the token we want to join
       #
       # @return [::String] the joined string
+      #
+      # @since 0.1.0
       #
       # @example
       #   require 'lotus/utils/path_prefix'
@@ -41,6 +47,8 @@ module Lotus
       # @param separator [::String] the separator used between tokens
       #
       # @return [::String] the joined string
+      #
+      # @since 0.1.0
       #
       # @example
       #   require 'lotus/utils/path_prefix'

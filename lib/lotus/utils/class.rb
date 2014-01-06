@@ -3,6 +3,7 @@ require 'lotus/utils/string'
 module Lotus
   module Utils
     # Class utilities
+    # @since 0.1.0
     class Class
       # Loads a class for the given string or pattern.
       #
@@ -13,6 +14,8 @@ module Lotus
       # @return [Class, Module] the found Ruby constant.
       #
       # @raise [NameError] if no constant can be found.
+      #
+      # @since 0.1.0
       #
       # @see Lotus::Utils::String#tokenize
       #
