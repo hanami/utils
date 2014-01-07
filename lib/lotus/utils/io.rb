@@ -1,0 +1,37 @@
+module Lotus
+  module Utils
+    # IO utils
+    #
+    # @since 0.1.0
+    class IO
+      # Decreases the level of verbosity, during the execution of the given block.
+      #
+      # Revised version of ActiveSupport's `Kernel.with_warnings` implementation
+      # @see https://github.com/rails/rails/blob/master/activesupport/lib/active_support/core_ext/kernel/reporting.rb#L25
+      #
+      # @param blk [Proc] the block of code that generates warnings.
+      #
+      # @return [void]
+      #
+      # @since 0.1.0
+      #
+      # @example
+      #   require 'lotus/utils/io'
+      #
+      #   class Test
+      #     TEST_VALUE = 'initial'
+      #   end
+      #
+      #   Lotus::Utils::IO.silence_warnings do
+      #     Test::TEST_VALUE = 'redefined'
+      #   end
+      def self.silence_warnings(&blk)
+        old_verbose, $VERBOSE = $VERBOSE, nil
+        blk.call
+      ensure
+        $VERBOSE = old_verbose
+      end
+    end
+  end
+end
+
