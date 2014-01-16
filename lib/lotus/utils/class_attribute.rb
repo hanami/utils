@@ -75,6 +75,7 @@ module Lotus
           class_attributes.each do |attr|
             value = send(attr)
             value = value.dup rescue value
+            subclass.class_attribute attr
             subclass.send("#{attr}=", value)
           end
 

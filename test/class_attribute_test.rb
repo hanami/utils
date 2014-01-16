@@ -73,6 +73,34 @@ describe Lotus::Utils::ClassAttribute do
     ClassAttributeTest.values.must_equal([1])
   end
 
+  describe 'when the subclass is defined in a different namespace' do
+    before do
+      module Lts
+        module Routing
+          class Resource
+            class Action
+              include Lotus::Utils::ClassAttribute
+              class_attribute :verb
+            end
+
+            class New < Action
+              self.verb = :get
+            end
+          end
+
+          class Resources < Resource
+            class New < Resource::New
+            end
+          end
+        end
+      end
+    end
+
+    it 'refers to the superclass value' do
+      Lts::Routing::Resources::New.verb.must_equal :get
+    end
+  end
+
   # it 'if the subclass value changes it affects subclasses' do
   #   values = [3,2]
   #   SubclassAttributeTest.values = values
