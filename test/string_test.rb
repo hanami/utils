@@ -37,6 +37,13 @@ describe Lotus::Utils::String do
     end
   end
 
+  describe '#demodulize' do
+    it 'returns the class name without the namespace' do
+      Lotus::Utils::String.new('String').demodulize.must_equal('String')
+      Lotus::Utils::String.new('Lotus::Utils::String').demodulize.must_equal('String')
+    end
+  end
+
   describe '#tokenize' do
     before do
       @logger = []

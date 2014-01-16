@@ -4,6 +4,15 @@ module Lotus
     #
     # @since 0.1.0
     class String < ::String
+      # Separator between Ruby namespaces
+      #
+      # @example
+      #   Lotus::Utils
+      #
+      # @since 0.1.0
+      # @api private
+      NAMESPACE_SEPARATOR = '::'.freeze
+
       # Initialize the string
       #
       # @param string [::String, Symbol] the value we want to initialize
@@ -45,10 +54,28 @@ module Lotus
       #   string = Lotus::Utils::String.new 'LotusUtils'
       #   string.underscore # => 'lotus_utils'
       def underscore
-        gsub('::', '/').
+        gsub(NAMESPACE_SEPARATOR, '/').
           gsub(/([A-Z\d]+)([A-Z][a-z])/,'\1_\2').
           gsub(/([a-z\d])([A-Z])/,'\1_\2').
           downcase
+      end
+
+      # Return the string without the Ruby namespace of the class
+      #
+      # @return [String] the transformed string
+      #
+      # @since 0.1.0
+      #
+      # @example
+      #   require 'lotus/utils/string'
+      #
+      #   string = Lotus::Utils::String.new 'Lotus::Utils::String'
+      #   string.demodulize # => 'String'
+      #
+      #   string = Lotus::Utils::String.new 'String'
+      #   string.demodulize # => 'String'
+      def demodulize
+        split(NAMESPACE_SEPARATOR).last
       end
 
       # It iterates thru the tokens and calls the given block.
