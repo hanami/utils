@@ -2,6 +2,13 @@
 
 Ruby core extentions and class utilities for [Lotus](http://lotusrb.org)
 
+## Status
+
+[![Gem Version](https://badge.fury.io/rb/lotus-utils.png)](http://badge.fury.io/rb/lotus-utils)
+[![Build Status](https://secure.travis-ci.org/lotus/utils.png?branch=master)](http://travis-ci.org/lotus/utils?branch=master)
+[![Coverage](https://coveralls.io/repos/lotus/utils/badge.png?branch=master)](https://coveralls.io/r/lotus/utils)
+[![Code Climate](https://codeclimate.com/github/lotus/utils.png)](https://codeclimate.com/github/lotus/utils)
+
 ## Contact
 
 * Home page: http://lotusrb.org/utils
