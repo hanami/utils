@@ -17,6 +17,10 @@ Ruby core extentions and class utilities for [Lotus](http://lotusrb.org)
 * Bugs/Issues: https://github.com/lotus/utils/issues
 * Support: http://stackoverflow.com/questions/tagged/lotusrb
 
+## Rubies
+
+__Lotus::Utils__ supports Ruby (MRI) 2+
+
 ## Installation
 
 Add this line to your application's Gemfile:
@@ -30,10 +34,6 @@ And then execute:
 Or install it yourself as:
 
     $ gem install lotus-utils
-
-## Ruby
-
-__Lotus::Utils__ supports Ruby 2+
 
 ## Usage
 
