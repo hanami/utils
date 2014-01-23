@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.email         = ['me@lucaguidi.com']
   spec.description   = %q{Lotus utilities}
   spec.summary       = %q{Ruby core extentions and Louts utilities}
-  spec.homepage      = 'http://lotusrb.org/utils'
+  spec.homepage      = 'http://lotusrb.org'
   spec.license       = 'MIT'
 
   spec.files         = `git ls-files`.split($/)
