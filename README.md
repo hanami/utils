@@ -6,13 +6,14 @@ Ruby core extentions and class utilities for [Lotus](http://lotusrb.org)
 
 [![Gem Version](https://badge.fury.io/rb/lotus-utils.png)](http://badge.fury.io/rb/lotus-utils)
 [![Build Status](https://secure.travis-ci.org/lotus/utils.png?branch=master)](http://travis-ci.org/lotus/utils?branch=master)
-[![Coverage](https://coveralls.io/repos/lotus/utils/badge.png?branch=master)](https://coveralls.io/r/lotus/utils)
-[![Code Climate](https://codeclimate.com/github/lotus/utils.png)](https://codeclimate.com/github/lotus/utils)
+[![Test Coverage](https://coveralls.io/repos/lotus/utils/badge.png?branch=master)](https://coveralls.io/r/lotus/utils)
+[![Code quality](https://codeclimate.com/github/lotus/utils.png)](https://codeclimate.com/github/lotus/utils)
+[![Dependencies](https://gemnasium.com/lotus/utils.png)](https://gemnasium.com/lotus/utils)
 
 ## Contact
 
-* Home page: http://lotusrb.org/utils
-* Mailing List: http://lotusrb.org/ml
+* Home page: http://lotusrb.org
+* Mailing List: http://lotusrb.org/mailing-list
 * API Doc: http://rdoc.info/gems/lotus-utils
 * Bugs/Issues: https://github.com/lotus/utils/issues
 * Support: http://stackoverflow.com/questions/tagged/lotusrb
@@ -45,7 +46,7 @@ each feature.
 
 ## Versioning
 
-__Lotus::Utils__ uses [Semantic Versioning](http://semver.org)
+__Lotus::Utils__ uses [Semantic Versioning 2.0.0](http://semver.org)
 
 ## Contributing
 
@@ -57,4 +58,4 @@ __Lotus::Utils__ uses [Semantic Versioning](http://semver.org)
 
 ## Copyright
 
-Copyright 2013-2014 Luca Guidi – Released under MIT License
+Copyright 2014 Luca Guidi – Released under MIT License
