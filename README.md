@@ -9,6 +9,7 @@ Ruby core extentions and class utilities for [Lotus](http://lotusrb.org)
 [![Test Coverage](https://coveralls.io/repos/lotus/utils/badge.png?branch=master)](https://coveralls.io/r/lotus/utils)
 [![Code quality](https://codeclimate.com/github/lotus/utils.png)](https://codeclimate.com/github/lotus/utils)
 [![Dependencies](https://gemnasium.com/lotus/utils.png)](https://gemnasium.com/lotus/utils)
+[![Trending](https://d2weczhvl823v0.cloudfront.net/lotus/utils/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
 
 ## Contact
 
