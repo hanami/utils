@@ -5,7 +5,24 @@ require 'lotus/utils/kernel'
 describe Lotus::Utils::Kernel do
   describe '.Array' do
     before do
+      ResultSet = Struct.new(:records) do
+        def to_a
+          records.to_a.sort
+        end
+      end
+
+      Response = Struct.new(:status, :headers, :body) do
+        def to_ary
+          [status, headers, body]
+        end
+      end
+
       @result = Lotus::Utils::Kernel.Array(input)
+    end
+
+    after do
+      Object.send(:remove_const, :ResultSet)
+      Object.send(:remove_const, :Response)
     end
 
     describe 'when nil is given' do
@@ -13,6 +30,22 @@ describe Lotus::Utils::Kernel do
 
       it 'returns an empty array' do
         @result.must_equal []
+      end
+    end
+
+    describe 'when true is given' do
+      let(:input) { true }
+
+      it 'returns an empty array' do
+        @result.must_equal [true]
+      end
+    end
+
+    describe 'when false is given' do
+      let(:input) { false }
+
+      it 'returns an empty array' do
+        @result.must_equal [false]
       end
     end
 
@@ -53,6 +86,22 @@ describe Lotus::Utils::Kernel do
 
       it 'returns an array with uniq values' do
         @result.must_equal [2,3]
+      end
+    end
+
+    describe 'when a object that implements #to_a is given' do
+      let(:input) { ResultSet.new([2,1,3]) }
+
+      it 'returns an array' do
+        @result.must_equal [1,2,3]
+      end
+    end
+
+    describe 'when a object that implements #to_ary is given' do
+      let(:input) { Response.new(200, {}, 'hello') }
+
+      it 'returns an array' do
+        @result.must_equal [200, {}, 'hello']
       end
     end
   end

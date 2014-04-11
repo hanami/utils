@@ -24,15 +24,38 @@ module Lotus
       # @see http://www.ruby-doc.org/core-2.1.1/Array.html#method-i-compact
       # @see http://www.ruby-doc.org/core-2.1.1/Array.html#method-i-uniq
       #
-      # @example
+      # @example Basic Usage
       #   require 'lotus/utils/kernel'
       #
       #   Lotus::Utils::Kernel.Array(nil)              # => []
+      #   Lotus::Utils::Kernel.Array(true)             # => [true]
+      #   Lotus::Utils::Kernel.Array(false)            # => [false]
       #   Lotus::Utils::Kernel.Array(1)                # => [1]
       #   Lotus::Utils::Kernel.Array([1])              # => [1]
       #   Lotus::Utils::Kernel.Array([1, [2]])         # => [1,2]
       #   Lotus::Utils::Kernel.Array([1, [2, nil]])    # => [1,2]
       #   Lotus::Utils::Kernel.Array([1, [2, nil, 1]]) # => [1,2]
+      #
+      # @example Array Interface
+      #   require 'lotus/utils/kernel'
+      #
+      #   ResultSet = Struct.new(:records) do
+      #     def to_a
+      #       records.to_a.sort
+      #     end
+      #   end
+      #
+      #   Response = Struct.new(:status, :headers, :body) do
+      #     def to_ary
+      #       [status, headers, body]
+      #     end
+      #   end
+      #
+      #   set = ResultSet.new([2,1,3])
+      #   Lotus::Utils::Kernel.Array(set)              # => [1,2,3]
+      #
+      #   response = Response.new(200, {}, 'hello')
+      #   Lotus::Utils::Kernel.Array(response)         # => [200, {}, "hello"]
       def self.Array(arg)
         super(arg).flatten.compact.uniq
       end
