@@ -127,32 +127,41 @@ describe Lotus::Utils::Kernel do
   end
 
   describe '.Set' do
-    describe 'successful operations' do
-      before do
-        UuidSet = Class.new do
-          def initialize(*uuids)
-            @uuids = uuids
-          end
-
-          def to_set
-            Set.new.tap do |set|
-              @uuids.each {|uuid| set.add(uuid) }
-            end
-          end
+    before do
+      UuidSet = Class.new do
+        def initialize(*uuids)
+          @uuids = uuids
         end
 
-        @result = Lotus::Utils::Kernel.Set(input)
+        def to_set
+          Set.new.tap do |set|
+            @uuids.each {|uuid| set.add(uuid) }
+          end
+        end
       end
 
-      after do
-        Object.send(:remove_const, :UuidSet)
+      BaseObject = Class.new(BasicObject) do
+        def nil?
+          false
+        end
+      end
+    end
+
+    after do
+      Object.send(:remove_const, :UuidSet)
+      Object.send(:remove_const, :BaseObject)
+    end
+
+    describe 'successful operations' do
+      before do
+        @result = Lotus::Utils::Kernel.Set(input)
       end
 
       describe 'when nil is given' do
         let(:input) { nil }
 
-        it 'returns an empty set' do
-          @result.must_equal Set.new
+        it 'returns nil' do
+          @result.must_equal nil
         end
       end
 
@@ -247,8 +256,16 @@ describe Lotus::Utils::Kernel do
     end
 
     describe 'failure operations' do
-      describe "when a an object that doesn't implement #respond_to?" do
+      describe "when a an object that doesn't implement #nil?" do
         let(:input) { BasicObject.new }
+
+        it 'raises error' do
+          -> { Lotus::Utils::Kernel.Set(input) }.must_raise(NoMethodError)
+        end
+      end
+
+      describe "when a an object that doesn't implement #respond_to?" do
+        let(:input) { BaseObject.new }
 
         it 'raises error' do
           -> { Lotus::Utils::Kernel.Set(input) }.must_raise(NoMethodError)
