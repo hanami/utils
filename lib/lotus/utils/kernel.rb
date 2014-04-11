@@ -46,8 +46,10 @@ module Lotus
       #
       # @return [Fixnum,nil] the result of the coercion
       #
-      # @raise [TypeError,FloatDomainError,RangeError] if the argument can't be
-      #   coerced or if it's too big.
+      # @raise [TypeError] if the argument can't be coerced
+      # @raise [NoMethodError] if the argument doesn't implenent #nil?
+      # @raise [TypeError,FloatDomainError,RangeError] if the argument it's too
+      #   big.
       #
       # @since 0.1.1
       #
@@ -59,13 +61,16 @@ module Lotus
       #
       #   Lotus::Utils::Kernel.Integer(1)                        # => 1
       #   Lotus::Utils::Kernel.Integer(1.2)                      # => 1
+      #   Lotus::Utils::Kernel.Integer(011)                      # => 9
+      #   Lotus::Utils::Kernel.Integer(0xf5)                     # => 245
       #   Lotus::Utils::Kernel.Integer("1")                      # => 1
       #   Lotus::Utils::Kernel.Integer(Rational(0.3))            # => 0
       #   Lotus::Utils::Kernel.Integer(Complex(0.3))             # => 0
       #   Lotus::Utils::Kernel.Integer(BigDecimal.new(12.00001)) # => 12
-      #   Lotus::Utils::Kernel.Integer(Time.now)                 # => 1396947161
       #   Lotus::Utils::Kernel.Integer(176605528590345446089)
       #     # => 176605528590345446089
+      #
+      #   Lotus::Utils::Kernel.Integer(Time.now)                 # => 1396947161
       #
       # @example Integer Interface
       #   require 'lotus/utils/kernel'
@@ -99,12 +104,33 @@ module Lotus
       #   Lotus::Utils::Kernel.Integer("2.5/1") # => 2
       #
       # @example Unchecked Exceptions
+      #   require 'date'
       #   require 'bigdecimal'
       #   require 'lotus/utils/kernel'
       #
       #   # Missing #to_int and #to_i
       #   input = OpenStruct.new(color: 'purple')
       #   Lotus::Utils::Kernel.Integer(input) # => TypeError
+      #
+      #   # When true
+      #   input = true
+      #   Lotus::Utils::Kernel.Integer(input) # => TypeError
+      #
+      #   # When false
+      #   input = false
+      #   Lotus::Utils::Kernel.Integer(input) # => TypeError
+      #
+      #   # When Date
+      #   input = Date.today
+      #   Lotus::Utils::Kernel.Integer(input) # => TypeError
+      #
+      #   # When DateTime
+      #   input = DateTime.now
+      #   Lotus::Utils::Kernel.Integer(input) # => TypeError
+      #
+      #   # Missing #nil?
+      #   input = BasicObject.new
+      #   Lotus::Utils::Kernel.Integer(input) # => NoMethodError
       #
       #   # bigdecimal infinity
       #   input = BigDecimal.new("Infinity")
@@ -122,7 +148,7 @@ module Lotus
       #   input = Complex(2, 3)
       #   Lotus::Utils::Kernel.Integer(input) # => RangeError
       def self.Integer(arg)
-        super(arg) if arg
+        super(arg) unless arg.nil?
       rescue ArgumentError
         arg.to_i
       end

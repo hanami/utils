@@ -113,6 +113,22 @@ describe Lotus::Utils::Kernel do
         end
       end
 
+      describe 'when an octal is given' do
+        let(:input) { 011 }
+
+        it 'returns the string representation' do
+          @result.must_equal 9
+        end
+      end
+
+      describe 'when a hex is given' do
+        let(:input) { 0xf5 }
+
+        it 'returns the string representation' do
+          @result.must_equal 245
+        end
+      end
+
       describe 'when a bignum is given' do
         let(:input) { 13289301283 ** 2 }
 
@@ -161,10 +177,10 @@ describe Lotus::Utils::Kernel do
         end
       end
 
-      describe 'when an object that implements #to_i is given' do
-        let(:input) { Time.at(0) }
+      describe 'when a time is given' do
+        let(:input) { Time.at(0).utc }
 
-        it 'returns an integer' do
+        it 'returns the string representation' do
           @result.must_equal 0
         end
       end
@@ -179,6 +195,46 @@ describe Lotus::Utils::Kernel do
     end
 
     describe 'failure operations' do
+      describe 'true is given' do
+        let(:input) { true }
+
+        it 'raises error' do
+          -> { Lotus::Utils::Kernel.Integer(input) }.must_raise(TypeError)
+        end
+      end
+
+      describe 'false is given' do
+        let(:input) { false }
+
+        it 'raises error' do
+          -> { Lotus::Utils::Kernel.Integer(input) }.must_raise(TypeError)
+        end
+      end
+
+      describe 'when a date is given' do
+        let(:input) { Date.today }
+
+        it 'raises error' do
+          -> { Lotus::Utils::Kernel.Integer(input) }.must_raise(TypeError)
+        end
+      end
+
+      describe 'when a datetime is given' do
+        let(:input) { DateTime.now }
+
+        it 'raises error' do
+          -> { Lotus::Utils::Kernel.Integer(input) }.must_raise(TypeError)
+        end
+      end
+
+      describe "when a an object that doesn't implement #nil? " do
+        let(:input) { BasicObject.new }
+
+        it 'raises error' do
+          -> { Lotus::Utils::Kernel.Integer(input) }.must_raise(NoMethodError)
+        end
+      end
+
       describe "when a an object that doesn't implement any integer interface" do
         let(:input) { OpenStruct.new(color: 'purple') }
 
