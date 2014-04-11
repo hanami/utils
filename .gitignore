@@ -2,6 +2,7 @@
 *.rbc
 .bundle
 .config
+.devnotes
 .greenbar
 .yardoc
 Gemfile.lock
@@ -16,3 +17,4 @@ spec/reports
 test/tmp
 test/version_tmp
 tmp
+bin
