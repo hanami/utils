@@ -140,7 +140,7 @@ module Lotus
       #
       # @since 0.1.1
       #
-      # @see http://www.ruby-doc.org/core-2.1.1/Kernel.html#method-i-Strin
+      # @see http://www.ruby-doc.org/core-2.1.1/Kernel.html#method-i-String
       #
       # @example Basic Usage
       #   require 'date'
