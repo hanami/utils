@@ -220,4 +220,299 @@ describe Lotus::Utils::Kernel do
       end
     end
   end
+
+  describe '.String' do
+    before do
+      Book = Struct.new(:title)
+
+      BaseObject = Class.new(BasicObject) do
+        def nil?
+          false
+        end
+      end
+
+      SimpleObject = Class.new(BaseObject) do
+        def to_s
+          'simple object'
+        end
+      end
+
+      Isbn = Struct.new(:code) do
+        def to_str
+          code.to_s
+        end
+      end
+    end
+
+    after do
+      Object.send(:remove_const, :Book)
+      Object.send(:remove_const, :BaseObject)
+      Object.send(:remove_const, :SimpleObject)
+      Object.send(:remove_const, :Isbn)
+    end
+
+    describe 'successful operations' do
+      before do
+        @result = Lotus::Utils::Kernel.String(input)
+      end
+
+      describe 'when nil is given' do
+        let(:input) { nil }
+
+        it 'returns nil' do
+          @result.must_be_nil
+        end
+      end
+
+      describe 'when true is given' do
+        let(:input) { true }
+
+        it 'returns nil' do
+          @result.must_equal 'true'
+        end
+      end
+
+      describe 'when false is given' do
+        let(:input) { false }
+
+        it 'returns nil' do
+          @result.must_equal 'false'
+        end
+      end
+
+      describe 'when an empty string is given' do
+        let(:input) { '' }
+
+        it 'returns it' do
+          @result.must_equal ''
+        end
+      end
+
+      describe 'when a string is given' do
+        let(:input) { 'ciao' }
+
+        it 'returns it' do
+          @result.must_equal 'ciao'
+        end
+      end
+
+      describe 'when an integer is given' do
+        let(:input) { 23 }
+
+        it 'returns the string representation' do
+          @result.must_equal '23'
+        end
+      end
+
+      describe 'when a float is given' do
+        let(:input) { 3.14 }
+
+        it 'returns the string representation' do
+          @result.must_equal '3.14'
+        end
+      end
+
+      describe 'when an octal is given' do
+        let(:input) { 013 }
+
+        it 'returns the string representation' do
+          @result.must_equal '11'
+        end
+      end
+
+      describe 'when a hex is given' do
+        let(:input) { 0xc0ff33 }
+
+        it 'returns the string representation' do
+          @result.must_equal '12648243'
+        end
+      end
+
+      describe 'when a big decimal is given' do
+        let(:input) { BigDecimal.new(7944.2343, 10) }
+
+        it 'returns the string representation' do
+          @result.must_equal '0.79442343E4'
+        end
+      end
+
+      describe 'when a big decimal infinity is given' do
+        let(:input) { BigDecimal.new('Infinity') }
+
+        it 'returns the string representation' do
+          @result.must_equal 'Infinity'
+        end
+      end
+
+      describe 'when a big decimal NaN is given' do
+        let(:input) { BigDecimal.new('NaN') }
+
+        it 'returns the string representation' do
+          @result.must_equal 'NaN'
+        end
+      end
+
+      describe 'when a complex is given' do
+        let(:input) { Complex(11,2) }
+
+        it 'returns the string representation' do
+          @result.must_equal '11+2i'
+        end
+      end
+
+      describe 'when a rational is given' do
+        let(:input) { Rational(-22) }
+
+        it 'returns the string representation' do
+          @result.must_equal '-22/1'
+        end
+      end
+
+      describe 'when an empty array is given' do
+        let(:input) { [] }
+
+        it 'returns the string representation' do
+          @result.must_equal '[]'
+        end
+      end
+
+      describe 'when an array of integers is given' do
+        let(:input) { [1,2,3] }
+
+        it 'returns the string representation' do
+          @result.must_equal '[1, 2, 3]'
+        end
+      end
+
+      describe 'when an array of strings is given' do
+        let(:input) { %w[a b c] }
+
+        it 'returns the string representation' do
+          @result.must_equal '["a", "b", "c"]'
+        end
+      end
+
+      describe 'when an array of objects is given' do
+        let(:input) { [Object.new] }
+
+        it 'returns the string representation' do
+          @result.must_match '[#<Object:'
+        end
+      end
+
+      describe 'when an empty hash is given' do
+        let(:input) { {} }
+
+        it 'returns the string representation' do
+          @result.must_equal '{}'
+        end
+      end
+
+      describe 'when an hash is given' do
+        let(:input) { {a: 1, 'b' => 2} }
+
+        it 'returns the string representation' do
+          @result.must_equal '{:a=>1, "b"=>2}'
+        end
+      end
+
+      describe 'when a symbol is given' do
+        let(:input) { :lotus }
+
+        it 'returns the string representation' do
+          @result.must_equal 'lotus'
+        end
+      end
+
+      describe 'when an struct is given' do
+        let(:input) { Book.new('DDD') }
+
+        it 'returns the string representation' do
+          @result.must_equal '#<struct Book title="DDD">'
+        end
+      end
+
+      describe 'when an open struct is given' do
+        let(:input) { OpenStruct.new(title: 'DDD') }
+
+        it 'returns the string representation' do
+          @result.must_equal '#<OpenStruct title="DDD">'
+        end
+      end
+
+      describe 'when a date is given' do
+        let(:input) { Date.parse('2014-04-11') }
+
+        it 'returns the string representation' do
+          @result.must_equal '2014-04-11'
+        end
+      end
+
+      describe 'when a datetime is given' do
+        let(:input) { DateTime.parse('2014-04-11 09:45') }
+
+        it 'returns the string representation' do
+          @result.must_equal '2014-04-11T09:45:00+00:00'
+        end
+      end
+
+      describe 'when a time is given' do
+        let(:input) { Time.at(0) }
+
+        it 'returns the string representation' do
+          @result.must_equal '1970-01-01 01:00:00 +0100'
+        end
+      end
+
+      describe 'when a class is given' do
+        let(:input) { Fixnum }
+
+        it 'returns the string representation' do
+          @result.must_equal 'Fixnum'
+        end
+      end
+
+      describe 'when a module is given' do
+        let(:input) { Lotus }
+
+        it 'returns the string representation' do
+          @result.must_equal 'Lotus'
+        end
+      end
+
+      describe 'when an object implements #to_s' do
+        let(:input) { SimpleObject.new }
+
+        it 'returns the string representation' do
+          @result.must_equal 'simple object'
+        end
+      end
+
+      describe 'when an object implements #to_str' do
+        let(:input) { Isbn.new(123) }
+
+        it 'returns the string representation' do
+          @result.must_equal '123'
+        end
+      end
+    end
+
+    describe 'failure operations' do
+      describe "when a an object that doesn't implement #nil?" do
+        let(:input) { BasicObject.new }
+
+        it 'raises error' do
+          -> { Lotus::Utils::Kernel.String(input) }.must_raise(NoMethodError)
+        end
+      end
+
+      describe "when a an object that doesn't implement a string interface" do
+        let(:input) { BaseObject.new }
+
+        it 'raises error' do
+          -> { Lotus::Utils::Kernel.String(input) }.must_raise(TypeError)
+        end
+      end
+    end
+  end
 end

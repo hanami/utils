@@ -126,6 +126,111 @@ module Lotus
       rescue ArgumentError
         arg.to_i
       end
+
+      # Coerces the argument to be a string.
+      #
+      # It's similar to Ruby's Kernel.String, but it's less "whiny".
+      #
+      # @param arg [Object] the argument
+      #
+      # @return [String,nil] the result of the coercion
+      #
+      # @raise [TypeError] if the argument can't be coerced
+      # @raise [NoMethodError] if the argument doesn't implement #nil?
+      #
+      # @since 0.1.1
+      #
+      # @see http://www.ruby-doc.org/core-2.1.1/Kernel.html#method-i-Strin
+      #
+      # @example Basic Usage
+      #   require 'date'
+      #   require 'bigdecimal'
+      #   require 'lotus/utils/kernel'
+      #
+      #   Lotus::Utils::Kernel.String('')                            # => ""
+      #   Lotus::Utils::Kernel.String('ciao')                        # => "ciao"
+      #
+      #   Lotus::Utils::Kernel.String(true)                          # => "true"
+      #   Lotus::Utils::Kernel.String(false)                         # => "false"
+      #
+      #   Lotus::Utils::Kernel.String(:lotus)                        # => "lotus"
+      #
+      #   Lotus::Utils::Kernel.String(Picture)                       # => "Picture" # class
+      #   Lotus::Utils::Kernel.String(Lotus)                         # => "Lotus" # module
+      #
+      #   Lotus::Utils::Kernel.String([])                            # => "[]"
+      #   Lotus::Utils::Kernel.String([1,2,3])                       # => "[1, 2, 3]"
+      #   Lotus::Utils::Kernel.String(%w[a b c])                     # => "[\"a\", \"b\", \"c\"]"
+      #
+      #   Lotus::Utils::Kernel.String({})                            # => "{}"
+      #   Lotus::Utils::Kernel.String({a: 1, 'b' => 'c'})            # => "{:a=>1, \"b\"=>\"c\"}"
+      #
+      #   Lotus::Utils::Kernel.String(Date.today)                    # => "2014-04-11"
+      #   Lotus::Utils::Kernel.String(DateTime.now)                  # => "2014-04-11T10:15:06+02:00"
+      #   Lotus::Utils::Kernel.String(Time.now)                      # => "2014-04-11 10:15:53 +0200"
+      #
+      #   Lotus::Utils::Kernel.String(1)                             # => "1"
+      #   Lotus::Utils::Kernel.String(3.14)                          # => "3.14"
+      #   Lotus::Utils::Kernel.String(013)                           # => "11"
+      #   Lotus::Utils::Kernel.String(0xc0ff33)                      # => "12648243"
+      #
+      #   Lotus::Utils::Kernel.String(Rational(-22))                 # => "-22/1"
+      #   Lotus::Utils::Kernel.String(Complex(11, 2))                # => "11+2i"
+      #   Lotus::Utils::Kernel.String(BigDecimal.new(7944.2343, 10)) # => "0.79442343E4"
+      #   Lotus::Utils::Kernel.String(BigDecimal.new('Infinity'))    # => "Infinity"
+      #   Lotus::Utils::Kernel.String(BigDecimal.new('NaN'))         # => "Infinity"
+      #
+      # @example String interface
+      #   require 'lotus/utils/kernel'
+      #
+      #   SimpleObject = Class.new(BasicObject) do
+      #     def nil?
+      #       false
+      #     end
+      #
+      #     def to_s
+      #       'simple object'
+      #     end
+      #   end
+      #
+      #   Isbn = Struct.new(:code) do
+      #     def to_str
+      #       code.to_s
+      #     end
+      #   end
+      #
+      #   simple = SimpleObject.new
+      #   isbn   = Isbn.new(123)
+      #
+      #   Lotus::Utils::Kernel.String(simple) # => "simple object"
+      #   Lotus::Utils::Kernel.String(isbn)   # => "123"
+      #
+      # @example Error Handling
+      #   require 'lotus/utils/kernel'
+      #
+      #   # nil
+      #   Kernel.String(nil)               # => ""
+      #   Lotus::Utils::Kernel.String(nil) # => nil
+      #
+      # @example Unchecked Exceptions
+      #   require 'lotus/utils/kernel'
+      #
+      #   BaseObject = Class.new(BasicObject) do
+      #     def nil?
+      #       false
+      #     end
+      #   end
+      #
+      #   # Missing #nil?
+      #   input = BasicObject.new
+      #   Lotus::Utils::Kernel.String(input)  # => NoMethodError
+      #
+      #   # Missing #to_s or #to_str
+      #   input = BaseObject.new
+      #   Lotus::Utils::Kernel.Integer(input) # => TypeError
+      def self.String(arg)
+        super(arg) unless arg.nil?
+      end
     end
   end
 end
