@@ -274,6 +274,162 @@ describe Lotus::Utils::Kernel do
     end
   end
 
+  describe '.Hash' do
+    before do
+      Room = Class.new do
+        def initialize(*args)
+          @args = args
+        end
+
+        def to_h
+          Hash[*@args]
+        end
+      end
+
+      Record = Class.new do
+        def initialize(attributes = {})
+          @attributes = attributes
+        end
+
+        def to_hash
+          @attributes
+        end
+      end
+
+      BaseObject = Class.new(BasicObject) do
+        def nil?
+          false
+        end
+      end
+    end
+
+    after do
+      Object.send(:remove_const, :Room)
+      Object.send(:remove_const, :Record)
+      Object.send(:remove_const, :BaseObject)
+    end
+
+    describe 'successful operations' do
+      before do
+        @result = Lotus::Utils::Kernel.Hash(input)
+      end
+
+      describe 'when nil is given' do
+        let(:input) { nil }
+
+        it 'returns an empty hash' do
+          @result.must_equal nil
+        end
+      end
+
+      describe 'when an hash is given' do
+        let(:input) { Hash[l: 23] }
+
+        it 'returns the input' do
+          @result.must_equal input
+        end
+      end
+
+      describe 'when an array is given' do
+        let(:input) { [[:a, 1]] }
+
+        it 'returns an hash' do
+          @result.must_equal Hash[a: 1]
+        end
+      end
+
+      describe 'when a set is given' do
+        let(:input) { Set.new([['x', 12]]) }
+
+        it 'returns an hash' do
+          @result.must_equal Hash['x' => 12]
+        end
+      end
+
+      describe 'when a object that implements #to_h is given' do
+        let(:input) { Room.new(:key, 123456) }
+
+        it 'returns an hash' do
+          @result.must_equal Hash[key: 123456]
+        end
+      end
+
+      describe 'when a object that implements #to_hash is given' do
+        let(:input) { Record.new(name: 'L') }
+
+        it 'returns an hash' do
+          @result.must_equal Hash[name: 'L']
+        end
+      end
+    end
+
+    describe 'failure operations' do
+      describe "when a an object that doesn't implement #nil?" do
+        let(:input) { BasicObject.new }
+
+        it 'raises error' do
+          -> { Lotus::Utils::Kernel.Hash(input) }.must_raise(NoMethodError)
+        end
+      end
+
+      describe "when a an object that doesn't implement #respond_to?" do
+        let(:input) { BaseObject.new }
+
+        it 'raises error' do
+          -> { Lotus::Utils::Kernel.Hash(input) }.must_raise(NoMethodError)
+        end
+      end
+
+      describe 'when true is given' do
+        let(:input) { true }
+
+        it 'raises error' do
+          -> { Lotus::Utils::Kernel.Hash(input) }.must_raise(TypeError)
+        end
+      end
+
+      describe 'when false is given' do
+        let(:input) { false }
+
+        it 'raises error' do
+          -> { Lotus::Utils::Kernel.Hash(input) }.must_raise(TypeError)
+        end
+      end
+
+      describe 'when an array with one element is given' do
+        let(:input) { [1] }
+
+        it 'raises error' do
+          -> { Lotus::Utils::Kernel.Hash(input) }.must_raise(TypeError)
+        end
+      end
+
+      describe 'when an array with two elements is given' do
+        let(:input) { [:a, 1] }
+
+        it 'raises error' do
+          -> { Lotus::Utils::Kernel.Hash(input) }.must_raise(TypeError)
+        end
+      end
+
+      describe 'when a set of one element is given' do
+        let(:input) { Set.new([1]) }
+
+        it 'raises error' do
+          -> { Lotus::Utils::Kernel.Hash(input) }.must_raise(TypeError)
+        end
+      end
+
+      describe 'when a set of two elements is given' do
+        let(:input) { Set.new([:a, 1]) }
+
+        it 'raises error' do
+          -> { Lotus::Utils::Kernel.Hash(input) }.must_raise(TypeError)
+        end
+      end
+    end
+  end
+
   describe '.Integer' do
     describe 'successful operations' do
       before do

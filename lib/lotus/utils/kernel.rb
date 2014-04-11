@@ -119,6 +119,70 @@ module Lotus
         end unless arg.nil?
       end
 
+      # Coerces the argument to be an hash.
+      #
+      # @param arg [Object] the input
+      #
+      # @return [Hash, nil] the result of the coercion
+      #
+      # @raise [NoMethodError] if arg doesn't implement #nil?
+      # @raise [NoMethodError] if arg doesn't implement #respond_to?
+      # @raise [TypeError] if arg can't be coerced
+      #
+      # @since 0.1.1
+      #
+      # @see http://www.ruby-doc.org/core-2.1.1/Kernel.html#method-i-Hash
+      #
+      # @example Basic Usage
+      #   require 'lotus/utils/kernel'
+      #
+      #   Lotus::Utils::Kernel.Hash(nil)                 # => nil
+      #   Lotus::Utils::Kernel.Hash({a: 1})              # => { :a => 1 }
+      #   Lotus::Utils::Kernel.Hash([[:a, 1]])           # => { :a => 1 }
+      #   Lotus::Utils::Kernel.Hash(Set.new([[:a, 1]]))  # => { :a => 1 }
+      #
+      # @example Hash Interface
+      #   require 'lotus/utils/kernel'
+      #
+      #   Room = Class.new do
+      #     def initialize(*args)
+      #       @args = args
+      #     end
+      #
+      #     def to_h
+      #       Hash[*@args]
+      #     end
+      #   end
+      #
+      #   Record = Class.new do
+      #     def initialize(attributes = {})
+      #       @attributes = attributes
+      #     end
+      #
+      #     def to_hash
+      #       @attributes
+      #     end
+      #   end
+      #
+      #   room = Room.new(:key, 123456)
+      #   Lotus::Utils::Kernel.Hash(room)        # => { :key => 123456 }
+      #
+      #   record = Record.new(name: 'L')
+      #   Lotus::Utils::Kernel.Hash(record)      # => { :name => "L" }
+      #
+      # @example Unchecked Exceptions
+      #   require 'lotus/utils/kernel'
+      #
+      #   input = BasicObject.new
+      #   Lotus::Utils::Kernel.Hash(input) # => NoMethodError
+      def self.Hash(arg)
+        if arg.respond_to?(:to_h)
+          arg.to_h
+        else
+          super(arg)
+        end unless arg.nil?
+      end
+
       # Coerces the argument to be an integer.
       #
       # It's similar to Ruby's Kernel.Integer, but it doesn't stop at the first
