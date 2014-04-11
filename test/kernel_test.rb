@@ -457,10 +457,10 @@ describe Lotus::Utils::Kernel do
       end
 
       describe 'when a time is given' do
-        let(:input) { Time.at(0) }
+        let(:input) { Time.at(0).utc }
 
         it 'returns the string representation' do
-          @result.must_equal '1970-01-01 01:00:00 +0100'
+          @result.must_equal '1970-01-01 00:00:00 UTC'
         end
       end
 
