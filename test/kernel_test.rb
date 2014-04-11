@@ -4,104 +4,124 @@ require 'lotus/utils/kernel'
 
 describe Lotus::Utils::Kernel do
   describe '.Array' do
-    before do
-      ResultSet = Struct.new(:records) do
-        def to_a
-          records.to_a.sort
+    describe 'successful operations' do
+      before do
+        ResultSet = Struct.new(:records) do
+          def to_a
+            records.to_a.sort
+          end
+        end
+
+        Response = Struct.new(:status, :headers, :body) do
+          def to_ary
+            [status, headers, body]
+          end
+        end
+
+        @result = Lotus::Utils::Kernel.Array(input)
+      end
+
+      after do
+        Object.send(:remove_const, :ResultSet)
+        Object.send(:remove_const, :Response)
+      end
+
+      describe 'when nil is given' do
+        let(:input) { nil }
+
+        it 'returns an empty array' do
+          @result.must_equal nil
         end
       end
 
-      Response = Struct.new(:status, :headers, :body) do
-        def to_ary
-          [status, headers, body]
+      describe 'when true is given' do
+        let(:input) { true }
+
+        it 'returns an empty array' do
+          @result.must_equal [true]
         end
       end
 
-      @result = Lotus::Utils::Kernel.Array(input)
-    end
+      describe 'when false is given' do
+        let(:input) { false }
 
-    after do
-      Object.send(:remove_const, :ResultSet)
-      Object.send(:remove_const, :Response)
-    end
+        it 'returns an empty array' do
+          @result.must_equal [false]
+        end
+      end
 
-    describe 'when nil is given' do
-      let(:input) { nil }
+      describe 'when an object is given' do
+        let(:input) { Object.new }
 
-      it 'returns an empty array' do
-        @result.must_equal []
+        it 'returns an array' do
+          @result.must_equal [input]
+        end
+      end
+
+      describe 'when an array is given' do
+        let(:input) { [Object.new] }
+
+        it 'returns an array' do
+          @result.must_equal input
+        end
+      end
+
+      describe 'when a nested array is given' do
+        let(:input) { [1, [2, 3]] }
+
+        it 'returns a flatten array' do
+          @result.must_equal [1,2,3]
+        end
+      end
+
+      describe 'when an array with nil values is given' do
+        let(:input) { [1, [nil, 3]] }
+
+        it 'returns a compacted array' do
+          @result.must_equal [1,3]
+        end
+      end
+
+      describe 'when an array with duplicated values is given' do
+        let(:input) { [2, [2, 3]] }
+
+        it 'returns an array with uniq values' do
+          @result.must_equal [2,3]
+        end
+      end
+
+      describe 'when a set is given' do
+        let(:input) { Set.new([33,12]) }
+
+        it 'returns an array with uniq values' do
+          @result.must_equal [33, 12]
+        end
+      end
+
+      describe 'when a object that implements #to_a is given' do
+        let(:input) { ResultSet.new([2,1,3]) }
+
+        it 'returns an array' do
+          @result.must_equal [1,2,3]
+        end
+      end
+
+      describe 'when a object that implements #to_ary is given' do
+        let(:input) { Response.new(200, {}, 'hello') }
+
+        it 'returns an array' do
+          @result.must_equal [200, {}, 'hello']
+        end
       end
     end
 
-    describe 'when true is given' do
-      let(:input) { true }
+    describe 'failure operations' do
+      describe "when a object that doesn't implements #nil? is given" do
+        let(:input) { BasicObject.new }
 
-      it 'returns an empty array' do
-        @result.must_equal [true]
-      end
-    end
-
-    describe 'when false is given' do
-      let(:input) { false }
-
-      it 'returns an empty array' do
-        @result.must_equal [false]
-      end
-    end
-
-    describe 'when an object is given' do
-      let(:input) { Object.new }
-
-      it 'returns an array' do
-        @result.must_equal [input]
-      end
-    end
-
-    describe 'when an array is given' do
-      let(:input) { [Object.new] }
-
-      it 'returns an array' do
-        @result.must_equal input
-      end
-    end
-
-    describe 'when a nested array is given' do
-      let(:input) { [1, [2, 3]] }
-
-      it 'returns a flatten array' do
-        @result.must_equal [1,2,3]
-      end
-    end
-
-    describe 'when an array with nil values is given' do
-      let(:input) { [1, [nil, 3]] }
-
-      it 'returns a compacted array' do
-        @result.must_equal [1,3]
-      end
-    end
-
-    describe 'when an array with duplicated values is given' do
-      let(:input) { [2, [2, 3]] }
-
-      it 'returns an array with uniq values' do
-        @result.must_equal [2,3]
-      end
-    end
-
-    describe 'when a object that implements #to_a is given' do
-      let(:input) { ResultSet.new([2,1,3]) }
-
-      it 'returns an array' do
-        @result.must_equal [1,2,3]
-      end
-    end
-
-    describe 'when a object that implements #to_ary is given' do
-      let(:input) { Response.new(200, {}, 'hello') }
-
-      it 'returns an array' do
-        @result.must_equal [200, {}, 'hello']
+        it 'raises an error' do
+          -> { Lotus::Utils::Kernel.Array(input) }.must_raise NoMethodError
+        end
       end
     end
   end
