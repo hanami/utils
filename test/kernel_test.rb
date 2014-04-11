@@ -106,6 +106,137 @@ describe Lotus::Utils::Kernel do
     end
   end
 
+  describe '.Set' do
+    describe 'successful operations' do
+      before do
+        UuidSet = Class.new do
+          def initialize(*uuids)
+            @uuids = uuids
+          end
+
+          def to_set
+            Set.new.tap do |set|
+              @uuids.each {|uuid| set.add(uuid) }
+            end
+          end
+        end
+
+        @result = Lotus::Utils::Kernel.Set(input)
+      end
+
+      after do
+        Object.send(:remove_const, :UuidSet)
+      end
+
+      describe 'when nil is given' do
+        let(:input) { nil }
+
+        it 'returns an empty set' do
+          @result.must_equal Set.new
+        end
+      end
+
+      describe 'when true is given' do
+        let(:input) { true }
+
+        it 'returns a set' do
+          @result.must_equal Set.new([true])
+        end
+      end
+
+      describe 'when false is given' do
+        let(:input) { false }
+
+        it 'returns a set' do
+          @result.must_equal Set.new([false])
+        end
+      end
+
+      describe 'when an object is given' do
+        let(:input) { Object.new }
+
+        it 'returns an set' do
+          @result.must_equal Set.new([input])
+        end
+      end
+
+      describe 'when an array is given' do
+        let(:input) { [1] }
+
+        it 'returns an set' do
+          @result.must_equal Set.new(input)
+        end
+      end
+
+      describe 'when an hash is given' do
+        let(:input) { Hash[a: 1] }
+
+        it 'returns an set' do
+          @result.must_equal Set.new([[:a, 1]])
+        end
+      end
+
+      describe 'when a set is given' do
+        let(:input) { Set.new([Object.new]) }
+
+        it 'returns self' do
+          @result.must_equal input
+        end
+      end
+
+      describe 'when a nested array is given' do
+        let(:input) { [1, [2, 3]] }
+
+        it 'returns it wraps in a set' do
+          @result.must_equal Set.new([1, [2, 3]])
+        end
+      end
+
+      describe 'when an array with nil values is given' do
+        let(:input) { [1, [nil, 3]] }
+
+        it 'returns it wraps in a set' do
+          @result.must_equal Set.new([1, [nil, 3]])
+        end
+      end
+
+      describe 'when an set with duplicated values is given' do
+        let(:input) { [2, 3, 3] }
+
+        it 'returns an set with uniq values' do
+          @result.must_equal Set.new([2,3])
+        end
+      end
+
+      describe 'when an set with nested duplicated values is given' do
+        let(:input) { [2, [2, 3]] }
+
+        it 'returns it wraps in a set' do
+          @result.must_equal Set.new([2, [2,3]])
+        end
+      end
+
+      describe 'when a object that implements #to_set is given' do
+        let(:input) { UuidSet.new(*args) }
+        let(:args)  { [SecureRandom.uuid, SecureRandom.uuid] }
+
+        it 'returns an set' do
+          @result.must_equal Set.new(args)
+        end
+      end
+    end
+
+    describe 'failure operations' do
+      describe "when a an object that doesn't implement #respond_to?" do
+        let(:input) { BasicObject.new }
+
+        it 'raises error' do
+          -> { Lotus::Utils::Kernel.Set(input) }.must_raise(NoMethodError)
+        end
+      end
+    end
+  end
+
   describe '.Integer' do
     describe 'successful operations' do
       before do

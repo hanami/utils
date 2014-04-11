@@ -1,3 +1,5 @@
+require 'set'
+
 module Lotus
   module Utils
     # Kernel utilities
@@ -58,6 +60,61 @@ module Lotus
       #   Lotus::Utils::Kernel.Array(response)         # => [200, {}, "hello"]
       def self.Array(arg)
         super(arg).flatten.compact.uniq
+      end
+
+      # Coerces the argument to be a set.
+      #
+      # @param arg [Object] the input
+      #
+      # @return [Set] the result of the coercion
+      #
+      # @raise [NoMethodError] if arg doesn't implement #respond_to?
+      #
+      # @since 0.1.1
+      #
+      # @example Basic Usage
+      #   require 'lotus/utils/kernel'
+      #
+      #   Lotus::Utils::Kernel.Set(nil)              # => #<Set: {}>
+      #   Lotus::Utils::Kernel.Set(true)             # => #<Set: {true}>
+      #   Lotus::Utils::Kernel.Set(false)            # => #<Set: {false}>
+      #   Lotus::Utils::Kernel.Set(1)                # => #<Set: {1}>
+      #   Lotus::Utils::Kernel.Set([1])              # => #<Set: {1}>
+      #   Lotus::Utils::Kernel.Set([1, 1])           # => #<Set: {1}>
+      #   Lotus::Utils::Kernel.Set([1, [2]])         # => #<Set: {1, [2]}>
+      #   Lotus::Utils::Kernel.Set([1, [2, nil]])    # => #<Set: {1, [2, nil]}>
+      #   Lotus::Utils::Kernel.Set({a: 1})           # => #<Set: {[:a, 1]}>
+      #
+      # @example Set Interface
+      #   require 'securerandom'
+      #   require 'lotus/utils/kernel'
+      #
+      #   UuidSet = Class.new do
+      #     def initialize(*uuids)
+      #       @uuids = uuids
+      #     end
+      #
+      #     def to_set
+      #       Set.new.tap do |set|
+      #         @uuids.each {|uuid| set.add(uuid) }
+      #       end
+      #     end
+      #   end
+      #
+      #   uuids = UuidSet.new(SecureRandom.uuid)
+      #   Lotus::Utils::Kernel.Set(uuids)
+      #     # => #<Set: {"daa798b4-630c-4e11-b29d-92f0b1c7d075"}>
+      #
+      # @example Unchecked Exceptions
+      #   require 'lotus/utils/kernel'
+      #
+      #   Lotus::Utils::Kernel.Set(BasicObject.new) # => NoMethodError
+      def self.Set(arg)
+        if arg.respond_to?(:to_set)
+          arg.to_set
+        else
+          Set.new(::Kernel.Array(arg))
+        end
       end
 
       # Coerces the argument to be an integer.
