@@ -179,7 +179,7 @@ module Lotus
         if arg.respond_to?(:to_h)
           arg.to_h
         else
-          super(arg)
+          super(*arg) # COMPAT splat is required only by Ruby 2.0.x
         end unless arg.nil?
       end
 
