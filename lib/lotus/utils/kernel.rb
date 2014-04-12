@@ -403,6 +403,58 @@ module Lotus
       def self.String(arg)
         super(arg) unless arg.nil?
       end
+
+      # Coerces the argument to be a boolean.
+      #
+      # @param arg [Object] the argument
+      #
+      # @return [true,false,nil] the result of the coercion
+      #
+      # @raise [NoMethodError] if the argument doesn't implenent #respond_to?
+      #
+      # @since 0.1.1
+      #
+      # @example Basic Usage
+      #   require 'lotus/utils/kernel'
+      #
+      #   Lotus::Utils::Kernel.Boolean(nil)                      # => nil
+      #   Lotus::Utils::Kernel.Boolean(0)                        # => false
+      #   Lotus::Utils::Kernel.Boolean(1)                        # => true
+      #   Lotus::Utils::Kernel.Boolean('0')                      # => false
+      #   Lotus::Utils::Kernel.Boolean('1')                      # => true
+      #   Lotus::Utils::Kernel.Boolean(Object.new)               # => true
+      #
+      # @example Boolean Interface
+      #   require 'lotus/utils/kernel'
+      #
+      #   Answer = Struct.new(:answer) do
+      #     def to_bool
+      #       case answer
+      #       when 'yes' then true
+      #       else false
+      #       end
+      #     end
+      #   end
+      #
+      #   answer = Answer.new('yes')
+      #   Lotus::Utils::Kernel.Boolean(answer) # => true
+      #
+      # @example Unchecked Exceptions
+      #   require 'lotus/utils/kernel'
+      #
+      #   # Missing #respond_to?
+      #   input = BasicObject.new
+      #   Lotus::Utils::Kernel.Boolean(input) # => NoMethodError
+      def self.Boolean(arg)
+        case arg
+        when Numeric     then arg > 0 && arg <= 1
+        when String, '0' then Boolean(arg.to_i)
+        when NilClass    then nil
+        when ->(a) { a.respond_to?(:to_bool) } then arg.to_bool
+        else
+          !!arg
+        end
+      end
     end
   end
 end

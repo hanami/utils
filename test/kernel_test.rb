@@ -944,4 +944,125 @@ describe Lotus::Utils::Kernel do
       end
     end
   end
+
+  describe '.Boolean' do
+    before do
+      Answer = Struct.new(:answer) do
+        def to_bool
+          case answer
+          when 'yes' then true
+          else false
+          end
+        end
+      end
+    end
+
+    after do
+      Object.send(:remove_const, :Answer)
+    end
+
+    describe 'successful operations' do
+      before do
+        @result = Lotus::Utils::Kernel.Boolean(input)
+      end
+
+      describe 'when nil is given' do
+        let(:input) { nil }
+
+        it 'returns nil' do
+          @result.must_be_nil
+        end
+      end
+
+      describe 'when true is given' do
+        let(:input) { true }
+
+        it 'returns true' do
+          @result.must_equal true
+        end
+      end
+
+      describe 'when false is given' do
+        let(:input) { false }
+
+        it 'returns false' do
+          @result.must_equal false
+        end
+      end
+
+      describe 'when 0 is given' do
+        let(:input) { 0 }
+
+        it 'returns false' do
+          @result.must_equal false
+        end
+      end
+
+      describe 'when 1 is given' do
+        let(:input) { 1 }
+
+        it 'returns true' do
+          @result.must_equal true
+        end
+      end
+
+      describe 'when 2 is given' do
+        let(:input) { 2 }
+
+        it 'returns false' do
+          @result.must_equal false
+        end
+      end
+
+      describe 'when -1 is given' do
+        let(:input) { -1 }
+
+        it 'returns false' do
+          @result.must_equal false
+        end
+      end
+
+      describe 'when "0" is given' do
+        let(:input) { "0" }
+
+        it 'returns false' do
+          @result.must_equal false
+        end
+      end
+
+      describe 'when "1" is given' do
+        let(:input) { "1" }
+
+        it 'returns true' do
+          @result.must_equal true
+        end
+      end
+
+      describe 'when an object is given' do
+        let(:input) { Object.new }
+
+        it 'returns true' do
+          @result.must_equal true
+        end
+      end
+
+      describe 'when the given object responds to #to_bool' do
+        let(:input) { Answer.new('no') }
+
+        it 'returns the result of the serialization' do
+          @result.must_equal false
+        end
+      end
+    end
+
+    describe 'failure operations' do
+      describe "when a an object that doesn't implement #respond_to?" do
+        let(:input) { BasicObject.new }
+
+        it 'raises error' do
+          -> { Lotus::Utils::Kernel.Boolean(input) }.must_raise(NoMethodError)
+        end
+      end
+    end
+  end
 end
