@@ -175,12 +175,27 @@ module Lotus
       #
       #   input = BasicObject.new
       #   Lotus::Utils::Kernel.Hash(input) # => NoMethodError
-      def self.Hash(arg)
-        if arg.respond_to?(:to_h)
-          arg.to_h
-        else
-          super(arg)
-        end unless arg.nil?
+      if RUBY_VERSION >= '2.1'
+        def self.Hash(arg)
+          if arg.respond_to?(:to_h)
+            arg.to_h
+          else
+            super(arg)
+          end unless arg.nil?
+        end
+      else
+        def self.Hash(arg)
+          case arg
+          when NilClass                       then nil
+          when ::Hash                         then arg
+          when ::Array, ::Set                 then Hash[*self.Array(arg)]
+          when ->(a) { a.respond_to?(:to_h) } then arg.to_h
+          else
+            super(arg)
+          end
+        rescue ArgumentError
+          raise TypeError
+        end
       end
 
       # Coerces the argument to be an integer.

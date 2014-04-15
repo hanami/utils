@@ -404,11 +404,13 @@ describe Lotus::Utils::Kernel do
         end
       end
 
-      describe 'when an array with two elements is given' do
-        let(:input) { [:a, 1] }
+      if RUBY_VERSION >= '2.1'
+        describe 'when an array with two elements is given' do
+          let(:input) { [:a, 1] }
 
-        it 'raises error' do
-          -> { Lotus::Utils::Kernel.Hash(input) }.must_raise(TypeError)
+          it 'raises error' do
+            -> { Lotus::Utils::Kernel.Hash(input) }.must_raise(TypeError)
+          end
         end
       end
 
@@ -420,11 +422,13 @@ describe Lotus::Utils::Kernel do
         end
       end
 
-      describe 'when a set of two elements is given' do
-        let(:input) { Set.new([:a, 1]) }
+      if RUBY_VERSION >= '2.1'
+        describe 'when a set of two elements is given' do
+          let(:input) { Set.new([:a, 1]) }
 
-        it 'raises error' do
-          -> { Lotus::Utils::Kernel.Hash(input) }.must_raise(TypeError)
+          it 'raises error' do
+            -> { Lotus::Utils::Kernel.Hash(input) }.must_raise(TypeError)
+          end
         end
       end
     end
