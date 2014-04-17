@@ -1,3 +1,5 @@
+require 'set'
+
 module Lotus
   module Utils
     # Inheritable class level variable accessors.
