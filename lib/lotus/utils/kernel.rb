@@ -1,4 +1,5 @@
 require 'set'
+require 'date'
 
 module Lotus
   module Utils
@@ -534,6 +535,62 @@ module Lotus
       #   Lotus::Utils::Kernel.Integer(input) # => TypeError
       def self.String(arg)
         super(arg) unless arg.nil?
+      end
+
+      # Coerces the argument to be a Date.
+      #
+      # @param arg [Object] the argument
+      #
+      # @return [Date,nil] the result of the coercion
+      #
+      # @raise [NoMethodError] if the argument doesn't implement #respond_to? or #to_s
+      #
+      # @since 0.1.1
+      #
+      # @example Basic Usage
+      #   require 'lotus/utils/kernel'
+      #
+      #   Lotus::Utils::Kernel.Date(nil)                      # => nil
+      #
+      #   Lotus::Utils::Kernel.Date(Date.today)
+      #     # => #<Date: 2014-04-17 ((2456765j,0s,0n),+0s,2299161j)>
+      #
+      #   Lotus::Utils::Kernel.Date(DateTime.now)
+      #     # => #<Date: 2014-04-17 ((2456765j,0s,0n),+0s,2299161j)>
+      #
+      #   Lotus::Utils::Kernel.Date(Time.now)
+      #     # => #<Date: 2014-04-17 ((2456765j,0s,0n),+0s,2299161j)>
+      #
+      #   Lotus::Utils::Kernel.Date('2014-04-17')
+      #     # => #<Date: 2014-04-17 ((2456765j,0s,0n),+0s,2299161j)>
+      #
+      #   Lotus::Utils::Kernel.Date('2014-04-17 22:37:15')
+      #     # => #<Date: 2014-04-17 ((2456765j,0s,0n),+0s,2299161j)>
+      #
+      # @example Date Interface
+      #   require 'lotus/utils/kernel'
+      #
+      #   class Christmas
+      #     def to_date
+      #       Date.parse('Dec, 25')
+      #     end
+      #   end
+      #
+      #   Lotus::Utils::Kernel.Date(Christmas.new)
+      #     # => #<Date: 2014-12-25 ((2457017j,0s,0n),+0s,2299161j)>
+      #
+      # @example Unchecked Exceptions
+      #   require 'lotus/utils/kernel'
+      #
+      #   # Missing #nil?
+      #   input = BasicObject.new
+      #   Lotus::Utils::Kernel.Date(input) # => NoMethodError
+      def self.Date(arg)
+        if arg.respond_to?(:to_date)
+          arg.to_date
+        else
+          Date.parse(arg.to_s)
+        end unless arg.nil?
       end
 
       # Coerces the argument to be a boolean.
