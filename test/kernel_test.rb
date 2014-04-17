@@ -654,6 +654,239 @@ describe Lotus::Utils::Kernel do
     end
   end
 
+  describe '.Float' do
+    describe 'successful operations' do
+      before do
+        class Pi
+          def to_f
+            3.14
+          end
+        end
+
+        @result = Lotus::Utils::Kernel.Float(input)
+      end
+
+      after do
+        Object.send(:remove_const, :Pi)
+      end
+
+      describe 'when nil is given' do
+        let(:input) { nil }
+
+        it 'returns nil' do
+          @result.must_equal nil
+        end
+      end
+
+      describe 'when a float is given' do
+        let(:input) { 1.2 }
+
+        it 'returns the argument' do
+          @result.must_equal 1.2
+        end
+      end
+
+      describe 'when a fixnum given' do
+        let(:input) { 1 }
+
+        it 'returns a float' do
+          @result.must_be_kind_of(Float)
+          @result.must_equal 1.0
+        end
+      end
+
+      describe 'when a string given' do
+        let(:input) { '23' }
+
+        it 'returns a float' do
+          @result.must_be_kind_of(Float)
+          @result.must_equal 23.0
+        end
+      end
+
+      describe 'when a string representing a float number is given' do
+        let(:input) { '23.4' }
+
+        it 'returns a float' do
+          @result.must_be_kind_of(Float)
+          @result.must_equal 23.4
+        end
+      end
+
+      describe 'when an octal is given' do
+        let(:input) { 011 }
+
+        it 'returns the base 10 float' do
+          @result.must_equal 9.0
+        end
+      end
+
+      describe 'when a hex is given' do
+        let(:input) { 0xf5 }
+
+        it 'returns the base 10 float' do
+          @result.must_equal 245.0
+        end
+      end
+
+      describe 'when a bignum is given' do
+        let(:input) { 13289301283 ** 2 }
+
+        it 'returns a float' do
+          @result.must_be_kind_of(Float)
+          @result.must_equal 176605528590345446089.0
+        end
+      end
+
+      describe 'when a bigdecimal is given' do
+        let(:input) { BigDecimal.new('12.0001') }
+
+        it 'returns a float' do
+          @result.must_be_kind_of(Float)
+          @result.must_equal 12.0001
+        end
+      end
+
+      describe 'when a bigdecimal infinity is given' do
+        let(:input) { BigDecimal.new('Infinity') }
+
+        it 'returns Infinity' do
+          @result.must_be_kind_of(Float)
+          @result.to_s.must_equal 'Infinity'
+        end
+      end
+
+      describe 'when a bigdecimal NaN is given' do
+        let(:input) { BigDecimal.new('NaN') }
+
+        it 'returns NaN' do
+          @result.must_be_kind_of(Float)
+          @result.to_s.must_equal 'NaN'
+        end
+      end
+
+      describe 'when a complex number is given' do
+        let(:input) { Complex(0.3) }
+
+        it 'returns a float' do
+          @result.must_be_kind_of(Float)
+          @result.must_equal 0.3
+        end
+      end
+
+      describe 'when a string representing a complex number is given' do
+        let(:input) { '2.5/1' }
+
+        it 'returns a float' do
+          @result.must_be_kind_of(Float)
+          @result.must_equal 2.5
+        end
+      end
+
+      describe 'when a rational number is given' do
+        let(:input) { Rational(0.3) }
+
+        it 'returns a float' do
+          @result.must_be_kind_of(Float)
+          @result.must_equal 0.3
+        end
+      end
+
+      describe 'when a string representing a rational number is given' do
+        let(:input) { '2/3' }
+
+        it 'returns a float' do
+          @result.must_be_kind_of(Float)
+          @result.must_equal 2.0
+        end
+      end
+
+      describe 'when a time is given' do
+        let(:input) { Time.at(0).utc }
+
+        it 'returns the float representation' do
+          @result.must_be_kind_of(Float)
+          @result.must_equal 0.0
+        end
+      end
+
+      describe 'when an object that implements #to_int is given' do
+        let(:input) { Pi.new }
+
+        it 'returns a float' do
+          @result.must_be_kind_of(Float)
+          @result.must_equal 3.14
+        end
+      end
+    end
+
+    describe 'failure operations' do
+      describe 'true is given' do
+        let(:input) { true }
+
+        it 'raises error' do
+          -> { Lotus::Utils::Kernel.Float(input) }.must_raise(TypeError)
+        end
+      end
+
+      describe 'false is given' do
+        let(:input) { false }
+
+        it 'raises error' do
+          -> { Lotus::Utils::Kernel.Float(input) }.must_raise(TypeError)
+        end
+      end
+
+      describe 'when a date is given' do
+        let(:input) { Date.today }
+
+        it 'raises error' do
+          -> { Lotus::Utils::Kernel.Float(input) }.must_raise(TypeError)
+        end
+      end
+
+      describe 'when a datetime is given' do
+        let(:input) { DateTime.now }
+
+        it 'raises error' do
+          -> { Lotus::Utils::Kernel.Float(input) }.must_raise(TypeError)
+        end
+      end
+
+      describe "when a an object that doesn't implement #nil? " do
+        let(:input) { BasicObject.new }
+
+        it 'raises error' do
+          -> { Lotus::Utils::Kernel.Float(input) }.must_raise(NoMethodError)
+        end
+      end
+
+      describe "when a an object that doesn't implement any float interface" do
+        let(:input) { OpenStruct.new(color: 'purple') }
+
+        it 'raises error' do
+          -> { Lotus::Utils::Kernel.Float(input) }.must_raise(TypeError)
+        end
+      end
+
+      describe 'when a big complex number is given' do
+        let(:input) { Complex(2,3) }
+
+        it 'raises error' do
+          -> { Lotus::Utils::Kernel.Float(input) }.must_raise(RangeError)
+        end
+      end
+
+      describe 'when a big rational number is given' do
+        let(:input) { Rational(-8) ** Rational(1, 3) }
+
+        it 'raises error' do
+          -> { Lotus::Utils::Kernel.Float(input) }.must_raise(RangeError)
+        end
+      end
+    end
+  end
+
   describe '.String' do
     before do
       Book = Struct.new(:title)

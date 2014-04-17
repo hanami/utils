@@ -314,6 +314,123 @@ module Lotus
         arg.to_i
       end
 
+      # Coerces the argument to be a float.
+      #
+      # It's similar to Ruby's Kernel.Float, but it doesn't stop at the first
+      # error and tries to be less "whiny".
+      #
+      # @param arg [Object] the argument
+      #
+      # @return [Float,nil] the result of the coercion
+      #
+      # @raise [TypeError] if the argument can't be coerced
+      # @raise [NoMethodError] if the argument doesn't implenent #nil?
+      # @raise [TypeError,FloatDomainError,RangeError] if the argument it's too
+      #   big.
+      #
+      # @since 0.1.1
+      #
+      # @see http://www.ruby-doc.org/core-2.1.1/Kernel.html#method-i-Float
+      #
+      # @example Basic Usage
+      #   require 'bigdecimal'
+      #   require 'lotus/utils/kernel'
+      #
+      #   Lotus::Utils::Kernel.Float(1)                        # => 1.0
+      #   Lotus::Utils::Kernel.Float(1.2)                      # => 1.2
+      #   Lotus::Utils::Kernel.Float(011)                      # => 9.0
+      #   Lotus::Utils::Kernel.Float(0xf5)                     # => 245.0
+      #   Lotus::Utils::Kernel.Float("1")                      # => 1.0
+      #   Lotus::Utils::Kernel.Float(Rational(0.3))            # => 0.3
+      #   Lotus::Utils::Kernel.Float(Complex(0.3))             # => 0.3
+      #   Lotus::Utils::Kernel.Float(BigDecimal.new(12.00001)) # => 12.00001
+      #   Lotus::Utils::Kernel.Float(176605528590345446089)
+      #     # => 176605528590345446089.0
+      #
+      #   Lotus::Utils::Kernel.Float(Time.now) # => 397750945.515169
+      #
+      # @example Float Interface
+      #   require 'lotus/utils/kernel'
+      #
+      #   class Pi
+      #     def to_f
+      #       3.14
+      #     end
+      #   end
+      #
+      #   pi = Pi.new
+      #   Lotus::Utils::Kernel.Float(pi) # => 3.14
+      #
+      # @example Error Handling
+      #   require 'bigdecimal'
+      #   require 'lotus/utils/kernel'
+      #
+      #   # nil
+      #   Kernel.Float(nil)               # => TypeError
+      #   Lotus::Utils::Kernel.Float(nil) # => nil
+      #
+      #   # float represented as a string
+      #   Kernel.Float("23.4")               # => ArgumentError
+      #   Lotus::Utils::Kernel.Float("23.4") # => 23.4
+      #
+      #   # rational represented as a string
+      #   Kernel.Float("2/3")               # => ArgumentError
+      #   Lotus::Utils::Kernel.Float("2/3") # => 2.0
+      #
+      #   # complex represented as a string
+      #   Kernel.Float("2.5/1")               # => ArgumentError
+      #   Lotus::Utils::Kernel.Float("2.5/1") # => 2.5
+      #
+      #   # bigdecimal infinity
+      #   input = BigDecimal.new("Infinity")
+      #   Lotus::Utils::Kernel.Float(input) # => Infinity
+      #
+      #   # bigdecimal NaN
+      #   input = BigDecimal.new("NaN")
+      #   Lotus::Utils::Kernel.Float(input) # => NaN
+      #
+      # @example Unchecked Exceptions
+      #   require 'date'
+      #   require 'bigdecimal'
+      #   require 'lotus/utils/kernel'
+      #
+      #   # Missing #to_f
+      #   input = OpenStruct.new(color: 'purple')
+      #   Lotus::Utils::Kernel.Float(input) # => TypeError
+      #
+      #   # When true
+      #   input = true
+      #   Lotus::Utils::Kernel.Float(input) # => TypeError
+      #
+      #   # When false
+      #   input = false
+      #   Lotus::Utils::Kernel.Float(input) # => TypeError
+      #
+      #   # When Date
+      #   input = Date.today
+      #   Lotus::Utils::Kernel.Float(input) # => TypeError
+      #
+      #   # When DateTime
+      #   input = DateTime.now
+      #   Lotus::Utils::Kernel.Float(input) # => TypeError
+      #
+      #   # Missing #nil?
+      #   input = BasicObject.new
+      #   Lotus::Utils::Kernel.Float(input) # => NoMethodError
+      #
+      #   # big rational
+      #   input = Rational(-8) ** Rational(1, 3)
+      #   Lotus::Utils::Kernel.Float(input) # => RangeError
+      #
+      #   # big complex represented as a string
+      #   input = Complex(2, 3)
+      #   Lotus::Utils::Kernel.Float(input) # => RangeError
+      def self.Float(arg)
+        super(arg) unless arg.nil?
+      rescue ArgumentError
+        arg.to_f
+      end
+
       # Coerces the argument to be a string.
       #
       # It's similar to Ruby's Kernel.String, but it's less "whiny".
