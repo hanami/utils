@@ -544,6 +544,7 @@ module Lotus
       # @return [Date,nil] the result of the coercion
       #
       # @raise [NoMethodError] if the argument doesn't implement #respond_to? or #to_s
+      # @raise [ArgumentError] if the argument can't be coerced
       #
       # @since 0.1.1
       #
@@ -590,6 +591,63 @@ module Lotus
           arg.to_date
         else
           Date.parse(arg.to_s)
+        end unless arg.nil?
+      end
+
+      # Coerces the argument to be a DateTime.
+      #
+      # @param arg [Object] the argument
+      #
+      # @return [DateTime,nil] the result of the coercion
+      #
+      # @raise [NoMethodError] if the argument doesn't implement #respond_to? or #to_s
+      # @raise [ArgumentError] if the argument can't be coerced
+      #
+      # @since 0.1.1
+      #
+      # @example Basic Usage
+      #   require 'lotus/utils/kernel'
+      #
+      #   Lotus::Utils::Kernel.DateTime(nil)                # => nil
+      #
+      #   Lotus::Utils::Kernel.DateTime(DateTime.now)
+      #     # => #<DateTime: 2014-04-18T09:33:49+02:00 ((2456766j,27229s,690849000n),+7200s,2299161j)>
+      #
+      #   Lotus::Utils::Kernel.DateTime(Date.today)
+      #     # => #<DateTime: 2014-04-18T00:00:00+00:00 ((2456766j,0s,0n),+0s,2299161j)>
+      #
+      #   Lotus::Utils::Kernel.Date(Time.now)
+      #     # => #<DateTime: 2014-04-18T09:34:49+02:00 ((2456766j,27289s,832907000n),+7200s,2299161j)>
+      #
+      #   Lotus::Utils::Kernel.DateTime('2014-04-18')
+      #     # => #<DateTime: 2014-04-18T00:00:00+00:00 ((2456766j,0s,0n),+0s,2299161j)>
+      #
+      #   Lotus::Utils::Kernel.DateTime('2014-04-18 09:35:42')
+      #     # => #<DateTime: 2014-04-18T09:35:42+00:00 ((2456766j,34542s,0n),+0s,2299161j)>
+      #
+      # @example DateTime Interface
+      #   require 'lotus/utils/kernel'
+      #
+      #   class NewYearEve
+      #     def to_datetime
+      #       DateTime.parse('Jan, 1')
+      #     end
+      #   end
+      #
+      #   Lotus::Utils::Kernel.Date(NewYearEve.new)
+      #     # => #<DateTime: 2014-01-01T00:00:00+00:00 ((2456659j,0s,0n),+0s,2299161j)>
+      #
+      # @example Unchecked Exceptions
+      #   require 'lotus/utils/kernel'
+      #
+      #   # Missing #nil?
+      #   input = BasicObject.new
+      #   Lotus::Utils::Kernel.DateTime(input) # => NoMethodError
+      def self.DateTime(arg)
+        if arg.respond_to?(:to_datetime)
+          arg.to_datetime
+        else
+          DateTime.parse(arg.to_s)
         end unless arg.nil?
       end
 

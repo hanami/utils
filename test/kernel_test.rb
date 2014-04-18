@@ -1451,4 +1451,154 @@ describe Lotus::Utils::Kernel do
       end
     end
   end
+
+  describe '.DateTime' do
+    before do
+      class NewYearEve
+        def to_datetime
+          DateTime.parse('Jan, 1')
+        end
+      end
+
+      BaseObject = Class.new(BasicObject) do
+        def nil?
+          false
+        end
+      end
+    end
+
+    after do
+      Object.send(:remove_const, :NewYearEve)
+      Object.send(:remove_const, :BaseObject)
+    end
+
+    describe 'successful operations' do
+      before do
+        @result = Lotus::Utils::Kernel.DateTime(input)
+      end
+
+      describe 'when nil is given' do
+        let(:input) { nil }
+
+        it 'returns nil' do
+          @result.must_be_nil
+        end
+      end
+
+      describe 'when a datetime is given' do
+        let(:input) { DateTime.now }
+
+        it 'returns the input' do
+          @result.must_equal input
+        end
+      end
+
+      describe 'when a date is given' do
+        let(:input) { Date.today }
+
+        it 'returns a datetime' do
+          @result.must_equal DateTime.parse(Date.today.to_s)
+        end
+      end
+
+      describe 'when a string that represents a date is given' do
+        let(:input) { '2014-04-17' }
+
+        it 'returns a datetime' do
+          @result.must_equal DateTime.parse(input)
+        end
+      end
+
+      describe 'when a string that represents a timestamp is given' do
+        let(:input) { '2014-04-17 22:51:48' }
+
+        it 'returns a datetime' do
+          @result.must_equal DateTime.parse(input)
+        end
+      end
+
+      describe 'when a time is given' do
+        let(:input) { Time.now }
+
+        it 'returns a datetime' do
+          @result.must_equal input.to_datetime
+        end
+      end
+
+      describe 'when an object that implements #to_datetime is given' do
+        let(:input) { NewYearEve.new }
+
+        it 'returns a datetime' do
+          @result.must_equal DateTime.parse('Jan 1')
+        end
+      end
+
+      describe "when a string that represent a hour is given" do
+        let(:input) { '23:12' }
+
+        it 'returns a datetime' do
+          @result.must_equal DateTime.parse(input)
+        end
+      end
+
+      describe 'when a float is given' do
+        let(:input) { 2332.903007 }
+
+        it 'raises error' do
+          @result.must_equal DateTime.parse(input.to_s)
+        end
+      end
+
+    end
+
+    describe 'failure operations' do
+      describe 'when true is given' do
+        let(:input) { true }
+
+        it 'raises error' do
+          -> { Lotus::Utils::Kernel.DateTime(input) }.must_raise ArgumentError
+        end
+      end
+
+      describe 'when false is given' do
+        let(:input) { false }
+
+        it 'raises error' do
+          -> { Lotus::Utils::Kernel.DateTime(input) }.must_raise ArgumentError
+        end
+      end
+
+      describe 'when a fixnum is given' do
+        let(:input) { 2 }
+
+        it 'raises error' do
+          -> { Lotus::Utils::Kernel.DateTime(input) }.must_raise ArgumentError
+        end
+      end
+
+      describe "when a string that doesn't represent a date is given" do
+        let(:input) { 'crab' }
+
+        it 'raises error' do
+          -> { Lotus::Utils::Kernel.DateTime(input) }.must_raise ArgumentError
+        end
+      end
+
+      describe "when an object that doesn't implement #respond_to?" do
+        let(:input) { BasicObject.new }
+
+        it 'raises error' do
+          -> { Lotus::Utils::Kernel.DateTime(input) }.must_raise NoMethodError
+        end
+      end
+
+      describe "when an object that doesn't implement #nil?" do
+        let(:input) { BaseObject.new }
+
+        it 'raises error' do
+          -> { Lotus::Utils::Kernel.DateTime(input) }.must_raise NoMethodError
+        end
+      end
+    end
+  end
 end
