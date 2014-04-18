@@ -1545,7 +1545,15 @@ describe Lotus::Utils::Kernel do
         let(:input) { 2332.903007 }
 
         it 'raises error' do
-          @result.must_equal DateTime.parse(input.to_s)
+          @result.must_equal Time.at(input).to_datetime
+        end
+      end
+
+      describe 'when a fixnum is given' do
+        let(:input) { 34322 }
+
+        it 'raises error' do
+          @result.must_equal Time.at(input).to_datetime
         end
       end
     end
@@ -1561,14 +1569,6 @@ describe Lotus::Utils::Kernel do
 
       describe 'when false is given' do
         let(:input) { false }
-
-        it 'raises error' do
-          -> { Lotus::Utils::Kernel.DateTime(input) }.must_raise ArgumentError
-        end
-      end
-
-      describe 'when a fixnum is given' do
-        let(:input) { 2 }
 
         it 'raises error' do
           -> { Lotus::Utils::Kernel.DateTime(input) }.must_raise ArgumentError

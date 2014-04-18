@@ -611,6 +611,9 @@ module Lotus
       #
       #   Lotus::Utils::Kernel.DateTime(nil)                # => nil
       #
+      #   Lotus::Utils::Kernel.DateTime(3483943)
+      #     # => Time.at(3483943).to_datetime #<DateTime: 1970-02-10T08:45:43+01:00 ((2440628j,27943s,0n),+3600s,2299161j)>
+      #
       #   Lotus::Utils::Kernel.DateTime(DateTime.now)
       #     # => #<DateTime: 2014-04-18T09:33:49+02:00 ((2456766j,27229s,690849000n),+7200s,2299161j)>
       #
@@ -645,11 +648,13 @@ module Lotus
       #   input = BasicObject.new
       #   Lotus::Utils::Kernel.DateTime(input) # => NoMethodError
       def self.DateTime(arg)
-        if arg.respond_to?(:to_datetime)
-          arg.to_datetime
+        case arg
+        when ->(a) { a.respond_to?(:to_datetime) } then arg.to_datetime
+        when Numeric then DateTime(Time.at(arg))
+        when NilClass then nil
         else
           DateTime.parse(arg.to_s)
-        end unless arg.nil?
+        end
       end
 
       # Coerces the argument to be a Time.
