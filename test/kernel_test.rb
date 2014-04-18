@@ -1548,7 +1548,6 @@ describe Lotus::Utils::Kernel do
           @result.must_equal DateTime.parse(input.to_s)
         end
       end
-
     end
 
     describe 'failure operations' do
@@ -1597,6 +1596,155 @@ describe Lotus::Utils::Kernel do
 
         it 'raises error' do
           -> { Lotus::Utils::Kernel.DateTime(input) }.must_raise NoMethodError
+        end
+      end
+    end
+  end
+
+  describe '.Time' do
+    before do
+      class Epoch
+        def to_time
+          Time.at(0)
+        end
+      end
+
+      BaseObject = Class.new(BasicObject) do
+        def nil?
+          false
+        end
+      end
+    end
+
+    after do
+      Object.send(:remove_const, :Epoch)
+      Object.send(:remove_const, :BaseObject)
+    end
+
+    describe 'successful operations' do
+      before do
+        @result = Lotus::Utils::Kernel.Time(input)
+      end
+
+      describe 'when nil is given' do
+        let(:input) { nil }
+
+        it 'returns nil' do
+          @result.must_be_nil
+        end
+      end
+
+      describe 'when a time is given' do
+        let(:input) { Time.now }
+
+        it 'returns the input' do
+          @result.must_equal input
+        end
+      end
+
+      describe 'when a datetime is given' do
+        let(:input) { DateTime.now }
+
+        it 'returns time' do
+          @result.must_equal input.to_time
+        end
+      end
+
+      describe 'when a date is given' do
+        let(:input) { Date.today }
+
+        it 'returns time' do
+          @result.must_equal input.to_time
+        end
+      end
+
+      describe 'when a string that represents a date is given' do
+        let(:input) { '2014-04-18' }
+
+        it 'returns time' do
+          @result.must_equal Time.parse(input)
+        end
+      end
+
+      describe 'when a string that represents a timestamp is given' do
+        let(:input) { '2014-04-18 15:45:12' }
+
+        it 'returns time' do
+          @result.must_equal Time.parse(input)
+        end
+      end
+
+      describe 'when an object that implements #to_time is given' do
+        let(:input) { Epoch.new }
+
+        it 'returns time' do
+          @result.must_equal Time.at(0)
+        end
+      end
+
+      describe 'when a string that represent a hour is given' do
+        let(:input) { '15:47' }
+
+        it 'returns a time' do
+          @result.must_equal Time.parse(input)
+        end
+      end
+
+      describe 'when a fixnum is given' do
+        let(:input) { 38922 }
+
+        it 'returns a time' do
+          @result.must_equal Time.at(input)
+        end
+      end
+
+      describe 'when a float is given' do
+        let(:input) { 1332.9423843 }
+
+        it 'returns a time' do
+          @result.must_equal Time.at(input)
+        end
+      end
+    end
+
+    describe 'failure operations' do
+      describe 'when true is given' do
+        let(:input) { true }
+
+        it 'raises error' do
+          -> { Lotus::Utils::Kernel.Time(input) }.must_raise ArgumentError
+        end
+      end
+
+      describe 'when false is given' do
+        let(:input) { false }
+
+        it 'raises error' do
+          -> { Lotus::Utils::Kernel.Time(input) }.must_raise ArgumentError
+        end
+      end
+
+      describe "when a string that doesn't represent a date is given" do
+        let(:input) { 'boat' }
+
+        it 'raises error' do
+          -> { Lotus::Utils::Kernel.Time(input) }.must_raise ArgumentError
+        end
+      end
+
+      describe "when an object that doesn't implement #respond_to?" do
+        let(:input) { BasicObject.new }
+
+        it 'raises error' do
+          -> { Lotus::Utils::Kernel.Time(input) }.must_raise NoMethodError
+        end
+      end
+
+      describe "when an object that doesn't implement #nil?" do
+        let(:input) { BaseObject.new }
+
+        it 'raises error' do
+          -> { Lotus::Utils::Kernel.Time(input) }.must_raise NoMethodError
         end
       end
     end

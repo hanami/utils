@@ -1,5 +1,6 @@
 require 'set'
 require 'date'
+require 'time'
 
 module Lotus
   module Utils
@@ -649,6 +650,65 @@ module Lotus
         else
           DateTime.parse(arg.to_s)
         end unless arg.nil?
+      end
+
+      # Coerces the argument to be a Time.
+      #
+      # @param arg [Object] the argument
+      #
+      # @return [Time,nil] the result of the coercion
+      #
+      # @raise [NoMethodError] if the argument doesn't implement #respond_to? or #to_s
+      # @raise [ArgumentError] if the argument can't be coerced
+      #
+      # @since 0.1.1
+      #
+      # @example Basic Usage
+      #   require 'lotus/utils/kernel'
+      #
+      #   Lotus::Utils::Kernel.Time(nil)                # => nil
+      #
+      #   Lotus::Utils::Kernel.Time(Time.now)
+      #     # => 2014-04-18 15:56:39 +0200
+      #
+      #   Lotus::Utils::Kernel.Time(DateTime.now)
+      #     # => 2014-04-18 15:56:39 +0200
+      #
+      #   Lotus::Utils::Kernel.Time(Date.today)
+      #     # => 2014-04-18 00:00:00 +0200
+      #
+      #   Lotus::Utils::Kernel.Time('2014-04-18')
+      #     # => 2014-04-18 00:00:00 +0200
+      #
+      #   Lotus::Utils::Kernel.Time('2014-04-18 15:58:02')
+      #     # => 2014-04-18 15:58:02 +0200
+      #
+      # @example Time Interface
+      #   require 'lotus/utils/kernel'
+      #
+      #   class Epoch
+      #     def to_time
+      #       Time.at(0)
+      #     end
+      #   end
+      #
+      #   Lotus::Utils::Kernel.Time(Epoch.new)
+      #     # => 1970-01-01 01:00:00 +0100
+      #
+      # @example Unchecked Exceptions
+      #   require 'lotus/utils/kernel'
+      #
+      #   # Missing #nil?
+      #   input = BasicObject.new
+      #   Lotus::Utils::Kernel.Time(input) # => NoMethodError
+      def self.Time(arg)
+        case arg
+        when ->(a) { a.respond_to?(:to_time) } then arg.to_time
+        when Numeric then Time.at(arg)
+        when NilClass then nil
+        else
+          Time.parse(arg.to_s)
+        end
       end
 
       # Coerces the argument to be a boolean.
