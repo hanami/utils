@@ -4,12 +4,12 @@ Ruby core extentions and class utilities for [Lotus](http://lotusrb.org)
 
 ## Status
 
-[![Gem Version](https://badge.fury.io/rb/lotus-utils.png)](http://badge.fury.io/rb/lotus-utils)
-[![Build Status](https://secure.travis-ci.org/lotus/utils.png?branch=master)](http://travis-ci.org/lotus/utils?branch=master)
-[![Test Coverage](https://coveralls.io/repos/lotus/utils/badge.png?branch=master)](https://coveralls.io/r/lotus/utils)
-[![Code quality](https://codeclimate.com/github/lotus/utils.png)](https://codeclimate.com/github/lotus/utils)
-[![Dependencies](https://gemnasium.com/lotus/utils.png)](https://gemnasium.com/lotus/utils)
-[![Inline docs](http://inch-pages.github.io/github/lotus/utils.png)](http://inch-pages.github.io/github/lotus/utils)
+[![Gem Version](http://img.shields.io/gem/v/lotus-utils.svg)](https://badge.fury.io/rb/lotus-utils)
+[![Build Status](http://img.shields.io/travis/lotus/utils/master.svg)](https://travis-ci.org/lotus/utils?branch=master)
+[![Coverage](http://img.shields.io/coveralls/lotus/utils/master.svg)](https://coveralls.io/r/lotus/utils)
+[![Code Climate](http://img.shields.io/codeclimate/github/lotus/utils.svg)](https://codeclimate.com/github/lotus/utils)
+[![Dependencies](http://img.shields.io/gemnasium/lotus/utils.svg)](https://gemnasium.com/lotus/utils)
+[![Inline Docs](http://inch-pages.github.io/github/lotus/utils.svg)](http://inch-pages.github.io/github/lotus/utils)
 
 ## Contact
 
