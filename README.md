@@ -10,7 +10,6 @@ Ruby core extentions and class utilities for [Lotus](http://lotusrb.org)
 [![Code quality](https://codeclimate.com/github/lotus/utils.png)](https://codeclimate.com/github/lotus/utils)
 [![Dependencies](https://gemnasium.com/lotus/utils.png)](https://gemnasium.com/lotus/utils)
 [![Inline docs](http://inch-pages.github.io/github/lotus/utils.png)](http://inch-pages.github.io/github/lotus/utils)
-[![Trending](https://d2weczhvl823v0.cloudfront.net/lotus/utils/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
 
 ## Contact
 
@@ -18,7 +17,8 @@ Ruby core extentions and class utilities for [Lotus](http://lotusrb.org)
 * Mailing List: http://lotusrb.org/mailing-list
 * API Doc: http://rdoc.info/gems/lotus-utils
 * Bugs/Issues: https://github.com/lotus/utils/issues
-* Support: http://stackoverflow.com/questions/tagged/lotusrb
+* Support: http://stackoverflow.com/questions/tagged/lotus-ruby
+* Chat: https://gitter.im/lotus/chat
 
 ## Rubies
 
@@ -52,7 +52,7 @@ __Lotus::Utils__ uses [Semantic Versioning 2.0.0](http://semver.org)
 
 ## Contributing
 
-1. Fork it
+1. Fork it ( https://github.com/lotus/utils/fork )
 2. Create your feature branch (`git checkout -b my-new-feature`)
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
