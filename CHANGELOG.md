@@ -1,5 +1,5 @@
 ## v0.1.1
-### Apr 20, 2014
+### Apr 23, 2014
 
 c125e0c _2014-04-18_ **Luca Guidi** Implemented Lotus::Utils::Kernel.Time
 
@@ -17,14 +17,6 @@ b366672 _2014-04-18_ **Luca Guidi** Implemented Lotus::Utils::Kernel.DateTime
 
 c10d561 _2014-04-11_ **Luca Guidi** Implemented Lotus::Utils::Kernel.Set
 
-ee0cc3c _2014-04-11_ **Karl Freeman** SVG badges
-
-703326c _2014-04-11_ **Karl Freeman** consistent with other Lotus repos
-
-39024bf _2014-04-11_ **Karl Freeman** specify the LICENSE as markdown for prettier Github printing
-
-68d6ecf _2014-04-11_ **Karl Freeman** ensure .gitignore is consistent across all Lotus repos.
-
 5582e72 _2014-04-11_ **Karl Freeman** add Github contributing guidelines
 
 012f266 _2014-04-11_ **Luca Guidi** Implemented Lotus::Utils::Kernel.String
@@ -32,10 +24,6 @@ ee0cc3c _2014-04-11_ **Karl Freeman** SVG badges
 e1a35e2 _2014-04-08_ **Luca Guidi** Implemented Lotus::Utils::Kernel.Integer
 
 152c856 _2014-04-08_ **Luca Guidi** Implemented Lotus::Utils::Kernel.Array
-
-6c1e3a9 _2014-04-03_ **Anthony M. Cook** Fixing a typo.
-
-3340801 _2014-02-24_ **René Föhring** Add docs badge to README
 
 ## v0.1.0
 ### Jan 23, 2014
