@@ -2,6 +2,17 @@ require 'lotus/utils/string'
 
 module Lotus
   module Utils
+
+    module_function
+
+    # See Lotus::Utils::Class.load!
+    #
+    # Provided as a convenience method to avoid referencing possibly deeply
+    # nested methods.
+    def load_class!(*args)
+      Class.load!(*args)
+    end
+
     # Class utilities
     # @since 0.1.0
     class Class
