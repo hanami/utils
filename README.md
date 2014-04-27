@@ -41,10 +41,9 @@ Or install it yourself as:
 ## Usage
 
 __Lotus::Utils__ is designed to enhance Ruby's code and stdlib.
-By default this gem doesn't load any code, require yourself what you need.
+By default this gem doesn't load any code, you must require what you need.
 
-Please read the documentation of each module, in order to understand how to use
-each feature.
+Please read the documentation of each module.
 
 ## Versioning
 
