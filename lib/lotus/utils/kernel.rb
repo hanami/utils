@@ -1,6 +1,7 @@
 require 'set'
 require 'date'
 require 'time'
+require 'pathname'
 
 module Lotus
   module Utils
@@ -765,6 +766,61 @@ module Lotus
         when ->(a) { a.respond_to?(:to_bool) } then arg.to_bool
         else
           !!arg
+        end
+      end
+
+      # Coerces the argument to be a Pathname.
+      #
+      # @param arg [#to_pathname,#to_str] the argument
+      #
+      # @return [Pathname,nil] the result of the coercion
+      #
+      # @raise [NoMethodError] if the argument doesn't implenent #respond_to?
+      # @raise [TypeError] if the argument can't be coerced
+      #
+      # @since 0.1.2
+      #
+      # @example Basic Usage
+      #   require 'lotus/utils/kernel'
+      #
+      #   Lotus::Utils::Kernel.Pathname(nil)                      # => nil
+      #   Lotus::Utils::Kernel.Pathname(Pathname.new('/path/to')) # => #<Pathname:/path/to>
+      #   Lotus::Utils::Kernel.Pathname('/path/to')               # => #<Pathname:/path/to>
+      #
+      # @example Pathname Interface
+      #   require 'lotus/utils/kernel'
+      #
+      #   class HomePath
+      #     def to_pathname
+      #       Pathname.new Dir.home
+      #     end
+      #   end
+      #
+      #   Lotus::Utils::Kernel.Pathname(HomePath.new) # => #<Pathname:/Users/luca>
+      #
+      # @example String Interface
+      #   require 'lotus/utils/kernel'
+      #
+      #   class RootPath
+      #     def to_str
+      #       '/'
+      #     end
+      #   end
+      #
+      #   Lotus::Utils::Kernel.Pathname(RootPath.new) # => #<Pathname:/>
+      #
+      # @example Unchecked Exceptions
+      #   require 'lotus/utils/kernel'
+      #
+      #   # Missing #respond_to?
+      #   input = BasicObject.new
+      #   Lotus::Utils::Kernel.Pathname(input) # => NoMethodError
+      def self.Pathname(arg)
+        case arg
+        when ->(a) { a.respond_to?(:to_pathname) } then arg.to_pathname
+        when NilClass then nil
+        else
+          super
         end
       end
     end
