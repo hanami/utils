@@ -14,6 +14,13 @@ describe Lotus::Utils::String do
     end
   end
 
+  describe '#dasherize' do
+    it 'substitutes underscores with dashes' do
+      string = Lotus::Utils::String.new('lotus_utils')
+      string.dasherize.must_equal 'lotus-utils'
+    end
+  end
+
   describe '#underscore' do
     it 'keep self untouched' do
       string = Lotus::Utils::String.new('Lotus')
