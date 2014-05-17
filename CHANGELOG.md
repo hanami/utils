@@ -1,3 +1,8 @@
+## unreleased version
+### unreleased date
+
+f0a76b2 _2014-05-18_ **Trung Lê** Implemented Lotus::Utils::String#dasherize
+
 ## v0.1.1
 ### Apr 23, 2014
 
