@@ -78,6 +78,24 @@ module Lotus
         split(NAMESPACE_SEPARATOR).last
       end
 
+      # Return the top level namespace name
+      #
+      # @return [String] the transformed string
+      #
+      # @since 0.1.2
+      #
+      # @example
+      #   require 'lotus/utils/string'
+      #
+      #   string = Lotus::Utils::String.new 'Lotus::Utils::String'
+      #   string.namespace # => 'Lotus'
+      #
+      #   string = Lotus::Utils::String.new 'String'
+      #   string.namespace # => 'String'
+      def namespace
+        split(NAMESPACE_SEPARATOR).first
+      end
+
       # It iterates thru the tokens and calls the given block.
       # A token is a substring wrapped by `()` and separated by `|`.
       #

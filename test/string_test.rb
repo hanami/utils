@@ -44,6 +44,13 @@ describe Lotus::Utils::String do
     end
   end
 
+  describe '#namespace' do
+    it 'returns the top level module name' do
+      Lotus::Utils::String.new('String').namespace.must_equal('String')
+      Lotus::Utils::String.new('Lotus::Utils::String').namespace.must_equal('Lotus')
+    end
+  end
+
   describe '#tokenize' do
     before do
       @logger = []
