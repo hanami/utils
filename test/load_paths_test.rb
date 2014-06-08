@@ -1,6 +1,16 @@
 require 'test_helper'
 require 'lotus/utils/load_paths'
 
+Lotus::Utils::LoadPaths.class_eval do
+  def empty?
+    @paths.empty?
+  end
+
+  def include?(object)
+    @paths.include?(object)
+  end
+end
+
 describe Lotus::Utils::LoadPaths do
   describe '#initialize' do
     it 'can be initialized with zero paths' do

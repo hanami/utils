@@ -4,8 +4,8 @@ module Lotus
   module Utils
     # A collection of loading paths.
     #
-    # @since 0.1.2
-    class LoadPaths < Array
+    # @since 0.2.0
+    class LoadPaths
       # Initialize a new collection for the given paths
       #
       # @param paths [String, Pathname, Array<String>, Array<Pathname>] A single
@@ -13,12 +13,12 @@ module Lotus
       #
       # @return [Lotus::Utils::LoadPaths] self
       #
-      # @since 0.1.2
+      # @since 0.2.0
       #
       # @see http://ruby-doc.org/stdlib-2.1.2/libdoc/pathname/rdoc/Pathname.html
       # @see Lotus::Utils::Kernel.Pathname
       def initialize(*paths)
-        super(Array(paths))
+        @paths = Array(paths)
       end
 
       # Iterates thru the collection and yields the given block.
@@ -31,9 +31,9 @@ module Lotus
       #
       # @raise [Errno::ENOENT] if one of the paths doesn't exist
       #
-      # @since 0.1.2
+      # @since 0.2.0
       def each(&blk)
-        Utils::Kernel.Array(self).each do |path|
+        Utils::Kernel.Array(@paths).each do |path|
           blk.call Utils::Kernel.Pathname(path).realpath
         end
       end
