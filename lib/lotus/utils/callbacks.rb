@@ -9,7 +9,16 @@ module Lotus
       #
       # @since 0.1.0
       # @private
-      class Chain < ::Array
+      class Chain
+        # Return a new chain
+        #
+        # @return [Lotus::Utils::Callbacks::Chain]
+        #
+        # @since 0.2.0
+        def initialize
+          @chain = Array.new
+        end
+
         # Adds the given callbacks to the chain
         #
         # @param callbacks [Array] one or multiple callbacks to add
@@ -40,10 +49,10 @@ module Lotus
         def add(*callbacks, &blk)
           callbacks.push blk if block_given?
           callbacks.each do |c|
-            push Factory.fabricate(c)
+            @chain.push Factory.fabricate(c)
           end
 
-          uniq!
+          @chain.uniq!
         end
 
         # Runs all the callbacks in the chain.
@@ -92,7 +101,7 @@ module Lotus
         #
         #   Those callbacks will be invoked within the context of `action`.
         def run(context, *args)
-          each do |callback|
+          @chain.each do |callback|
             callback.call(context, *args)
           end
         end

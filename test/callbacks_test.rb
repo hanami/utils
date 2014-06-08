@@ -1,6 +1,20 @@
 require 'test_helper'
 require 'lotus/utils/callbacks'
 
+Lotus::Utils::Callbacks::Chain.class_eval do
+  def size
+    @chain.size
+  end
+
+  def first
+    @chain.first
+  end
+
+  def each(&blk)
+    @chain.each(&blk)
+  end
+end
+
 class Callable
   def call
   end
@@ -83,7 +97,7 @@ describe Lotus::Utils::Callbacks::Chain do
 
     describe 'when multiple callbacks are passed' do
       before do
-        @chain.add *callbacks
+        @chain.add(*callbacks)
       end
 
       let(:callbacks) { [:upcase, Callable.new, Proc.new{}] }
