@@ -52,4 +52,66 @@ describe Lotus::Utils::LoadPaths do
       }.must_raise Errno::ENOENT
     end
   end
+
+  describe '#push' do
+    it 'adds the given path' do
+      paths = Lotus::Utils::LoadPaths.new '.'
+      paths.push '..'
+
+      paths.must_include '.'
+      paths.must_include '..'
+    end
+
+    it 'adds the given paths' do
+      paths = Lotus::Utils::LoadPaths.new '.'
+      paths.push '..', '../..'
+
+      paths.must_include '.'
+      paths.must_include '..'
+      paths.must_include '../..'
+    end
+
+    it 'returns self so multiple operations can be performed' do
+      paths = Lotus::Utils::LoadPaths.new
+
+      returning = paths.push('.')
+      returning.must_be_same_as(paths)
+
+      paths.push('..').push('../..')
+
+      paths.must_include '.'
+      paths.must_include '..'
+      paths.must_include '../..'
+    end
+  end
+
+  describe '#<< (alias of #push)' do
+    it 'adds the given path' do
+      paths = Lotus::Utils::LoadPaths.new '.'
+      paths << '..'
+
+      paths.must_include '.'
+      paths.must_include '..'
+    end
+
+    it 'adds the given paths' do
+      paths = Lotus::Utils::LoadPaths.new '.'
+      paths << ['..', '../..']
+
+      paths.must_include ['..', '../..']
+    end
+
+    it 'returns self so multiple operations can be performed' do
+      paths = Lotus::Utils::LoadPaths.new
+
+      returning = paths << '.'
+      returning.must_be_same_as(paths)
+
+      paths << '..' << '../..'
+
+      paths.must_include '.'
+      paths.must_include '..'
+      paths.must_include '../..'
+    end
+  end
 end

@@ -37,6 +37,53 @@ module Lotus
           blk.call Utils::Kernel.Pathname(path).realpath
         end
       end
+
+      # Adds the given path(s).
+      #
+      # It returns self, so that multiple operations can be performed.
+      #
+      # @param paths [String, Pathname, Array<String>, Array<Pathname>] A single
+      #   or a collection of objects that can be converted into a Pathname
+      #
+      # @return [Lotus::Utils::LoadPaths] self
+      #
+      # @since 0.2.0
+      #
+      # @see http://ruby-doc.org/stdlib-2.1.2/libdoc/pathname/rdoc/Pathname.html
+      # @see Lotus::Utils::Kernel.Pathname
+      #
+      # @example Basic usage
+      #   require 'lotus/utils/load_paths'
+      #
+      #   paths = Lotus::Utils::LoadPaths.new
+      #   paths.push '.'
+      #   paths.push '..', '../..'
+      #
+      # @example Chainable calls
+      #   require 'lotus/utils/load_paths'
+      #
+      #   paths = Lotus::Utils::LoadPaths.new
+      #   paths.push('.')
+      #        .push('..', '../..')
+      #
+      # @example Shovel alias (#<<)
+      #   require 'lotus/utils/load_paths'
+      #
+      #   paths = Lotus::Utils::LoadPaths.new
+      #   paths << '.'
+      #   paths << ['..', '../..']
+      #
+      # @example Chainable calls with shovel alias (#<<)
+      #   require 'lotus/utils/load_paths'
+      #
+      #   paths = Lotus::Utils::LoadPaths.new
+      #   paths << '.' << '../..'
+      def push(*paths)
+        @paths.push(*paths)
+        self
+      end
+
+      alias_method :<<, :push
     end
   end
 end
