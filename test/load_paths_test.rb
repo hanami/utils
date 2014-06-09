@@ -114,4 +114,40 @@ describe Lotus::Utils::LoadPaths do
       paths.must_include '../..'
     end
   end
+
+  describe '#dup' do
+    it 'returns a copy of self' do
+      paths  = Lotus::Utils::LoadPaths.new '.'
+      paths2 = paths.dup
+
+      paths  << '..'
+      paths2 << '../..'
+
+      paths.must_include '.'
+      paths.must_include '..'
+      paths.wont_include '../..'
+
+      paths.must_include  '.'
+      paths2.must_include '../..'
+      paths2.wont_include '..'
+    end
+  end
+
+  describe '#clone' do
+    it 'returns a copy of self' do
+      paths  = Lotus::Utils::LoadPaths.new '.'
+      paths2 = paths.clone
+
+      paths  << '..'
+      paths2 << '../..'
+
+      paths.must_include '.'
+      paths.must_include '..'
+      paths.wont_include '../..'
+
+      paths.must_include  '.'
+      paths2.must_include '../..'
+      paths2.wont_include '..'
+    end
+  end
 end

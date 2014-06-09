@@ -21,6 +21,33 @@ module Lotus
         @paths = Array(paths)
       end
 
+      # It specifies the policy for initialize copies of the object, when #clone
+      # or #dup are invoked.
+      #
+      # @api private
+      # @since 0.2.0
+      #
+      # @see http://ruby-doc.org/core-2.1.2/Object.html#method-i-clone
+      # @see http://ruby-doc.org/core-2.1.2/Object.html#method-i-dup
+      #
+      # @example
+      #   require 'lotus/utils/load_paths'
+      #
+      #   paths  = Lotus::Utils::LoadPaths.new '.'
+      #   paths2 = paths.dup
+      #
+      #   paths  << '..'
+      #   paths2 << '../..'
+      #
+      #   paths
+      #     # => #<Lotus::Utils::LoadPaths:0x007f84e0cad430 @paths=[".", ".."]>
+      #
+      #   paths2
+      #     # => #<Lotus::Utils::LoadPaths:0x007faedc4ad3e0 @paths=[".", "../.."]>
+      def initialize_copy(original)
+        @paths = original.instance_variable_get(:@paths).dup
+      end
+
       # Iterates thru the collection and yields the given block.
       # It skips duplications and raises an error in case one of the paths
       # doesn't exist.
