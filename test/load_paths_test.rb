@@ -150,4 +150,20 @@ describe Lotus::Utils::LoadPaths do
       paths2.wont_include '..'
     end
   end
+
+  describe '#freeze' do
+    it 'freezes the object' do
+      paths = Lotus::Utils::LoadPaths.new
+      paths.freeze
+
+      paths.must_be :frozen?
+    end
+
+    it "doesn't allow to push paths" do
+      paths = Lotus::Utils::LoadPaths.new
+      paths.freeze
+
+      -> { paths.push '.' }.must_raise RuntimeError
+    end
+  end
 end

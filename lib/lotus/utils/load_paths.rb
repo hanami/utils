@@ -74,10 +74,13 @@ module Lotus
       #
       # @return [Lotus::Utils::LoadPaths] self
       #
+      # @raise [RuntimeError] if the object was previously frozen
+      #
       # @since 0.2.0
       #
       # @see http://ruby-doc.org/stdlib-2.1.2/libdoc/pathname/rdoc/Pathname.html
       # @see Lotus::Utils::Kernel.Pathname
+      # @see Lotus::Utils::LoadPaths#freeze
       #
       # @example Basic usage
       #   require 'lotus/utils/load_paths'
@@ -111,6 +114,26 @@ module Lotus
       end
 
       alias_method :<<, :push
+
+      # It freezes the object by preventing further modifications.
+      #
+      # @since 0.2.0
+      #
+      # @see http://ruby-doc.org/core-2.1.2/Object.html#method-i-freeze
+      #
+      # @example
+      #   require 'lotus/utils/load_paths'
+      #
+      #   paths = Lotus::Utils::LoadPaths.new
+      #   paths.freeze
+      #
+      #   paths.frozen?  # => true
+      #
+      #   paths.push '.' # => RuntimeError
+      def freeze
+        super
+        @paths.freeze
+      end
     end
   end
 end
