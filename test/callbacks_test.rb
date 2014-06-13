@@ -155,6 +155,20 @@ describe Lotus::Utils::Callbacks::Chain do
       end
     end
   end
+
+  describe '#freeze' do
+    before do
+      @chain.freeze
+    end
+
+    it 'must be frozen' do
+      @chain.must_be :frozen?
+    end
+
+    it 'raises an error if try to add a callback when frozen' do
+      -> { @chain.add :authenticate! }.must_raise RuntimeError
+    end
+  end
 end
 
 describe Lotus::Utils::Callbacks::Factory do

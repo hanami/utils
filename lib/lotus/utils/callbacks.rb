@@ -26,9 +26,12 @@ module Lotus
         #
         # @return [void]
         #
+        # @raise [RuntimeError] if the object was previously frozen
+        #
         # @see #run
         # @see Lotus::Utils::Callbacks::Callback
         # @see Lotus::Utils::Callbacks::MethodCallback
+        # @see Lotus::Utils::Callbacks::Chain#freeze
         #
         # @since 0.1.0
         #
@@ -104,6 +107,26 @@ module Lotus
           @chain.each do |callback|
             callback.call(context, *args)
           end
+        end
+
+        # It freezes the object by preventing further modifications.
+        #
+        # @since 0.2.0
+        #
+        # @see http://ruby-doc.org/core-2.1.2/Object.html#method-i-freeze
+        #
+        # @example
+        #   require 'lotus/utils/callbacks'
+        #
+        #   chain = Lotus::Utils::Callbacks::Chain.new
+        #   chain.freeze
+        #
+        #   chain.frozen?  # => true
+        #
+        #   chain.add :authenticate! # => RuntimeError
+        def freeze
+          super
+          @chain.freeze
         end
       end
 
