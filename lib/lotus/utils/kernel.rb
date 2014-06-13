@@ -200,20 +200,20 @@ module Lotus
       # Coerces the argument to be an integer.
       #
       # It's similar to Ruby's Kernel.Integer, but it doesn't stop at the first
-      # error and tries to be less "whiny".
+      # error and raise an exception only when the argument can't be coerced.
       #
       # @param arg [Object] the argument
       #
-      # @return [Fixnum,nil] the result of the coercion
+      # @return [Fixnum] the result of the coercion
       #
       # @raise [TypeError] if the argument can't be coerced
-      # @raise [NoMethodError] if the argument doesn't implenent #nil?
+      # @raise [NoMethodError] if the argument doesn't implenent #respond_to?
       # @raise [TypeError,FloatDomainError,RangeError] if the argument it's too
       #   big.
       #
       # @since 0.1.1
       #
-      # @see http://www.ruby-doc.org/core-2.1.1/Kernel.html#method-i-Integer
+      # @see http://www.ruby-doc.org/core-2.1.2/Kernel.html#method-i-Integer
       #
       # @example Basic Usage
       #   require 'bigdecimal'
@@ -249,7 +249,7 @@ module Lotus
       #
       #   # nil
       #   Kernel.Integer(nil)               # => TypeError
-      #   Lotus::Utils::Kernel.Integer(nil) # => nil
+      #   Lotus::Utils::Kernel.Integer(nil) # => 0
       #
       #   # float represented as a string
       #   Kernel.Integer("23.4")               # => ArgumentError
@@ -288,10 +288,6 @@ module Lotus
       #   input = DateTime.now
       #   Lotus::Utils::Kernel.Integer(input) # => TypeError
       #
-      #   # Missing #nil?
-      #   input = BasicObject.new
-      #   Lotus::Utils::Kernel.Integer(input) # => NoMethodError
-      #
       #   # bigdecimal infinity
       #   input = BigDecimal.new("Infinity")
       #   Lotus::Utils::Kernel.Integer(input) # => FloatDomainError
@@ -308,9 +304,13 @@ module Lotus
       #   input = Complex(2, 3)
       #   Lotus::Utils::Kernel.Integer(input) # => RangeError
       def self.Integer(arg)
-        super(arg) unless arg.nil?
-      rescue ArgumentError
-        arg.to_i
+        super(arg)
+      rescue ArgumentError, TypeError
+        if arg.respond_to?(:to_i)
+          arg.to_i
+        else
+          raise
+        end
       end
 
       # Coerces the argument to be a float.

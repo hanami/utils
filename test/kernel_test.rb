@@ -428,8 +428,8 @@ describe Lotus::Utils::Kernel do
       describe 'when nil is given' do
         let(:input) { nil }
 
-        it 'returns nil' do
-          @result.must_equal nil
+        it 'returns 0' do
+          @result.must_equal 0
         end
       end
 
@@ -579,7 +579,7 @@ describe Lotus::Utils::Kernel do
         end
       end
 
-      describe "when a an object that doesn't implement #nil? " do
+      describe "when a an object that doesn't implement #respond_to? " do
         let(:input) { BasicObject.new }
 
         it 'raises error' do
