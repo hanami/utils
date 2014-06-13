@@ -529,7 +529,7 @@ module Lotus
       #
       # @param arg [Object] the argument
       #
-      # @return [Date,nil] the result of the coercion
+      # @return [Date] the result of the coercion
       #
       # @raise [NoMethodError] if the argument doesn't implement #respond_to? or #to_s
       # @raise [ArgumentError] if the argument can't be coerced
@@ -538,8 +538,6 @@ module Lotus
       #
       # @example Basic Usage
       #   require 'lotus/utils/kernel'
-      #
-      #   Lotus::Utils::Kernel.Date(nil)                      # => nil
       #
       #   Lotus::Utils::Kernel.Date(Date.today)
       #     # => #<Date: 2014-04-17 ((2456765j,0s,0n),+0s,2299161j)>
@@ -571,7 +569,15 @@ module Lotus
       # @example Unchecked Exceptions
       #   require 'lotus/utils/kernel'
       #
-      #   # Missing #nil?
+      #   # nil
+      #   input = nil
+      #   Lotus::Utils::Kernel.Date(input) # => NoMethodError
+      #
+      #   # Missing #respond_to?
+      #   input = BasicObject.new
+      #   Lotus::Utils::Kernel.Date(input) # => NoMethodError
+      #
+      #   # Missing #to_s?
       #   input = BasicObject.new
       #   Lotus::Utils::Kernel.Date(input) # => NoMethodError
       def self.Date(arg)
@@ -579,7 +585,7 @@ module Lotus
           arg.to_date
         else
           Date.parse(arg.to_s)
-        end unless arg.nil?
+        end
       end
 
       # Coerces the argument to be a DateTime.

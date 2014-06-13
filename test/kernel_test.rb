@@ -1272,7 +1272,7 @@ describe Lotus::Utils::Kernel do
       end
 
       BaseObject = Class.new(BasicObject) do
-        def nil?
+        def respond_to?(method_name)
           false
         end
       end
@@ -1286,14 +1286,6 @@ describe Lotus::Utils::Kernel do
     describe 'successful operations' do
       before do
         @result = Lotus::Utils::Kernel.Date(input)
-      end
-
-      describe 'when nil is given' do
-        let(:input) { nil }
-
-        it 'returns nil' do
-          @result.must_be_nil
-        end
       end
 
       describe 'when a date is given' do
@@ -1346,6 +1338,14 @@ describe Lotus::Utils::Kernel do
     end
 
     describe 'failure operations' do
+      describe 'when nil is given' do
+        let(:input) { nil }
+
+        it 'raises error' do
+          -> { Lotus::Utils::Kernel.Date(input) }.must_raise ArgumentError
+        end
+      end
+
       describe 'when true is given' do
         let(:input) { true }
 
@@ -1402,7 +1402,7 @@ describe Lotus::Utils::Kernel do
         end
       end
 
-      describe "when an object that doesn't implement #nil?" do
+      describe "when an object that doesn't implement #to_s?" do
         let(:input) { BaseObject.new }
 
         it 'raises error' do
