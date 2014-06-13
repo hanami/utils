@@ -592,7 +592,7 @@ module Lotus
       #
       # @param arg [Object] the argument
       #
-      # @return [DateTime,nil] the result of the coercion
+      # @return [DateTime] the result of the coercion
       #
       # @raise [NoMethodError] if the argument doesn't implement #respond_to? or #to_s
       # @raise [ArgumentError] if the argument can't be coerced
@@ -601,8 +601,6 @@ module Lotus
       #
       # @example Basic Usage
       #   require 'lotus/utils/kernel'
-      #
-      #   Lotus::Utils::Kernel.DateTime(nil)                # => nil
       #
       #   Lotus::Utils::Kernel.DateTime(3483943)
       #     # => Time.at(3483943).to_datetime #<DateTime: 1970-02-10T08:45:43+01:00 ((2440628j,27943s,0n),+3600s,2299161j)>
@@ -637,14 +635,21 @@ module Lotus
       # @example Unchecked Exceptions
       #   require 'lotus/utils/kernel'
       #
-      #   # Missing #nil?
+      #   # When nil
+      #   input = nil
+      #   Lotus::Utils::Kernel.DateTime(input) # => NoMethodError
+      #
+      #   # Missing #respond_to?
+      #   input = BasicObject.new
+      #   Lotus::Utils::Kernel.DateTime(input) # => NoMethodError
+      #
+      #   # Missing #to_s?
       #   input = BasicObject.new
       #   Lotus::Utils::Kernel.DateTime(input) # => NoMethodError
       def self.DateTime(arg)
         case arg
         when ->(a) { a.respond_to?(:to_datetime) } then arg.to_datetime
         when Numeric then DateTime(Time.at(arg))
-        when NilClass then nil
         else
           DateTime.parse(arg.to_s)
         end
