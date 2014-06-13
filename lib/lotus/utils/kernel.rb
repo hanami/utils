@@ -707,7 +707,7 @@ module Lotus
       #
       # @param arg [Object] the argument
       #
-      # @return [true,false,nil] the result of the coercion
+      # @return [true,false] the result of the coercion
       #
       # @raise [NoMethodError] if the argument doesn't implenent #respond_to?
       #
@@ -716,7 +716,7 @@ module Lotus
       # @example Basic Usage
       #   require 'lotus/utils/kernel'
       #
-      #   Lotus::Utils::Kernel.Boolean(nil)                      # => nil
+      #   Lotus::Utils::Kernel.Boolean(nil)                      # => false
       #   Lotus::Utils::Kernel.Boolean(0)                        # => false
       #   Lotus::Utils::Kernel.Boolean(1)                        # => true
       #   Lotus::Utils::Kernel.Boolean('0')                      # => false
@@ -748,7 +748,6 @@ module Lotus
         case arg
         when Numeric     then arg > 0 && arg <= 1
         when String, '0' then Boolean(arg.to_i)
-        when NilClass    then nil
         when ->(a) { a.respond_to?(:to_bool) } then arg.to_bool
         else
           !!arg

@@ -1166,8 +1166,8 @@ describe Lotus::Utils::Kernel do
       describe 'when nil is given' do
         let(:input) { nil }
 
-        it 'returns nil' do
-          @result.must_be_nil
+        it 'returns false' do
+          @result.must_equal false
         end
       end
 
