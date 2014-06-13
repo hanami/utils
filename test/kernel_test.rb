@@ -1733,14 +1733,6 @@ describe Lotus::Utils::Kernel do
         Object.send(:remove_const, :HomePath)
       end
 
-      describe 'when nil is given' do
-        let(:input) { nil }
-
-        it 'returns nil' do
-          @result.must_be_nil
-        end
-      end
-
       describe 'when a pathname is given' do
         let(:input) { Pathname.new('.') }
 
@@ -1775,6 +1767,14 @@ describe Lotus::Utils::Kernel do
     end
 
     describe 'failure operations' do
+      describe "when nil is given" do
+        let(:input) { nil }
+
+        it 'raises error' do
+          -> { Lotus::Utils::Kernel.Pathname(input) }.must_raise TypeError
+        end
+      end
+
       describe "when true is given" do
         let(:input) { true }
 
