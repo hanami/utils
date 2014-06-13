@@ -866,13 +866,7 @@ describe Lotus::Utils::Kernel do
     before do
       Book = Struct.new(:title)
 
-      BaseObject = Class.new(BasicObject) do
-        def nil?
-          false
-        end
-      end
-
-      SimpleObject = Class.new(BaseObject) do
+      SimpleObject = Class.new(BasicObject) do
         def to_s
           'simple object'
         end
@@ -887,7 +881,6 @@ describe Lotus::Utils::Kernel do
 
     after do
       Object.send(:remove_const, :Book)
-      Object.send(:remove_const, :BaseObject)
       Object.send(:remove_const, :SimpleObject)
       Object.send(:remove_const, :Isbn)
     end
@@ -900,8 +893,8 @@ describe Lotus::Utils::Kernel do
       describe 'when nil is given' do
         let(:input) { nil }
 
-        it 'returns nil' do
-          @result.must_be_nil
+        it 'returns empty string' do
+          @result.must_equal ''
         end
       end
 
@@ -1139,16 +1132,8 @@ describe Lotus::Utils::Kernel do
     end
 
     describe 'failure operations' do
-      describe "when a an object that doesn't implement #nil?" do
-        let(:input) { BasicObject.new }
-
-        it 'raises error' do
-          -> { Lotus::Utils::Kernel.String(input) }.must_raise(NoMethodError)
-        end
-      end
-
       describe "when a an object that doesn't implement a string interface" do
-        let(:input) { BaseObject.new }
+        let(:input) { BasicObject.new }
 
         it 'raises error' do
           -> { Lotus::Utils::Kernel.String(input) }.must_raise(TypeError)

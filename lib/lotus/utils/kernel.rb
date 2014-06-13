@@ -436,18 +436,18 @@ module Lotus
 
       # Coerces the argument to be a string.
       #
-      # It's similar to Ruby's Kernel.String, but it's less "whiny".
+      # Identical behavior of Ruby's Kernel.Array, still here because we want
+      # to keep the interface consistent
       #
       # @param arg [Object] the argument
       #
-      # @return [String,nil] the result of the coercion
+      # @return [String] the result of the coercion
       #
       # @raise [TypeError] if the argument can't be coerced
-      # @raise [NoMethodError] if the argument doesn't implement #nil?
       #
       # @since 0.1.1
       #
-      # @see http://www.ruby-doc.org/core-2.1.1/Kernel.html#method-i-String
+      # @see http://www.ruby-doc.org/core-2.1.2/Kernel.html#method-i-String
       #
       # @example Basic Usage
       #   require 'date'
@@ -491,10 +491,6 @@ module Lotus
       #   require 'lotus/utils/kernel'
       #
       #   SimpleObject = Class.new(BasicObject) do
-      #     def nil?
-      #       false
-      #     end
-      #
       #     def to_s
       #       'simple object'
       #     end
@@ -512,31 +508,21 @@ module Lotus
       #   Lotus::Utils::Kernel.String(simple) # => "simple object"
       #   Lotus::Utils::Kernel.String(isbn)   # => "123"
       #
-      # @example Error Handling
+      # @example Comparison with Ruby
       #   require 'lotus/utils/kernel'
       #
       #   # nil
       #   Kernel.String(nil)               # => ""
-      #   Lotus::Utils::Kernel.String(nil) # => nil
+      #   Lotus::Utils::Kernel.String(nil) # => ""
       #
       # @example Unchecked Exceptions
       #   require 'lotus/utils/kernel'
-      #
-      #   BaseObject = Class.new(BasicObject) do
-      #     def nil?
-      #       false
-      #     end
-      #   end
-      #
-      #   # Missing #nil?
-      #   input = BasicObject.new
-      #   Lotus::Utils::Kernel.String(input)  # => NoMethodError
       #
       #   # Missing #to_s or #to_str
       #   input = BaseObject.new
       #   Lotus::Utils::Kernel.Integer(input) # => TypeError
       def self.String(arg)
-        super(arg) unless arg.nil?
+        super(arg)
       end
 
       # Coerces the argument to be a Date.
