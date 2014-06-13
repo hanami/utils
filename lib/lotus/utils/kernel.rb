@@ -21,20 +21,18 @@ module Lotus
       #
       # @return [Array] the result of the coercion
       #
-      # @raise [NoMethodError] if arg doesn't implement #nil?
-      #
       # @since 0.1.1
       #
-      # @see http://www.ruby-doc.org/core-2.1.1/Kernel.html#method-i-Array
+      # @see http://www.ruby-doc.org/core-2.1.2/Kernel.html#method-i-Array
       #
-      # @see http://www.ruby-doc.org/core-2.1.1/Array.html#method-i-flatten
-      # @see http://www.ruby-doc.org/core-2.1.1/Array.html#method-i-compact
-      # @see http://www.ruby-doc.org/core-2.1.1/Array.html#method-i-uniq
+      # @see http://www.ruby-doc.org/core-2.1.2/Array.html#method-i-flatten
+      # @see http://www.ruby-doc.org/core-2.1.2/Array.html#method-i-compact
+      # @see http://www.ruby-doc.org/core-2.1.2/Array.html#method-i-uniq
       #
       # @example Basic Usage
       #   require 'lotus/utils/kernel'
       #
-      #   Lotus::Utils::Kernel.Array(nil)              # => nil
+      #   Lotus::Utils::Kernel.Array(nil)              # => []
       #   Lotus::Utils::Kernel.Array(true)             # => [true]
       #   Lotus::Utils::Kernel.Array(false)            # => [false]
       #   Lotus::Utils::Kernel.Array(1)                # => [1]
@@ -64,7 +62,7 @@ module Lotus
       #   response = Response.new(200, {}, 'hello')
       #   Lotus::Utils::Kernel.Array(response)         # => [200, {}, "hello"]
       def self.Array(arg)
-        super(arg).flatten.compact.uniq unless arg.nil?
+        super(arg).flatten.compact.uniq
       end
 
       # Coerces the argument to be a set.

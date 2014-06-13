@@ -1,4 +1,5 @@
 require 'test_helper'
+require 'ostruct'
 require 'bigdecimal'
 require 'lotus/utils/kernel'
 
@@ -30,7 +31,7 @@ describe Lotus::Utils::Kernel do
         let(:input) { nil }
 
         it 'returns an empty array' do
-          @result.must_equal nil
+          @result.must_equal []
         end
       end
 
@@ -111,16 +112,6 @@ describe Lotus::Utils::Kernel do
 
         it 'returns an array' do
           @result.must_equal [200, {}, 'hello']
-        end
-      end
-    end
-
-    describe 'failure operations' do
-      describe "when a object that doesn't implements #nil? is given" do
-        let(:input) { BasicObject.new }
-
-        it 'raises an error' do
-          -> { Lotus::Utils::Kernel.Array(input) }.must_raise NoMethodError
         end
       end
     end
