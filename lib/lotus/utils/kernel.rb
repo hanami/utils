@@ -71,7 +71,7 @@ module Lotus
       #
       # @return [Set] the result of the coercion
       #
-      # @raise [NoMethodError] if arg doesn't implement #respond_to?
+      # @raise [TypeError] if arg doesn't implement #respond_to?
       #
       # @since 0.1.1
       #
@@ -111,13 +111,15 @@ module Lotus
       # @example Unchecked Exceptions
       #   require 'lotus/utils/kernel'
       #
-      #   Lotus::Utils::Kernel.Set(BasicObject.new) # => NoMethodError
+      #   Lotus::Utils::Kernel.Set(BasicObject.new) # => TypeError
       def self.Set(arg)
         if arg.respond_to?(:to_set)
           arg.to_set
         else
           Set.new(::Kernel.Array(arg))
         end
+      rescue NoMethodError
+        raise TypeError.new("can't convert into Set")
       end
 
       # Coerces the argument to be an hash.
@@ -126,7 +128,6 @@ module Lotus
       #
       # @return [Hash] the result of the coercion
       #
-      # @raise [NoMethodError] if arg doesn't implement #respond_to?
       # @raise [TypeError] if arg can't be coerced
       #
       # @since 0.1.1
@@ -174,7 +175,7 @@ module Lotus
       #   require 'lotus/utils/kernel'
       #
       #   input = BasicObject.new
-      #   Lotus::Utils::Kernel.Hash(input) # => NoMethodError
+      #   Lotus::Utils::Kernel.Hash(input) # => TypeError
       if RUBY_VERSION >= '2.1'
         def self.Hash(arg)
           if arg.respond_to?(:to_h)
@@ -182,6 +183,8 @@ module Lotus
           else
             super(arg)
           end
+        rescue NoMethodError
+          raise TypeError.new "can't convert into Hash"
         end
       else
         def self.Hash(arg)
@@ -192,8 +195,8 @@ module Lotus
           else
             super(arg)
           end
-        rescue ArgumentError
-          raise TypeError
+        rescue ArgumentError, NoMethodError
+          raise TypeError.new "can't convert into Hash"
         end
       end
 
@@ -207,9 +210,6 @@ module Lotus
       # @return [Fixnum] the result of the coercion
       #
       # @raise [TypeError] if the argument can't be coerced
-      # @raise [NoMethodError] if the argument doesn't implenent #respond_to?
-      # @raise [TypeError,FloatDomainError,RangeError] if the argument it's too
-      #   big.
       #
       # @since 0.1.1
       #
@@ -252,15 +252,15 @@ module Lotus
       #   Lotus::Utils::Kernel.Integer(nil) # => 0
       #
       #   # float represented as a string
-      #   Kernel.Integer("23.4")               # => ArgumentError
+      #   Kernel.Integer("23.4")               # => TypeError
       #   Lotus::Utils::Kernel.Integer("23.4") # => 23
       #
       #   # rational represented as a string
-      #   Kernel.Integer("2/3")               # => ArgumentError
+      #   Kernel.Integer("2/3")               # => TypeError
       #   Lotus::Utils::Kernel.Integer("2/3") # => 2
       #
       #   # complex represented as a string
-      #   Kernel.Integer("2.5/1")               # => ArgumentError
+      #   Kernel.Integer("2.5/1")               # => TypeError
       #   Lotus::Utils::Kernel.Integer("2.5/1") # => 2
       #
       # @example Unchecked Exceptions
@@ -290,27 +290,33 @@ module Lotus
       #
       #   # bigdecimal infinity
       #   input = BigDecimal.new("Infinity")
-      #   Lotus::Utils::Kernel.Integer(input) # => FloatDomainError
+      #   Lotus::Utils::Kernel.Integer(input) # => TypeError
       #
       #   # bigdecimal NaN
       #   input = BigDecimal.new("NaN")
-      #   Lotus::Utils::Kernel.Integer(input) # => FloatDomainError
+      #   Lotus::Utils::Kernel.Integer(input) # => TypeError
       #
       #   # big rational
       #   input = Rational(-8) ** Rational(1, 3)
-      #   Lotus::Utils::Kernel.Integer(input) # => RangeError
+      #   Lotus::Utils::Kernel.Integer(input) # => TypeError
       #
       #   # big complex represented as a string
       #   input = Complex(2, 3)
-      #   Lotus::Utils::Kernel.Integer(input) # => RangeError
+      #   Lotus::Utils::Kernel.Integer(input) # => TypeError
       def self.Integer(arg)
         super(arg)
       rescue ArgumentError, TypeError
-        if arg.respond_to?(:to_i)
-          arg.to_i
-        else
-          raise
+        begin
+          if arg.respond_to?(:to_i)
+            arg.to_i
+          else
+            raise TypeError.new "can't convert into Integer"
+          end
+        rescue NoMethodError
+          raise TypeError.new "can't convert into Integer"
         end
+      rescue RangeError
+        raise TypeError.new "can't convert into Integer"
       end
 
       # Coerces the argument to be a float.
@@ -323,9 +329,6 @@ module Lotus
       # @return [Float] the result of the coercion
       #
       # @raise [TypeError] if the argument can't be coerced
-      # @raise [NoMethodError] if the argument doesn't implenent #respond_to?
-      # @raise [TypeError,FloatDomainError,RangeError] if the argument it's too
-      #   big.
       #
       # @since 0.1.1
       #
@@ -369,15 +372,15 @@ module Lotus
       #   Lotus::Utils::Kernel.Float(nil) # => 0.0
       #
       #   # float represented as a string
-      #   Kernel.Float("23.4")               # => ArgumentError
+      #   Kernel.Float("23.4")               # => TypeError
       #   Lotus::Utils::Kernel.Float("23.4") # => 23.4
       #
       #   # rational represented as a string
-      #   Kernel.Float("2/3")               # => ArgumentError
+      #   Kernel.Float("2/3")               # => TypeError
       #   Lotus::Utils::Kernel.Float("2/3") # => 2.0
       #
       #   # complex represented as a string
-      #   Kernel.Float("2.5/1")               # => ArgumentError
+      #   Kernel.Float("2.5/1")               # => TypeError
       #   Lotus::Utils::Kernel.Float("2.5/1") # => 2.5
       #
       #   # bigdecimal infinity
@@ -415,23 +418,29 @@ module Lotus
       #
       #   # Missing #nil?
       #   input = BasicObject.new
-      #   Lotus::Utils::Kernel.Float(input) # => NoMethodError
+      #   Lotus::Utils::Kernel.Float(input) # => TypeError
       #
       #   # big rational
       #   input = Rational(-8) ** Rational(1, 3)
-      #   Lotus::Utils::Kernel.Float(input) # => RangeError
+      #   Lotus::Utils::Kernel.Float(input) # => TypeError
       #
       #   # big complex represented as a string
       #   input = Complex(2, 3)
-      #   Lotus::Utils::Kernel.Float(input) # => RangeError
+      #   Lotus::Utils::Kernel.Float(input) # => TypeError
       def self.Float(arg)
         super(arg)
       rescue ArgumentError, TypeError
-        if arg.respond_to?(:to_f)
-          arg.to_f
-        else
-          raise
+        begin
+          if arg.respond_to?(:to_f)
+            arg.to_f
+          else
+            raise TypeError.new "can't convert into Float"
+          end
+        rescue NoMethodError
+          raise TypeError.new "can't convert into Float"
         end
+      rescue RangeError
+        raise TypeError.new "can't convert into Float"
       end
 
       # Coerces the argument to be a string.
@@ -531,8 +540,7 @@ module Lotus
       #
       # @return [Date] the result of the coercion
       #
-      # @raise [NoMethodError] if the argument doesn't implement #respond_to? or #to_s
-      # @raise [ArgumentError] if the argument can't be coerced
+      # @raise [TypeError] if the argument can't be coerced
       #
       # @since 0.1.1
       #
@@ -571,21 +579,23 @@ module Lotus
       #
       #   # nil
       #   input = nil
-      #   Lotus::Utils::Kernel.Date(input) # => NoMethodError
+      #   Lotus::Utils::Kernel.Date(input) # => TypeError
       #
       #   # Missing #respond_to?
       #   input = BasicObject.new
-      #   Lotus::Utils::Kernel.Date(input) # => NoMethodError
+      #   Lotus::Utils::Kernel.Date(input) # => TypeError
       #
       #   # Missing #to_s?
       #   input = BasicObject.new
-      #   Lotus::Utils::Kernel.Date(input) # => NoMethodError
+      #   Lotus::Utils::Kernel.Date(input) # => TypeError
       def self.Date(arg)
         if arg.respond_to?(:to_date)
           arg.to_date
         else
           Date.parse(arg.to_s)
         end
+      rescue ArgumentError, NoMethodError
+        raise TypeError.new "can't convert into Date"
       end
 
       # Coerces the argument to be a DateTime.
@@ -594,8 +604,7 @@ module Lotus
       #
       # @return [DateTime] the result of the coercion
       #
-      # @raise [NoMethodError] if the argument doesn't implement #respond_to? or #to_s
-      # @raise [ArgumentError] if the argument can't be coerced
+      # @raise [TypeError] if the argument can't be coerced
       #
       # @since 0.1.1
       #
@@ -637,15 +646,15 @@ module Lotus
       #
       #   # When nil
       #   input = nil
-      #   Lotus::Utils::Kernel.DateTime(input) # => NoMethodError
+      #   Lotus::Utils::Kernel.DateTime(input) # => TypeError
       #
       #   # Missing #respond_to?
       #   input = BasicObject.new
-      #   Lotus::Utils::Kernel.DateTime(input) # => NoMethodError
+      #   Lotus::Utils::Kernel.DateTime(input) # => TypeError
       #
       #   # Missing #to_s?
       #   input = BasicObject.new
-      #   Lotus::Utils::Kernel.DateTime(input) # => NoMethodError
+      #   Lotus::Utils::Kernel.DateTime(input) # => TypeError
       def self.DateTime(arg)
         case arg
         when ->(a) { a.respond_to?(:to_datetime) } then arg.to_datetime
@@ -653,6 +662,8 @@ module Lotus
         else
           DateTime.parse(arg.to_s)
         end
+      rescue ArgumentError, NoMethodError
+        raise TypeError.new "can't convert into DateTime"
       end
 
       # Coerces the argument to be a Time.
@@ -661,8 +672,7 @@ module Lotus
       #
       # @return [Time] the result of the coercion
       #
-      # @raise [NoMethodError] if the argument doesn't implement #respond_to? or #to_s
-      # @raise [ArgumentError] if the argument can't be coerced
+      # @raise [TypeError] if the argument can't be coerced
       #
       # @since 0.1.1
       #
@@ -701,15 +711,15 @@ module Lotus
       #
       #   # When nil
       #   input = nil
-      #   Lotus::Utils::Kernel.Time(input) # => ArgumentError
+      #   Lotus::Utils::Kernel.Time(input) # => TypeError
       #
       #   # Missing #respond_to?
       #   input = BasicObject.new
-      #   Lotus::Utils::Kernel.Time(input) # => NoMethodError
+      #   Lotus::Utils::Kernel.Time(input) # => TypeError
       #
       #   # Missing #to_s?
       #   input = BasicObject.new
-      #   Lotus::Utils::Kernel.Time(input) # => NoMethodError
+      #   Lotus::Utils::Kernel.Time(input) # => TypeError
       def self.Time(arg)
         case arg
         when ->(a) { a.respond_to?(:to_time) } then arg.to_time
@@ -717,6 +727,8 @@ module Lotus
         else
           Time.parse(arg.to_s)
         end
+      rescue ArgumentError, NoMethodError
+        raise TypeError.new "can't convert into Time"
       end
 
       # Coerces the argument to be a boolean.
@@ -725,7 +737,7 @@ module Lotus
       #
       # @return [true,false] the result of the coercion
       #
-      # @raise [NoMethodError] if the argument doesn't implenent #respond_to?
+      # @raise [TypeError] if the argument can't be coerced
       #
       # @since 0.1.1
       #
@@ -759,7 +771,7 @@ module Lotus
       #
       #   # Missing #respond_to?
       #   input = BasicObject.new
-      #   Lotus::Utils::Kernel.Boolean(input) # => NoMethodError
+      #   Lotus::Utils::Kernel.Boolean(input) # => TypeError
       def self.Boolean(arg)
         case arg
         when Numeric     then arg > 0 && arg <= 1
@@ -768,6 +780,8 @@ module Lotus
         else
           !!arg
         end
+      rescue NoMethodError
+        raise TypeError.new "can't convert into Boolean"
       end
 
       # Coerces the argument to be a Pathname.
@@ -776,7 +790,6 @@ module Lotus
       #
       # @return [Pathname] the result of the coercion
       #
-      # @raise [NoMethodError] if the argument doesn't implenent #respond_to?
       # @raise [TypeError] if the argument can't be coerced
       #
       # @since 0.1.2
@@ -818,13 +831,15 @@ module Lotus
       #
       #   # Missing #respond_to?
       #   input = BasicObject.new
-      #   Lotus::Utils::Kernel.Pathname(input) # => NoMethodError
+      #   Lotus::Utils::Kernel.Pathname(input) # => TypeError
       def self.Pathname(arg)
         case arg
         when ->(a) { a.respond_to?(:to_pathname) } then arg.to_pathname
         else
           super
         end
+      rescue NoMethodError
+        raise TypeError.new "can't convert into Pathname"
       end
     end
   end

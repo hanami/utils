@@ -251,7 +251,15 @@ describe Lotus::Utils::Kernel do
         let(:input) { BaseObject.new }
 
         it 'raises error' do
-          -> { Lotus::Utils::Kernel.Set(input) }.must_raise(NoMethodError)
+          -> { Lotus::Utils::Kernel.Set(input) }.must_raise(TypeError)
+        end
+
+        it 'returns informations about the failure' do
+          begin
+            Lotus::Utils::Kernel.Set(input)
+          rescue => e
+            e.message.must_match "can't convert into Set"
+          end
         end
       end
     end
@@ -351,7 +359,15 @@ describe Lotus::Utils::Kernel do
         let(:input) { BaseObject.new }
 
         it 'raises error' do
-          -> { Lotus::Utils::Kernel.Hash(input) }.must_raise(NoMethodError)
+          -> { Lotus::Utils::Kernel.Hash(input) }.must_raise(TypeError)
+        end
+
+        it 'returns useful informations about the failure' do
+          begin
+            Lotus::Utils::Kernel.Hash(input)
+          rescue => e
+            e.message.must_equal "can't convert into Hash"
+          end
         end
       end
 
@@ -583,7 +599,15 @@ describe Lotus::Utils::Kernel do
         let(:input) { BasicObject.new }
 
         it 'raises error' do
-          -> { Lotus::Utils::Kernel.Integer(input) }.must_raise(NoMethodError)
+          -> { Lotus::Utils::Kernel.Integer(input) }.must_raise(TypeError)
+        end
+
+        it 'returns useful informations about the failure' do
+          begin
+            Lotus::Utils::Kernel.Integer(input)
+          rescue => e
+            e.message.must_equal "can't convert into Integer"
+          end
         end
       end
 
@@ -593,13 +617,21 @@ describe Lotus::Utils::Kernel do
         it 'raises error' do
           -> { Lotus::Utils::Kernel.Integer(input) }.must_raise(TypeError)
         end
+
+        it 'returns useful informations about the failure' do
+          begin
+            Lotus::Utils::Kernel.Integer(input)
+          rescue => e
+            e.message.must_equal "can't convert into Integer"
+          end
+        end
       end
 
       describe 'when a bigdecimal infinity is given' do
         let(:input) { BigDecimal.new('Infinity') }
 
         it 'raises error' do
-          -> { Lotus::Utils::Kernel.Integer(input) }.must_raise(FloatDomainError)
+          -> { Lotus::Utils::Kernel.Integer(input) }.must_raise(TypeError)
         end
       end
 
@@ -607,7 +639,15 @@ describe Lotus::Utils::Kernel do
         let(:input) { BigDecimal.new('NaN') }
 
         it 'raises error' do
-          -> { Lotus::Utils::Kernel.Integer(input) }.must_raise(FloatDomainError)
+          -> { Lotus::Utils::Kernel.Integer(input) }.must_raise(TypeError)
+        end
+
+        it 'returns useful informations about the failure' do
+          begin
+            Lotus::Utils::Kernel.Integer(input)
+          rescue => e
+            e.message.must_equal "can't convert into Integer"
+          end
         end
       end
 
@@ -615,7 +655,15 @@ describe Lotus::Utils::Kernel do
         let(:input) { Complex(2,3) }
 
         it 'raises error' do
-          -> { Lotus::Utils::Kernel.Integer(input) }.must_raise(RangeError)
+          -> { Lotus::Utils::Kernel.Integer(input) }.must_raise(TypeError)
+        end
+
+        it 'returns useful informations about the failure' do
+          begin
+            Lotus::Utils::Kernel.Integer(input)
+          rescue => e
+            e.message.must_equal "can't convert into Integer"
+          end
         end
       end
 
@@ -623,7 +671,15 @@ describe Lotus::Utils::Kernel do
         let(:input) { Rational(-8) ** Rational(1, 3) }
 
         it 'raises error' do
-          -> { Lotus::Utils::Kernel.Integer(input) }.must_raise(RangeError)
+          -> { Lotus::Utils::Kernel.Integer(input) }.must_raise(TypeError)
+        end
+
+        it 'returns useful informations about the failure' do
+          begin
+            Lotus::Utils::Kernel.Integer(input)
+          rescue => e
+            e.message.must_equal "can't convert into Integer"
+          end
         end
       end
     end
@@ -832,7 +888,15 @@ describe Lotus::Utils::Kernel do
         let(:input) { BasicObject.new }
 
         it 'raises error' do
-          -> { Lotus::Utils::Kernel.Float(input) }.must_raise(NoMethodError)
+          -> { Lotus::Utils::Kernel.Float(input) }.must_raise(TypeError)
+        end
+
+        it 'returns useful informations about the failure' do
+          begin
+            Lotus::Utils::Kernel.Float(input)
+          rescue => e
+            e.message.must_equal "can't convert into Float"
+          end
         end
       end
 
@@ -848,7 +912,15 @@ describe Lotus::Utils::Kernel do
         let(:input) { Complex(2,3) }
 
         it 'raises error' do
-          -> { Lotus::Utils::Kernel.Float(input) }.must_raise(RangeError)
+          -> { Lotus::Utils::Kernel.Float(input) }.must_raise(TypeError)
+        end
+
+        it 'returns useful informations about the failure' do
+          begin
+            Lotus::Utils::Kernel.Float(input)
+          rescue => e
+            e.message.must_equal "can't convert into Float"
+          end
         end
       end
 
@@ -856,7 +928,15 @@ describe Lotus::Utils::Kernel do
         let(:input) { Rational(-8) ** Rational(1, 3) }
 
         it 'raises error' do
-          -> { Lotus::Utils::Kernel.Float(input) }.must_raise(RangeError)
+          -> { Lotus::Utils::Kernel.Float(input) }.must_raise(TypeError)
+        end
+
+        it 'returns useful informations about the failure' do
+          begin
+            Lotus::Utils::Kernel.Float(input)
+          rescue => e
+            e.message.must_equal "can't convert into Float"
+          end
         end
       end
     end
@@ -1257,7 +1337,15 @@ describe Lotus::Utils::Kernel do
         let(:input) { BasicObject.new }
 
         it 'raises error' do
-          -> { Lotus::Utils::Kernel.Boolean(input) }.must_raise(NoMethodError)
+          -> { Lotus::Utils::Kernel.Boolean(input) }.must_raise(TypeError)
+        end
+
+        it 'returns useful informations about the failure' do
+          begin
+            Lotus::Utils::Kernel.Boolean(input)
+          rescue => e
+            e.message.must_equal "can't convert into Boolean"
+          end
         end
       end
     end
@@ -1342,7 +1430,15 @@ describe Lotus::Utils::Kernel do
         let(:input) { nil }
 
         it 'raises error' do
-          -> { Lotus::Utils::Kernel.Date(input) }.must_raise ArgumentError
+          -> { Lotus::Utils::Kernel.Date(input) }.must_raise TypeError
+        end
+
+        it 'returns useful informations about the failure' do
+          begin
+            Lotus::Utils::Kernel.Date(input)
+          rescue => e
+            e.message.must_equal "can't convert into Date"
+          end
         end
       end
 
@@ -1350,7 +1446,15 @@ describe Lotus::Utils::Kernel do
         let(:input) { true }
 
         it 'raises error' do
-          -> { Lotus::Utils::Kernel.Date(input) }.must_raise ArgumentError
+          -> { Lotus::Utils::Kernel.Date(input) }.must_raise TypeError
+        end
+
+        it 'returns useful informations about the failure' do
+          begin
+            Lotus::Utils::Kernel.Date(input)
+          rescue => e
+            e.message.must_equal "can't convert into Date"
+          end
         end
       end
 
@@ -1358,7 +1462,15 @@ describe Lotus::Utils::Kernel do
         let(:input) { false }
 
         it 'raises error' do
-          -> { Lotus::Utils::Kernel.Date(input) }.must_raise ArgumentError
+          -> { Lotus::Utils::Kernel.Date(input) }.must_raise TypeError
+        end
+
+        it 'returns useful informations about the failure' do
+          begin
+            Lotus::Utils::Kernel.Date(input)
+          rescue => e
+            e.message.must_equal "can't convert into Date"
+          end
         end
       end
 
@@ -1366,7 +1478,15 @@ describe Lotus::Utils::Kernel do
         let(:input) { 2 }
 
         it 'raises error' do
-          -> { Lotus::Utils::Kernel.Date(input) }.must_raise ArgumentError
+          -> { Lotus::Utils::Kernel.Date(input) }.must_raise TypeError
+        end
+
+        it 'returns useful informations about the failure' do
+          begin
+            Lotus::Utils::Kernel.Date(input)
+          rescue => e
+            e.message.must_equal "can't convert into Date"
+          end
         end
       end
 
@@ -1374,7 +1494,15 @@ describe Lotus::Utils::Kernel do
         let(:input) { 2332.903007 }
 
         it 'raises error' do
-          -> { Lotus::Utils::Kernel.Date(input) }.must_raise ArgumentError
+          -> { Lotus::Utils::Kernel.Date(input) }.must_raise TypeError
+        end
+
+        it 'returns useful informations about the failure' do
+          begin
+            Lotus::Utils::Kernel.Date(input)
+          rescue => e
+            e.message.must_equal "can't convert into Date"
+          end
         end
       end
 
@@ -1382,7 +1510,15 @@ describe Lotus::Utils::Kernel do
         let(:input) { 'lego' }
 
         it 'raises error' do
-          -> { Lotus::Utils::Kernel.Date(input) }.must_raise ArgumentError
+          -> { Lotus::Utils::Kernel.Date(input) }.must_raise TypeError
+        end
+
+        it 'returns useful informations about the failure' do
+          begin
+            Lotus::Utils::Kernel.Date(input)
+          rescue => e
+            e.message.must_equal "can't convert into Date"
+          end
         end
       end
 
@@ -1390,7 +1526,15 @@ describe Lotus::Utils::Kernel do
         let(:input) { '18:55' }
 
         it 'raises error' do
-          -> { Lotus::Utils::Kernel.Date(input) }.must_raise ArgumentError
+          -> { Lotus::Utils::Kernel.Date(input) }.must_raise TypeError
+        end
+
+        it 'returns useful informations about the failure' do
+          begin
+            Lotus::Utils::Kernel.Date(input)
+          rescue => e
+            e.message.must_equal "can't convert into Date"
+          end
         end
       end
 
@@ -1398,7 +1542,15 @@ describe Lotus::Utils::Kernel do
         let(:input) { BasicObject.new }
 
         it 'raises error' do
-          -> { Lotus::Utils::Kernel.Date(input) }.must_raise NoMethodError
+          -> { Lotus::Utils::Kernel.Date(input) }.must_raise TypeError
+        end
+
+        it 'returns useful informations about the failure' do
+          begin
+            Lotus::Utils::Kernel.Date(input)
+          rescue => e
+            e.message.must_equal "can't convert into Date"
+          end
         end
       end
 
@@ -1406,7 +1558,15 @@ describe Lotus::Utils::Kernel do
         let(:input) { BaseObject.new }
 
         it 'raises error' do
-          -> { Lotus::Utils::Kernel.Date(input) }.must_raise NoMethodError
+          -> { Lotus::Utils::Kernel.Date(input) }.must_raise TypeError
+        end
+
+        it 'returns useful informations about the failure' do
+          begin
+            Lotus::Utils::Kernel.Date(input)
+          rescue => e
+            e.message.must_equal "can't convert into Date"
+          end
         end
       end
     end
@@ -1515,7 +1675,15 @@ describe Lotus::Utils::Kernel do
         let(:input) { nil }
 
         it 'raises error' do
-          -> { Lotus::Utils::Kernel.DateTime(input) }.must_raise ArgumentError
+          -> { Lotus::Utils::Kernel.DateTime(input) }.must_raise TypeError
+        end
+
+        it 'returns useful informations about the failure' do
+          begin
+            Lotus::Utils::Kernel.DateTime(input)
+          rescue => e
+            e.message.must_equal "can't convert into DateTime"
+          end
         end
       end
 
@@ -1523,7 +1691,15 @@ describe Lotus::Utils::Kernel do
         let(:input) { true }
 
         it 'raises error' do
-          -> { Lotus::Utils::Kernel.DateTime(input) }.must_raise ArgumentError
+          -> { Lotus::Utils::Kernel.DateTime(input) }.must_raise TypeError
+        end
+
+        it 'returns useful informations about the failure' do
+          begin
+            Lotus::Utils::Kernel.DateTime(input)
+          rescue => e
+            e.message.must_equal "can't convert into DateTime"
+          end
         end
       end
 
@@ -1531,7 +1707,15 @@ describe Lotus::Utils::Kernel do
         let(:input) { false }
 
         it 'raises error' do
-          -> { Lotus::Utils::Kernel.DateTime(input) }.must_raise ArgumentError
+          -> { Lotus::Utils::Kernel.DateTime(input) }.must_raise TypeError
+        end
+
+        it 'returns useful informations about the failure' do
+          begin
+            Lotus::Utils::Kernel.DateTime(input)
+          rescue => e
+            e.message.must_equal "can't convert into DateTime"
+          end
         end
       end
 
@@ -1539,7 +1723,15 @@ describe Lotus::Utils::Kernel do
         let(:input) { 'crab' }
 
         it 'raises error' do
-          -> { Lotus::Utils::Kernel.DateTime(input) }.must_raise ArgumentError
+          -> { Lotus::Utils::Kernel.DateTime(input) }.must_raise TypeError
+        end
+
+        it 'returns useful informations about the failure' do
+          begin
+            Lotus::Utils::Kernel.DateTime(input)
+          rescue => e
+            e.message.must_equal "can't convert into DateTime"
+          end
         end
       end
 
@@ -1547,7 +1739,15 @@ describe Lotus::Utils::Kernel do
         let(:input) { BasicObject.new }
 
         it 'raises error' do
-          -> { Lotus::Utils::Kernel.DateTime(input) }.must_raise NoMethodError
+          -> { Lotus::Utils::Kernel.DateTime(input) }.must_raise TypeError
+        end
+
+        it 'returns useful informations about the failure' do
+          begin
+            Lotus::Utils::Kernel.DateTime(input)
+          rescue => e
+            e.message.must_equal "can't convert into DateTime"
+          end
         end
       end
 
@@ -1555,7 +1755,15 @@ describe Lotus::Utils::Kernel do
         let(:input) { BaseObject.new }
 
         it 'raises error' do
-          -> { Lotus::Utils::Kernel.DateTime(input) }.must_raise NoMethodError
+          -> { Lotus::Utils::Kernel.DateTime(input) }.must_raise TypeError
+        end
+
+        it 'returns useful informations about the failure' do
+          begin
+            Lotus::Utils::Kernel.DateTime(input)
+          rescue => e
+            e.message.must_equal "can't convert into DateTime"
+          end
         end
       end
     end
@@ -1664,7 +1872,15 @@ describe Lotus::Utils::Kernel do
         let(:input) { nil }
 
         it 'raises error' do
-          -> { Lotus::Utils::Kernel.Time(input) }.must_raise ArgumentError
+          -> { Lotus::Utils::Kernel.Time(input) }.must_raise TypeError
+        end
+
+        it 'returns useful informations about the failure' do
+          begin
+            Lotus::Utils::Kernel.Time(input)
+          rescue => e
+            e.message.must_equal "can't convert into Time"
+          end
         end
       end
 
@@ -1672,7 +1888,15 @@ describe Lotus::Utils::Kernel do
         let(:input) { true }
 
         it 'raises error' do
-          -> { Lotus::Utils::Kernel.Time(input) }.must_raise ArgumentError
+          -> { Lotus::Utils::Kernel.Time(input) }.must_raise TypeError
+        end
+
+        it 'returns useful informations about the failure' do
+          begin
+            Lotus::Utils::Kernel.Time(input)
+          rescue => e
+            e.message.must_equal "can't convert into Time"
+          end
         end
       end
 
@@ -1680,7 +1904,15 @@ describe Lotus::Utils::Kernel do
         let(:input) { false }
 
         it 'raises error' do
-          -> { Lotus::Utils::Kernel.Time(input) }.must_raise ArgumentError
+          -> { Lotus::Utils::Kernel.Time(input) }.must_raise TypeError
+        end
+
+        it 'returns useful informations about the failure' do
+          begin
+            Lotus::Utils::Kernel.Time(input)
+          rescue => e
+            e.message.must_equal "can't convert into Time"
+          end
         end
       end
 
@@ -1688,7 +1920,15 @@ describe Lotus::Utils::Kernel do
         let(:input) { 'boat' }
 
         it 'raises error' do
-          -> { Lotus::Utils::Kernel.Time(input) }.must_raise ArgumentError
+          -> { Lotus::Utils::Kernel.Time(input) }.must_raise TypeError
+        end
+
+        it 'returns useful informations about the failure' do
+          begin
+            Lotus::Utils::Kernel.Time(input)
+          rescue => e
+            e.message.must_equal "can't convert into Time"
+          end
         end
       end
 
@@ -1696,7 +1936,15 @@ describe Lotus::Utils::Kernel do
         let(:input) { BasicObject.new }
 
         it 'raises error' do
-          -> { Lotus::Utils::Kernel.Time(input) }.must_raise NoMethodError
+          -> { Lotus::Utils::Kernel.Time(input) }.must_raise TypeError
+        end
+
+        it 'returns useful informations about the failure' do
+          begin
+            Lotus::Utils::Kernel.Time(input)
+          rescue => e
+            e.message.must_equal "can't convert into Time"
+          end
         end
       end
 
@@ -1704,7 +1952,15 @@ describe Lotus::Utils::Kernel do
         let(:input) { BaseObject.new }
 
         it 'raises error' do
-          -> { Lotus::Utils::Kernel.Time(input) }.must_raise NoMethodError
+          -> { Lotus::Utils::Kernel.Time(input) }.must_raise TypeError
+        end
+
+        it 'returns useful informations about the failure' do
+          begin
+            Lotus::Utils::Kernel.Time(input)
+          rescue => e
+            e.message.must_equal "can't convert into Time"
+          end
         end
       end
     end
@@ -1827,7 +2083,15 @@ describe Lotus::Utils::Kernel do
         let(:input) { BasicObject.new }
 
         it 'raises error' do
-          -> { Lotus::Utils::Kernel.Pathname(input) }.must_raise NoMethodError
+          -> { Lotus::Utils::Kernel.Pathname(input) }.must_raise TypeError
+        end
+
+        it 'returns useful informations about the failure' do
+          begin
+            Lotus::Utils::Kernel.Pathname(input)
+          rescue => e
+            e.message.must_equal "can't convert into Pathname"
+          end
         end
       end
     end
