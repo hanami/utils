@@ -316,20 +316,20 @@ module Lotus
       # Coerces the argument to be a float.
       #
       # It's similar to Ruby's Kernel.Float, but it doesn't stop at the first
-      # error and tries to be less "whiny".
+      # error and raise an exception only when the argument can't be coerced.
       #
       # @param arg [Object] the argument
       #
-      # @return [Float,nil] the result of the coercion
+      # @return [Float] the result of the coercion
       #
       # @raise [TypeError] if the argument can't be coerced
-      # @raise [NoMethodError] if the argument doesn't implenent #nil?
+      # @raise [NoMethodError] if the argument doesn't implenent #respond_to?
       # @raise [TypeError,FloatDomainError,RangeError] if the argument it's too
       #   big.
       #
       # @since 0.1.1
       #
-      # @see http://www.ruby-doc.org/core-2.1.1/Kernel.html#method-i-Float
+      # @see http://www.ruby-doc.org/core-2.1.2/Kernel.html#method-i-Float
       #
       # @example Basic Usage
       #   require 'bigdecimal'
@@ -366,7 +366,7 @@ module Lotus
       #
       #   # nil
       #   Kernel.Float(nil)               # => TypeError
-      #   Lotus::Utils::Kernel.Float(nil) # => nil
+      #   Lotus::Utils::Kernel.Float(nil) # => 0.0
       #
       #   # float represented as a string
       #   Kernel.Float("23.4")               # => ArgumentError
@@ -425,9 +425,13 @@ module Lotus
       #   input = Complex(2, 3)
       #   Lotus::Utils::Kernel.Float(input) # => RangeError
       def self.Float(arg)
-        super(arg) unless arg.nil?
-      rescue ArgumentError
-        arg.to_f
+        super(arg)
+      rescue ArgumentError, TypeError
+        if arg.respond_to?(:to_f)
+          arg.to_f
+        else
+          raise
+        end
       end
 
       # Coerces the argument to be a string.
