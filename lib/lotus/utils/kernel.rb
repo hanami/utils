@@ -659,7 +659,7 @@ module Lotus
       #
       # @param arg [Object] the argument
       #
-      # @return [Time,nil] the result of the coercion
+      # @return [Time] the result of the coercion
       #
       # @raise [NoMethodError] if the argument doesn't implement #respond_to? or #to_s
       # @raise [ArgumentError] if the argument can't be coerced
@@ -668,8 +668,6 @@ module Lotus
       #
       # @example Basic Usage
       #   require 'lotus/utils/kernel'
-      #
-      #   Lotus::Utils::Kernel.Time(nil)                # => nil
       #
       #   Lotus::Utils::Kernel.Time(Time.now)
       #     # => 2014-04-18 15:56:39 +0200
@@ -701,14 +699,21 @@ module Lotus
       # @example Unchecked Exceptions
       #   require 'lotus/utils/kernel'
       #
-      #   # Missing #nil?
+      #   # When nil
+      #   input = nil
+      #   Lotus::Utils::Kernel.Time(input) # => ArgumentError
+      #
+      #   # Missing #respond_to?
+      #   input = BasicObject.new
+      #   Lotus::Utils::Kernel.Time(input) # => NoMethodError
+      #
+      #   # Missing #to_s?
       #   input = BasicObject.new
       #   Lotus::Utils::Kernel.Time(input) # => NoMethodError
       def self.Time(arg)
         case arg
         when ->(a) { a.respond_to?(:to_time) } then arg.to_time
         when Numeric then Time.at(arg)
-        when NilClass then nil
         else
           Time.parse(arg.to_s)
         end
