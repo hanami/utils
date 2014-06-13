@@ -301,7 +301,7 @@ describe Lotus::Utils::Kernel do
         let(:input) { nil }
 
         it 'returns an empty hash' do
-          @result.must_equal nil
+          @result.must_equal({})
         end
       end
 
@@ -347,14 +347,6 @@ describe Lotus::Utils::Kernel do
     end
 
     describe 'failure operations' do
-      describe "when a an object that doesn't implement #nil?" do
-        let(:input) { BasicObject.new }
-
-        it 'raises error' do
-          -> { Lotus::Utils::Kernel.Hash(input) }.must_raise(NoMethodError)
-        end
-      end
-
       describe "when a an object that doesn't implement #respond_to?" do
         let(:input) { BaseObject.new }
 

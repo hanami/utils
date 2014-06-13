@@ -124,20 +124,19 @@ module Lotus
       #
       # @param arg [Object] the input
       #
-      # @return [Hash, nil] the result of the coercion
+      # @return [Hash] the result of the coercion
       #
-      # @raise [NoMethodError] if arg doesn't implement #nil?
       # @raise [NoMethodError] if arg doesn't implement #respond_to?
       # @raise [TypeError] if arg can't be coerced
       #
       # @since 0.1.1
       #
-      # @see http://www.ruby-doc.org/core-2.1.1/Kernel.html#method-i-Hash
+      # @see http://www.ruby-doc.org/core-2.1.2/Kernel.html#method-i-Hash
       #
       # @example Basic Usage
       #   require 'lotus/utils/kernel'
       #
-      #   Lotus::Utils::Kernel.Hash(nil)                 # => nil
+      #   Lotus::Utils::Kernel.Hash(nil)                 # => {}
       #   Lotus::Utils::Kernel.Hash({a: 1})              # => { :a => 1 }
       #   Lotus::Utils::Kernel.Hash([[:a, 1]])           # => { :a => 1 }
       #   Lotus::Utils::Kernel.Hash(Set.new([[:a, 1]]))  # => { :a => 1 }
@@ -182,12 +181,11 @@ module Lotus
             arg.to_h
           else
             super(arg)
-          end unless arg.nil?
+          end
         end
       else
         def self.Hash(arg)
           case arg
-          when NilClass                       then nil
           when ::Hash                         then arg
           when ::Array, ::Set                 then Hash[*self.Array(arg)]
           when ->(a) { a.respond_to?(:to_h) } then arg.to_h
