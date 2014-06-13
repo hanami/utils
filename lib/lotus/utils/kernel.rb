@@ -78,7 +78,7 @@ module Lotus
       # @example Basic Usage
       #   require 'lotus/utils/kernel'
       #
-      #   Lotus::Utils::Kernel.Set(nil)              # => nil
+      #   Lotus::Utils::Kernel.Set(nil)              # => #<Set: {}>
       #   Lotus::Utils::Kernel.Set(true)             # => #<Set: {true}>
       #   Lotus::Utils::Kernel.Set(false)            # => #<Set: {false}>
       #   Lotus::Utils::Kernel.Set(1)                # => #<Set: {1}>
@@ -117,7 +117,7 @@ module Lotus
           arg.to_set
         else
           Set.new(::Kernel.Array(arg))
-        end unless arg.nil?
+        end
       end
 
       # Coerces the argument to be an hash.

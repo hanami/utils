@@ -151,8 +151,8 @@ describe Lotus::Utils::Kernel do
       describe 'when nil is given' do
         let(:input) { nil }
 
-        it 'returns nil' do
-          @result.must_equal nil
+        it 'returns an empty set' do
+          @result.must_equal Set.new
         end
       end
 
@@ -247,14 +247,6 @@ describe Lotus::Utils::Kernel do
     end
 
     describe 'failure operations' do
-      describe "when a an object that doesn't implement #nil?" do
-        let(:input) { BasicObject.new }
-
-        it 'raises error' do
-          -> { Lotus::Utils::Kernel.Set(input) }.must_raise(NoMethodError)
-        end
-      end
-
       describe "when a an object that doesn't implement #respond_to?" do
         let(:input) { BaseObject.new }
 
