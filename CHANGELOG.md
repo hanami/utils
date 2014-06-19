@@ -1,7 +1,7 @@
 ## v0.2.0
 ### Jun 23, 2014
 
-1894be5 2014-06-12 **Luca Guidi** Implemented Lotus::Utils::Kernel.Symbol
+a969fda 2014-06-12 **Luca Guidi** Implemented Lotus::Utils::Kernel.Symbol
 
 13532f5 2014-06-13 **Luca Guidi** [breaking] Implemented Lotus::Utils::Callbacks::Chain#freeze in order to prevent modification after the object has been frozen
 
