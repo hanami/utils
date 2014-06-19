@@ -841,6 +841,58 @@ module Lotus
       rescue NoMethodError
         raise TypeError.new "can't convert into Pathname"
       end
+
+      # Coerces the argument to be a String.
+      #
+      # @param arg [#to_sym] the argument
+      #
+      # @return [Symbol] the result of the coercion
+      #
+      # @raise [TypeError] if the argument can't be coerced
+      #
+      # @since 0.2.0
+      #
+      # @example Basic Usage
+      #   require 'lotus/utils/kernel'
+      #
+      #   Lotus::Utils::Kernel.Symbol(:hello)  # => :hello
+      #   Lotus::Utils::Kernel.Symbol('hello') # => :hello
+      #
+      # @example Symbol Interface
+      #   require 'lotus/utils/kernel'
+      #
+      #   class StatusSymbol
+      #     def to_sym
+      #       :success
+      #     end
+      #   end
+      #
+      #   Lotus::Utils::Kernel.Symbol(StatusSymbol.new) # => :success
+      #
+      # @example Unchecked Exceptions
+      #   require 'lotus/utils/kernel'
+      #
+      #   # When nil
+      #   input = nil
+      #   Lotus::Utils::Kernel.Symbol(input) # => TypeError
+      #
+      #   # When empty string
+      #   input = ''
+      #   Lotus::Utils::Kernel.Symbol(input) # => TypeError
+      #
+      #   # Missing #respond_to?
+      #   input = BasicObject.new
+      #   Lotus::Utils::Kernel.Symbol(input) # => TypeError
+      def self.Symbol(arg)
+        case arg
+        when '' then raise TypeError.new "can't convert into Symbol"
+        when ->(a) { a.respond_to?(:to_sym) } then arg.to_sym
+        else
+          raise TypeError.new "can't convert into Symbol"
+        end
+      rescue NoMethodError
+        raise TypeError.new "can't convert into Symbol"
+      end
     end
   end
 end

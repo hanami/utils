@@ -2096,4 +2096,128 @@ describe Lotus::Utils::Kernel do
       end
     end
   end
+
+  describe '.Symbol' do
+    describe 'successful operations' do
+      before do
+        class StatusSymbol
+          def to_sym
+            :success
+          end
+        end
+
+        @result = Lotus::Utils::Kernel.Symbol(input)
+      end
+
+      after do
+        Object.send(:remove_const, :StatusSymbol)
+      end
+
+      describe 'when a symbol is given' do
+        let(:input) { :hello }
+
+        it 'returns a symbol' do
+          @result.must_equal :hello
+        end
+      end
+
+      describe 'when a string is given' do
+        let(:input) { 'hello' }
+
+        it 'returns a symbol' do
+          @result.must_equal :hello
+        end
+      end
+
+      describe 'when an object that implements #to_sym' do
+        let(:input) { StatusSymbol.new }
+
+        it 'returns a symbol' do
+          @result.must_equal :success
+        end
+      end
+    end
+
+    describe 'failure operations' do
+      describe "when nil is given" do
+        let(:input) { nil }
+
+        it 'raises error' do
+          -> { Lotus::Utils::Kernel.Symbol(input) }.must_raise TypeError
+        end
+      end
+
+      describe "when empty string is given" do
+        let(:input) { '' }
+
+        it 'raises error' do
+          -> { Lotus::Utils::Kernel.Symbol(input) }.must_raise TypeError
+        end
+      end
+
+      describe "when true is given" do
+        let(:input) { true }
+
+        it 'raises error' do
+          -> { Lotus::Utils::Kernel.Symbol(input) }.must_raise TypeError
+        end
+      end
+
+      describe "when false is given" do
+        let(:input) { false }
+
+        it 'raises error' do
+          -> { Lotus::Utils::Kernel.Symbol(input) }.must_raise TypeError
+        end
+      end
+
+      describe "when a number is given" do
+        let(:input) { 12 }
+
+        it 'raises error' do
+          -> { Lotus::Utils::Kernel.Symbol(input) }.must_raise TypeError
+        end
+      end
+
+      describe "when a date is given" do
+        let(:input) { Date.today }
+
+        it 'raises error' do
+          -> { Lotus::Utils::Kernel.Symbol(input) }.must_raise TypeError
+        end
+      end
+
+      describe "when a datetime is given" do
+        let(:input) { DateTime.now }
+
+        it 'raises error' do
+          -> { Lotus::Utils::Kernel.Symbol(input) }.must_raise TypeError
+        end
+      end
+
+      describe "when a time is given" do
+        let(:input) { Time.now }
+
+        it 'raises error' do
+          -> { Lotus::Utils::Kernel.Symbol(input) }.must_raise TypeError
+        end
+      end
+
+      describe "when an object that doesn't implement #respond_to?" do
+        let(:input) { BasicObject.new }
+
+        it 'raises error' do
+          -> { Lotus::Utils::Kernel.Symbol(input) }.must_raise TypeError
+        end
+
+        it 'returns useful informations about the failure' do
+          begin
+            Lotus::Utils::Kernel.Symbol(input)
+          rescue => e
+            e.message.must_equal "can't convert into Symbol"
+          end
+        end
+      end
+    end
+  end
 end
