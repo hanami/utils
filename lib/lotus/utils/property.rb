@@ -2,9 +2,7 @@ module Lotus
   module Utils
     module Property
       def self.included(base)
-        base.class_eval do
-          extend ClassMethods
-        end
+        base.extend ClassMethods
       end
       
       module ClassMethods
