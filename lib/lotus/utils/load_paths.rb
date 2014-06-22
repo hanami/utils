@@ -61,7 +61,7 @@ module Lotus
       # @since 0.2.0
       def each(&blk)
         Utils::Kernel.Array(@paths).each do |path|
-          blk.call Utils::Kernel.Pathname(path).realpath
+          blk.call realpath(path)
         end
       end
 
@@ -133,6 +133,16 @@ module Lotus
       def freeze
         super
         @paths.freeze
+      end
+
+      private
+      # Allow subclasses to define their own policy to discover the realpath
+      # of the given path.
+      #
+      # @since 0.2.0
+      # @api private
+      def realpath(path)
+        Utils::Kernel.Pathname(path).realpath
       end
     end
   end
