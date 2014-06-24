@@ -9,7 +9,7 @@ Ruby core extentions and class utilities for [Lotus](http://lotusrb.org)
 [![Coverage](http://img.shields.io/coveralls/lotus/utils/master.svg)](https://coveralls.io/r/lotus/utils)
 [![Code Climate](http://img.shields.io/codeclimate/github/lotus/utils.svg)](https://codeclimate.com/github/lotus/utils)
 [![Dependencies](http://img.shields.io/gemnasium/lotus/utils.svg)](https://gemnasium.com/lotus/utils)
-[![Inline Docs](http://inch-pages.github.io/github/lotus/utils.svg)](http://inch-pages.github.io/github/lotus/utils)
+[![Inline Docs](http://inch-ci.org/github/lotus/utils.svg)](http://inch-ci.org/github/lotus/utils)
 
 ## Contact
 
