@@ -36,7 +36,7 @@ module Lotus
       #   string = Lotus::Utils::String.new 'lotus_utils'
       #   string.classify # => 'LotusUtils'
       def classify
-        split('_').map {|token| token.slice(0).upcase + token.slice(1..-1) }.join
+        split('_').map(&:capitalize).join
       end
 
       # Return a downcased and underscore separated version of the string
