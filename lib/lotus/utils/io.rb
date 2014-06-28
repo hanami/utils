@@ -7,7 +7,7 @@ module Lotus
       # Decreases the level of verbosity, during the execution of the given block.
       #
       # Revised version of ActiveSupport's `Kernel.with_warnings` implementation
-      # @see https://github.com/rails/rails/blob/master/activesupport/lib/active_support/core_ext/kernel/reporting.rb#L25
+      # @see https://github.com/rails/rails/blob/v4.1.2/activesupport/lib/active_support/core_ext/kernel/reporting.rb#L25
       #
       # @param blk [Proc] the block of code that generates warnings.
       #
