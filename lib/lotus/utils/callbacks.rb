@@ -225,7 +225,6 @@ module Lotus
           end
         end
 
-        protected
         def hash
           callback.hash
         end
