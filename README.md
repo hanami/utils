@@ -28,7 +28,9 @@ __Lotus::Utils__ supports Ruby (MRI) 2+
 
 Add this line to your application's Gemfile:
 
-    gem 'lotus-utils'
+```ruby
+gem 'lotus-utils'
+```
 
 And then execute:
 
