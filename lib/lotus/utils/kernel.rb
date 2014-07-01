@@ -305,7 +305,7 @@ module Lotus
       #   Lotus::Utils::Kernel.Integer(input) # => TypeError
       def self.Integer(arg)
         super(arg)
-      rescue ArgumentError, TypeError
+      rescue ArgumentError, TypeError, NoMethodError
         begin
           if arg.respond_to?(:to_i)
             arg.to_i
@@ -529,9 +529,12 @@ module Lotus
       #
       #   # Missing #to_s or #to_str
       #   input = BaseObject.new
-      #   Lotus::Utils::Kernel.Integer(input) # => TypeError
+      #   Lotus::Utils::Kernel.String(input) # => TypeError
       def self.String(arg)
+        arg = arg.to_str if arg.respond_to?(:to_str)
         super(arg)
+      rescue NoMethodError
+        raise TypeError.new "can't convert into String"
       end
 
       # Coerces the argument to be a Date.
