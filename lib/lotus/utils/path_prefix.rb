@@ -1,9 +1,11 @@
+require 'delegate'
+
 module Lotus
   module Utils
     # Prefixed string
     #
     # @since 0.1.0
-    class PathPrefix < ::String
+    class PathPrefix < DelegateClass(::String)
       # Initialize the path prefix
       #
       # @param string [::String] the prefix value

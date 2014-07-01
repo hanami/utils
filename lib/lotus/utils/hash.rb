@@ -1,8 +1,10 @@
+require 'delegate'
+
 module Lotus
   module Utils
     # Hash on steroids
     # @since 0.1.0
-    class Hash < ::Hash
+    class Hash < DelegateClass(::Hash)
       # Initialize the hash
       #
       # @param hash [::Hash, Hash] the value we want to use to initialize this instance
@@ -11,6 +13,7 @@ module Lotus
       #
       # @since 0.1.0
       def initialize(hash = {})
+        super
         merge! hash
       end
 

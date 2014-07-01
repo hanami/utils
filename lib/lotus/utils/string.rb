@@ -1,9 +1,11 @@
+require 'delegate'
+
 module Lotus
   module Utils
     # String on steroids
     #
     # @since 0.1.0
-    class String < ::String
+    class String < DelegateClass(::String)
       # Separator between Ruby namespaces
       #
       # @example
@@ -41,7 +43,7 @@ module Lotus
 
       # Return a downcased and underscore separated version of the string
       #
-      # Revised version of `ActiveSupport::Inflector.underscore` implementation 
+      # Revised version of `ActiveSupport::Inflector.underscore` implementation
       # @see https://github.com/rails/rails/blob/feaa6e2048fe86bcf07e967d6e47b865e42e055b/activesupport/lib/active_support/inflector/methods.rb#L90
       #
       # @return [String] the transformed string
@@ -117,8 +119,8 @@ module Lotus
       #     'Lotus::Utils'
       #     'Lotus::App'
       def tokenize(&blk)
-        template = gsub(/\((.*)\)/, "%{token}")
-        tokens   = Array(( $1 || self ).split('|'))
+        template = __getobj__.gsub(/\((.*)\)/, "%{token}")
+        tokens   = Array(( $1 || __getobj__ ).split('|'))
 
         tokens.each do |token|
           blk.call(template % {token: token})
