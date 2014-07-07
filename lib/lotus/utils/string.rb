@@ -6,12 +6,15 @@ module Lotus
     class String
       # Separator between Ruby namespaces
       #
-      # @example
-      #   Lotus::Utils
-      #
       # @since 0.1.0
       # @api private
       NAMESPACE_SEPARATOR = '::'.freeze
+
+      # Separator for #classify
+      #
+      # @since x.x.x
+      # @api private
+      CLASSIFY_SEPARATOR  = '_'.freeze
 
       # Initialize the string
       #
@@ -36,7 +39,7 @@ module Lotus
       #   string = Lotus::Utils::String.new 'lotus_utils'
       #   string.classify # => 'LotusUtils'
       def classify
-        self.class.new split('_').map(&:capitalize).join
+        self.class.new split(CLASSIFY_SEPARATOR).map(&:capitalize).join
       end
 
       # Return a downcased and underscore separated version of the string
