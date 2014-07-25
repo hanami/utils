@@ -151,6 +151,15 @@ module Lotus
         @hash.hash
       end
 
+      # Returns a string describing the internal @hash
+      #
+      # @return [String]
+      #
+      # @since x.x.x
+      def inspect
+        @hash.inspect
+      end
+
       # Override Ruby's method_missing in order to provide ::Hash interface
       #
       # @api private

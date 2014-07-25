@@ -164,9 +164,18 @@ describe Lotus::Utils::Hash do
     end
 
     describe '#hash' do
-      it 'returns the same hash result of ::String' do
+      it 'returns the same hash result of ::Hash' do
         expected = {'l' => 23}.hash
         actual   = Lotus::Utils::Hash.new({'l' => 23}).hash
+
+        actual.must_equal expected
+      end
+    end
+
+    describe '#inspect' do
+      it 'returns the same output of ::Hash' do
+        expected = {'l' => 23, l: 23}.inspect
+        actual   = Lotus::Utils::Hash.new({'l' => 23, l: 23}).inspect
 
         actual.must_equal expected
       end
