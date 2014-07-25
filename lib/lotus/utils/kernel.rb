@@ -190,7 +190,7 @@ module Lotus
         def self.Hash(arg)
           case arg
           when ::Hash                         then arg
-          when ::Array, ::Set                 then Hash[*self.Array(arg)]
+          when ::Array, ::Set                 then ::Hash[*self.Array(arg)]
           when ->(a) { a.respond_to?(:to_h) } then arg.to_h
           else
             super(arg)

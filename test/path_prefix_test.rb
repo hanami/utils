@@ -4,12 +4,12 @@ require 'lotus/utils/path_prefix'
 describe Lotus::Utils::PathPrefix do
   it 'exposes itself as a string' do
     prefix = Lotus::Utils::PathPrefix.new
-    prefix.must_equal ''
+    assert prefix == '', "Expected #{ prefix } to equal ''"
   end
 
   it 'adds root prefix only when needed' do
     prefix = Lotus::Utils::PathPrefix.new('/fruits')
-    prefix.must_equal '/fruits'
+    assert prefix == '/fruits', "Expected #{ prefix } to equal '/fruits'"
   end
 
   describe '#join' do
@@ -63,6 +63,69 @@ describe Lotus::Utils::PathPrefix do
     it 'joins a prefixed string without prefixing with custom separator' do
       prefix = Lotus::Utils::PathPrefix.new('fruits')
       prefix.relative_join('_cherries', '_').must_equal 'fruits_cherries'
+    end
+  end
+
+  describe 'string interface' do
+    describe 'equality' do
+      it 'has a working equality' do
+        string = Lotus::Utils::PathPrefix.new('lotus')
+        other  = Lotus::Utils::PathPrefix.new('lotus')
+
+        assert string == other
+      end
+
+      it 'has a working equality with raw strings' do
+        string = Lotus::Utils::PathPrefix.new('lotus')
+        assert string == 'lotus'
+      end
+    end
+
+    describe 'case equality' do
+      it 'has a working case equality' do
+        string = Lotus::Utils::PathPrefix.new('lotus')
+        other  = Lotus::Utils::PathPrefix.new('lotus')
+        assert string === other
+      end
+
+      it 'has a working case equality with raw strings' do
+        string = Lotus::Utils::PathPrefix.new('lotus')
+        assert string === 'lotus'
+      end
+    end
+
+    describe 'value equality' do
+      it 'has a working value equality' do
+        string = Lotus::Utils::PathPrefix.new('lotus')
+        other  = Lotus::Utils::PathPrefix.new('lotus')
+        assert string.eql?(other)
+      end
+
+      it 'has a working value equality with raw strings' do
+        string = Lotus::Utils::PathPrefix.new('lotus')
+        assert string.eql?('lotus')
+      end
+    end
+
+    describe 'identity equality' do
+      it 'has a working identity equality' do
+        string = Lotus::Utils::PathPrefix.new('lotus')
+        assert string.equal?(string)
+      end
+
+      it 'has a working identity equality with raw strings' do
+        string = Lotus::Utils::PathPrefix.new('lotus')
+        assert !string.equal?('lotus')
+      end
+    end
+
+    describe '#hash' do
+      it 'returns the same hash result of ::String' do
+        expected = 'hello'.hash
+        actual   = Lotus::Utils::PathPrefix.new('hello').hash
+
+        actual.must_equal expected
+      end
     end
   end
 end

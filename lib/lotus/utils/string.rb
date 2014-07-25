@@ -3,15 +3,18 @@ module Lotus
     # String on steroids
     #
     # @since 0.1.0
-    class String < ::String
+    class String
       # Separator between Ruby namespaces
-      #
-      # @example
-      #   Lotus::Utils
       #
       # @since 0.1.0
       # @api private
       NAMESPACE_SEPARATOR = '::'.freeze
+
+      # Separator for #classify
+      #
+      # @since x.x.x
+      # @api private
+      CLASSIFY_SEPARATOR  = '_'.freeze
 
       # Initialize the string
       #
@@ -21,7 +24,7 @@ module Lotus
       #
       # @since 0.1.0
       def initialize(string)
-        super(string.to_s)
+        @string = string.to_s
       end
 
       # Return a CamelCase version of the string
@@ -36,7 +39,7 @@ module Lotus
       #   string = Lotus::Utils::String.new 'lotus_utils'
       #   string.classify # => 'LotusUtils'
       def classify
-        split('_').map(&:capitalize).join
+        self.class.new split(CLASSIFY_SEPARATOR).map(&:capitalize).join
       end
 
       # Return a downcased and underscore separated version of the string
@@ -54,7 +57,7 @@ module Lotus
       #   string = Lotus::Utils::String.new 'LotusUtils'
       #   string.underscore # => 'lotus_utils'
       def underscore
-        gsub(NAMESPACE_SEPARATOR, '/').
+        self.class.new gsub(NAMESPACE_SEPARATOR, '/').
           gsub(/([A-Z\d]+)([A-Z][a-z])/,'\1_\2').
           gsub(/([a-z\d])([A-Z])/,'\1_\2').
           downcase
@@ -75,7 +78,7 @@ module Lotus
       #   string = Lotus::Utils::String.new 'String'
       #   string.demodulize # => 'String'
       def demodulize
-        split(NAMESPACE_SEPARATOR).last
+        self.class.new split(NAMESPACE_SEPARATOR).last
       end
 
       # Return the top level namespace name
@@ -93,7 +96,7 @@ module Lotus
       #   string = Lotus::Utils::String.new 'String'
       #   string.namespace # => 'String'
       def namespace
-        split(NAMESPACE_SEPARATOR).first
+        self.class.new split(NAMESPACE_SEPARATOR).first
       end
 
       # It iterates thru the tokens and calls the given block.
@@ -117,14 +120,79 @@ module Lotus
       #     'Lotus::Utils'
       #     'Lotus::App'
       def tokenize(&blk)
-        template = gsub(/\((.*)\)/, "%{token}")
-        tokens   = Array(( $1 || self ).split('|'))
+        template = @string.gsub(/\((.*)\)/, "%{token}")
+        tokens   = Array(( $1 || @string ).split('|'))
 
         tokens.each do |token|
-          blk.call(template % {token: token})
+          blk.call(self.class.new(template % {token: token}))
         end
 
         nil
+      end
+
+      # Returns the hash of the internal string
+      #
+      # @return [Fixnum]
+      #
+      # @since x.x.x
+      def hash
+        @string.hash
+      end
+
+      # Returns a string representation
+      #
+      # @return [String]
+      #
+      # @since x.x.x
+      def to_s
+        @string
+      end
+
+      alias_method :to_str,  :to_s
+
+      # Equality
+      #
+      # @return [TrueClass,FalseClass]
+      #
+      # @since x.x.x
+      def ==(other)
+        to_s == other
+      end
+
+      alias_method :eql?, :==
+
+      # Split the string with the given pattern
+      #
+      # @return [Array<String>]
+      #
+      # @see http://www.ruby-doc.org/core/String.html#method-i-split
+      #
+      # @since x.x.x
+      def split(pattern, limit = 0)
+        @string.split(pattern, limit)
+      end
+
+      # Replace the given pattern with the given replacement
+      #
+      # @return [String,nil]
+      #
+      # @see http://www.ruby-doc.org/core/String.html#method-i-gsub
+      #
+      # @since x.x.x
+      def gsub(pattern, replacement, &blk)
+        @string.gsub(pattern, replacement, &blk)
+      end
+
+      # Override Ruby's method_missing in order to provide ::String interface
+      #
+      # @api private
+      # @since x.x.x
+      def method_missing(m, *args, &blk)
+        s = @string.__send__(m, *args, &blk)
+        s = self.class.new(s) if s.is_a?(::String)
+        s
+      rescue NoMethodError
+        raise NoMethodError.new(%(undefined method `#{ m }' for "#{ @string }":#{ self.class }))
       end
     end
   end
