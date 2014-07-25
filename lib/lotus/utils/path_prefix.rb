@@ -3,7 +3,7 @@ module Lotus
     # Prefixed string
     #
     # @since 0.1.0
-    class PathPrefix < ::String
+    class PathPrefix
       # Initialize the path prefix
       #
       # @param string [::String] the prefix value
@@ -14,7 +14,7 @@ module Lotus
       # @since 0.1.0
       def initialize(string = nil, separator = '/')
         @separator = separator
-        super(string.to_s)
+        @string    = string.to_s
       end
 
       # Joins self with the given token.
@@ -58,8 +58,39 @@ module Lotus
       #   path_prefix.relative_join 'new', '_' # => 'posts_new'
       def relative_join(string, separator = @separator)
         separator = separator || @separator
-        relativize [self, string].join(separator), separator
+        relativize [@string, string].join(separator), separator
       end
+
+      # Returns the hash of the internal string
+      #
+      # @return [Fixnum]
+      #
+      # @since x.x.x
+      def hash
+        @string.hash
+      end
+
+      # Returns a string representation
+      #
+      # @return [String]
+      #
+      # @since x.x.x
+      def to_s
+        @string
+      end
+
+      alias_method :to_str,  :to_s
+
+      # Equality
+      #
+      # @return [TrueClass,FalseClass]
+      #
+      # @since x.x.x
+      def ==(other)
+        to_s == other
+      end
+
+      alias_method :eql?, :==
 
       private
       attr_reader :separator
