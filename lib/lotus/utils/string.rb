@@ -194,6 +194,14 @@ module Lotus
       rescue NoMethodError
         raise NoMethodError.new(%(undefined method `#{ m }' for "#{ @string }":#{ self.class }))
       end
+
+      # Override Ruby's respond_to_missing? in order to support ::String interface
+      #
+      # @api private
+      # @since x.x.x
+      def respond_to_missing?(m, include_private=false)
+        @string.respond_to?(m, include_private)
+      end
     end
   end
 end
