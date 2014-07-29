@@ -120,11 +120,14 @@ module Lotus
       #     'Lotus::Utils'
       #     'Lotus::App'
       def tokenize(&blk)
-        template = @string.gsub(/\((.*)\)/, "%{token}")
-        tokens   = Array(( $1 || @string ).split('|'))
-
-        tokens.each do |token|
-          blk.call(self.class.new(template % {token: token}))
+        if match = /\((.*)\)/.match(@string)
+          pre, post = match.pre_match, match.post_match
+          tokens = match[1].split('|')
+          tokens.each do |token|
+            blk.call(self.class.new("#{pre}#{token}#{post}"))
+          end
+        else
+          blk.call(self.class.new(@string))
         end
 
         nil
