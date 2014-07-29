@@ -119,6 +119,13 @@ describe Lotus::Utils::String do
       string.casecmp('abcde').must_equal 1
     end
 
+    it 'responds to whatever ::String responds to' do
+      string = Lotus::Utils::String.new('abcdef')
+
+      string.must_respond_to :reverse
+      string.wont_respond_to :unknown_method
+    end
+
     describe 'equality' do
       it 'has a working equality' do
         string = Lotus::Utils::String.new('lotus')

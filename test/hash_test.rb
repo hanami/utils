@@ -57,6 +57,13 @@ describe Lotus::Utils::Hash do
       result.must_equal ['a', 1]
     end
 
+    it 'responds to whatever ::Hash responds to' do
+      hash   = Lotus::Utils::Hash.new({'a' => 1})
+
+      hash.must_respond_to :rehash
+      hash.wont_respond_to :unknown_method
+    end
+
     it 'accepts blocks for methods' do
       hash   = Lotus::Utils::Hash.new({'a' => 1})
       result = hash.delete_if {|k, _| k == 'a' }

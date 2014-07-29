@@ -171,6 +171,14 @@ module Lotus
       rescue NoMethodError
         raise NoMethodError.new(%(undefined method `#{ m }' for #{ @hash }:#{ self.class }))
       end
+
+      # Override Ruby's respond_to_missing? in order to support ::Hash interface
+      #
+      # @api private
+      # @since x.x.x
+      def respond_to_missing?(m, include_private=false)
+        @hash.respond_to?(m, include_private)
+      end
     end
   end
 end
