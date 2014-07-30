@@ -62,7 +62,7 @@ module Lotus
         #   SmallAirplane.engines # => 2
         #   SmallAirplane.wheels  # => 8
         def class_attribute(*attributes)
-          (class << self; self; end).class_eval do
+          singleton_class.class_eval do
             attr_accessor *attributes
           end
 
