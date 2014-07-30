@@ -8,9 +8,7 @@ module Lotus
     # @see Lotus::Utils::ClassAttribute::ClassMethods
     module ClassAttribute
       def self.included(base)
-        base.class_eval do
-          extend ClassMethods
-        end
+        base.extend ClassMethods
       end
 
       module ClassMethods
@@ -64,7 +62,7 @@ module Lotus
         #   SmallAirplane.engines # => 2
         #   SmallAirplane.wheels  # => 8
         def class_attribute(*attributes)
-          (class << self; self; end).class_eval do
+          singleton_class.class_eval do
             attr_accessor *attributes
           end
 
