@@ -97,7 +97,7 @@ module Lotus
 
       def absolutize(string)
         string.tap do |s|
-          s.insert(0, separator) unless absolute?(s)
+          s.prepend(separator) unless absolute?(s)
         end
       end
 
