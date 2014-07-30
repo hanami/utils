@@ -16,6 +16,18 @@ module Lotus
       # @api private
       CLASSIFY_SEPARATOR  = '_'.freeze
 
+      # Regexp for #tokenize
+      #
+      # @since x.x.x
+      # @api private
+      TOKENIZE_REGEXP     = /\((.*)\)/
+
+      # Separator for #tokenize
+      #
+      # @since x.x.x
+      # @api private
+      TOKENIZE_SEPARATOR  = '|'.freeze
+
       # Initialize the string
       #
       # @param string [::String, Symbol] the value we want to initialize
@@ -120,11 +132,14 @@ module Lotus
       #     'Lotus::Utils'
       #     'Lotus::App'
       def tokenize(&blk)
-        template = @string.gsub(/\((.*)\)/, "%{token}")
-        tokens   = Array(( $1 || @string ).split('|'))
-
-        tokens.each do |token|
-          blk.call(self.class.new(template % {token: token}))
+        if match = TOKENIZE_REGEXP.match(@string)
+          pre, post = match.pre_match, match.post_match
+          tokens = match[1].split(TOKENIZE_SEPARATOR)
+          tokens.each do |token|
+            blk.call(self.class.new("#{pre}#{token}#{post}"))
+          end
+        else
+          blk.call(self.class.new(@string))
         end
 
         nil
