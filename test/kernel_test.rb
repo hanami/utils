@@ -1242,6 +1242,10 @@ describe Lotus::Utils::Kernel do
       Object.send(:remove_const, :Answer)
     end
 
+    it 'defines Boolean' do
+      assert defined?(::Boolean), 'expected class Boolean'
+    end
+
     describe 'successful operations' do
       before do
         @result = Lotus::Utils::Kernel.Boolean(input)

@@ -3,6 +3,13 @@ require 'date'
 require 'time'
 require 'pathname'
 
+# Define top level constant Boolean, so it can be easily used by other libraries
+# in coercions DSLs
+#
+# @since x.x.x
+class Boolean
+end unless defined?(Boolean)
+
 module Lotus
   module Utils
     # Kernel utilities
