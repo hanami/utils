@@ -64,6 +64,11 @@ describe Lotus::Utils::PathPrefix do
       prefix = Lotus::Utils::PathPrefix.new('fruits')
       prefix.relative_join('_cherries', '_').must_equal 'fruits_cherries'
     end
+
+    it 'raises error if the given separator is nil' do
+      prefix = Lotus::Utils::PathPrefix.new('fruits')
+      -> { prefix.relative_join('_cherries', nil) }.must_raise ArgumentError
+    end
   end
 
   describe 'string interface' do

@@ -48,6 +48,9 @@ module Lotus
       #
       # @return [::String] the joined string
       #
+      # @raise [ArgumentError] if one of the argument can't be threated as a
+      #   string
+      #
       # @since 0.1.0
       #
       # @example
@@ -58,6 +61,8 @@ module Lotus
       #   path_prefix.relative_join 'new', '_' # => 'posts_new'
       def relative_join(string, separator = @separator)
         relativize [@string, string].join(separator), separator
+      rescue NoMethodError
+        raise ArgumentError
       end
 
       # Returns the hash of the internal string
