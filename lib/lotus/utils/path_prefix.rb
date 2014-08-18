@@ -57,7 +57,6 @@ module Lotus
       #   path_prefix.relative_join 'new'      # => 'posts/new'
       #   path_prefix.relative_join 'new', '_' # => 'posts_new'
       def relative_join(string, separator = @separator)
-        separator = separator || @separator
         relativize [@string, string].join(separator), separator
       end
 
