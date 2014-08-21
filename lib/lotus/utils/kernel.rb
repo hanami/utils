@@ -3,7 +3,6 @@ require 'date'
 require 'time'
 require 'pathname'
 require 'bigdecimal'
-require 'bigdecimal/util'
 
 # Define top level constant Boolean, so it can be easily used by other libraries
 # in coercions DSLs
@@ -327,18 +326,8 @@ module Lotus
       rescue RangeError
         raise TypeError.new "can't convert into Integer"
       end
-      
+
       # Coerces the argument to be an BigDecimal.
-      #
-      # Ruby doesn't have a Kernel.BigDecimal, so we must have our own
-      # implementation based on coercions described on stdlib BigDecimal doc
-      #
-      # It's based on Lotus Utils' Kernel.Integer, and it doesn't stop at the
-      # first error and raise an exception only when the argument can't be
-      # coerced.
-      # 
-      # Rational numbers needs an argument to use .to_d so we calculate based
-      # on string lenght
       #
       # @param arg [Object] the argument
       #
@@ -346,14 +335,12 @@ module Lotus
       #
       # @raise [TypeError] if the argument can't be coerced
       #
-      # @since 0.2.X
+      # @since x.x.x
       #
-      # @see http://www.ruby-doc.org/stdlib-2.1.2/libdoc/bigdecimal/rdoc/BigDecimal.html
+      # @see http://www.ruby-doc.org/stdlib/libdoc/bigdecimal/rdoc/BigDecimal.html
       #
       # @example Basic Usage
-      #   require 'bigdecimal'
       #   require 'lotus/utils/kernel'
-      #   require 'bigdecimal/util'
       #
       #   Lotus::Utils::Kernel.BigDecimal(1)                        # => 1
       #   Lotus::Utils::Kernel.BigDecimal(1.2)                      # => 1
@@ -371,56 +358,53 @@ module Lotus
       #
       #   UltimateAnswer = Struct.new(:question) do
       #     def to_d
-      #       Rational(42).to_d(2)
-      #     end
-      #
-      #     def to_r
-      #       Rational(42)
-      #     end
-      #
-      #     def to_s
-      #       "42"
+      #       BigDecimal.new(42)
       #     end
       #   end
       #
       #   answer = UltimateAnswer.new('The Ultimate Question of Life')
-      #   Lotus::Utils::Kernel.BigDecimal(answer) # => 42
+      #   Lotus::Utils::Kernel.BigDecimal(answer)
+      #     # => #<BigDecimal:7fabfd148588,'0.42E2',9(27)>
       #
-      # @example Error Handling
+      # @example Unchecked exceptions
+      #   require 'lotus/utils/kernel'
       #
-      # @example Unchecked Exceptions
+      #   # When nil
+      #   input = nil
+      #   Lotus::Utils::Kernel.BigDecimal(nil) # => TypeError
       #
+      #   # When true
+      #   input = true
+      #   Lotus::Utils::Kernel.BigDecimal(input) # => TypeError
+      #
+      #   # When false
+      #   input = false
+      #   Lotus::Utils::Kernel.BigDecimal(input) # => TypeError
+      #
+      #   # When Date
+      #   input = Date.today
+      #   Lotus::Utils::Kernel.BigDecimal(input) # => TypeError
+      #
+      #   # When DateTime
+      #   input = DateTime.now
+      #   Lotus::Utils::Kernel.BigDecimal(input) # => TypeError
+      #
+      #   # When Time
+      #   input = Time.now
+      #   Lotus::Utils::Kernel.BigDecimal(input) # => TypeError
+      #
+      #   # Missing #respond_to?
+      #   input = BasicObject.new
+      #   Lotus::Utils::Kernel.BigDecimal(input) # => TypeError
       def self.BigDecimal(arg)
-        BigDecimal.new(arg)
-      rescue ArgumentError, TypeError, NoMethodError
-        begin
-          # These classes has to_s that BigDecimal would raise TypeError
-          # But as we are forcing implicit coercion and these classes respond
-          # to to_s, we are raising exception here once is non sense convert
-          # these classes to BigDecimal
-          non_sense_coercion_classes = [ DateTime, Date, Time ]
-          if non_sense_coercion_classes.include? arg.class
-            raise TypeError.new "no implicit conversion of Class into String"
-          end
-          
-          # Implicit conversion
-          # ok, I didn't like the way we coerce Rational to BigDecimal
-          # accept suggestions here
-          if arg.class == Rational
-            BigDecimal.new(arg.to_d(arg.to_f.to_s.length))
-          elsif arg.respond_to?(:to_d)
-            BigDecimal.new(arg.to_d)
-          elsif arg.respond_to?(:to_r)
-            BigDecimal.new(arg.to_r.to_d(arg.to_r.to_f.to_s.length))
-          elsif arg.respond_to?(:to_s)
-            BigDecimal.new(arg.to_s)
-          else
-            raise TypeError.new "can't convert into BigDecimal"
-          end
-        rescue NoMethodError
-          raise TypeError.new "can't convert into BigDecimal"
+        case arg
+        when ->(a) { a.respond_to?(:to_d) } then arg.to_d
+        when Float, Complex, Rational
+          BigDecimal(arg.to_s)
+        else
+          BigDecimal.new(arg)
         end
-      rescue RangeError
+      rescue NoMethodError
         raise TypeError.new "can't convert into BigDecimal"
       end
 
