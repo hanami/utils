@@ -18,7 +18,7 @@ module Lotus
       end
 
       # Joins self with the given token.
-      # It cleanups the all the `separator` repetitions.
+      # It cleans up all the `separator` repetitions.
       #
       # @param string [::String] the token we want to join
       #
@@ -41,14 +41,14 @@ module Lotus
       end
 
       # Joins self with the given token, without prefixing it with `separator`.
-      # It cleanups the all the `separator` repetitions.
+      # It cleans up all the `separator` repetitions.
       #
       # @param string [::String] the token we want to join
       # @param separator [::String] the separator used between tokens
       #
       # @return [::String] the joined string
       #
-      # @raise [ArgumentError] if one of the argument can't be threated as a
+      # @raise [ArgumentError] if one of the argument can't be treated as a
       #   string
       #
       # @since 0.1.0
