@@ -684,6 +684,275 @@ describe Lotus::Utils::Kernel do
       end
     end
   end
+  
+  describe '.BigDecimal' do
+    describe 'successful operations' do
+      before do
+        PersonFavDecimalNumber = Struct.new(:name) do          
+          def to_d
+            Rational(23).to_d(2)
+          end
+        end
+        
+        PersonFavRationalNumber = Struct.new(:name) do
+          def to_r
+            Rational(23)
+          end
+        end
+        
+        PersonFavStringNumber = Struct.new(:name) do
+          def to_s
+            "23"
+          end
+        end
+
+        @result = Lotus::Utils::Kernel.BigDecimal(input)
+      end
+
+      after do
+        Object.send(:remove_const, :PersonFavDecimalNumber)
+        Object.send(:remove_const, :PersonFavRationalNumber)
+        Object.send(:remove_const, :PersonFavStringNumber)
+      end
+
+      describe 'when nil is given' do
+        let(:input) { nil }
+
+        it 'returns 0' do
+          @result.must_equal 0
+        end
+      end
+
+      describe 'when a true is given' do
+        let(:input) { true }
+
+        it 'returns an BigDecimal' do
+          @result.must_equal 0
+        end
+      end
+
+      describe 'when a false is given' do
+        let(:input) { false }
+
+        it 'returns an BigDecimal' do
+          @result.must_equal 0
+        end
+      end
+      
+      describe 'when a fixnum given' do
+        let(:input) { 1 }
+
+        it 'returns an BigDecimal' do
+          @result.must_equal 1
+        end
+      end
+
+      describe 'when a float is given' do
+        let(:input) { 1.2 }
+
+        it 'returns an BigDecimal' do
+          @result.must_equal BigDecimal.new(1.2.to_d)
+        end
+      end
+
+      describe 'when a string given' do
+        let(:input) { '23' }
+
+        it 'returns an integer' do
+          @result.must_equal 23
+        end
+      end
+
+      describe 'when a string representing a float number is given' do
+        let(:input) { '23.4' }
+
+        it 'returns an integer' do
+          @result.must_equal 23.4
+        end
+      end
+
+      describe 'when an octal is given' do
+        let(:input) { 011 }
+
+        it 'returns the string representation' do
+          @result.must_equal 9
+        end
+      end
+
+      describe 'when a hex is given' do
+        let(:input) { 0xf5 }
+
+        it 'returns the string representation' do
+          @result.must_equal 245
+        end
+      end
+
+      describe 'when a bignum is given' do
+        let(:input) { 13289301283 ** 2 }
+
+        it 'returns an bignum' do
+          @result.must_equal 176605528590345446089
+        end
+      end
+
+      describe 'when a bigdecimal is given' do
+        let(:input) { BigDecimal.new('12.0001') }
+
+        it 'returns an bignum' do
+          @result.must_equal 12.0001
+        end
+      end
+
+      describe 'when a complex number with imaginary part is given' do
+        let(:input) { Complex(758.3, 0) }
+
+        it 'returns an BigDecimal' do
+          @result.must_equal 758.3
+        end
+      end
+      
+      describe 'when a complex number without imaginary part is given' do
+        let(:input) { Complex(0.3) }
+
+        it 'returns an BigDecimal' do
+          @result.must_equal 0.3
+        end
+      end
+
+      describe 'when a string representing a complex number is given' do
+        let(:input) { '2.5/1' }
+
+        it 'returns an BigDecimal' do
+          @result.must_equal 2.5
+        end
+      end
+
+      describe 'when a rational number is given' do
+        let(:input) { Rational(0.3) }
+
+        it 'returns an BigDecimal' do
+          @result.must_equal 0.3
+        end
+      end
+
+      describe 'when a string representing a rational number is given' do
+        let(:input) { '2/3' }
+
+        it 'returns an BigDecimal rounded to integer' do
+          @result.must_equal 2
+        end
+      end
+      
+      # testing @result.to_s because Not a Number representation is a string
+      # BigDecimal.new('NaN') === BigDecimal.new('NaN')
+      # => false
+      describe 'when a BigDecimal NaN is given' do
+        let(:input) { 'NaN' }
+
+        it 'returns the string representation' do
+          @result.to_s.must_equal BigDecimal.new('NaN').to_s
+        end
+      end
+      
+      describe 'when a BigDecimal Infinity is given' do
+        let(:input) { 'Infinity' }
+
+        it 'returns the string representation' do
+          @result.to_s.must_equal BigDecimal.new('Infinity').to_s
+        end
+      end
+      
+      describe 'when a BigDecimal Infinity is given' do
+        let(:input) { 'Infinity' }
+
+        it 'returns the BigDecimal Infinity representation' do
+          @result.must_equal BigDecimal.new('Infinity')
+        end
+      end
+
+      describe 'when an object that implements #to_d is given' do
+        let(:input) { PersonFavDecimalNumber.new('Luca') }
+
+        it 'returns an integer' do
+          @result.must_equal 23
+        end
+      end
+      
+      describe 'when an object that implements #to_r is given' do
+        let(:input) { PersonFavRationalNumber.new('Luca') }
+
+        it 'returns an integer' do
+          @result.must_equal 23
+        end
+      end
+      
+      describe 'when an object that implements #to_s is given' do
+        let(:input) { PersonFavStringNumber.new('Luca') }
+
+        it 'returns an integer' do
+          @result.must_equal 23
+        end
+      end
+    end
+
+    describe 'failure operations' do
+      describe 'when a date is given' do
+        let(:input) { Date.today }
+
+        it 'raises error' do
+          -> { Lotus::Utils::Kernel.BigDecimal(input) }.must_raise(TypeError)
+        end
+      end
+
+      describe 'when a datetime is given' do
+        let(:input) { DateTime.now }
+
+        it 'raises error' do
+          -> { Lotus::Utils::Kernel.BigDecimal(input) }.must_raise(TypeError)
+        end
+      end
+      
+      describe 'when a time is given' do
+        let(:input) { Time.now }
+
+        it 'raises error' do
+          -> { Lotus::Utils::Kernel.BigDecimal(input) }.must_raise(TypeError)
+        end
+      end
+
+      describe "when a an object that doesn't implement #respond_to? " do
+        let(:input) { BasicObject.new }
+
+        it 'raises error' do
+          -> { Lotus::Utils::Kernel.BigDecimal(input) }.must_raise(TypeError)
+        end
+
+        it 'returns useful informations about the failure' do
+          begin
+            Lotus::Utils::Kernel.BigDecimal(input)
+          rescue => e
+            e.message.must_equal "can't convert into BigDecimal"
+          end
+        end
+      end
+
+      describe "when a an object (only BasicObject) that doesn't implement any to_s interface" do
+        let(:input) { BasicObject.new }
+
+        it 'raises error' do
+          -> { Lotus::Utils::Kernel.BigDecimal(input) }.must_raise(TypeError)
+        end
+
+        it 'returns useful informations about the failure' do
+          begin
+            Lotus::Utils::Kernel.BigDecimal(input)
+          rescue => e
+            e.message.must_equal "can't convert into BigDecimal"
+          end
+        end
+      end
+    end
+  end
 
   describe '.Float' do
     describe 'successful operations' do
