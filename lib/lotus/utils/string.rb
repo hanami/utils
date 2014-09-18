@@ -56,7 +56,7 @@ module Lotus
 
       # Return a downcased and underscore separated version of the string
       #
-      # Revised version of `ActiveSupport::Inflector.underscore` implementation 
+      # Revised version of `ActiveSupport::Inflector.underscore` implementation
       # @see https://github.com/rails/rails/blob/feaa6e2048fe86bcf07e967d6e47b865e42e055b/activesupport/lib/active_support/inflector/methods.rb#L90
       #
       # @return [String] the transformed string
@@ -131,15 +131,15 @@ module Lotus
       #   # =>
       #     'Lotus::Utils'
       #     'Lotus::App'
-      def tokenize(&blk)
+      def tokenize
         if match = TOKENIZE_REGEXP.match(@string)
           pre, post = match.pre_match, match.post_match
           tokens = match[1].split(TOKENIZE_SEPARATOR)
           tokens.each do |token|
-            blk.call(self.class.new("#{pre}#{token}#{post}"))
+            yield(self.class.new("#{pre}#{token}#{post}"))
           end
         else
-          blk.call(self.class.new(@string))
+          yield(self.class.new(@string))
         end
 
         nil
