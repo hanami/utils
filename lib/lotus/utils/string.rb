@@ -114,7 +114,7 @@ module Lotus
       # It iterates thru the tokens and calls the given block.
       # A token is a substring wrapped by `()` and separated by `|`.
       #
-      # @param blk [Proc, #call] the block that is called for each token.
+      # @yield the block that is called for each token.
       #
       # @return [void]
       #
