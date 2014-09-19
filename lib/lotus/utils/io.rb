@@ -9,7 +9,7 @@ module Lotus
       # Revised version of ActiveSupport's `Kernel.with_warnings` implementation
       # @see https://github.com/rails/rails/blob/v4.1.2/activesupport/lib/active_support/core_ext/kernel/reporting.rb#L25
       #
-      # @param blk [Proc] the block of code that generates warnings.
+      # @yield the block of code that generates warnings.
       #
       # @return [void]
       #
@@ -25,9 +25,9 @@ module Lotus
       #   Lotus::Utils::IO.silence_warnings do
       #     Test::TEST_VALUE = 'redefined'
       #   end
-      def self.silence_warnings(&blk)
+      def self.silence_warnings
         old_verbose, $VERBOSE = $VERBOSE, nil
-        blk.call
+        yield
       ensure
         $VERBOSE = old_verbose
       end
