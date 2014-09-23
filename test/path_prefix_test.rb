@@ -67,7 +67,7 @@ describe Lotus::Utils::PathPrefix do
 
     it 'raises error if the given separator is nil' do
       prefix = Lotus::Utils::PathPrefix.new('fruits')
-      -> { prefix.relative_join('_cherries', nil) }.must_raise ArgumentError
+      -> { prefix.relative_join('_cherries', nil) }.must_raise TypeError
     end
   end
 
