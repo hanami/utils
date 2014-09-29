@@ -93,22 +93,27 @@ module Lotus
         self.class.new split(NAMESPACE_SEPARATOR).last
       end
 
-      # Return the top level namespace name
+      # Return the namespace for Lotus
       #
       # @return [String] the transformed string
       #
-      # @since 0.1.2
+      # @since x.x.x
       #
       # @example
       #   require 'lotus/utils/string'
       #
       #   string = Lotus::Utils::String.new 'Lotus::Utils::String'
-      #   string.namespace # => 'Lotus'
+      #   string.namespace # => 'Lotus::Utils'
       #
       #   string = Lotus::Utils::String.new 'String'
       #   string.namespace # => 'String'
       def namespace
-        self.class.new split(NAMESPACE_SEPARATOR).first
+        parts = split(NAMESPACE_SEPARATOR)
+        if parts.length > 1
+          self.class.new parts.slice(0...-1).join(NAMESPACE_SEPARATOR)
+        else
+          self.class.new parts.first
+        end
       end
 
       # It iterates thru the tokens and calls the given block.

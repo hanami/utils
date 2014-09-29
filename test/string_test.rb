@@ -61,9 +61,10 @@ describe Lotus::Utils::String do
       Lotus::Utils::String.new('Lotus').namespace.must_be_kind_of(Lotus::Utils::String)
     end
 
-    it 'returns the top level module name' do
+    it 'returns the namespace for Lotus' do
       Lotus::Utils::String.new('String').namespace.must_equal('String')
-      Lotus::Utils::String.new('Lotus::Utils::String').namespace.must_equal('Lotus')
+      Lotus::Utils::String.new('Lotus::Utils::String').namespace.must_equal('Lotus::Utils')
+      Lotus::Utils::String.new('').namespace.must_equal('')
     end
   end
 
