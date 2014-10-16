@@ -99,6 +99,28 @@ describe Lotus::Utils::Hash do
         end
       end
 
+      it 'returns nested ::Hash (when symbolized)' do
+        hash = {
+          'tutorial' => {
+            'instructions' => [
+              {'title' => 'foo',  'body' => 'bar'},
+              {'title' => 'hoge', 'body' => 'fuga'}
+            ]
+          }
+        }
+
+        utils_hash = Lotus::Utils::Hash.new(hash).symbolize!
+        utils_hash.wont_be_kind_of(::Hash)
+
+        actual = utils_hash.to_h
+        actual.must_equal(hash)
+
+        actual[:tutorial].must_be_kind_of(::Hash)
+        actual[:tutorial][:instructions].each do |h|
+          h.must_be_kind_of(::Hash)
+        end
+      end
+
       it 'prevents information escape' do
         actual = Lotus::Utils::Hash.new({'a' => 1})
         hash   = actual.to_h
@@ -106,6 +128,16 @@ describe Lotus::Utils::Hash do
 
         actual.to_h.must_equal({'a' => 1})
       end
+
+      it 'prevents information escape for nested hash'
+      # it 'prevents information escape for nested hash' do
+      #   actual  = Lotus::Utils::Hash.new({'a' => {'b' => 2}})
+      #   hash    = actual.to_h
+      #   subhash = hash['a']
+      #   subhash.merge!('c' => 3)
+
+      #   actual.to_h.must_equal({'a' => {'b' => 2}})
+      # end
     end
 
     describe '#to_hash' do
@@ -127,7 +159,29 @@ describe Lotus::Utils::Hash do
         utils_hash = Lotus::Utils::Hash.new(hash)
         utils_hash.wont_be_kind_of(::Hash)
 
-        actual = utils_hash.to_hash
+        actual = utils_hash.to_h
+        actual.must_equal(hash)
+
+        actual[:tutorial].must_be_kind_of(::Hash)
+        actual[:tutorial][:instructions].each do |h|
+          h.must_be_kind_of(::Hash)
+        end
+      end
+
+      it 'returns nested ::Hash (when symbolized)' do
+        hash = {
+          'tutorial' => {
+            'instructions' => [
+              {'title' => 'foo',  'body' => 'bar'},
+              {'title' => 'hoge', 'body' => 'fuga'}
+            ]
+          }
+        }
+
+        utils_hash = Lotus::Utils::Hash.new(hash).symbolize!
+        utils_hash.wont_be_kind_of(::Hash)
+
+        actual = utils_hash.to_h
         actual.must_equal(hash)
 
         actual[:tutorial].must_be_kind_of(::Hash)

@@ -115,7 +115,10 @@ module Lotus
       #
       # @see http://www.ruby-doc.org/core/Hash.html#method-i-to_h
       def to_h
-        @hash.dup
+        @hash.each_with_object({}) do |(k, v), result|
+          v = v.to_h if v.is_a?(self.class)
+          result[k] = v
+        end
       end
 
       alias_method :to_hash, :to_h
