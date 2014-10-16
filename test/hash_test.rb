@@ -77,6 +77,20 @@ describe Lotus::Utils::Hash do
         actual.must_equal({'a' => 1})
       end
 
+      it 'returns nested ::Hash' do
+        hash = {
+          tutorial: {
+            instructions: [
+              {title: 'foo',  body: 'bar'},
+              {title: 'hoge', body: 'fuga'}
+            ]
+          }
+        }
+
+        actual = Lotus::Utils::Hash.new(hash).to_h
+        actual.must_equal(hash)
+      end
+
       it 'prevents information escape' do
         actual = Lotus::Utils::Hash.new({'a' => 1})
         hash   = actual.to_h
@@ -90,6 +104,20 @@ describe Lotus::Utils::Hash do
       it 'returns a ::Hash' do
         actual = Lotus::Utils::Hash.new({'a' => 1}).to_hash
         actual.must_equal({'a' => 1})
+      end
+
+      it 'returns nested ::Hash' do
+        hash = {
+          tutorial: {
+            instructions: [
+              {title: 'foo',  body: 'bar'},
+              {title: 'hoge', body: 'fuga'}
+            ]
+          }
+        }
+
+        actual = Lotus::Utils::Hash.new(hash).to_h
+        actual.must_equal(hash)
       end
 
       it 'prevents information escape' do
