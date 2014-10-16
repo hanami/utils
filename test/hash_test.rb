@@ -87,8 +87,16 @@ describe Lotus::Utils::Hash do
           }
         }
 
-        actual = Lotus::Utils::Hash.new(hash).to_h
+        utils_hash = Lotus::Utils::Hash.new(hash)
+        utils_hash.wont_be_kind_of(::Hash)
+
+        actual = utils_hash.to_h
         actual.must_equal(hash)
+
+        actual[:tutorial].must_be_kind_of(::Hash)
+        actual[:tutorial][:instructions].each do |h|
+          h.must_be_kind_of(::Hash)
+        end
       end
 
       it 'prevents information escape' do
@@ -116,8 +124,16 @@ describe Lotus::Utils::Hash do
           }
         }
 
-        actual = Lotus::Utils::Hash.new(hash).to_h
+        utils_hash = Lotus::Utils::Hash.new(hash)
+        utils_hash.wont_be_kind_of(::Hash)
+
+        actual = utils_hash.to_hash
         actual.must_equal(hash)
+
+        actual[:tutorial].must_be_kind_of(::Hash)
+        actual[:tutorial][:instructions].each do |h|
+          h.must_be_kind_of(::Hash)
+        end
       end
 
       it 'prevents information escape' do
