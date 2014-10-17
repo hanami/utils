@@ -52,16 +52,17 @@ module Lotus
       # It skips duplications and raises an error in case one of the paths
       # doesn't exist.
       #
-      # @param blk [Proc] the block of code to be yielded
+      # @yield [pathname] the block of code that acts on the collection
+      # @yieldparam pathname [Pathname]
       #
       # @return [void]
       #
       # @raise [Errno::ENOENT] if one of the paths doesn't exist
       #
       # @since 0.2.0
-      def each(&blk)
+      def each
         Utils::Kernel.Array(@paths).each do |path|
-          blk.call realpath(path)
+          yield realpath(path)
         end
       end
 
