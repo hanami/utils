@@ -40,8 +40,18 @@ describe Lotus::Utils::String do
     end
 
     it 'substitutes double colons with path separators' do
-      string = Lotus::Utils::String.new('Lotus::View')
-      string.underscore.must_equal 'lotus/view'
+      string = Lotus::Utils::String.new('Lotus::Utils::String')
+      string.underscore.must_equal 'lotus/utils/string'
+    end
+
+    it 'handles acronyms' do
+      string = Lotus::Utils::String.new('APIDoc')
+      string.underscore.must_equal 'api_doc'
+    end
+
+    it 'handles numbers' do
+      string = Lotus::Utils::String.new('Lucky23Action')
+      string.underscore.must_equal 'lucky23_action'
     end
   end
 
