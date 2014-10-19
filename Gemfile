@@ -8,6 +8,3 @@ end
 
 gem 'simplecov', require: false
 gem 'coveralls', require: false
-
-gem "benchmark-ips"
-gem 'allocation_stats'
