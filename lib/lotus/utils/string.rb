@@ -28,6 +28,18 @@ module Lotus
       # @api private
       TOKENIZE_SEPARATOR  = '|'.freeze
 
+      # Separator for #underscore
+      #
+      # @since x.x.x
+      # @api private
+      UNDERSCORE_SEPARATOR = "/".freeze
+
+      # gsub second parameter used in #underscore
+      #
+      # @since x.x.x
+      # @api private
+      UNDERSCORE_DIVISION_TARGET  = '\1_\2'.freeze
+
       # Initialize the string
       #
       # @param string [::String, Symbol] the value we want to initialize
@@ -69,10 +81,11 @@ module Lotus
       #   string = Lotus::Utils::String.new 'LotusUtils'
       #   string.underscore # => 'lotus_utils'
       def underscore
-        self.class.new gsub(NAMESPACE_SEPARATOR, '/').
-          gsub(/([A-Z\d]+)([A-Z][a-z])/,'\1_\2').
-          gsub(/([a-z\d])([A-Z])/,'\1_\2').
-          downcase
+        new_string = gsub(NAMESPACE_SEPARATOR, UNDERSCORE_SEPARATOR)
+        new_string.gsub!(/([A-Z\d]+)([A-Z][a-z])/, UNDERSCORE_DIVISION_TARGET)
+        new_string.gsub!(/([a-z\d])([A-Z])/, UNDERSCORE_DIVISION_TARGET)
+        new_string.downcase!
+        self.class.new new_string
       end
 
       # Return the string without the Ruby namespace of the class
