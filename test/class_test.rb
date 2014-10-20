@@ -25,12 +25,23 @@ describe Lotus::Utils::Class do
     end
 
     it 'raises error for missing constant' do
-      -> { Lotus::Utils::Class.load!('MissingConstant') }.must_raise(NameError)
+      error = -> { Lotus::Utils::Class.load!('MissingConstant') }.must_raise(NameError)
+      error.message.must_equal "uninitialized constant MissingConstant"
+    end
+
+    it 'raises error for missing constant with multiple alternatives' do
+      error = -> { Lotus::Utils::Class.load!('Missing(Constant|Class)') }.must_raise(NameError)
+      error.message.must_equal "uninitialized constant Missing(Constant|Class)"
     end
 
     it 'raises error with full constant name' do
       error = -> { Lotus::Utils::Class.load!('Step', App) }.must_raise(NameError)
-      assert_match(/App::Step/, error.message)
+      error.message.must_equal "uninitialized constant App::Step"
+    end
+
+    it 'raises error with full constant name and multiple alternatives' do
+      error = -> { Lotus::Utils::Class.load!('(Step|Point)', App) }.must_raise(NameError)
+      error.message.must_equal "uninitialized constant App::(Step|Point)"
     end
 
     it 'loads the class from given string, by interpolating tokens' do

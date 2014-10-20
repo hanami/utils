@@ -52,7 +52,8 @@ module Lotus
           end
         end
 
-        raise NameError.new("#{namespace}::#{name}")
+        full_name = [ (namespace == Object ? nil : namespace), name ].compact.join('::')
+        raise NameError.new("uninitialized constant #{ full_name }")
       end
     end
   end
