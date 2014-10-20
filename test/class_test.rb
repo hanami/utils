@@ -28,6 +28,11 @@ describe Lotus::Utils::Class do
       -> { Lotus::Utils::Class.load!('MissingConstant') }.must_raise(NameError)
     end
 
+    it 'raises error with full constant name' do
+      error = -> { Lotus::Utils::Class.load!('Step', App) }.must_raise(NameError)
+      assert_match(/App::Step/, error.message)
+    end
+
     it 'loads the class from given string, by interpolating tokens' do
       Lotus::Utils::Class.load!('App::Service(::Point|Point)').must_equal(App::Service::Point)
     end

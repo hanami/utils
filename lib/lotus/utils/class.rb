@@ -52,7 +52,7 @@ module Lotus
           end
         end
 
-        raise NameError.new(name)
+        raise NameError.new("#{namespace}::#{name}")
       end
     end
   end
