@@ -73,6 +73,10 @@ describe Lotus::Utils::Kernel do
         it 'returns a flatten array' do
           @result.must_equal [1,2,3]
         end
+
+        it "doesn't change the argument" do
+          input.must_equal [1, [2, 3]]
+        end
       end
 
       describe 'when an array with nil values is given' do
@@ -88,6 +92,10 @@ describe Lotus::Utils::Kernel do
 
         it 'returns an array with uniq values' do
           @result.must_equal [2,3]
+        end
+
+        it "doesn't change the argument" do
+          input.must_equal [2, [2, 3]]
         end
       end
 
