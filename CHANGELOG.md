@@ -1,3 +1,38 @@
+## v0.3.0
+### Oct 23, 2014
+
+4f7a8cf 2014-10-22 **Luca Guidi** Use 1/3 less objects when using Lotus::Utils::Kernel.Array
+
+a82437d 2014-10-20 **Luca Guidi** Improved error message for Utils::Class.load!
+
+2a7134d 2014-10-17 **Tom Kadwill** Improved error NameError message by passing in the whole constant name
+
+52c9fe2 2014-10-16 **Luca Guidi** Utils::Hash#to_h return instances of ::Hash in case of nested symbolized data structure
+
+6b9ba7b 2014-09-23 **Luca Guidi** Raise TypeError if nil is passed for PathPrefix#relative_join
+
+28d119f 2014-08-19 **Celso Fernandes** Add BigDecimal coercion to Lotus::Utils::Kernel
+
+a1b7213 2014-08-18 **Luca Guidi** Ensure PathPrefix#relative_join will raise a meaningful error
+
+139c4d5 2014-08-03 **Luca Guidi** Define Boolean, if missing :airplane:
+
+520c021 2014-07-29 **Peter Suschlik** Speedup Lotus::Utils::String#tokenize
+
+2380d62 2014-07-29 **Peter Suschlik** Define Lotus::Utils::Hash#respond_to_missing?
+
+1c300af 2014-07-29 **Peter Suschlik** Define Lotus::Utils::String#responds_to_missing?
+
+46b39e3 2014-07-25 **Luca Guidi** Let Utils::Hash#inspect output to be the same of ::Hash#inspect
+
+5b3e790 2014-07-25 **Luca Guidi** Use composition over inheritance for Lotus::Utils::PathPrefix
+
+6333287 2014-07-09 **Luca Guidi** Specify ::Hash in Lotus::Utils::Kernel.Hash
+
+25e101e 2014-07-09 **Luca Guidi** Use composition over inheritance for Lotus::Utils::Hash
+
+dea7e6b 2014-07-07 **Luca Guidi** Lotus::Utils::String is now a wrapper around a string, instead of inheriting from String.
+
 ## v0.2.0
 ### Jun 23, 2014
 
