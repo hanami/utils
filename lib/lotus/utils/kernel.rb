@@ -70,7 +70,11 @@ module Lotus
       #   response = Response.new(200, {}, 'hello')
       #   Lotus::Utils::Kernel.Array(response)         # => [200, {}, "hello"]
       def self.Array(arg)
-        super(arg).flatten.compact.uniq
+        super(arg).dup.tap do |a|
+          a.flatten!
+          a.compact!
+          a.uniq!
+        end
       end
 
       # Coerces the argument to be a set.
