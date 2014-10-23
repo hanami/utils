@@ -16,7 +16,7 @@ module Lotus
     # Kernel utilities
     # @since 0.1.1
     module Kernel
-      # Coerces the argument to be an array.
+      # Coerces the argument to be an Array.
       #
       # It's similar to Ruby's Kernel.Array, but it applies further
       # transformations:
@@ -77,7 +77,7 @@ module Lotus
         end
       end
 
-      # Coerces the argument to be a set.
+      # Coerces the argument to be a Set.
       #
       # @param arg [Object] the input
       #
@@ -134,7 +134,7 @@ module Lotus
         raise TypeError.new("can't convert into Set")
       end
 
-      # Coerces the argument to be an hash.
+      # Coerces the argument to be a Hash.
       #
       # @param arg [Object] the input
       #
@@ -212,7 +212,7 @@ module Lotus
         end
       end
 
-      # Coerces the argument to be an integer.
+      # Coerces the argument to be an Integer.
       #
       # It's similar to Ruby's Kernel.Integer, but it doesn't stop at the first
       # error and raise an exception only when the argument can't be coerced.
@@ -331,7 +331,7 @@ module Lotus
         raise TypeError.new "can't convert into Integer"
       end
 
-      # Coerces the argument to be an BigDecimal.
+      # Coerces the argument to be a BigDecimal.
       #
       # @param arg [Object] the argument
       #
@@ -412,7 +412,7 @@ module Lotus
         raise TypeError.new "can't convert into BigDecimal"
       end
 
-      # Coerces the argument to be a float.
+      # Coerces the argument to be a Float.
       #
       # It's similar to Ruby's Kernel.Float, but it doesn't stop at the first
       # error and raise an exception only when the argument can't be coerced.
@@ -536,7 +536,7 @@ module Lotus
         raise TypeError.new "can't convert into Float"
       end
 
-      # Coerces the argument to be a string.
+      # Coerces the argument to be a String.
       #
       # Identical behavior of Ruby's Kernel.Array, still here because we want
       # to keep the interface consistent
@@ -827,7 +827,7 @@ module Lotus
         raise TypeError.new "can't convert into Time"
       end
 
-      # Coerces the argument to be a boolean.
+      # Coerces the argument to be a Boolean.
       #
       # @param arg [Object] the argument
       #
