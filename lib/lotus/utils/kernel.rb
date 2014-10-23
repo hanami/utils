@@ -31,11 +31,11 @@ module Lotus
       #
       # @since 0.1.1
       #
-      # @see http://www.ruby-doc.org/core-2.1.2/Kernel.html#method-i-Array
+      # @see http://www.ruby-doc.org/core/Kernel.html#method-i-Array
       #
-      # @see http://www.ruby-doc.org/core-2.1.2/Array.html#method-i-flatten
-      # @see http://www.ruby-doc.org/core-2.1.2/Array.html#method-i-compact
-      # @see http://www.ruby-doc.org/core-2.1.2/Array.html#method-i-uniq
+      # @see http://www.ruby-doc.org/core/Array.html#method-i-flatten
+      # @see http://www.ruby-doc.org/core/Array.html#method-i-compact
+      # @see http://www.ruby-doc.org/core/Array.html#method-i-uniq
       #
       # @example Basic Usage
       #   require 'lotus/utils/kernel'
@@ -144,7 +144,7 @@ module Lotus
       #
       # @since 0.1.1
       #
-      # @see http://www.ruby-doc.org/core-2.1.2/Kernel.html#method-i-Hash
+      # @see http://www.ruby-doc.org/core/Kernel.html#method-i-Hash
       #
       # @example Basic Usage
       #   require 'lotus/utils/kernel'
@@ -225,7 +225,7 @@ module Lotus
       #
       # @since 0.1.1
       #
-      # @see http://www.ruby-doc.org/core-2.1.2/Kernel.html#method-i-Integer
+      # @see http://www.ruby-doc.org/core/Kernel.html#method-i-Integer
       #
       # @example Basic Usage
       #   require 'bigdecimal'
@@ -425,7 +425,7 @@ module Lotus
       #
       # @since 0.1.1
       #
-      # @see http://www.ruby-doc.org/core-2.1.2/Kernel.html#method-i-Float
+      # @see http://www.ruby-doc.org/core/Kernel.html#method-i-Float
       #
       # @example Basic Usage
       #   require 'bigdecimal'
@@ -549,7 +549,7 @@ module Lotus
       #
       # @since 0.1.1
       #
-      # @see http://www.ruby-doc.org/core-2.1.2/Kernel.html#method-i-String
+      # @see http://www.ruby-doc.org/core/Kernel.html#method-i-String
       #
       # @example Basic Usage
       #   require 'date'

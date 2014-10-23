@@ -113,7 +113,7 @@ module Lotus
         #
         # @since 0.2.0
         #
-        # @see http://ruby-doc.org/core-2.1.2/Object.html#method-i-freeze
+        # @see http://ruby-doc.org/core/Object.html#method-i-freeze
         #
         # @example
         #   require 'lotus/utils/callbacks'

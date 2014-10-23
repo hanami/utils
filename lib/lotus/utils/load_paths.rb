@@ -15,7 +15,7 @@ module Lotus
       #
       # @since 0.2.0
       #
-      # @see http://ruby-doc.org/stdlib-2.1.2/libdoc/pathname/rdoc/Pathname.html
+      # @see http://ruby-doc.org/stdlib/libdoc/pathname/rdoc/Pathname.html
       # @see Lotus::Utils::Kernel.Pathname
       def initialize(*paths)
         @paths = Array(paths)
@@ -27,8 +27,8 @@ module Lotus
       # @api private
       # @since 0.2.0
       #
-      # @see http://ruby-doc.org/core-2.1.2/Object.html#method-i-clone
-      # @see http://ruby-doc.org/core-2.1.2/Object.html#method-i-dup
+      # @see http://ruby-doc.org/core/Object.html#method-i-clone
+      # @see http://ruby-doc.org/core/Object.html#method-i-dup
       #
       # @example
       #   require 'lotus/utils/load_paths'
@@ -79,7 +79,7 @@ module Lotus
       #
       # @since 0.2.0
       #
-      # @see http://ruby-doc.org/stdlib-2.1.2/libdoc/pathname/rdoc/Pathname.html
+      # @see http://ruby-doc.org/stdlib/libdoc/pathname/rdoc/Pathname.html
       # @see Lotus::Utils::Kernel.Pathname
       # @see Lotus::Utils::LoadPaths#freeze
       #
@@ -120,7 +120,7 @@ module Lotus
       #
       # @since 0.2.0
       #
-      # @see http://ruby-doc.org/core-2.1.2/Object.html#method-i-freeze
+      # @see http://ruby-doc.org/core/Object.html#method-i-freeze
       #
       # @example
       #   require 'lotus/utils/load_paths'
