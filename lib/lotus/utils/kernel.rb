@@ -7,7 +7,7 @@ require 'bigdecimal'
 # Define top level constant Boolean, so it can be easily used by other libraries
 # in coercions DSLs
 #
-# @since x.x.x
+# @since 0.3.0
 class Boolean
 end unless defined?(Boolean)
 
@@ -339,7 +339,7 @@ module Lotus
       #
       # @raise [TypeError] if the argument can't be coerced
       #
-      # @since x.x.x
+      # @since 0.3.0
       #
       # @see http://www.ruby-doc.org/stdlib/libdoc/bigdecimal/rdoc/BigDecimal.html
       #

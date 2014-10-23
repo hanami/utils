@@ -68,7 +68,7 @@ module Lotus
       #
       # @return [Fixnum]
       #
-      # @since x.x.x
+      # @since 0.3.0
       def hash
         @string.hash
       end
@@ -77,7 +77,7 @@ module Lotus
       #
       # @return [String]
       #
-      # @since x.x.x
+      # @since 0.3.0
       def to_s
         @string
       end
@@ -88,7 +88,7 @@ module Lotus
       #
       # @return [TrueClass,FalseClass]
       #
-      # @since x.x.x
+      # @since 0.3.0
       def ==(other)
         to_s == other
       end

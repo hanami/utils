@@ -61,7 +61,7 @@ module Lotus
       #
       # @return [Array] the keys
       #
-      # @since x.x.x
+      # @since 0.3.0
       #
       # @see http://www.ruby-doc.org/core/Hash.html#method-i-keys
       def keys
@@ -75,7 +75,7 @@ module Lotus
       #
       # @return [Object,nil] the value hold by the given key, if present
       #
-      # @since x.x.x
+      # @since 0.3.0
       #
       # @see http://www.ruby-doc.org/core/Hash.html#method-i-keys
       def delete(key)
@@ -88,7 +88,7 @@ module Lotus
       #
       # @return [Object,nil] the correspoding value, if present
       #
-      # @since x.x.x
+      # @since 0.3.0
       #
       # @see http://www.ruby-doc.org/core/Hash.html#method-i-5B-5D
       def [](key)
@@ -100,7 +100,7 @@ module Lotus
       # @param key [Object] the key to assign
       # @param value [Object] the value to assign
       #
-      # @since x.x.x
+      # @since 0.3.0
       #
       # @see http://www.ruby-doc.org/core/Hash.html#method-i-5B-5D-3D
       def []=(key, value)
@@ -111,7 +111,7 @@ module Lotus
       #
       # @return [::Hash] the hash
       #
-      # @since x.x.x
+      # @since 0.3.0
       #
       # @see http://www.ruby-doc.org/core/Hash.html#method-i-to_h
       def to_h
@@ -127,7 +127,7 @@ module Lotus
       #
       # @return [::Array] the array
       #
-      # @since x.x.x
+      # @since 0.3.0
       #
       # @see http://www.ruby-doc.org/core/Hash.html#method-i-to_a
       def to_a
@@ -138,7 +138,7 @@ module Lotus
       #
       # @return [TrueClass,FalseClass]
       #
-      # @since x.x.x
+      # @since 0.3.0
       def ==(other)
         @hash == other.to_h
       end
@@ -149,7 +149,7 @@ module Lotus
       #
       # @return [Fixnum]
       #
-      # @since x.x.x
+      # @since 0.3.0
       def hash
         @hash.hash
       end
@@ -158,7 +158,7 @@ module Lotus
       #
       # @return [String]
       #
-      # @since x.x.x
+      # @since 0.3.0
       def inspect
         @hash.inspect
       end
@@ -166,7 +166,7 @@ module Lotus
       # Override Ruby's method_missing in order to provide ::Hash interface
       #
       # @api private
-      # @since x.x.x
+      # @since 0.3.0
       def method_missing(m, *args, &blk)
         h = @hash.__send__(m, *args, &blk)
         h = self.class.new(h) if h.is_a?(::Hash)
@@ -178,7 +178,7 @@ module Lotus
       # Override Ruby's respond_to_missing? in order to support ::Hash interface
       #
       # @api private
-      # @since x.x.x
+      # @since 0.3.0
       def respond_to_missing?(m, include_private=false)
         @hash.respond_to?(m, include_private)
       end

@@ -12,31 +12,31 @@ module Lotus
 
       # Separator for #classify
       #
-      # @since x.x.x
+      # @since 0.3.0
       # @api private
       CLASSIFY_SEPARATOR  = '_'.freeze
 
       # Regexp for #tokenize
       #
-      # @since x.x.x
+      # @since 0.3.0
       # @api private
       TOKENIZE_REGEXP     = /\((.*)\)/
 
       # Separator for #tokenize
       #
-      # @since x.x.x
+      # @since 0.3.0
       # @api private
       TOKENIZE_SEPARATOR  = '|'.freeze
 
       # Separator for #underscore
       #
-      # @since x.x.x
+      # @since 0.3.0
       # @api private
       UNDERSCORE_SEPARATOR = "/".freeze
 
       # gsub second parameter used in #underscore
       #
-      # @since x.x.x
+      # @since 0.3.0
       # @api private
       UNDERSCORE_DIVISION_TARGET  = '\1_\2'.freeze
 
@@ -162,7 +162,7 @@ module Lotus
       #
       # @return [Fixnum]
       #
-      # @since x.x.x
+      # @since 0.3.0
       def hash
         @string.hash
       end
@@ -171,7 +171,7 @@ module Lotus
       #
       # @return [String]
       #
-      # @since x.x.x
+      # @since 0.3.0
       def to_s
         @string
       end
@@ -182,7 +182,7 @@ module Lotus
       #
       # @return [TrueClass,FalseClass]
       #
-      # @since x.x.x
+      # @since 0.3.0
       def ==(other)
         to_s == other
       end
@@ -195,7 +195,7 @@ module Lotus
       #
       # @see http://www.ruby-doc.org/core/String.html#method-i-split
       #
-      # @since x.x.x
+      # @since 0.3.0
       def split(pattern, limit = 0)
         @string.split(pattern, limit)
       end
@@ -206,7 +206,7 @@ module Lotus
       #
       # @see http://www.ruby-doc.org/core/String.html#method-i-gsub
       #
-      # @since x.x.x
+      # @since 0.3.0
       def gsub(pattern, replacement, &blk)
         @string.gsub(pattern, replacement, &blk)
       end
@@ -214,7 +214,7 @@ module Lotus
       # Override Ruby's method_missing in order to provide ::String interface
       #
       # @api private
-      # @since x.x.x
+      # @since 0.3.0
       def method_missing(m, *args, &blk)
         s = @string.__send__(m, *args, &blk)
         s = self.class.new(s) if s.is_a?(::String)
@@ -226,7 +226,7 @@ module Lotus
       # Override Ruby's respond_to_missing? in order to support ::String interface
       #
       # @api private
-      # @since x.x.x
+      # @since 0.3.0
       def respond_to_missing?(m, include_private=false)
         @string.respond_to?(m, include_private)
       end
