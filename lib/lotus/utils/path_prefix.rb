@@ -26,18 +26,25 @@ module Lotus
       #
       # @since 0.1.0
       #
-      # @example
+      # @example Single string
       #   require 'lotus/utils/path_prefix'
       #
-      #   path_prefix = Lotus::Utils::PathPrefix.new '/posts'
-      #   path_prefix.join 'new'  # => '/posts/new'
-      #   path_prefix.join '/new' # => '/posts/new'
+      #   path_prefix = Lotus::Utils::PathPrefix.new('/posts')
+      #   path_prefix.join('new')  # => "/posts/new"
+      #   path_prefix.join('/new') # => "/posts/new"
       #
-      #   path_prefix = Lotus::Utils::PathPrefix.new 'posts'
-      #   path_prefix.join 'new'  # => '/posts/new'
-      #   path_prefix.join '/new' # => '/posts/new'
-      def join(string)
-        absolutize relative_join(string)
+      #   path_prefix = Lotus::Utils::PathPrefix.new('posts')
+      #   path_prefix.join('new')  # => "/posts/new"
+      #   path_prefix.join('/new') # => "/posts/new"
+      #
+      # @example Multiple strings
+      #   require 'lotus/utils/path_prefix'
+      #
+      #   path_prefix = Lotus::Utils::PathPrefix.new('myapp')
+      #   path_prefix.join('/assets', 'application.js')
+      #     # => "/myapp/assets/application.js"
+      def join(*strings)
+        absolutize relative_join(strings)
       end
 
       # Joins self with the given token, without prefixing it with `separator`.
@@ -59,9 +66,9 @@ module Lotus
       #   path_prefix = Lotus::Utils::PathPrefix.new 'posts'
       #   path_prefix.relative_join 'new'      # => 'posts/new'
       #   path_prefix.relative_join 'new', '_' # => 'posts_new'
-      def relative_join(string, separator = @separator)
+      def relative_join(strings, separator = @separator)
         raise TypeError if separator.nil?
-        relativize [@string, string].join(separator), separator
+        relativize [@string, strings].join(separator), separator
       end
 
       # Returns the hash of the internal string
