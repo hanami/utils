@@ -3,6 +3,7 @@ require 'date'
 require 'time'
 require 'pathname'
 require 'bigdecimal'
+require 'deep_clone'
 
 # Define top level constant Boolean, so it can be easily used by other libraries
 # in coercions DSLs
@@ -988,6 +989,27 @@ module Lotus
         end
       rescue NoMethodError
         raise TypeError.new "can't convert into Symbol"
+      end
+
+      # Creates a deep clone of the argument.
+      #
+      # @param arg [Object] the argument
+      #
+      # @return [Object] the result of the cloning process
+      #
+      # @since 0.3.1
+      #
+      # @example Basic Usage
+      #   require 'lotus/utils/kernel'
+      #
+      #   hash = { a: 'one', b: { c: 'two' } }
+      #   clone = Lotus::Utils::Kernel.Clone(hash)
+      #   hash == clone # => true
+      #   hash.object_id == clone.object_id # => false
+      #   hash[:a].object_id == clone[:a].object_id # => false
+      #   hash[:b][:c].object_id == clone[:b][:c].object_id # => false
+      def self.Clone(arg)
+        DeepClone.clone(arg)
       end
     end
   end

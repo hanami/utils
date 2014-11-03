@@ -2458,4 +2458,26 @@ describe Lotus::Utils::Kernel do
       end
     end
   end
+
+  describe '.Clone' do
+    describe 'a complex object' do
+      let(:input) { { key: { sub_key: 'value' } } }
+      before do
+        @clone = Lotus::Utils::Kernel.Clone(input)
+      end
+
+      it 'creates a clone that is equal to the input' do
+        @clone.must_equal input
+      end
+
+      it 'creates a clone with a different object_id' do
+        @clone.object_id.wont_equal input.object_id
+      end
+
+      it 'creates a clone of composite objects' do
+        @clone[:key].object_id.wont_equal input[:key].object_id
+        @clone[:key][:sub_key].object_id.wont_equal input[:key][:sub_key].object_id
+      end
+    end
+  end
 end
