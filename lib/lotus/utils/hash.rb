@@ -57,6 +57,73 @@ module Lotus
         self
       end
 
+      # Return a deep copy of the current Lotus::Utils::Hash
+      #
+      # @return [Hash] a deep duplicated self
+      #
+      # @since x.x.x
+      #
+      # @example
+      #   require 'lotus/utils/hash'
+      #
+      #   hash = Lotus::Utils::Hash.new(
+      #     'nil'        => nil,
+      #     'false'      => false,
+      #     'true'       => true,
+      #     'symbol'     => :foo,
+      #     'fixnum'     => 23,
+      #     'bignum'     => 13289301283 ** 2,
+      #     'float'      => 1.0,
+      #     'complex'    => Complex(0.3),
+      #     'bigdecimal' => BigDecimal.new('12.0001'),
+      #     'rational'   => Rational(0.3),
+      #     'string'     => 'foo bar',
+      #     'hash'       => { a: 1, b: 'two', c: :three },
+      #     'u_hash'     => Lotus::Utils::Hash.new({ a: 1, b: 'two', c: :three })
+      #   )
+      #
+      #   duped = hash.deep_dup
+      #
+      #   hash.class  # => Lotus::Utils::Hash
+      #   duped.class # => Lotus::Utils::Hash
+      #
+      #   hash.object_id  # => 70147385937100
+      #   duped.object_id # => 70147385950620
+      #
+      #   # unduplicated values
+      #   duped['nil']        # => nil
+      #   duped['false']      # => false
+      #   duped['true']       # => true
+      #   duped['symbol']     # => :foo
+      #   duped['fixnum']     # => 23
+      #   duped['bignum']     # => 176605528590345446089
+      #   duped['float']      # => 1.0
+      #   duped['complex']    # => (0.3+0i)
+      #   duped['bigdecimal'] # => #<BigDecimal:7f9ffe6e2fd0,'0.120001E2',18(18)>
+      #   duped['rational']   # => 5404319552844595/18014398509481984)
+      #
+      #   # it duplicates values
+      #   duped['string'].reverse!
+      #   duped['string'] # => "rab oof"
+      #   hash['string']  # => "foo bar"
+      #
+      #   # it deeply duplicates Hash, by preserving the class
+      #   duped['hash'].class # => Hash
+      #   duped['hash'].delete(:a)
+      #   hash['hash'][:a]    # => 1
+      #
+      #   duped['hash'][:b].upcase!
+      #   duped['hash'][:b] # => "TWO"
+      #   hash['hash'][:b]  # => "two"
+      #
+      #   # it deeply duplicates Lotus::Utils::Hash, by preserving the class
+      #   duped['u_hash'].class # => Lotus::Utils::Hash
+      def deep_dup
+        Hash.new.tap do |result|
+          @hash.each {|k, v| result[k] = duplicate(v) }
+        end
+      end
+
       # Returns a new array populated with the keys from this hash
       #
       # @return [Array] the keys
@@ -181,6 +248,22 @@ module Lotus
       # @since 0.3.0
       def respond_to_missing?(m, include_private=false)
         @hash.respond_to?(m, include_private)
+      end
+
+      private
+      # @api private
+      # @since x.x.x
+      def duplicate(value)
+        case value
+        when NilClass, FalseClass, TrueClass, Symbol, Numeric
+          value
+        when Hash
+          value.deep_dup
+        when ::Hash
+          Hash.new(value).deep_dup.to_h
+        else
+          value.dup
+        end
       end
     end
   end
