@@ -1,4 +1,5 @@
 require 'lotus/utils/string'
+require 'lotus/utils/kernel'
 
 module Lotus
   module Utils
@@ -81,7 +82,7 @@ module Lotus
 
         self.class.new(
           relativize(
-            [@string.gsub(@separator, separator), strings].join(separator),
+            Utils::Kernel.Array([@string.gsub(@separator, separator), strings]).join(separator),
             separator
           ),
           @separator
