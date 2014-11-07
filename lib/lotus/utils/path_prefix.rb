@@ -1,9 +1,17 @@
+require 'lotus/utils/string'
+
 module Lotus
   module Utils
     # Prefixed string
     #
     # @since 0.1.0
-    class PathPrefix
+    class PathPrefix < Lotus::Utils::String
+      # Path separator
+      #
+      # @since x.x.x
+      # @api private
+      DEFAULT_SEPARATOR = '/'.freeze
+
       # Initialize the path prefix
       #
       # @param string [::String] the prefix value
@@ -12,9 +20,11 @@ module Lotus
       # @return [PathPrefix] self
       #
       # @since 0.1.0
-      def initialize(string = nil, separator = '/')
+      #
+      # @see Lotus::Utils::PathPrefix::DEFAULT_SEPARATOR
+      def initialize(string = nil, separator = DEFAULT_SEPARATOR)
+        super(string)
         @separator = separator
-        @string    = string.to_s
       end
 
       # Joins self with the given token.
@@ -68,53 +78,37 @@ module Lotus
       #   path_prefix.relative_join 'new', '_' # => 'posts_new'
       def relative_join(strings, separator = @separator)
         raise TypeError if separator.nil?
-        relativize [@string, strings].join(separator), separator
+
+        self.class.new(
+          relativize(
+            [@string.gsub(@separator, separator), strings].join(separator),
+            separator
+          ),
+          @separator
+        )
       end
-
-      # Returns the hash of the internal string
-      #
-      # @return [Fixnum]
-      #
-      # @since 0.3.0
-      def hash
-        @string.hash
-      end
-
-      # Returns a string representation
-      #
-      # @return [String]
-      #
-      # @since 0.3.0
-      def to_s
-        @string
-      end
-
-      alias_method :to_str,  :to_s
-
-      # Equality
-      #
-      # @return [TrueClass,FalseClass]
-      #
-      # @since 0.3.0
-      def ==(other)
-        to_s == other
-      end
-
-      alias_method :eql?, :==
 
       private
+      # @since 0.1.0
+      # @api private
       attr_reader :separator
 
+      # @since 0.1.0
+      # @api private
       def absolutize(string)
         string.tap do |s|
           s.prepend(separator) unless absolute?(s)
         end
       end
 
+      # @since 0.1.0
+      # @api private
       def absolute?(string)
         string.start_with?(separator)
       end
 
+      # @since 0.1.0
+      # @api private
       def relativize(string, separator = @separator)
         string.
           gsub(%r{(?<!:)#{ separator * 2 }}, separator).

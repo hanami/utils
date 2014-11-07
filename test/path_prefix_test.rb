@@ -13,6 +13,12 @@ describe Lotus::Utils::PathPrefix do
   end
 
   describe '#join' do
+    it 'returns a PathPrefix' do
+      prefix = Lotus::Utils::PathPrefix.new('orders', '?').join('new')
+      prefix.must_be_kind_of(Lotus::Utils::PathPrefix)
+      prefix.__send__(:separator).must_equal('?')
+    end
+
     it 'joins a string' do
       prefix = Lotus::Utils::PathPrefix.new('fruits')
       prefix.join('peaches').must_equal '/fruits/peaches'
@@ -46,6 +52,12 @@ describe Lotus::Utils::PathPrefix do
   end
 
   describe '#relative_join' do
+    it 'returns a PathPrefix' do
+      prefix = Lotus::Utils::PathPrefix.new('orders', '&').relative_join('new')
+      prefix.must_be_kind_of(Lotus::Utils::PathPrefix)
+      prefix.__send__(:separator).must_equal('&')
+    end
+
     it 'joins a string without prefixing with separator' do
       prefix = Lotus::Utils::PathPrefix.new('fruits')
       prefix.relative_join('peaches').must_equal 'fruits/peaches'
@@ -74,6 +86,11 @@ describe Lotus::Utils::PathPrefix do
     it 'joins a prefixed string without prefixing with custom separator' do
       prefix = Lotus::Utils::PathPrefix.new('fruits')
       prefix.relative_join('_cherries', '_').must_equal 'fruits_cherries'
+    end
+
+    it 'changes all the occurences of the current separator with the given one' do
+      prefix = Lotus::Utils::PathPrefix.new('?fruits', '?')
+      prefix.relative_join('cherries', '_').must_equal 'fruits_cherries'
     end
 
     it 'raises error if the given separator is nil' do
