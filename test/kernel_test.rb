@@ -1177,8 +1177,8 @@ describe Lotus::Utils::Kernel do
       Book = Struct.new(:title)
 
       SimpleObject = Class.new(BasicObject) do
-        def respond_to?(method_name)
-          method_name == :to_s
+        def respond_to?(method_name, include_private=false)
+          method_name.to_sym == :to_s
         end
 
         def to_s
