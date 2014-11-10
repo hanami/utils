@@ -87,28 +87,14 @@ module Lotus
         ).relative!
       end
 
-      # Returns the absolute version of the path prefix, that is with the
-      # prepended separator.
-      #
-      # @return [Lotus::Utils::PathPrefix]
-      #
-      # @since 0.3.1
-      #
-      # @example
-      #   require "lotus/utils/path_prefix"
-      #
-      #   path_prefix = Lotus::Utils::PathPrefix.new("posts")
-      #   path_prefix.to_s          #=> "posts"
-      #   path_prefix.absolute.to_s #=> "/posts"
-      def absolute
-        dup.absolute!
-      end
+      protected
 
       # Modifies the path prefix to have a prepended separator.
       #
       # @return [self]
       #
-      # @since 0.3.1
+      # @since x.x.x
+      # @api private
       #
       # @see #absolute
       def absolute!
@@ -119,41 +105,26 @@ module Lotus
 
       # Returns whether the path prefix starts with its separator.
       #
-      # @return [Boolean]
+      # @return [TrueClass,FalseClass]
       #
-      # @since 0.3.1
+      # @since x.x.x
+      # @api private
       #
       # @example
-      #   require "lotus/utils/path_prefix"
+      #   require 'lotus/utils/path_prefix'
       #
-      #   Lotus::Utils::PathPrefix.new("/posts").absolute? #=> true
-      #   Lotus::Utils::PathPrefix.new("posts").absolute?  #=> false
+      #   Lotus::Utils::PathPrefix.new('/posts').absolute? #=> true
+      #   Lotus::Utils::PathPrefix.new('posts').absolute?  #=> false
       def absolute?
         @string.start_with?(separator)
-      end
-
-      # Returns the relative version of the path prefix, that is without
-      # the leading separator.
-      #
-      # @return [Lotus::Utils::PathPrefix]
-      #
-      # @since 0.3.1
-      #
-      # @example
-      #   require "lotus/utils/path_prefix"
-      #
-      #   path_prefix = Lotus::Utils::PathPrefix.new("/posts")
-      #   path_prefix.to_s          #=> "/posts"
-      #   path_prefix.relative.to_s #=> "posts"
-      def relative
-        dup.relative!
       end
 
       # Modifies the path prefix to remove the leading separator.
       #
       # @return [self]
       #
-      # @since 0.3.1
+      # @since x.x.x
+      # @api private
       #
       # @see #relative
       def relative!
@@ -161,21 +132,6 @@ module Lotus
         @string.sub!(%r{\A#{ separator }}, '')
 
         self
-      end
-
-      # Returns whether the path prefix doesn't start with its separator.
-      #
-      # @return [Boolean]
-      #
-      # @since 0.3.1
-      #
-      # @example
-      #   require "lotus/utils/path_prefix"
-      #
-      #   Lotus::Utils::PathPrefix.new("posts").relative?   #=> true
-      #   Lotus::Utils::PathPrefix.new("/posts").relative?  #=> false
-      def relative?
-        !absolute?
       end
 
       private
