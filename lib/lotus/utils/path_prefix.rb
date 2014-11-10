@@ -33,7 +33,7 @@ module Lotus
       #
       # @param string [::String] the token we want to join
       #
-      # @return [::String] the joined string
+      # @return [Lotus::Utils::PathPrefix] the joined string
       #
       # @since 0.1.0
       #
@@ -41,21 +41,21 @@ module Lotus
       #   require 'lotus/utils/path_prefix'
       #
       #   path_prefix = Lotus::Utils::PathPrefix.new('/posts')
-      #   path_prefix.join('new')  # => "/posts/new"
-      #   path_prefix.join('/new') # => "/posts/new"
+      #   path_prefix.join('new').to_s  # => "/posts/new"
+      #   path_prefix.join('/new').to_s # => "/posts/new"
       #
       #   path_prefix = Lotus::Utils::PathPrefix.new('posts')
-      #   path_prefix.join('new')  # => "/posts/new"
-      #   path_prefix.join('/new') # => "/posts/new"
+      #   path_prefix.join('new').to_s  # => "/posts/new"
+      #   path_prefix.join('/new').to_s # => "/posts/new"
       #
       # @example Multiple strings
       #   require 'lotus/utils/path_prefix'
       #
       #   path_prefix = Lotus::Utils::PathPrefix.new('myapp')
-      #   path_prefix.join('/assets', 'application.js')
+      #   path_prefix.join('/assets', 'application.js').to_s
       #     # => "/myapp/assets/application.js"
       def join(*strings)
-        absolutize relative_join(strings)
+        relative_join(strings).absolute!
       end
 
       # Joins self with the given token, without prefixing it with `separator`.
@@ -64,7 +64,7 @@ module Lotus
       # @param string [::String] the token we want to join
       # @param separator [::String] the separator used between tokens
       #
-      # @return [::String] the joined string
+      # @return [Lotus::Utils::PathPrefix] the joined string
       #
       # @raise [TypeError] if one of the argument can't be treated as a
       #   string
@@ -75,46 +75,113 @@ module Lotus
       #   require 'lotus/utils/path_prefix'
       #
       #   path_prefix = Lotus::Utils::PathPrefix.new 'posts'
-      #   path_prefix.relative_join 'new'      # => 'posts/new'
-      #   path_prefix.relative_join 'new', '_' # => 'posts_new'
+      #   path_prefix.relative_join('new').to_s      # => 'posts/new'
+      #   path_prefix.relative_join('new', '_').to_s # => 'posts_new'
       def relative_join(strings, separator = @separator)
         raise TypeError if separator.nil?
+        prefix = @string.gsub(@separator, separator)
 
         self.class.new(
-          relativize(
-            Utils::Kernel.Array([@string.gsub(@separator, separator), strings]).join(separator),
-            separator
-          ),
-          @separator
-        )
+          Utils::Kernel.Array([prefix, strings]).join(separator),
+          separator
+        ).relative!
+      end
+
+      # Returns the absolute version of the path prefix, that is with the
+      # prepended separator.
+      #
+      # @return [Lotus::Utils::PathPrefix]
+      #
+      # @since 0.3.1
+      #
+      # @example
+      #   require "lotus/utils/path_prefix"
+      #
+      #   path_prefix = Lotus::Utils::PathPrefix.new("posts")
+      #   path_prefix.to_s          #=> "posts"
+      #   path_prefix.absolute.to_s #=> "/posts"
+      def absolute
+        dup.absolute!
+      end
+
+      # Modifies the path prefix to have a prepended separator.
+      #
+      # @return [self]
+      #
+      # @since 0.3.1
+      #
+      # @see #absolute
+      def absolute!
+        @string.prepend(separator) unless absolute?
+
+        self
+      end
+
+      # Returns whether the path prefix starts with its separator.
+      #
+      # @return [Boolean]
+      #
+      # @since 0.3.1
+      #
+      # @example
+      #   require "lotus/utils/path_prefix"
+      #
+      #   Lotus::Utils::PathPrefix.new("/posts").absolute? #=> true
+      #   Lotus::Utils::PathPrefix.new("posts").absolute?  #=> false
+      def absolute?
+        @string.start_with?(separator)
+      end
+
+      # Returns the relative version of the path prefix, that is without
+      # the leading separator.
+      #
+      # @return [Lotus::Utils::PathPrefix]
+      #
+      # @since 0.3.1
+      #
+      # @example
+      #   require "lotus/utils/path_prefix"
+      #
+      #   path_prefix = Lotus::Utils::PathPrefix.new("/posts")
+      #   path_prefix.to_s          #=> "/posts"
+      #   path_prefix.relative.to_s #=> "posts"
+      def relative
+        dup.relative!
+      end
+
+      # Modifies the path prefix to remove the leading separator.
+      #
+      # @return [self]
+      #
+      # @since 0.3.1
+      #
+      # @see #relative
+      def relative!
+        @string.gsub!(%r{(?<!:)#{ separator * 2 }}, separator)
+        @string.sub!(%r{\A#{ separator }}, '')
+
+        self
+      end
+
+      # Returns whether the path prefix doesn't start with its separator.
+      #
+      # @return [Boolean]
+      #
+      # @since 0.3.1
+      #
+      # @example
+      #   require "lotus/utils/path_prefix"
+      #
+      #   Lotus::Utils::PathPrefix.new("posts").relative?   #=> true
+      #   Lotus::Utils::PathPrefix.new("/posts").relative?  #=> false
+      def relative?
+        !absolute?
       end
 
       private
       # @since 0.1.0
       # @api private
       attr_reader :separator
-
-      # @since 0.1.0
-      # @api private
-      def absolutize(string)
-        string.tap do |s|
-          s.prepend(separator) unless absolute?(s)
-        end
-      end
-
-      # @since 0.1.0
-      # @api private
-      def absolute?(string)
-        string.start_with?(separator)
-      end
-
-      # @since 0.1.0
-      # @api private
-      def relativize(string, separator = @separator)
-        string.
-          gsub(%r{(?<!:)#{ separator * 2 }}, separator).
-          gsub(%r{\A#{ separator }}, '')
-      end
     end
   end
 end
