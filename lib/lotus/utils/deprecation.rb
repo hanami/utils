@@ -56,7 +56,8 @@ module Lotus
       #     # => old_method is deprecated, please use new_method - called from: test.rb:20:in `start'.
       #     # => started
       def initialize(message)
-        ::Kernel.warn("#{ message } - called from: #{ caller[2] }.")
+        stack_index = RUBY_PLATFORM == 'java' ? 1 : 2
+        ::Kernel.warn("#{ message } - called from: #{ caller[stack_index] }.")
       end
     end
   end
