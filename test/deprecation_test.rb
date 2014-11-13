@@ -27,8 +27,13 @@ describe Lotus::Utils::Deprecation do
       DeprecationTest.new.old_method
     end
 
-    stack = $0 == __FILE__ ? "#{ __FILE__ }:27:in `block (3 levels) in <main>'" :
-      "#{ __FILE__ }:27:in `block (3 levels) in <top (required)>'"
+    stack = if RUBY_PLATFORM == 'java'
+      $0 == __FILE__ ? "#{ __FILE__ }:27:in `(root)'" :
+        "#{ __FILE__ }:27:in `test_0001_prints a deprecation warning for direct call'"
+    else
+      $0 == __FILE__ ? "#{ __FILE__ }:27:in `block (3 levels) in <main>'" :
+        "#{ __FILE__ }:27:in `block (3 levels) in <top (required)>'"
+    end
 
     err.chomp.must_equal "old_method is deprecated, please use new_method - called from: #{ stack }."
   end

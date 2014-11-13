@@ -1,3 +1,5 @@
+require 'lotus/utils'
+
 module Lotus
   module Utils
     # Prints a deprecation warning when initialized
@@ -56,7 +58,8 @@ module Lotus
       #     # => old_method is deprecated, please use new_method - called from: test.rb:20:in `start'.
       #     # => started
       def initialize(message)
-        ::Kernel.warn("#{ message } - called from: #{ caller[2] }.")
+        stack_index = Utils.jruby? ? 1 : 2
+        ::Kernel.warn("#{ message } - called from: #{ caller[stack_index] }.")
       end
     end
   end
