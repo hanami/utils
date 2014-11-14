@@ -3,6 +3,7 @@ require 'date'
 require 'time'
 require 'pathname'
 require 'bigdecimal'
+require 'lotus/utils'
 
 # Define top level constant Boolean, so it can be easily used by other libraries
 # in coercions DSLs
@@ -623,11 +624,26 @@ module Lotus
       #   # Missing #to_s or #to_str
       #   input = BaseObject.new
       #   Lotus::Utils::Kernel.String(input) # => TypeError
-      def self.String(arg)
-        arg = arg.to_str if arg.respond_to?(:to_str)
-        super(arg)
-      rescue NoMethodError
-        raise TypeError.new "can't convert into String"
+      if Utils.rubinius?
+        def self.String(arg)
+          case arg
+          when ->(a) { a.respond_to?(:to_str) }
+            arg.to_str
+          when ->(a) { a.respond_to?(:to_s) }
+            arg.to_s
+          else
+            super(arg)
+          end
+        rescue NoMethodError
+          raise TypeError.new "can't convert into String"
+        end
+      else
+        def self.String(arg)
+          arg = arg.to_str if arg.respond_to?(:to_str)
+          super(arg)
+        rescue NoMethodError
+          raise TypeError.new "can't convert into String"
+        end
       end
 
       # Coerces the argument to be a Date.

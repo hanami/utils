@@ -58,8 +58,12 @@ module Lotus
       #     # => old_method is deprecated, please use new_method - called from: test.rb:20:in `start'.
       #     # => started
       def initialize(message)
-        stack_index = Utils.jruby? ? 1 : 2
-        ::Kernel.warn("#{ message } - called from: #{ caller[stack_index] }.")
+        ::Kernel.warn("#{ message } - called from: #{ caller[caller_index] }.")
+      end
+
+      private
+      def caller_index
+        Utils.jruby? || Utils.rubinius? ? 1 : 2
       end
     end
   end
