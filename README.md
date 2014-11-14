@@ -22,7 +22,7 @@ Ruby core extentions and class utilities for [Lotus](http://lotusrb.org)
 
 ## Rubies
 
-__Lotus::Utils__ supports Ruby (MRI) 2+ and JRuby 1.7 (with 2.0 mode).
+__Lotus::Utils__ supports Ruby (MRI) 2+, JRuby 1.7+ (with 2.0 mode) and Rubinius 2.3.0+.
 
 ## Installation
 

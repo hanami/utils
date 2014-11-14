@@ -1,4 +1,5 @@
 require 'test_helper'
+require 'bigdecimal'
 require 'lotus/utils/hash'
 
 describe Lotus::Utils::Hash do
@@ -38,6 +39,63 @@ describe Lotus::Utils::Hash do
 
       hash[:nested].must_be_kind_of Lotus::Utils::Hash
       hash[:nested][:key].must_equal('value')
+    end
+  end
+
+  describe '#deep_dup' do
+    it 'returns an instance of Utils::Hash' do
+      duped = Lotus::Utils::Hash.new('foo' => 'bar').deep_dup
+      duped.must_be_kind_of(Lotus::Utils::Hash)
+    end
+
+    it 'returns a hash with duplicated values' do
+      hash  = Lotus::Utils::Hash.new('foo' => 'bar', 'baz' => 'x')
+      duped = hash.deep_dup
+
+      duped['foo'] = nil
+      duped['baz'].upcase!
+
+      hash['foo'].must_equal('bar')
+      hash['baz'].must_equal('x')
+    end
+
+    it "doesn't try to duplicate value that can't perform this operation" do
+      original = {
+        'nil'        => nil,
+        'false'      => false,
+        'true'       => true,
+        'symbol'     => :symbol,
+        'fixnum'     => 23,
+        'bignum'     => 13289301283 ** 2,
+        'float'      => 1.0,
+        'complex'    => Complex(0.3),
+        'bigdecimal' => BigDecimal.new('12.0001'),
+        'rational'   => Rational(0.3)
+      }
+
+      hash  = Lotus::Utils::Hash.new(original)
+      duped = hash.deep_dup
+
+      duped.must_equal(original)
+      duped.object_id.wont_equal(original.object_id)
+    end
+
+    it 'returns a hash with nested duplicated values' do
+      hash  = Lotus::Utils::Hash.new('foo' => {'bar' => 'baz'}, 'x' => Lotus::Utils::Hash.new('y' => 'z'))
+      duped = hash.deep_dup
+
+      duped['foo']['bar'].reverse!
+      duped['x']['y'].upcase!
+
+      hash['foo']['bar'].must_equal('baz')
+      hash['x']['y'].must_equal('z')
+    end
+
+    it 'preserves original class' do
+      duped = Lotus::Utils::Hash.new('foo' => {}, 'x' => Lotus::Utils::Hash.new).deep_dup
+
+      duped['foo'].must_be_kind_of(::Hash)
+      duped['x'].must_be_kind_of(Lotus::Utils::Hash)
     end
   end
 

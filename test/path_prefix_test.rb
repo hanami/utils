@@ -13,6 +13,12 @@ describe Lotus::Utils::PathPrefix do
   end
 
   describe '#join' do
+    it 'returns a PathPrefix' do
+      prefix = Lotus::Utils::PathPrefix.new('orders', '?').join('new')
+      prefix.must_be_kind_of(Lotus::Utils::PathPrefix)
+      prefix.__send__(:separator).must_equal('?')
+    end
+
     it 'joins a string' do
       prefix = Lotus::Utils::PathPrefix.new('fruits')
       prefix.join('peaches').must_equal '/fruits/peaches'
@@ -32,9 +38,31 @@ describe Lotus::Utils::PathPrefix do
       prefix = Lotus::Utils::PathPrefix.new
       prefix.join('/tea').must_equal '/tea'
     end
+
+    it 'joins multiple strings' do
+      prefix = Lotus::Utils::PathPrefix.new
+      prefix.join('assets', 'application.js').must_equal '/assets/application.js'
+
+      prefix = Lotus::Utils::PathPrefix.new('myapp')
+      prefix.join('assets', 'application.js').must_equal '/myapp/assets/application.js'
+
+      prefix = Lotus::Utils::PathPrefix.new('/myapp')
+      prefix.join('/assets', 'application.js').must_equal '/myapp/assets/application.js'
+    end
+
+    it 'removes trailing occurrences of separator' do
+      prefix = Lotus::Utils::PathPrefix.new('curcuma')
+      prefix.join(nil).must_equal '/curcuma'
+    end
   end
 
   describe '#relative_join' do
+    it 'returns a PathPrefix' do
+      prefix = Lotus::Utils::PathPrefix.new('orders', '&').relative_join('new')
+      prefix.must_be_kind_of(Lotus::Utils::PathPrefix)
+      prefix.__send__(:separator).must_equal('&')
+    end
+
     it 'joins a string without prefixing with separator' do
       prefix = Lotus::Utils::PathPrefix.new('fruits')
       prefix.relative_join('peaches').must_equal 'fruits/peaches'
@@ -65,11 +93,48 @@ describe Lotus::Utils::PathPrefix do
       prefix.relative_join('_cherries', '_').must_equal 'fruits_cherries'
     end
 
+    it 'changes all the occurences of the current separator with the given one' do
+      prefix = Lotus::Utils::PathPrefix.new('?fruits', '?')
+      prefix.relative_join('cherries', '_').must_equal 'fruits_cherries'
+    end
+
+    it 'removes trailing occurrences of separator' do
+      prefix = Lotus::Utils::PathPrefix.new('jojoba')
+      prefix.relative_join(nil).must_equal 'jojoba'
+    end
+
     it 'raises error if the given separator is nil' do
       prefix = Lotus::Utils::PathPrefix.new('fruits')
       -> { prefix.relative_join('_cherries', nil) }.must_raise TypeError
     end
   end
+
+  # describe '#resolve' do
+  #   it 'resolves empty path' do
+  #     prefix = Lotus::Utils::PathPrefix.new('')
+  #     prefix.resolve.must_equal '/'
+  #   end
+
+  #   it 'resolves root path path' do
+  #     prefix = Lotus::Utils::PathPrefix.new('/')
+  #     prefix.resolve.must_equal '/'
+  #   end
+
+  #   it 'absolutize relative path' do
+  #     prefix = Lotus::Utils::PathPrefix.new('coffees')
+  #     prefix.resolve.must_equal '/coffees'
+  #   end
+
+  #   it 'leaves untouched absolute path' do
+  #     prefix = Lotus::Utils::PathPrefix.new('/coffees')
+  #     prefix.resolve.must_equal '/coffees'
+  #   end
+
+  #   it 'removes double leading slashes' do
+  #     prefix = Lotus::Utils::PathPrefix.new('//coffees')
+  #     prefix.resolve.must_equal '/coffees'
+  #   end
+  # end
 
   describe 'string interface' do
     describe 'equality' do
