@@ -8,7 +8,7 @@ module Lotus
     class Class
       # Loads a class for the given name.
       #
-      # @param name [String] the specific class name
+      # @param name [String, Class] the specific class name
       # @param namespace [Class, Module] the Ruby namespace where we want to perform the lookup.
       # @return [Class, Module] the found Ruby constant.
       #
@@ -31,6 +31,7 @@ module Lotus
       #
       #   # basic usage
       #   Lotus::Utils::Class.load!('App::Service') # => App::Service
+      #   Lotus::Utils::Class.load!(App::Service)   # => App::Service
       #
       #   # with explicit namespace
       #   Lotus::Utils::Class.load!('Service', App) # => App::Service
@@ -38,12 +39,12 @@ module Lotus
       #   # with missing constant
       #   Lotus::Utils::Class.load!('Unknown') # => raises NameError
       def self.load!(name, namespace = Object)
-        if name.match(/\|/)
+        if "#{name}".match(/\|/)
           Utils::Deprecation.new("Using Lotus::Utils::Class.load! with a pattern is deprecated, please use Lotus::Utils::Class.load_from_pattern!: #{ name }, #{ namespace }")
           return load_from_pattern!(name, namespace)
         end
 
-        namespace.const_get(name)
+        namespace.const_get("#{name}")
       end
 
       # Loads a class from the given pattern name and namespace
