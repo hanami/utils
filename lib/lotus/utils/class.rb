@@ -39,12 +39,14 @@ module Lotus
       #   # with missing constant
       #   Lotus::Utils::Class.load!('Unknown') # => raises NameError
       def self.load!(name, namespace = Object)
-        if "#{name}".match(/\|/)
+        name = name.to_s
+
+        if name.match(/\|/)
           Utils::Deprecation.new("Using Lotus::Utils::Class.load! with a pattern is deprecated, please use Lotus::Utils::Class.load_from_pattern!: #{ name }, #{ namespace }")
           return load_from_pattern!(name, namespace)
         end
 
-        namespace.const_get("#{name}")
+        namespace.const_get(name)
       end
 
       # Loads a class from the given pattern name and namespace
