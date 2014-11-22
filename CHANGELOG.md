@@ -19,7 +19,7 @@ Ruby core extentions and class utilities for Lotus
 - [Luca Guidi] Made `Utils::PathPrefix#join` remove trailing occurrences for `@separator` from the output
 - [Luca Guidi] Made `Utils::PathPrefix#relative_join` to correctly replace all the instances of `@separator` from the output
 
-### Deprected
+### Deprecated
 - [Luca Guidi] Deprecated `Utils::Class.load!` with a pattern like `Articles(Controller|::Controller)`, use `Utils::Class.load_from_pattern!` instead
 
 ## v0.3.0 - 2014-10-23
