@@ -24,6 +24,14 @@ describe Lotus::Utils::Class do
       Lotus::Utils::Class.load!('App::Layer::Step').must_equal(App::Layer::Step)
     end
 
+    it 'loads the class from the given static string and namespace' do
+      Lotus::Utils::Class.load!('Step', App::Layer).must_equal(App::Layer::Step)
+    end
+
+    it 'loads the class from the given class name' do
+      Lotus::Utils::Class.load!(App::Layer::Step).must_equal(App::Layer::Step)
+    end
+
     it 'raises an error in case of missing class' do
       -> { Lotus::Utils::Class.load!('Missing') }.must_raise(NameError)
     end
