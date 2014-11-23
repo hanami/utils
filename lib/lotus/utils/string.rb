@@ -124,7 +124,7 @@ module Lotus
         self.class.new split(NAMESPACE_SEPARATOR).first
       end
 
-      # It iterates thru the tokens and calls the given block.
+      # It iterates through the tokens and calls the given block.
       # A token is a substring wrapped by `()` and separated by `|`.
       #
       # @yield the block that is called for each token.
