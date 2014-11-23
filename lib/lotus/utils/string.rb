@@ -40,6 +40,12 @@ module Lotus
       # @api private
       UNDERSCORE_DIVISION_TARGET  = '\1_\2'.freeze
 
+      # gsub parameter to match plural word
+      #
+      # @since 0.3.1
+      # @api private
+      PLURAL_WORD_REGEX = /es|s\z/
+
       # Initialize the string
       #
       # @param string [::String, Symbol] the value we want to initialize
@@ -156,6 +162,15 @@ module Lotus
         end
 
         nil
+      end
+
+      # Returns singular noun representation
+      #
+      # @return [String]
+      #
+      # @since 0.3.1
+      def singularize
+        self.class.new(self.gsub(PLURAL_WORD_REGEX, ''))
       end
 
       # Returns the hash of the internal string
