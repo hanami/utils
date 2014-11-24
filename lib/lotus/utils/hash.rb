@@ -57,6 +57,31 @@ module Lotus
         self
       end
 
+      # Convert in-place all the keys to Symbol instances, nested hashes are converted too.
+      #
+      # @return [Hash] self
+      #
+      # @since x.x.x
+      #
+      # @example
+      #   require 'lotus/utils/hash'
+      #
+      #   hash = Lotus::Utils::Hash.new a: 23, b: { c: ['x','y','z'] }
+      #   hash.stringify!
+      #
+      #   hash.keys    # => [:a, :b]
+      #   hash.inspect # => {"a"=>23, "b"=>{"c"=>["x", "y", "z"]}}
+      def stringify!
+        keys.each do |k|
+          v = delete(k)
+          v = Hash.new(v).stringify! if v.is_a?(::Hash)
+
+          self[k.to_s] = v
+        end
+
+        self
+      end
+
       # Return a deep copy of the current Lotus::Utils::Hash
       #
       # @return [Hash] a deep duplicated self
