@@ -42,6 +42,24 @@ describe Lotus::Utils::Hash do
     end
   end
 
+  describe '#stringify!' do
+    it 'covert keys to strings' do
+      hash = Lotus::Utils::Hash.new(fub: 'baz')
+      hash.stringify!
+
+      hash[:fub].must_be_nil
+      hash['fub'].must_equal('baz')
+    end
+
+    it 'stringifies nested hashes' do
+      hash = Lotus::Utils::Hash.new(nested: {key: 'value'})
+      hash.stringify!
+
+      hash['nested'].must_be_kind_of Lotus::Utils::Hash
+      hash['nested']['key'].must_equal('value')
+    end
+  end
+
   describe '#deep_dup' do
     it 'returns an instance of Utils::Hash' do
       duped = Lotus::Utils::Hash.new('foo' => 'bar').deep_dup
