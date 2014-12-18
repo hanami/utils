@@ -4,13 +4,13 @@ module Lotus
   module Utils
     # Prints a deprecation warning when initialized
     #
-    # @since x.x.x
+    # @since 0.3.1
     class Deprecation
       # Initialize a deprecation message and prints it to standard error.
       #
       # @param message [#to_s] a deprecation message
       #
-      # @since x.x.x
+      # @since 0.3.1
       #
       # @example Direct usage
       #   require 'lotus/utils/deprecation'

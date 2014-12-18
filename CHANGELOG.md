@@ -1,6 +1,12 @@
 # Lotus::Utils
 Ruby core extentions and class utilities for Lotus
 
+## v0.3.2 - 2014-12-23
+### Added
+- [Luca Guidi] Official support for Ruby 2.2
+- [Luca Guidi] Introduced `Utils::Attributes`
+- [Luca Guidi] Added `Utils::Hash#stringify!`
+
 ## v0.3.1 - 2014-11-23
 ### Added
 - [Luca Guidi] Allow `Utils::Class.load!` to accept any object that implements `#to_s`

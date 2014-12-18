@@ -13,7 +13,7 @@ module Lotus
     # At the same time, this allows to get/set data with the original key or
     # with the string representation. See the examples below.
     #
-    # @since x.x.x
+    # @since 0.3.2
     class Attributes
       # Initialize a set of attributes
       # All the keys of the given Hash are recursively converted to strings.
@@ -22,7 +22,7 @@ module Lotus
       #
       # @return [Lotus::Utils::Attributes] self
       #
-      # @since x.x.x
+      # @since 0.3.2
       #
       # @example
       #   require 'lotus/utils/attributes'
@@ -39,7 +39,7 @@ module Lotus
       #
       # @return [Object,NilClass] the associated value, if present
       #
-      # @since x.x.x
+      # @since 0.3.2
       #
       # @example
       #   require 'lotus/utils/attributes'
@@ -68,7 +68,7 @@ module Lotus
       #
       # @return [NilClass]
       #
-      # @since x.x.x
+      # @since 0.3.2
       #
       # @example
       #   require 'lotus/utils/attributes'
@@ -95,7 +95,7 @@ module Lotus
       #
       # @return [Lotus::Utils::Hash]
       #
-      # @since x.x.x
+      # @since 0.3.2
       #
       # @see Lotus::Utils::Hash
       def to_h
