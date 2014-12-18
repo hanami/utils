@@ -9,7 +9,7 @@ module Lotus
     class PathPrefix < Lotus::Utils::String
       # Path separator
       #
-      # @since x.x.x
+      # @since 0.3.1
       # @api private
       DEFAULT_SEPARATOR = '/'.freeze
 
@@ -93,7 +93,7 @@ module Lotus
       #
       # @return [self]
       #
-      # @since x.x.x
+      # @since 0.3.1
       # @api private
       #
       # @see #absolute
@@ -107,7 +107,7 @@ module Lotus
       #
       # @return [TrueClass,FalseClass]
       #
-      # @since x.x.x
+      # @since 0.3.1
       # @api private
       #
       # @example
@@ -123,7 +123,7 @@ module Lotus
       #
       # @return [self]
       #
-      # @since x.x.x
+      # @since 0.3.1
       # @api private
       #
       # @see #relative

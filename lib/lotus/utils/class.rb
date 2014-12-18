@@ -57,7 +57,7 @@ module Lotus
       #
       # @raise [NameError] if no constant can be found.
       #
-      # @since x.x.x
+      # @since 0.3.1
       #
       # @see Lotus::Utils::String#tokenize
       #

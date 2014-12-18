@@ -5,11 +5,11 @@ module Lotus
   #
   # @since 0.1.0
   module Utils
-    # @since x.x.x
+    # @since 0.3.1
     # @api private
     LOTUS_JRUBY = 'java'.freeze
 
-    # @since x.x.x
+    # @since 0.3.1
     # @api private
     LOTUS_RUBINIUS = 'rbx'.freeze
 
@@ -17,7 +17,7 @@ module Lotus
     #
     # @return [TrueClass,FalseClass] return if the VM is JRuby or not
     #
-    # @since x.x.x
+    # @since 0.3.1
     # @api private
     def self.jruby?
       RUBY_PLATFORM == LOTUS_JRUBY
@@ -27,7 +27,7 @@ module Lotus
     #
     # @return [TrueClass,FalseClass] return if the VM is Rubinius or not
     #
-    # @since x.x.x
+    # @since 0.3.1
     # @api private
     def self.rubinius?
       RUBY_ENGINE == LOTUS_RUBINIUS

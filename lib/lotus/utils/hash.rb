@@ -61,7 +61,7 @@ module Lotus
       #
       # @return [Hash] self
       #
-      # @since x.x.x
+      # @since 0.3.2
       #
       # @example
       #   require 'lotus/utils/hash'
@@ -86,7 +86,7 @@ module Lotus
       #
       # @return [Hash] a deep duplicated self
       #
-      # @since x.x.x
+      # @since 0.3.1
       #
       # @example
       #   require 'lotus/utils/hash'
@@ -277,7 +277,7 @@ module Lotus
 
       private
       # @api private
-      # @since x.x.x
+      # @since 0.3.1
       def duplicate(value)
         case value
         when NilClass, FalseClass, TrueClass, Symbol, Numeric
