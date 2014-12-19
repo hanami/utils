@@ -31,7 +31,7 @@ module Lotus
       # Joins self with the given token.
       # It cleans up all the `separator` repetitions.
       #
-      # @param string [::String] the token we want to join
+      # @param strings [::String] the token(s) we want to join
       #
       # @return [Lotus::Utils::PathPrefix] the joined string
       #
@@ -61,7 +61,7 @@ module Lotus
       # Joins self with the given token, without prefixing it with `separator`.
       # It cleans up all the `separator` repetitions.
       #
-      # @param string [::String] the token we want to join
+      # @param strings [::String] the tokens we want to join
       # @param separator [::String] the separator used between tokens
       #
       # @return [Lotus::Utils::PathPrefix] the joined string
