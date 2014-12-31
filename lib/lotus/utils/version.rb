@@ -1,5 +1,8 @@
 module Lotus
   module Utils
-    VERSION = '0.3.2'.freeze
+    # Defines the version
+    #
+    # @since 0.1.0
+    VERSION = '0.3.3'.freeze
   end
 end
