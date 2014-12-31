@@ -17,6 +17,14 @@ module Lotus
     # Kernel utilities
     # @since 0.1.1
     module Kernel
+      # Matcher for numeric values
+      #
+      # @since x.x.x
+      # @api private
+      #
+      # @see Lotus::Utils::Kernel.Integer
+      NUMERIC_MATCHER = /\A([\d\/\.\+iE]+|NaN|Infinity)\z/.freeze
+
       # Coerces the argument to be an Array.
       #
       # It's similar to Ruby's Kernel.Array, but it applies further
@@ -285,6 +293,10 @@ module Lotus
       #   input = OpenStruct.new(color: 'purple')
       #   Lotus::Utils::Kernel.Integer(input) # => TypeError
       #
+      #   # String that doesn't represent an integer
+      #   input = 'hello'
+      #   Lotus::Utils::Kernel.Integer(input) # => TypeError
+      #
       #   # When true
       #   input = true
       #   Lotus::Utils::Kernel.Integer(input) # => TypeError
@@ -320,7 +332,8 @@ module Lotus
         super(arg)
       rescue ArgumentError, TypeError, NoMethodError
         begin
-          if arg.respond_to?(:to_i)
+          case arg
+          when NilClass, ->(a) { a.respond_to?(:to_i) && a.to_s.match(NUMERIC_MATCHER) }
             arg.to_i
           else
             raise TypeError.new "can't convert into Integer"
@@ -398,6 +411,10 @@ module Lotus
       #   input = Time.now
       #   Lotus::Utils::Kernel.BigDecimal(input) # => TypeError
       #
+      #   # String that doesn't represent a big decimal
+      #   input = 'hello'
+      #   Lotus::Utils::Kernel.BigDecimal(input) # => TypeError
+      #
       #   # Missing #respond_to?
       #   input = BasicObject.new
       #   Lotus::Utils::Kernel.BigDecimal(input) # => TypeError
@@ -406,8 +423,10 @@ module Lotus
         when ->(a) { a.respond_to?(:to_d) } then arg.to_d
         when Float, Complex, Rational
           BigDecimal(arg.to_s)
-        else
+        when ->(a) { a.to_s.match(NUMERIC_MATCHER) }
           BigDecimal.new(arg)
+        else
+          raise TypeError.new "can't convert into BigDecimal"
         end
       rescue NoMethodError
         raise TypeError.new "can't convert into BigDecimal"
@@ -514,6 +533,10 @@ module Lotus
       #   input = BasicObject.new
       #   Lotus::Utils::Kernel.Float(input) # => TypeError
       #
+      #   # String that doesn't represent a float
+      #   input = 'hello'
+      #   Lotus::Utils::Kernel.Float(input) # => TypeError
+      #
       #   # big rational
       #   input = Rational(-8) ** Rational(1, 3)
       #   Lotus::Utils::Kernel.Float(input) # => TypeError
@@ -525,7 +548,8 @@ module Lotus
         super(arg)
       rescue ArgumentError, TypeError
         begin
-          if arg.respond_to?(:to_f)
+          case arg
+          when NilClass, ->(a) { a.respond_to?(:to_f) && a.to_s.match(NUMERIC_MATCHER) }
             arg.to_f
           else
             raise TypeError.new "can't convert into Float"

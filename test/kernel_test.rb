@@ -690,13 +690,31 @@ describe Lotus::Utils::Kernel do
           end
         end
       end
+
+      describe 'when a string without numbers is given' do
+        let(:input) { 'home' }
+
+        it 'raises error' do
+          exception = -> { Lotus::Utils::Kernel.Integer(input) }.must_raise(TypeError)
+          exception.message.must_equal "can't convert into Integer"
+        end
+      end
+
+      describe 'when a string which starts with an integer is given' do
+        let(:input) { '23 street' }
+
+        it 'raises error' do
+          exception = -> { Lotus::Utils::Kernel.Integer(input) }.must_raise(TypeError)
+          exception.message.must_equal "can't convert into Integer"
+        end
+      end
     end
   end
-  
+
   describe '.BigDecimal' do
     describe 'successful operations' do
       before do
-        PersonFavDecimalNumber = Struct.new(:name) do          
+        PersonFavDecimalNumber = Struct.new(:name) do
           def to_d
             BigDecimal.new(Rational(23).to_s)
           end
@@ -708,7 +726,7 @@ describe Lotus::Utils::Kernel do
       after do
         Object.send(:remove_const, :PersonFavDecimalNumber)
       end
-      
+
       describe 'when a fixnum given' do
         let(:input) { 1 }
 
@@ -894,6 +912,24 @@ describe Lotus::Utils::Kernel do
 
         it 'raises error' do
           -> { Lotus::Utils::Kernel.BigDecimal(input) }.must_raise(TypeError)
+        end
+      end
+
+      describe 'when a string without numbers is given' do
+        let(:input) { 'home' }
+
+        it 'raises error' do
+          exception = -> { Lotus::Utils::Kernel.BigDecimal(input) }.must_raise(TypeError)
+          exception.message.must_equal "can't convert into BigDecimal"
+        end
+      end
+
+      describe 'when a string which starts with a big decimal is given' do
+        let(:input) { '23.0 street' }
+
+        it 'raises error' do
+          exception = -> { Lotus::Utils::Kernel.BigDecimal(input) }.must_raise(TypeError)
+          exception.message.must_equal "can't convert into BigDecimal"
         end
       end
 
@@ -1111,6 +1147,24 @@ describe Lotus::Utils::Kernel do
 
         it 'raises error' do
           -> { Lotus::Utils::Kernel.Float(input) }.must_raise(TypeError)
+        end
+      end
+
+      describe 'when a string without numbers is given' do
+        let(:input) { 'home' }
+
+        it 'raises error' do
+          exception = -> { Lotus::Utils::Kernel.Float(input) }.must_raise(TypeError)
+          exception.message.must_equal "can't convert into Float"
+        end
+      end
+
+      describe 'when a string which starts with a float is given' do
+        let(:input) { '23.0 street' }
+
+        it 'raises error' do
+          exception = -> { Lotus::Utils::Kernel.Float(input) }.must_raise(TypeError)
+          exception.message.must_equal "can't convert into Float"
         end
       end
 
