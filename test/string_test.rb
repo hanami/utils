@@ -198,6 +198,20 @@ describe Lotus::Utils::String do
     end
   end
 
+  describe '#singularize' do
+    it 'returns an instance of Lotus::Utils::String' do
+      Lotus::Utils::String.new('lotus').singularize.must_be_kind_of(Lotus::Utils::String)
+    end
+
+    it 'returns a singularized string' do
+      Lotus::Utils::String.new('lotuses').singularize.must_equal('lotus')
+    end
+
+    it 'returns a singularized string from symbol' do
+      Lotus::Utils::String.new(:lotuses).singularize.must_equal('lotus')
+    end
+  end
+
   describe 'unknown method' do
     it 'raises error' do
       begin
