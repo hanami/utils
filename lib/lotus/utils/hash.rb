@@ -259,12 +259,16 @@ module Lotus
       #
       # @api private
       # @since 0.3.0
+      #
+      # @raise [NoMethodError] If doesn't respond to the given method
       def method_missing(m, *args, &blk)
-        h = @hash.__send__(m, *args, &blk)
-        h = self.class.new(h) if h.is_a?(::Hash)
-        h
-      rescue NoMethodError
-        raise NoMethodError.new(%(undefined method `#{ m }' for #{ @hash }:#{ self.class }))
+        if respond_to?(m)
+          h = @hash.__send__(m, *args, &blk)
+          h = self.class.new(h) if h.is_a?(::Hash)
+          h
+        else
+          raise NoMethodError.new(%(undefined method `#{ m }' for #{ @hash }:#{ self.class }))
+        end
       end
 
       # Override Ruby's respond_to_missing? in order to support ::Hash interface
