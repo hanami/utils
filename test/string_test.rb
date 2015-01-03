@@ -206,5 +206,18 @@ describe Lotus::Utils::String do
         e.message.must_equal %(undefined method `yay!' for "one":Lotus::Utils::String)
       end
     end
+
+    # See: https://github.com/lotus/utils/issues/48
+    it 'returns the correct object when a NoMethodError is raised' do
+      string            = Lotus::Utils::String.new('/path/to/something')
+      exception_message = if Lotus::Utils.rubinius?
+        %(undefined method `boom' on an instance of String.)
+      else # MRI
+        %(undefined method `boom' for "/":String)
+      end
+
+      exception = -> { string.gsub(/\//) { |s| s.boom }}.must_raise NoMethodError
+      exception.message.must_equal exception_message
+    end
   end
 end
