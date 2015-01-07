@@ -370,6 +370,19 @@ describe Lotus::Utils::Hash do
           e.message.must_equal %(undefined method `party!' for {\"l\"=>23}:Lotus::Utils::Hash)
         end
       end
+
+      # See: https://github.com/lotus/utils/issues/48
+      it 'returns the correct object when a NoMethodError is raised' do
+        hash = Lotus::Utils::Hash.new({'a' => 1})
+        exception_message = if Lotus::Utils.rubinius?
+          "undefined method `foo' on 1:Fixnum."
+        else
+          "undefined method `foo' for 1:Fixnum"
+        end
+
+        exception = -> { hash.all? { |_, v| v.foo } }.must_raise NoMethodError
+        exception.message.must_equal exception_message
+      end
     end
   end
 end

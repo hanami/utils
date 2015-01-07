@@ -207,20 +207,28 @@ module Lotus
       # @see http://www.ruby-doc.org/core/String.html#method-i-gsub
       #
       # @since 0.3.0
-      def gsub(pattern, replacement, &blk)
-        @string.gsub(pattern, replacement, &blk)
+      def gsub(pattern, replacement = nil, &blk)
+        if block_given?
+          @string.gsub(pattern, &blk)
+        else
+          @string.gsub(pattern, replacement)
+        end
       end
 
       # Override Ruby's method_missing in order to provide ::String interface
       #
       # @api private
       # @since 0.3.0
+      #
+      # @raise [NoMethodError] If doesn't respond to the given method
       def method_missing(m, *args, &blk)
-        s = @string.__send__(m, *args, &blk)
-        s = self.class.new(s) if s.is_a?(::String)
-        s
-      rescue NoMethodError
-        raise NoMethodError.new(%(undefined method `#{ m }' for "#{ @string }":#{ self.class }))
+        if respond_to?(m)
+          s = @string.__send__(m, *args, &blk)
+          s = self.class.new(s) if s.is_a?(::String)
+          s
+        else
+          raise NoMethodError.new(%(undefined method `#{ m }' for "#{ @string }":#{ self.class }))
+        end
       end
 
       # Override Ruby's respond_to_missing? in order to support ::String interface

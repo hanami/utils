@@ -1,6 +1,11 @@
 # Lotus::Utils
 Ruby core extentions and class utilities for Lotus
 
+## v0.3.3 - 2015-01-07
+### Fixed
+- [Luca Guidi] Ensure to return the right offending object if a missing method is called with Utils::String and Hash (eg. `Utils::Hash.new(a: 1).all? {|_, v| v.foo }` blame `v` instead of `Hash`)
+- [Luca Guidi] Raise an error if try to coerce non numeric strings into Integer, Float & BigDecimal (eg. `Utils::Kernel.Integer("hello") # => raise TypeError`)
+
 ## v0.3.2 - 2014-12-23
 ### Added
 - [Luca Guidi] Official support for Ruby 2.2
