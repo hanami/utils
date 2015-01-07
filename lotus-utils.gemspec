@@ -6,8 +6,8 @@ require 'lotus/utils/version'
 Gem::Specification.new do |spec|
   spec.name          = 'lotus-utils'
   spec.version       = Lotus::Utils::VERSION
-  spec.authors       = ['Luca Guidi']
-  spec.email         = ['me@lucaguidi.com']
+  spec.authors       = ['Luca Guidi', 'Trung Lê']
+  spec.email         = ['me@lucaguidi.com', 'trung.le@ruby-journal.com']
   spec.description   = %q{Lotus utilities}
   spec.summary       = %q{Ruby core extentions and Louts utilities}
   spec.homepage      = 'http://lotusrb.org'
