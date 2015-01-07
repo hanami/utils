@@ -19,7 +19,7 @@ module Lotus
     module Kernel
       # Matcher for numeric values
       #
-      # @since x.x.x
+      # @since 0.3.3
       # @api private
       #
       # @see Lotus::Utils::Kernel.Integer
