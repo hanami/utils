@@ -4,64 +4,159 @@ require 'lotus/utils/escape'
 describe Lotus::Utils::Escape do
   let(:mod) { Lotus::Utils::Escape }
 
-  describe '.escape_html' do
+  describe '.html' do
     TEST_ENCODINGS.each do |encoding|
       describe "#{ encoding }" do
         it "escapes nil" do
-          result = mod.escape_html(nil)
-          result.must_equal nil
+          result = mod.html(nil)
+          result.must_equal ''
         end
 
         it "escapes 'test'" do
-          result = mod.escape_html('test'.encode(encoding))
+          result = mod.html('test'.encode(encoding))
           result.must_equal 'test'
         end
 
         it "escapes '&'" do
-          result = mod.escape_html('&'.encode(encoding))
+          result = mod.html('&'.encode(encoding))
           result.must_equal '&amp;'
         end
 
         it "escapes '<'" do
-          result = mod.escape_html('<'.encode(encoding))
+          result = mod.html('<'.encode(encoding))
           result.must_equal '&lt;'
         end
 
         it "escapes '>'" do
-          result = mod.escape_html('>'.encode(encoding))
-          result.must_equal '&rt;'
+          result = mod.html('>'.encode(encoding))
+          result.must_equal '&gt;'
         end
 
         it %(escapes '"') do
-          result = mod.escape_html('"'.encode(encoding))
+          result = mod.html('"'.encode(encoding))
           result.must_equal '&quot;'
         end
 
         it %(escapes "'") do
-          result = mod.escape_html("'".encode(encoding))
+          result = mod.html("'".encode(encoding))
           result.must_equal '&apos;'
         end
 
         it "escapes '/'" do
-          result = mod.escape_html('/'.encode(encoding))
-          result.must_equal '&#x2F'
+          result = mod.html('/'.encode(encoding))
+          result.must_equal '&#x2F;'
         end
 
         it "escapes '<script>'" do
-          result = mod.escape_html('<script>'.encode(encoding))
-          result.must_equal '&lt;script&rt;'
+          result = mod.html('<script>'.encode(encoding))
+          result.must_equal '&lt;script&gt;'
         end
 
         it "escapes '<scr<script>ipt>'" do
-          result = mod.escape_html('<scr<script>ipt>'.encode(encoding))
-          result.must_equal '&lt;scr&lt;script&rt;ipt&rt;'
+          result = mod.html('<scr<script>ipt>'.encode(encoding))
+          result.must_equal '&lt;scr&lt;script&gt;ipt&gt;'
         end
 
         it "escapes '&lt;script&gt;'" do
-          result = mod.escape_html('&lt;script&gt;'.encode(encoding))
+          result = mod.html('&lt;script&gt;'.encode(encoding))
           result.must_equal '&amp;lt;script&amp;gt;'
         end
       end
     end
   end
+
+  describe '.html_attribute' do
+    TEST_ENCODINGS.each do |encoding|
+      describe "#{ encoding }" do
+        it "escapes nil" do
+          result = mod.html_attribute(nil)
+          result.must_equal ''
+        end
+
+        it "escapes 'test'" do
+          result = mod.html_attribute('test'.encode(encoding))
+          result.must_equal 'test'
+        end
+
+        it "escapes '&'" do
+          result = mod.html_attribute('&'.encode(encoding))
+          result.must_equal '&amp;'
+        end
+
+        it "escapes '<'" do
+          result = mod.html_attribute('<'.encode(encoding))
+          result.must_equal '&lt;'
+        end
+
+        it "escapes '>'" do
+          result = mod.html_attribute('>'.encode(encoding))
+          result.must_equal '&gt;'
+        end
+
+        it %(escapes '"') do
+          result = mod.html_attribute('"'.encode(encoding))
+          result.must_equal '&quot;'
+        end
+
+        it %(escapes "'") do
+          result = mod.html_attribute("'".encode(encoding))
+          result.must_equal '&#x27;'
+        end
+
+        it "escapes '/'" do
+          result = mod.html_attribute('/'.encode(encoding))
+          result.must_equal '&#x2f;'
+        end
+
+        it "escapes '<script>'" do
+          result = mod.html_attribute('<script>'.encode(encoding))
+          result.must_equal '&lt;script&gt;'
+        end
+
+        it "escapes '<scr<script>ipt>'" do
+          result = mod.html_attribute('<scr<script>ipt>'.encode(encoding))
+          result.must_equal '&lt;scr&lt;script&gt;ipt&gt;'
+        end
+
+        it "escapes '&lt;script&gt;'" do
+          result = mod.html_attribute('&lt;script&gt;'.encode(encoding))
+          result.must_equal '&amp;lt&#x3b;script&amp;gt&#x3b;'
+        end
+      end
+    end # tests with encodings
+
+    TEST_INVALID_CHARS.each do |char, entity|
+      it "escapes '#{ char.to_s }'" do
+        result = mod.html_attribute(char)
+        result.must_equal "&#x#{ TEST_REPLACEMENT_CHAR };"
+      end
+    end
+
+    # it "escapes '\t'" do
+    #   result = mod.html_attribute("\t")
+    #   result.must_equal "&#x#{ TEST_REPLACEMENT_CHAR };"
+    # end
+
+    # it "escapes '\r'" do
+    #   result = mod.html_attribute("\r")
+    #   result.must_equal "&#x#{ TEST_REPLACEMENT_CHAR };"
+    # end
+
+    # it "escapes '\n'" do
+    #   result = mod.html_attribute("\n")
+    #   result.must_equal "&#x#{ TEST_REPLACEMENT_CHAR };"
+    # end
+
+    it "escapes 0x100" do
+      result = mod.html_attribute("Ā")
+      result.must_equal '&#x100;'
+    end
+
+    TEST_HTML_ENTITIES.each do |char, entity|
+      it "escapes #{ char }" do
+        result = mod.html_attribute(char)
+        result.must_equal "&#{ entity };"
+      end
+    end
+  end # .html_attribute
 end

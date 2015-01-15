@@ -28,3 +28,4 @@ end
 
 require 'minitest/autorun'
 $:.unshift 'lib'
+require_relative './fixtures'
