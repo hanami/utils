@@ -126,34 +126,36 @@ describe Lotus::Utils::Escape do
     end # tests with encodings
 
     TEST_INVALID_CHARS.each do |char, entity|
-      it "escapes '#{ char.to_s }'" do
+      it "escapes '#{ char }'" do
         result = mod.html_attribute(char)
         result.must_equal "&#x#{ TEST_REPLACEMENT_CHAR };"
       end
     end
 
-    # it "escapes '\t'" do
-    #   result = mod.html_attribute("\t")
-    #   result.must_equal "&#x#{ TEST_REPLACEMENT_CHAR };"
-    # end
+    it "escapes tab" do
+      result = mod.html_attribute("\t")
+      result.must_equal "&#x9;"
+    end
 
-    # it "escapes '\r'" do
-    #   result = mod.html_attribute("\r")
-    #   result.must_equal "&#x#{ TEST_REPLACEMENT_CHAR };"
-    # end
+    it "escapes return carriage" do
+      result = mod.html_attribute("\r")
+      result.must_equal "&#xd;"
+    end
 
-    # it "escapes '\n'" do
-    #   result = mod.html_attribute("\n")
-    #   result.must_equal "&#x#{ TEST_REPLACEMENT_CHAR };"
-    # end
+    it "escapes new line" do
+      result = mod.html_attribute("\n")
+      result.must_equal "&#xa;"
+    end
 
-    it "escapes 0x100" do
+    it "escapes unicode char" do
       result = mod.html_attribute("Ā")
       result.must_equal '&#x100;'
     end
 
     TEST_HTML_ENTITIES.each do |char, entity|
-      it "escapes #{ char }" do
+      test_name = Lotus::Utils.jruby? ? char.ord : char
+
+      it "escapes #{ test_name }" do
         result = mod.html_attribute(char)
         result.must_equal "&#{ entity };"
       end
