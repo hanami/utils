@@ -46,7 +46,7 @@ module Lotus
 
       # Non printable chars
       #
-      # This is a Hash instead of an Array, to make it's lookup O(1).
+      # This is a Hash instead of an Array, to make lookup O(1).
       #
       # @since x.x.x
       # @api private
@@ -111,6 +111,8 @@ module Lotus
 
       # Lookup table for HTML escape
       #
+      # This is a Hash instead of an Array, to make lookup O(1).
+      #
       # @since x.x.x
       # @api private
       #
@@ -122,6 +124,20 @@ module Lotus
         '"' => '&quot;',
         "'" => '&apos;',
         '/' => '&#x2F;'
+      }.freeze
+
+      # Lookup table for safe chars for HTML attributes.
+      #
+      # 
+      # @since x.x.x
+      # @api private
+      #
+      # @see Lookup::Utils::Escape.html_attribute
+      HTML_ATTRIBUTE_SAFE_CHARS = {
+        ',' => true,
+        '.' => true,
+        '-' => true,
+        '_' => true
       }.freeze
 
       # Lookup table for HTML attribute escape
@@ -439,7 +455,7 @@ module Lotus
         result = ""
 
         input.to_s.encode(Encoding::UTF_8).chars do |chr|
-          result << encode_char(chr)
+          result << encode_char(chr, HTML_ATTRIBUTE_SAFE_CHARS)
         end
 
         result
@@ -448,14 +464,16 @@ module Lotus
       private
       # Encode the given UTF-8 char.
       #
-      # Non printable chars will b
       # @param char [String] an UTF-8 char
+      # @param safe_chars [Hash] a table of safe chars
       #
       # @return [String] an HTML encoded string
       #
       # @since x.x.x
       # @api private
-      def self.encode_char(char)
+      def self.encode_char(char, safe_chars = {})
+        return char if safe_chars[char]
+
         code = char.ord
         hex  = hex_for_non_alphanumeric_code(code)
         return char if hex.nil?

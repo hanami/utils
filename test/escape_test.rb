@@ -1,4 +1,5 @@
 require 'test_helper'
+require 'lotus/utils'
 require 'lotus/utils/escape'
 
 describe Lotus::Utils::Escape do
@@ -150,6 +151,26 @@ describe Lotus::Utils::Escape do
     it "escapes unicode char" do
       result = mod.html_attribute("Ā")
       result.must_equal '&#x100;'
+    end
+
+    it "doesn't escape ','" do
+      result = mod.html_attribute(",")
+      result.must_equal ','
+    end
+
+    it "doesn't escape '.'" do
+      result = mod.html_attribute(".")
+      result.must_equal '.'
+    end
+
+    it "doesn't escape '-'" do
+      result = mod.html_attribute("-")
+      result.must_equal '-'
+    end
+
+    it "doesn't escape '_'" do
+      result = mod.html_attribute("_")
+      result.must_equal '_'
     end
 
     TEST_HTML_ENTITIES.each do |char, entity|
