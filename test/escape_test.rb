@@ -182,4 +182,71 @@ describe Lotus::Utils::Escape do
       end
     end
   end # .html_attribute
+
+  describe '.url' do
+    TEST_ENCODINGS.each do |encoding|
+      describe "#{ encoding }" do
+        it "escapes nil" do
+          result = mod.url(nil)
+          result.must_equal ''
+        end
+
+        it "escapes 'test'" do
+          result = mod.url('test'.encode(encoding))
+          result.must_equal ''
+        end
+
+        it "escapes 'http://lotusrb.org'" do
+          result = mod.url('http://lotusrb.org'.encode(encoding))
+          result.must_equal 'http://lotusrb.org'
+        end
+
+        it "escapes 'https://lotusrb.org'" do
+          result = mod.url('https://lotusrb.org'.encode(encoding))
+          result.must_equal 'https://lotusrb.org'
+        end
+
+        it "escapes 'https://lotusrb.org#introduction'" do
+          result = mod.url('https://lotusrb.org#introduction'.encode(encoding))
+          result.must_equal 'https://lotusrb.org#introduction'
+        end
+
+        it "escapes 'https://lotusrb.org/guides/index.html'" do
+          result = mod.url('https://lotusrb.org/guides/index.html'.encode(encoding))
+          result.must_equal 'https://lotusrb.org/guides/index.html'
+        end
+
+        it "escapes 'mailto:user@example.com'" do
+          result = mod.url('mailto:user@example.com'.encode(encoding))
+          result.must_equal 'mailto:user@example.com'
+        end
+
+        it "escapes 'mailto:user@example.com?Subject=Hello'" do
+          result = mod.url('mailto:user@example.com?Subject=Hello'.encode(encoding))
+          result.must_equal 'mailto:user@example.com?Subject=Hello'
+        end
+
+        it "escapes 'javascript:alert(1);'" do
+          result = mod.url('javascript:alert(1);'.encode(encoding))
+          result.must_equal ''
+        end
+
+        # See https://github.com/mzsanford/twitter-text-rb/commit/cffce8e60b7557e9945fc0e8b4383e5a66b1558f
+        it %(escapes 'http://x.xx/@"style="color:pink"onmouseover=alert(1)//') do
+          result = mod.url('http://x.xx/@"style="color:pink"onmouseover=alert(1)//'.encode(encoding))
+          result.must_equal 'http://x.xx/@'
+        end
+
+        it %{escapes 'http://x.xx/("style="color:red"onmouseover="alert(1)'} do
+          result = mod.url('http://x.xx/("style="color:red"onmouseover="alert(1)'.encode(encoding))
+          result.must_equal 'http://x.xx/('
+        end
+
+        it %(escapes 'http://x.xx/@%22style=%22color:pink%22onmouseover=alert(1)//') do
+          result = mod.url('http://x.xx/@%22style=%22color:pink%22onmouseover=alert(1)//'.encode(encoding))
+          result.must_equal 'http://x.xx/@'
+        end
+      end
+    end
+  end
 end

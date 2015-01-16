@@ -111,8 +111,6 @@ module Lotus
 
       # Lookup table for HTML escape
       #
-      # This is a Hash instead of an Array, to make lookup O(1).
-      #
       # @since x.x.x
       # @api private
       #
@@ -128,7 +126,8 @@ module Lotus
 
       # Lookup table for safe chars for HTML attributes.
       #
-      # 
+      # This is a Hash instead of an Array, to make lookup O(1).
+      #
       # @since x.x.x
       # @api private
       #
@@ -401,6 +400,14 @@ module Lotus
         9830 => 'diams',    # black diamond suit
       }.freeze
 
+      # Allowed URL schemes
+      #
+      # @since x.x.x
+      # @api private
+      #
+      # @see Lotus::Utils::Escape.url
+      DEFAULT_URL_SCHEMES = ['http', 'https', 'mailto'].freeze
+
       # Escape HTML contents
       #
       # This MUST be used only for tag contents.
@@ -459,6 +466,14 @@ module Lotus
         end
 
         result
+      end
+
+      def self.url(input, schemes = DEFAULT_URL_SCHEMES)
+        input = URI.decode(
+          input.to_s.encode(Encoding::UTF_8)
+        )
+
+        URI.extract(input, schemes).first.to_s
       end
 
       private
