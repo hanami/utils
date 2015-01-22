@@ -51,12 +51,15 @@ module Lotus
         #   # If the #notificate method accepts some argument(s) they should be passed when `run` is invoked.
         #   chain.append :notificate
         def append(*callbacks, &block)
-          process(callbacks, block) do |callables|
-            @chain.push(*callables)
+          callbacks.push block if block_given?
+          callbacks.each do |c|
+            @chain.push Factory.fabricate(c)
           end
+
+          @chain.uniq!
         end
 
-        # Prepends the given callbacks to the beginning of the chain.
+        # Preprends the given callbacks to the beginning of the chain.
         #
         # @param callbacks [Array] one or multiple callbacks to add
         # @param block [Proc] an optional block to be added
@@ -88,9 +91,12 @@ module Lotus
         #   # If the #notificate method accepts some argument(s) they should be passed when `run` is invoked.
         #   chain.prepend :notificate
         def prepend(*callbacks, &block)
-          process(callbacks, block) do |callables|
-            @chain.unshift(*callables)
+          callbacks.push block if block_given?
+          callbacks.each do |c|
+            @chain.unshift Factory.fabricate(c)
           end
+
+          @chain.uniq!
         end
 
         # Runs all the callbacks in the chain.
@@ -163,16 +169,6 @@ module Lotus
           super
           @chain.freeze
         end
-
-
-        private
-
-        def process(callbacks, block = nil)
-          callbacks.push(block) if block
-          yield callbacks.map { |c| Factory.fabricate(c) }
-          @chain.uniq!
-        end
-
       end
 
       # Callback factory
