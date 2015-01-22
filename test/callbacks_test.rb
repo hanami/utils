@@ -10,6 +10,10 @@ Lotus::Utils::Callbacks::Chain.class_eval do
     @chain.first
   end
 
+  def last
+    @chain.last
+  end
+
   def each(&blk)
     @chain.each(&blk)
   end
@@ -46,8 +50,16 @@ describe Lotus::Utils::Callbacks::Chain do
     it 'wraps the given callback with a callable object' do
       @chain.append :symbolize!
 
-      cb = @chain.first
+      cb = @chain.last
       cb.must_respond_to(:call)
+    end
+
+    it 'appends the callbacks at the end of the chain' do
+      @chain.append(:foo)
+
+      @chain.append(:bar)
+      @chain.first.callback.must_equal(:foo)
+      @chain.last.callback.must_equal(:bar)
     end
 
     describe 'when a callable object is passed' do
@@ -58,7 +70,7 @@ describe Lotus::Utils::Callbacks::Chain do
       let(:callback) { Callable.new }
 
       it 'includes the given callback' do
-        cb = @chain.first
+        cb = @chain.last
         cb.callback.must_equal(callback)
       end
     end
@@ -71,7 +83,7 @@ describe Lotus::Utils::Callbacks::Chain do
       let(:callback) { :upcase }
 
       it 'includes the given callback' do
-        cb = @chain.first
+        cb = @chain.last
         cb.callback.must_equal(callback)
       end
 
@@ -90,7 +102,7 @@ describe Lotus::Utils::Callbacks::Chain do
       let(:callback) { Proc.new{} }
 
       it 'includes the given callback' do
-        cb = @chain.first
+        cb = @chain.last
         assert_equal cb.callback, callback
       end
     end
@@ -98,6 +110,86 @@ describe Lotus::Utils::Callbacks::Chain do
     describe 'when multiple callbacks are passed' do
       before do
         @chain.append(*callbacks)
+      end
+
+      let(:callbacks) { [:upcase, Callable.new, Proc.new{}] }
+
+      it 'includes all the given callbacks' do
+        @chain.size.must_equal(callbacks.size)
+      end
+
+      it 'all the included callbacks are callable' do
+        @chain.each do |callback|
+          callback.must_respond_to(:call)
+        end
+      end
+    end
+  end
+
+  describe '#prepend' do
+    it 'wraps the given callback with a callable object' do
+      @chain.prepend :symbolize!
+
+      cb = @chain.first
+      cb.must_respond_to(:call)
+    end
+
+    it 'prepends the callbacks at the beginning of the chain' do
+      @chain.append(:foo)
+
+      @chain.prepend(:bar)
+      @chain.first.callback.must_equal(:bar)
+      @chain.last.callback.must_equal(:foo)
+    end
+
+    describe 'when a callable object is passed' do
+      before do
+        @chain.prepend callback
+      end
+
+      let(:callback) { Callable.new }
+
+      it 'includes the given callback' do
+        cb = @chain.first
+        cb.callback.must_equal(callback)
+      end
+    end
+
+    describe 'when a Symbol is passed' do
+      before do
+        @chain.prepend callback
+      end
+
+      let(:callback) { :upcase }
+
+      it 'includes the given callback' do
+        cb = @chain.first
+        cb.callback.must_equal(callback)
+      end
+
+      it 'guarantees unique entries' do
+        # append the callback again, see before block
+        @chain.prepend callback
+        @chain.size.must_equal(1)
+      end
+    end
+
+    describe 'when a block is passed' do
+      before do
+        @chain.prepend(&callback)
+      end
+
+      let(:callback) { Proc.new{} }
+
+      it 'includes the given callback' do
+        cb = @chain.first
+        assert_equal cb.callback, callback
+      end
+    end
+
+    describe 'when multiple callbacks are passed' do
+      before do
+        @chain.prepend(*callbacks)
       end
 
       let(:callbacks) { [:upcase, Callable.new, Proc.new{}] }
