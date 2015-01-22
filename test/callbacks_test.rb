@@ -42,9 +42,9 @@ describe Lotus::Utils::Callbacks::Chain do
     @chain = Lotus::Utils::Callbacks::Chain.new
   end
 
-  describe '#add' do
+  describe '#append' do
     it 'wraps the given callback with a callable object' do
-      @chain.add :symbolize!
+      @chain.append :symbolize!
 
       cb = @chain.first
       cb.must_respond_to(:call)
@@ -52,7 +52,7 @@ describe Lotus::Utils::Callbacks::Chain do
 
     describe 'when a callable object is passed' do
       before do
-        @chain.add callback
+        @chain.append callback
       end
 
       let(:callback) { Callable.new }
@@ -65,7 +65,7 @@ describe Lotus::Utils::Callbacks::Chain do
 
     describe 'when a Symbol is passed' do
       before do
-        @chain.add callback
+        @chain.append callback
       end
 
       let(:callback) { :upcase }
@@ -76,15 +76,15 @@ describe Lotus::Utils::Callbacks::Chain do
       end
 
       it 'guarantees unique entries' do
-        # add the callback again, see before block
-        @chain.add callback
+        # append the callback again, see before block
+        @chain.append callback
         @chain.size.must_equal(1)
       end
     end
 
     describe 'when a block is passed' do
       before do
-        @chain.add(&callback)
+        @chain.append(&callback)
       end
 
       let(:callback) { Proc.new{} }
@@ -97,7 +97,7 @@ describe Lotus::Utils::Callbacks::Chain do
 
     describe 'when multiple callbacks are passed' do
       before do
-        @chain.add(*callbacks)
+        @chain.append(*callbacks)
       end
 
       let(:callbacks) { [:upcase, Callable.new, Proc.new{}] }
@@ -120,7 +120,7 @@ describe Lotus::Utils::Callbacks::Chain do
 
     describe 'when symbols are passed' do
       before do
-        @chain.add :authenticate!, :set_article
+        @chain.append :authenticate!, :set_article
         @chain.run action, params
       end
 
@@ -135,11 +135,11 @@ describe Lotus::Utils::Callbacks::Chain do
 
     describe 'when procs are passed' do
       before do
-        @chain.add do
+        @chain.append do
           logger.push 'authenticate!'
         end
 
-        @chain.add do |params|
+        @chain.append do |params|
           logger.push "set_article: #{ params[:id] }"
         end
 
@@ -166,7 +166,7 @@ describe Lotus::Utils::Callbacks::Chain do
     end
 
     it 'raises an error if try to add a callback when frozen' do
-      -> { @chain.add :authenticate! }.must_raise RuntimeError
+      -> { @chain.append :authenticate! }.must_raise RuntimeError
     end
   end
 end

@@ -19,7 +19,7 @@ module Lotus
           @chain = Array.new
         end
 
-        # Adds the given callbacks to the chain
+        # Appends the given callbacks to the end of the chain.
         #
         # @param callbacks [Array] one or multiple callbacks to add
         # @param blk [Proc] an optional block to be added
@@ -42,14 +42,14 @@ module Lotus
         #
         #   # Add a Proc to be used as a callback, it will be wrapped by `Callback`
         #   # The optional argument(s) correspond to the one passed when invoked the chain with `run`.
-        #   chain.add { Authenticator.authenticate! }
-        #   chain.add {|params| ArticleRepository.find(params[:id]) }
+        #   chain.append { Authenticator.authenticate! }
+        #   chain.append {|params| ArticleRepository.find(params[:id]) }
         #
         #   # Add a Symbol as a reference to a method name that will be used as a callback.
         #   # It will wrapped by `MethodCallback`
         #   # If the #notificate method accepts some argument(s) they should be passed when `run` is invoked.
-        #   chain.add :notificate
-        def add(*callbacks, &blk)
+        #   chain.append :notificate
+        def append(*callbacks, &blk)
           callbacks.push blk if block_given?
           callbacks.each do |c|
             @chain.push Factory.fabricate(c)
