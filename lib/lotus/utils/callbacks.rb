@@ -58,7 +58,7 @@ module Lotus
           @chain.uniq!
         end
 
-        # Preprends the given callbacks to the beginning of the chain.
+        # Prepends the given callbacks to the beginning of the chain.
         #
         # @param callbacks [Array] one or multiple callbacks to add
         # @param block [Proc] an optional block to be added
