@@ -1,3 +1,5 @@
+require 'lotus/utils/deprecation'
+
 module Lotus
   module Utils
     # Before and After callbacks
@@ -19,21 +21,71 @@ module Lotus
           @chain = Array.new
         end
 
-        # Adds the given callbacks to the chain
+        # Appends the given callbacks to the end of the chain.
         #
-        # @param callbacks [Array] one or multiple callbacks to add
-        # @param blk [Proc] an optional block to be added
+        # @param callbacks [Array] one or multiple callbacks to append
+        # @param block [Proc] an optional block to be appended
         #
         # @return [void]
         #
         # @raise [RuntimeError] if the object was previously frozen
         #
+        # @see #prepend
         # @see #run
         # @see Lotus::Utils::Callbacks::Callback
         # @see Lotus::Utils::Callbacks::MethodCallback
         # @see Lotus::Utils::Callbacks::Chain#freeze
         #
+        # @since x.x.x
+        #
+        # @example
+        #   require 'lotus/utils/callbacks'
+        #
+        #   chain = Lotus::Utils::Callbacks::Chain.new
+        #
+        #   # Append a Proc to be used as a callback, it will be wrapped by `Callback`
+        #   # The optional argument(s) correspond to the one passed when invoked the chain with `run`.
+        #   chain.append { Authenticator.authenticate! }
+        #   chain.append { |params| ArticleRepository.find(params[:id]) }
+        #
+        #   # Append a Symbol as a reference to a method name that will be used as a callback.
+        #   # It will wrapped by `MethodCallback`
+        #   # If the #notificate method accepts some argument(s) they should be passed when `run` is invoked.
+        #   chain.append :notificate
+        def append(*callbacks, &block)
+          callables(callbacks, block).each do |c|
+            @chain.push(c)
+          end
+
+          @chain.uniq!
+        end
+
         # @since 0.1.0
+        # @deprecated Use Lotus::Utils::Callbacks::Chain#append as it has the
+        #   same effect, but it's more consistent with the new API.
+        #
+        # @see Lotus::Utils::Callbacks::Chain#append
+        def add(*callbacks, &blk)
+          Utils::Deprecation.new("Lotus::Utils::Callbacks::Chain#add is deprecated, use #append instead.")
+          append(*callbacks, &blk)
+        end
+
+        # Prepends the given callbacks to the beginning of the chain.
+        #
+        # @param callbacks [Array] one or multiple callbacks to add
+        # @param block [Proc] an optional block to be added
+        #
+        # @return [void]
+        #
+        # @raise [RuntimeError] if the object was previously frozen
+        #
+        # @see #append
+        # @see #run
+        # @see Lotus::Utils::Callbacks::Callback
+        # @see Lotus::Utils::Callbacks::MethodCallback
+        # @see Lotus::Utils::Callbacks::Chain#freeze
+        #
+        # @since x.x.x
         #
         # @example
         #   require 'lotus/utils/callbacks'
@@ -42,17 +94,16 @@ module Lotus
         #
         #   # Add a Proc to be used as a callback, it will be wrapped by `Callback`
         #   # The optional argument(s) correspond to the one passed when invoked the chain with `run`.
-        #   chain.add { Authenticator.authenticate! }
-        #   chain.add {|params| ArticleRepository.find(params[:id]) }
+        #   chain.prepend { Authenticator.authenticate! }
+        #   chain.prepend { |params| ArticleRepository.find(params[:id]) }
         #
         #   # Add a Symbol as a reference to a method name that will be used as a callback.
         #   # It will wrapped by `MethodCallback`
         #   # If the #notificate method accepts some argument(s) they should be passed when `run` is invoked.
-        #   chain.add :notificate
-        def add(*callbacks, &blk)
-          callbacks.push blk if block_given?
-          callbacks.each do |c|
-            @chain.push Factory.fabricate(c)
+        #   chain.prepend :notificate
+        def prepend(*callbacks, &block)
+          callables(callbacks, block).each do |c|
+            @chain.unshift(c)
           end
 
           @chain.uniq!
@@ -128,6 +179,15 @@ module Lotus
           super
           @chain.freeze
         end
+
+
+        private
+
+        def callables(callbacks, block)
+          callbacks.push(block) if block
+          callbacks.map { |c| Factory.fabricate(c) }
+        end
+
       end
 
       # Callback factory
