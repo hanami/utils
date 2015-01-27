@@ -1,3 +1,5 @@
+require 'lotus/utils/deprecation'
+
 module Lotus
   module Utils
     # Before and After callbacks
@@ -21,8 +23,8 @@ module Lotus
 
         # Appends the given callbacks to the end of the chain.
         #
-        # @param callbacks [Array] one or multiple callbacks to add
-        # @param block [Proc] an optional block to be added
+        # @param callbacks [Array] one or multiple callbacks to append
+        # @param block [Proc] an optional block to be appended
         #
         # @return [void]
         #
@@ -41,12 +43,12 @@ module Lotus
         #
         #   chain = Lotus::Utils::Callbacks::Chain.new
         #
-        #   # Add a Proc to be used as a callback, it will be wrapped by `Callback`
+        #   # Append a Proc to be used as a callback, it will be wrapped by `Callback`
         #   # The optional argument(s) correspond to the one passed when invoked the chain with `run`.
         #   chain.append { Authenticator.authenticate! }
         #   chain.append { |params| ArticleRepository.find(params[:id]) }
         #
-        #   # Add a Symbol as a reference to a method name that will be used as a callback.
+        #   # Append a Symbol as a reference to a method name that will be used as a callback.
         #   # It will wrapped by `MethodCallback`
         #   # If the #notificate method accepts some argument(s) they should be passed when `run` is invoked.
         #   chain.append :notificate
@@ -58,7 +60,15 @@ module Lotus
           @chain.uniq!
         end
 
-        alias_method :add, :append
+        # @since 0.1.0
+        # @deprecated Use Lotus::Utils::Callbacks::Chain#append as it has the
+        #   same effect, but it's more consistent with the new API.
+        #
+        # @see Lotus::Utils::Callbacks::Chain#append
+        def add(*callbacks, &blk)
+          Utils::Deprecation.new("Lotus::Utils::Callbacks::Chain#add is deprecated, use #append instead.")
+          append(*callbacks, &blk)
+        end
 
         # Prepends the given callbacks to the beginning of the chain.
         #
