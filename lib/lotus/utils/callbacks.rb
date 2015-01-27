@@ -34,7 +34,7 @@ module Lotus
         # @see Lotus::Utils::Callbacks::MethodCallback
         # @see Lotus::Utils::Callbacks::Chain#freeze
         #
-        # @since 0.1.0
+        # @since x.x.x
         #
         # @example
         #   require 'lotus/utils/callbacks'
@@ -57,6 +57,8 @@ module Lotus
 
           @chain.uniq!
         end
+
+        alias_method :add, :append
 
         # Prepends the given callbacks to the beginning of the chain.
         #
