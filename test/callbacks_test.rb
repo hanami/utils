@@ -127,24 +127,32 @@ describe Lotus::Utils::Callbacks::Chain do
   end
 
   describe '#add (#append alias)' do
+    it 'is deprecated' do
+      _, stderr = capture_io do
+        @chain.add :symbolize!
+      end
+
+      stderr.must_match 'Lotus::Utils::Callbacks::Chain#add is deprecated, use #append instead.'
+    end
+
     it 'wraps the given callback with a callable object' do
-      @chain.add :symbolize!
+      capture_io { @chain.add :symbolize! }
 
       cb = @chain.last
       cb.must_respond_to(:call)
     end
 
     it 'adds the callbacks at the end of the chain' do
-      @chain.add(:foo)
+      capture_io { @chain.add(:foo) }
 
-      @chain.add(:bar)
+      capture_io { @chain.add(:bar) }
       @chain.first.callback.must_equal(:foo)
       @chain.last.callback.must_equal(:bar)
     end
 
     describe 'when a callable object is passed' do
       before do
-        @chain.add callback
+        capture_io { @chain.add callback }
       end
 
       let(:callback) { Callable.new }
@@ -157,7 +165,7 @@ describe Lotus::Utils::Callbacks::Chain do
 
     describe 'when a Symbol is passed' do
       before do
-        @chain.add callback
+        capture_io { @chain.add callback }
       end
 
       let(:callback) { :upcase }
@@ -169,14 +177,14 @@ describe Lotus::Utils::Callbacks::Chain do
 
       it 'guarantees unique entries' do
         # add the callback again, see before block
-        @chain.add callback
+        capture_io { @chain.add callback }
         @chain.size.must_equal(1)
       end
     end
 
     describe 'when a block is passed' do
       before do
-        @chain.add(&callback)
+        capture_io { @chain.add(&callback) }
       end
 
       let(:callback) { Proc.new{} }
@@ -189,7 +197,7 @@ describe Lotus::Utils::Callbacks::Chain do
 
     describe 'when multiple callbacks are passed' do
       before do
-        @chain.add(*callbacks)
+        capture_io { @chain.add(*callbacks) }
       end
 
       let(:callbacks) { [:upcase, Callable.new, Proc.new{}] }
