@@ -1,6 +1,14 @@
 # Lotus::Utils
 Ruby core extentions and class utilities for Lotus
 
+## v0.3.4 - 2015-01-30
+### Added
+- [Alfonso Uceda Pompa] Aliased `Lotus::Utils::Attributes#get` with `#[]`
+- [Simone Carletti] Introduced `Lotus::Utils::Callbacks::Chain#prepend` and `#append`
+
+### Deprecated
+- [Luca Guidi] Deprecated `Lotus::Utils::Callbacks::Chain#add` in favor of `#append`
+
 ## v0.3.3 - 2015-01-08
 ### Fixed
 - [Luca Guidi] Ensure to return the right offending object if a missing method is called with Utils::String and Hash (eg. `Utils::Hash.new(a: 1).all? {|_, v| v.foo }` blame `v` instead of `Hash`)

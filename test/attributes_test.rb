@@ -73,6 +73,47 @@ describe Lotus::Utils::Attributes do
     end
   end
 
+  describe '#[]' do
+    it 'returns value associated to the given key (string)' do
+      attributes = Lotus::Utils::Attributes.new('foo' => 'bar')
+      attributes['foo'].must_equal 'bar'
+      attributes[:foo].must_equal  'bar'
+    end
+
+    it 'returns value associated to the given key (symbol)' do
+      attributes = Lotus::Utils::Attributes.new(foo: 'bar')
+      attributes[:foo].must_equal  'bar'
+      attributes['foo'].must_equal 'bar'
+    end
+
+    it 'returns value associated to the given key (number)' do
+      attributes = Lotus::Utils::Attributes.new( 23 => 'foo')
+      attributes[23].must_equal   'foo'
+      attributes['23'].must_equal 'foo'
+    end
+
+    it 'correctly handles Ruby falsey' do
+      attributes = Lotus::Utils::Attributes.new('foo' => false)
+      attributes[:foo].must_equal  false
+      attributes['foo'].must_equal false
+
+      attributes = Lotus::Utils::Attributes.new(foo: false)
+      attributes[:foo].must_equal false
+    end
+
+    it 'ignores hash default' do
+      attributes = Lotus::Utils::Attributes.new{|h,k| h[k] = [] }
+      attributes['foo'].must_be_nil
+      attributes[:foo].must_be_nil
+    end
+
+    it 'overrides clashing keys' do
+      attributes = Lotus::Utils::Attributes.new('foo' => 'bar', foo: 'baz')
+      attributes['foo'].must_equal 'baz'
+      attributes[:foo].must_equal  'baz'
+    end
+  end
+
   describe '#set' do
     it 'is a void operation' do
       Lotus::Utils::Attributes.new.set('foo', 11).must_be_nil

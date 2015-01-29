@@ -48,18 +48,29 @@ module Lotus
       #
       #   attributes.get(:a)  # => 1
       #   attributes.get('a') # => 1
+      #   attributes[:a]      # => 1
+      #   attributes['a']     # => 1
       #
       #   attributes.get(:b)  # => 2
       #   attributes.get('b') # => 2
+      #   attributes[:b]      # => 2
+      #   attributes['b']     # => 2
       #
       #   attributes.get(23)   # => "foo"
       #   attributes.get('23') # => "foo"
+      #   attributes[23]       # => "foo"
+      #   attributes[23]       # => "foo"
       #
       #   attributes.get(:unknown)  # => nil
       #   attributes.get('unknown') # => nil
+      #   attributes[:unknown]      # => nil
+      #   attributes['unknown']     # => nil
       def get(attribute)
         @attributes[attribute.to_s]
       end
+
+      # @since 0.3.4
+      alias_method :[], :get
 
       # Set the given value for the given attribute
       #
