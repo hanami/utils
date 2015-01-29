@@ -69,6 +69,7 @@ module Lotus
         @attributes[attribute.to_s]
       end
 
+      # @since 0.3.4
       alias_method :[], :get
 
       # Set the given value for the given attribute

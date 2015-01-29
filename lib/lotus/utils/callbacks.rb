@@ -36,7 +36,7 @@ module Lotus
         # @see Lotus::Utils::Callbacks::MethodCallback
         # @see Lotus::Utils::Callbacks::Chain#freeze
         #
-        # @since x.x.x
+        # @since 0.3.4
         #
         # @example
         #   require 'lotus/utils/callbacks'
@@ -85,7 +85,7 @@ module Lotus
         # @see Lotus::Utils::Callbacks::MethodCallback
         # @see Lotus::Utils::Callbacks::Chain#freeze
         #
-        # @since x.x.x
+        # @since 0.3.4
         #
         # @example
         #   require 'lotus/utils/callbacks'
