@@ -62,6 +62,36 @@ describe Lotus::Utils::Escape do
           result = mod.html('&lt;script&gt;'.encode(encoding))
           result.must_equal '&amp;lt;script&amp;gt;'
         end
+
+        it %(escapes '""><script>xss(5)</script>') do
+          result = mod.html('""><script>xss(5)</script>'.encode(encoding))
+          result.must_equal '&quot;&quot;&gt;&lt;script&gt;xss(5)&lt;&#x2F;script&gt;'
+        end
+
+        it %(escapes '><script>xss(6)</script>') do
+          result = mod.html('><script>xss(6)</script>'.encode(encoding))
+          result.must_equal '&gt;&lt;script&gt;xss(6)&lt;&#x2F;script&gt;'
+        end
+
+        it %(escapes '# onmouseover="xss(7)" ') do
+          result = mod.html('# onmouseover="xss(7)" '.encode(encoding))
+          result.must_equal '# onmouseover=&quot;xss(7)&quot; '
+        end
+
+        it %(escapes '/" onerror="xss(9)">') do
+          result = mod.html('/" onerror="xss(9)">'.encode(encoding))
+          result.must_equal '&#x2F;&quot; onerror=&quot;xss(9)&quot;&gt;'
+        end
+
+        it %(escapes '/ onerror="xss(10)"') do
+          result = mod.html('/ onerror="xss(10)"'.encode(encoding))
+          result.must_equal '&#x2F; onerror=&quot;xss(10)&quot;'
+        end
+
+        it %(escapes '<<script>xss(14);//<</script>') do
+          result = mod.html('<<script>xss(14);//<</script>'.encode(encoding))
+          result.must_equal '&lt;&lt;script&gt;xss(14);&#x2F;&#x2F;&lt;&lt;&#x2F;script&gt;'
+        end
       end
     end
   end
@@ -122,6 +152,36 @@ describe Lotus::Utils::Escape do
         it "escapes '&lt;script&gt;'" do
           result = mod.html_attribute('&lt;script&gt;'.encode(encoding))
           result.must_equal '&amp;lt&#x3b;script&amp;gt&#x3b;'
+        end
+
+        it %(escapes '""><script>xss(5)</script>') do
+          result = mod.html_attribute('""><script>xss(5)</script>'.encode(encoding))
+          result.must_equal '&quot;&quot;&gt;&lt;script&gt;xss&#x28;5&#x29;&lt;&#x2f;script&gt;'
+        end
+
+        it %(escapes '><script>xss(6)</script>') do
+          result = mod.html_attribute('><script>xss(6)</script>'.encode(encoding))
+          result.must_equal '&gt;&lt;script&gt;xss&#x28;6&#x29;&lt;&#x2f;script&gt;'
+        end
+
+        it %(escapes '# onmouseover="xss(7)" ') do
+          result = mod.html_attribute('# onmouseover="xss(7)" '.encode(encoding))
+          result.must_equal '&#x23;&#x20;onmouseover&#x3d;&quot;xss&#x28;7&#x29;&quot;&#x20;'
+        end
+
+        it %(escapes '/" onerror="xss(9)">') do
+          result = mod.html_attribute('/" onerror="xss(9)">'.encode(encoding))
+          result.must_equal '&#x2f;&quot;&#x20;onerror&#x3d;&quot;xss&#x28;9&#x29;&quot;&gt;'
+        end
+
+        it %(escapes '/ onerror="xss(10)"') do
+          result = mod.html_attribute('/ onerror="xss(10)"'.encode(encoding))
+          result.must_equal '&#x2f;&#x20;onerror&#x3d;&quot;xss&#x28;10&#x29;&quot;'
+        end
+
+        it %(escapes '<<script>xss(14);//<</script>') do
+          result = mod.html_attribute('<<script>xss(14);//<</script>'.encode(encoding))
+          result.must_equal '&lt;&lt;script&gt;xss&#x28;14&#x29;&#x3b;&#x2f;&#x2f;&lt;&lt;&#x2f;script&gt;'
         end
       end
     end # tests with encodings
