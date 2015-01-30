@@ -17,7 +17,7 @@ module Lotus
       # @since x.x.x
       # @api private
       #
-      # @see http://www.ruby-doc.org/Fixnum.html#method-i-to_s
+      # @see http://www.ruby-doc.org/core/Fixnum.html#method-i-to_s
       HEX_BASE           = 16
 
       # Limit for non printable chars
@@ -46,66 +46,24 @@ module Lotus
 
       # Non printable chars
       #
-      # This is a Hash instead of an Array, to make lookup O(1).
+      # This is a Hash instead of a Set, to make lookup faster.
       #
       # @since x.x.x
       # @api private
+      #
+      # @see https://gist.github.com/jodosha/ac5dd54416de744b9600
       NON_PRINTABLE_CHARS = {
-        0x0  => true,
-        0x1  => true,
-        0x2  => true,
-        0x3  => true,
-        0x4  => true,
-        0x5  => true,
-        0x6  => true,
-        0x7  => true,
-        0x8  => true,
-        0x11 => true,
-        0x12 => true,
-        0x14 => true,
-        0x15 => true,
-        0x16 => true,
-        0x17 => true,
-        0x18 => true,
-        0x19 => true,
-        0x1a => true,
-        0x1b => true,
-        0x1c => true,
-        0x1d => true,
-        0x1e => true,
-        0x1f => true,
-        0x7f => true,
-        0x80 => true,
-        0x81 => true,
-        0x82 => true,
-        0x83 => true,
-        0x84 => true,
-        0x85 => true,
-        0x86 => true,
-        0x87 => true,
-        0x88 => true,
-        0x89 => true,
-        0x8a => true,
-        0x8b => true,
-        0x8c => true,
-        0x8d => true,
-        0x8e => true,
-        0x8f => true,
-        0x90 => true,
-        0x91 => true,
-        0x92 => true,
-        0x93 => true,
-        0x94 => true,
-        0x95 => true,
-        0x96 => true,
-        0x97 => true,
-        0x98 => true,
-        0x99 => true,
-        0x9a => true,
-        0x9b => true,
-        0x9c => true,
-        0x9d => true,
-        0x9e => true,
+        0x0  => true, 0x1  => true, 0x2  => true, 0x3  => true, 0x4  => true,
+        0x5  => true, 0x6  => true, 0x7  => true, 0x8  => true, 0x11 => true,
+        0x12 => true, 0x14 => true, 0x15 => true, 0x16 => true, 0x17 => true,
+        0x18 => true, 0x19 => true, 0x1a => true, 0x1b => true, 0x1c => true,
+        0x1d => true, 0x1e => true, 0x1f => true, 0x7f => true, 0x80 => true,
+        0x81 => true, 0x82 => true, 0x83 => true, 0x84 => true, 0x85 => true,
+        0x86 => true, 0x87 => true, 0x88 => true, 0x89 => true, 0x8a => true,
+        0x8b => true, 0x8c => true, 0x8d => true, 0x8e => true, 0x8f => true,
+        0x90 => true, 0x91 => true, 0x92 => true, 0x93 => true, 0x94 => true,
+        0x95 => true, 0x96 => true, 0x97 => true, 0x98 => true, 0x99 => true,
+        0x9a => true, 0x9b => true, 0x9c => true, 0x9d => true, 0x9e => true,
         0x9f => true
       }.freeze
 
@@ -126,17 +84,15 @@ module Lotus
 
       # Lookup table for safe chars for HTML attributes.
       #
-      # This is a Hash instead of an Array, to make lookup O(1).
+      # This is a Hash instead of a Set, to make lookup faster.
       #
       # @since x.x.x
       # @api private
       #
       # @see Lookup::Utils::Escape.html_attribute
+      # @see https://gist.github.com/jodosha/ac5dd54416de744b9600
       HTML_ATTRIBUTE_SAFE_CHARS = {
-        ',' => true,
-        '.' => true,
-        '-' => true,
-        '_' => true
+        ',' => true, '.' => true, '-' => true, '_' => true
       }.freeze
 
       # Lookup table for HTML attribute escape
@@ -468,6 +424,49 @@ module Lotus
         result
       end
 
+      # Escape URL for HTML attributes (href, src, etc..).
+      #
+      # It extracts from the given input the first valid URL that matches the
+      # whitelisted schemes (default: http, https and mailto).
+      #
+      # It's possible to pass a second optional argument to specify different
+      # schemes.
+      #
+      # @param input [String] the input
+      # @param schemes [Array<String>] an array of whitelisted schemes
+      #
+      # @return [String] the escaped string
+      #
+      # @since x.x.x
+      #
+      # @see Lotus::Utils::Escape::DEFAULT_URL_SCHEMES
+      # @see http://www.ruby-doc.org/stdlib/libdoc/uri/rdoc/URI.html#method-c-extract
+      #
+      # @example Basic usage
+      #   <%
+      #     good_input = "http://lotusrb.org"
+      #     evil_input = "javascript:alert('xss')"
+      #
+      #     escaped_good_input = Lotus::Utils::Escape.url(good_input) # => "http://lotusrb.org"
+      #     escaped_evil_input = Lotus::Utils::Escape.url(evil_input) # => ""
+      #   %>
+      #
+      #   <a href="<%= escaped_good_input %>">personal website</a>
+      #   <a href="<%= escaped_evil_input %>">personal website</a>
+      #
+      # @example Custom scheme
+      #   <%
+      #     schemes  = ['ftp', 'ftps']
+      #
+      #     accepted = "ftps://ftp.example.org"
+      #     rejected = "http://www.example.org"
+      #
+      #     escaped_accepted = Lotus::Utils::Escape.url(accepted) # => "ftps://ftp.example.org"
+      #     escaped_rejected = Lotus::Utils::Escape.url(rejected) # => ""
+      #   %>
+      #
+      #   <a href="<%= escaped_accepted %>">FTP</a>
+      #   <a href="<%= escaped_rejected %>">FTP</a>
       def self.url(input, schemes = DEFAULT_URL_SCHEMES)
         input = URI.decode(
           input.to_s.encode(Encoding::UTF_8)
