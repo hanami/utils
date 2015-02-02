@@ -8,6 +8,12 @@ describe Lotus::Utils::Escape do
   describe '.html' do
     TEST_ENCODINGS.each do |encoding|
       describe "#{ encoding }" do
+        it "doesn't escape safe string" do
+          input  = Lotus::Utils::Escape::SafeString.new('&')
+          result = mod.html(input.encode(encoding))
+          result.must_equal '&'
+        end
+
         it "escapes nil" do
           result = mod.html(nil)
           result.must_equal ''
@@ -99,6 +105,12 @@ describe Lotus::Utils::Escape do
   describe '.html_attribute' do
     TEST_ENCODINGS.each do |encoding|
       describe "#{ encoding }" do
+        it "doesn't escape safe string" do
+          input  = Lotus::Utils::Escape::SafeString.new('&')
+          result = mod.html_attribute(input.encode(encoding))
+          result.must_equal '&'
+        end
+
         it "escapes nil" do
           result = mod.html_attribute(nil)
           result.must_equal ''
@@ -246,6 +258,12 @@ describe Lotus::Utils::Escape do
   describe '.url' do
     TEST_ENCODINGS.each do |encoding|
       describe "#{ encoding }" do
+        it "doesn't escape safe string" do
+          input  = Lotus::Utils::Escape::SafeString.new('javascript:alert(0);')
+          result = mod.url(input.encode(encoding))
+          result.must_equal 'javascript:alert(0);'
+        end
+
         it "escapes nil" do
           result = mod.url(nil)
           result.must_equal ''

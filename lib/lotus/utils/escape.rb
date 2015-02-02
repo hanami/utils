@@ -364,6 +364,39 @@ module Lotus
       # @see Lotus::Utils::Escape.url
       DEFAULT_URL_SCHEMES = ['http', 'https', 'mailto'].freeze
 
+      # The output of an escape.
+      #
+      # It's marked with this special class for two reasons:
+      #
+      #   * Don't double escape the same string (this is for `Lotus::Helpers` compatibility)
+      #   * Leave open the possibility to developers to mark a string as safe with an higher API (eg. `#raw` in `Lotus::View` or `Lotus::Helpers`)
+      #
+      # @since x.x.x
+      # @api private
+      class SafeString < ::String
+        # @return [SafeString] the duped string
+        #
+        # @since x.x.x
+        # @api private
+        #
+        # @see http://www.ruby-doc.org/core/String.html#method-i-to_s
+        def to_s
+          dup
+        end
+
+        # Encode the string the given encoding
+        #
+        # @return [SafeString] an encoded SafeString
+        #
+        # @since x.x.x
+        # @api private
+        #
+        # @see http://www.ruby-doc.org/core/String.html#method-i-encode
+        def encode(*args)
+          self.class.new super
+        end
+      end
+
       # Escape HTML contents
       #
       # This MUST be used only for tag contents.
@@ -385,9 +418,12 @@ module Lotus
       #   # WRONG Use Escape.html_attribute
       #   <a title="<%= Lotus::Utils::Escape.html('...') %>">link</a>
       def self.html(input)
-        result = ""
+        input = encode(input)
+        return input if input.is_a?(SafeString)
 
-        input.to_s.encode(Encoding::UTF_8).chars do |chr|
+        result = SafeString.new
+
+        input.chars do |chr|
           result << HTML_CHARS.fetch(chr, chr)
         end
 
@@ -415,9 +451,12 @@ module Lotus
       #   # Alternatively you can use Escape.html
       #   <p><%= Lotus::Utils::Escape.html_attribute('...') %></p>
       def self.html_attribute(input)
-        result = ""
+        input = encode(input)
+        return input if input.is_a?(SafeString)
 
-        input.to_s.encode(Encoding::UTF_8).chars do |chr|
+        result = SafeString.new
+
+        input.chars do |chr|
           result << encode_char(chr, HTML_ATTRIBUTE_SAFE_CHARS)
         end
 
@@ -468,14 +507,30 @@ module Lotus
       #   <a href="<%= escaped_accepted %>">FTP</a>
       #   <a href="<%= escaped_rejected %>">FTP</a>
       def self.url(input, schemes = DEFAULT_URL_SCHEMES)
-        input = URI.decode(
-          input.to_s.encode(Encoding::UTF_8)
-        )
+        input = encode(input)
+        return input if input.is_a?(SafeString)
 
-        URI.extract(input, schemes).first.to_s
+        SafeString.new(
+          URI.extract(
+            URI.decode(input),
+            schemes
+          ).first.to_s
+        )
       end
 
       private
+      # Encode the given string into UTF-8
+      #
+      # @param input [String] the input
+      #
+      # @return [String] an UTF-8 encoded string
+      #
+      # @since x.x.x
+      # @api private
+      def self.encode(input)
+        input.to_s.encode(Encoding::UTF_8)
+      end
+
       # Encode the given UTF-8 char.
       #
       # @param char [String] an UTF-8 char
