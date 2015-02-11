@@ -59,7 +59,7 @@ module Lotus
       #   attributes.get(23)   # => "foo"
       #   attributes.get('23') # => "foo"
       #   attributes[23]       # => "foo"
-      #   attributes[23]       # => "foo"
+      #   attributes['23']     # => "foo"
       #
       #   attributes.get(:unknown)  # => nil
       #   attributes.get('unknown') # => nil
