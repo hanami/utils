@@ -1,7 +1,33 @@
 require 'test_helper'
+require 'lotus/utils'
 require 'lotus/utils/string'
 
 describe Lotus::Utils::String do
+  describe '#titleize' do
+    it 'returns an instance of Lotus::Utils::String' do
+      Lotus::Utils::String.new('lotus').titleize.must_be_kind_of(Lotus::Utils::String)
+    end
+
+    it 'keep self untouched' do
+      string = Lotus::Utils::String.new('lotus')
+      string.titleize
+      string.must_equal 'lotus'
+    end
+
+    it 'returns an titleized string' do
+      Lotus::Utils::String.new('lotus').titleize.must_equal 'Lotus'
+      Lotus::Utils::String.new('LotusUtils').titleize.must_equal  'Lotus Utils'
+      Lotus::Utils::String.new('lotus utils').titleize.must_equal 'Lotus Utils'
+      Lotus::Utils::String.new('lotus_utils').titleize.must_equal 'Lotus Utils'
+      Lotus::Utils::String.new('lotus-utils').titleize.must_equal 'Lotus Utils'
+      Lotus::Utils::String.new("lotus' utils").titleize.must_equal "Lotus' Utils"
+      Lotus::Utils::String.new("lotus’ utils").titleize.must_equal "Lotus’ Utils"
+      Lotus::Utils::String.new("lotus` utils").titleize.must_equal "Lotus` Utils"
+      # Ruby's upcase works only with ASCII chars.
+      # Lotus::Utils::String.new("è vero?").titleize.must_equal "È Vero?"
+    end
+  end
+
   describe '#classify' do
     it 'returns an instance of Lotus::Utils::String' do
       Lotus::Utils::String.new('lotus').classify.must_be_kind_of(Lotus::Utils::String)
@@ -52,6 +78,21 @@ describe Lotus::Utils::String do
     it 'handles numbers' do
       string = Lotus::Utils::String.new('Lucky23Action')
       string.underscore.must_equal 'lucky23_action'
+    end
+
+    it 'handles dashes' do
+      string = Lotus::Utils::String.new('lotus-utils')
+      string.underscore.must_equal 'lotus_utils'
+    end
+
+    it 'handles spaces' do
+      string = Lotus::Utils::String.new('Lotus Utils')
+      string.underscore.must_equal 'lotus_utils'
+    end
+
+    it 'handles accented letters' do
+      string = Lotus::Utils::String.new('è vero')
+      string.underscore.must_equal 'è_vero'
     end
   end
 

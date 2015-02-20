@@ -40,6 +40,12 @@ module Lotus
       # @api private
       UNDERSCORE_DIVISION_TARGET  = '\1_\2'.freeze
 
+      # Separator for #titleize
+      #
+      # @since x.x.x
+      # @api private
+      TITLEIZE_SEPARATOR = ' '.freeze
+
       # Initialize the string
       #
       # @param string [::String, Symbol] the value we want to initialize
@@ -49,6 +55,21 @@ module Lotus
       # @since 0.1.0
       def initialize(string)
         @string = string.to_s
+      end
+
+      # Return a titleized version of the string
+      #
+      # @return [Lotus::Utils::String] the transformed string
+      #
+      # @since x.x.x
+      #
+      # @example
+      #   require 'lotus/utils/string'
+      #
+      #   string = Lotus::Utils::String.new 'lotus utils'
+      #   string.titleize # => "Lotus Utils"
+      def titleize
+        self.class.new underscore.split(CLASSIFY_SEPARATOR).map(&:capitalize).join(TITLEIZE_SEPARATOR)
       end
 
       # Return a CamelCase version of the string
@@ -84,6 +105,7 @@ module Lotus
         new_string = gsub(NAMESPACE_SEPARATOR, UNDERSCORE_SEPARATOR)
         new_string.gsub!(/([A-Z\d]+)([A-Z][a-z])/, UNDERSCORE_DIVISION_TARGET)
         new_string.gsub!(/([a-z\d])([A-Z])/, UNDERSCORE_DIVISION_TARGET)
+        new_string.gsub!(/[[:space:]]|\-/, UNDERSCORE_DIVISION_TARGET)
         new_string.downcase!
         self.class.new new_string
       end
