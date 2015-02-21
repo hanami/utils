@@ -96,6 +96,53 @@ describe Lotus::Utils::String do
     end
   end
 
+  describe '#dasherize' do
+    it 'returns an instance of Lotus::Utils::String' do
+      Lotus::Utils::String.new('Lotus').dasherize.must_be_kind_of(Lotus::Utils::String)
+    end
+
+    it 'keep self untouched' do
+      string = Lotus::Utils::String.new('Lotus')
+      string.dasherize
+      string.must_equal 'Lotus'
+    end
+
+    it 'removes all the upcase characters' do
+      string = Lotus::Utils::String.new('Lotus')
+      string.dasherize.must_equal 'lotus'
+    end
+
+    it 'transforms camel case class names' do
+      string = Lotus::Utils::String.new('LotusView')
+      string.dasherize.must_equal 'lotus-view'
+    end
+
+    it 'handles acronyms' do
+      string = Lotus::Utils::String.new('APIDoc')
+      string.dasherize.must_equal 'api-doc'
+    end
+
+    it 'handles numbers' do
+      string = Lotus::Utils::String.new('Lucky23Action')
+      string.dasherize.must_equal 'lucky23-action'
+    end
+
+    it 'handles underscores' do
+      string = Lotus::Utils::String.new('lotus_utils')
+      string.dasherize.must_equal 'lotus-utils'
+    end
+
+    it 'handles spaces' do
+      string = Lotus::Utils::String.new('Lotus Utils')
+      string.dasherize.must_equal 'lotus-utils'
+    end
+
+    it 'handles accented letters' do
+      string = Lotus::Utils::String.new('è vero')
+      string.dasherize.must_equal 'è-vero'
+    end
+  end
+
   describe '#demodulize' do
     it 'returns an instance of Lotus::Utils::String' do
       Lotus::Utils::String.new('Lotus').demodulize.must_be_kind_of(Lotus::Utils::String)
