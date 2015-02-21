@@ -46,6 +46,12 @@ module Lotus
       # @api private
       TITLEIZE_SEPARATOR = ' '.freeze
 
+      # Separator for #dasherize
+      #
+      # @since x.x.x
+      # @api private
+      DASHERIZE_SEPARATOR = '-'.freeze
+
       # Initialize the string
       #
       # @param string [::String, Symbol] the value we want to initialize
@@ -108,6 +114,27 @@ module Lotus
         new_string.gsub!(/[[:space:]]|\-/, UNDERSCORE_DIVISION_TARGET)
         new_string.downcase!
         self.class.new new_string
+      end
+
+      # Return a downcased and dash separated version of the string
+      #
+      # @return [Lotus::Utils::String] the transformed string
+      #
+      # @since x.x.x
+      #
+      # @example
+      #   require 'lotus/utils/string'
+      #
+      #   string = Lotus::Utils::String.new 'Lotus Utils'
+      #   string.dasherize # => 'lotus-utils'
+      #
+      #   string = Lotus::Utils::String.new 'lotus_utils'
+      #   string.dasherize # => 'lotus-utils'
+      #
+      #   string = Lotus::Utils::String.new 'LotusUtils'
+      #   string.dasherize # => "lotus-utils"
+      def dasherize
+        self.class.new underscore.split(CLASSIFY_SEPARATOR).join(DASHERIZE_SEPARATOR)
       end
 
       # Return the string without the Ruby namespace of the class
