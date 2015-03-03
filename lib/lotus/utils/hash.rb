@@ -3,6 +3,8 @@ module Lotus
     # Hash on steroids
     # @since 0.1.0
     class Hash
+      extend Forwardable
+
       # Initialize the hash
       #
       # @param hash [#to_h] the value we want to use to initialize this instance
@@ -31,6 +33,9 @@ module Lotus
         @hash = hash.to_h
         @hash.default_proc = blk
       end
+
+      # Forward desirable hash methods to the internal hash instance variable.
+      def_delegators :@hash, :keys, :delete, :[], :[]=, :to_a, :==, :eql?, :inspect, :hash
 
       # Convert in-place all the keys to Symbol instances, nested hashes are converted too.
       #
@@ -149,56 +154,6 @@ module Lotus
         end
       end
 
-      # Returns a new array populated with the keys from this hash
-      #
-      # @return [Array] the keys
-      #
-      # @since 0.3.0
-      #
-      # @see http://www.ruby-doc.org/core/Hash.html#method-i-keys
-      def keys
-        @hash.keys
-      end
-
-      # Deletes the key-value pair and returns the value from hsh whose key is
-      # equal to key.
-      #
-      # @param key [Object] the key to remove
-      #
-      # @return [Object,nil] the value hold by the given key, if present
-      #
-      # @since 0.3.0
-      #
-      # @see http://www.ruby-doc.org/core/Hash.html#method-i-keys
-      def delete(key)
-        @hash.delete(key)
-      end
-
-      # Retrieves the value object corresponding to the key object.
-      #
-      # @param key [Object] the key
-      #
-      # @return [Object,nil] the correspoding value, if present
-      #
-      # @since 0.3.0
-      #
-      # @see http://www.ruby-doc.org/core/Hash.html#method-i-5B-5D
-      def [](key)
-        @hash[key]
-      end
-
-      # Associates the value given by value with the key given by key.
-      #
-      # @param key [Object] the key to assign
-      # @param value [Object] the value to assign
-      #
-      # @since 0.3.0
-      #
-      # @see http://www.ruby-doc.org/core/Hash.html#method-i-5B-5D-3D
-      def []=(key, value)
-        @hash[key] = value
-      end
-
       # Returns a Ruby Hash as duplicated version of self
       #
       # @return [::Hash] the hash
@@ -214,46 +169,6 @@ module Lotus
       end
 
       alias_method :to_hash, :to_h
-
-      # Converts into a nested array of [ key, value ] arrays.
-      #
-      # @return [::Array] the array
-      #
-      # @since 0.3.0
-      #
-      # @see http://www.ruby-doc.org/core/Hash.html#method-i-to_a
-      def to_a
-        @hash.to_a
-      end
-
-      # Equality
-      #
-      # @return [TrueClass,FalseClass]
-      #
-      # @since 0.3.0
-      def ==(other)
-        @hash == other.to_h
-      end
-
-      alias_method :eql?, :==
-
-      # Returns the hash of the internal @hash
-      #
-      # @return [Fixnum]
-      #
-      # @since 0.3.0
-      def hash
-        @hash.hash
-      end
-
-      # Returns a string describing the internal @hash
-      #
-      # @return [String]
-      #
-      # @since 0.3.0
-      def inspect
-        @hash.inspect
-      end
 
       # Override Ruby's method_missing in order to provide ::Hash interface
       #
