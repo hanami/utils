@@ -36,11 +36,16 @@ describe Lotus::Utils::String do
     it 'returns a classified string' do
       Lotus::Utils::String.new('lotus').classify.must_equal('Lotus')
       Lotus::Utils::String.new('lotus_router').classify.must_equal('LotusRouter')
+      Lotus::Utils::String.new('lotus/router').classify.must_equal('Lotus::Router')
+      Lotus::Utils::String.new('lotus::router').classify.must_equal('Lotus::Router')
+      Lotus::Utils::String.new('lotus::router/base_object').classify.must_equal('Lotus::Router::BaseObject')
     end
 
     it 'returns a classified string from symbol' do
       Lotus::Utils::String.new(:lotus).classify.must_equal('Lotus')
       Lotus::Utils::String.new(:lotus_router).classify.must_equal('LotusRouter')
+      Lotus::Utils::String.new(:'lotus/router').classify.must_equal('Lotus::Router')
+      Lotus::Utils::String.new(:'lotus::router').classify.must_equal('Lotus::Router')
     end
   end
 
