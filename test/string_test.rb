@@ -3,6 +3,23 @@ require 'lotus/utils'
 require 'lotus/utils/string'
 
 describe Lotus::Utils::String do
+  describe '#blank?' do
+    it 'returns true if is nil is passed' do
+      string = Lotus::Utils::String.new(nil)
+      string.blank?.must_equal true
+    end
+
+    it 'returns true if is empty string is passed' do
+      string = Lotus::Utils::String.new('')
+      string.blank?.must_equal true
+    end
+
+    it 'returns false if non empty string is passed' do
+      string = Lotus::Utils::String.new('lotus')
+      string.blank?.must_equal false
+    end
+  end
+
   describe '#titleize' do
     it 'returns an instance of Lotus::Utils::String' do
       Lotus::Utils::String.new('lotus').titleize.must_be_kind_of(Lotus::Utils::String)

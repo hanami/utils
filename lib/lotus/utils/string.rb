@@ -69,6 +69,33 @@ module Lotus
         @string = string.to_s
       end
 
+      # Detect if a string is nil or empty
+      #
+      # @return [TrueClass, FalseClass] result checked string
+      #
+      # @since x.x.x
+      #
+      # @example nil
+      #   require 'lotus/utils/string'
+      #
+      #   string = Lotus::Utils::String.new nil
+      #   string.blank? # => true
+      #
+      # @example empty string
+      #   require 'lotus/utils/string'
+      #
+      #   string = Lotus::Utils::String.new ''
+      #   string.blank? # => true
+      #
+      # @example non empty string
+      #   require 'lotus/utils/string'
+      #
+      #   string = Lotus::Utils::String.new 'lotus'
+      #   string.blank? # => false
+      def blank?
+        @string.nil? || @string.empty?
+      end
+
       # Return a titleized version of the string
       #
       # @return [Lotus::Utils::String] the transformed string
