@@ -15,9 +15,6 @@ rvm:
 
 matrix:
   include:
-    - rvm: jruby
-      env: JRUBY_OPTS="--2.0"
     - rvm: jruby-head
-      env: JRUBY_OPTS="--2.1"
   allow_failures:
     - rvm: jruby-head
