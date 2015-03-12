@@ -32,7 +32,7 @@ class Signup
   def initialize(params)
     @params  = params
     @user    = User.new(params)
-    @_foo    = 23
+    @__foo   = 23
   end
 
   def call
@@ -44,6 +44,59 @@ class Signup
   private
   def valid?
     !@params[:force_failure]
+  end
+end
+
+class ErrorInteractor
+  include Lotus::Interactor
+
+  def initialize
+    @operations = []
+  end
+
+  def call
+    prepare!
+    persist!
+    log!
+  end
+
+  private
+  def prepare!
+    @operations << __method__
+    error "There was an error while preparing data."
+  end
+
+  def persist!
+    @operations << __method__
+    error "There was an error while persisting data."
+  end
+
+  def log!
+    @operations << __method__
+  end
+end
+
+class ErrorBangInteractor
+  include Lotus::Interactor
+
+  def initialize
+    @operations = []
+  end
+
+  def call
+    persist!
+    sync!
+  end
+
+  private
+  def persist!
+    @operations << __method__
+    error! "There was an error while persisting data."
+  end
+
+  def sync!
+    @operations << __method__
+    error "There was an error while syncing data."
   end
 end
 
@@ -79,7 +132,7 @@ describe Lotus::Interactor do
     it "doesn't include private ivars" do
       result = Signup.new(name: 'Luca').call
 
-      -> { result._foo }.must_raise NoMethodError
+      -> { result.__foo }.must_raise NoMethodError
     end
 
     it "exposes a convenient API for handling failures" do
@@ -94,6 +147,45 @@ describe Lotus::Interactor do
 
     it "raises error when #call isn't implemented" do
       -> { InteractorWithoutCall.new.call }.must_raise NoMethodError
+    end
+  end
+
+  describe "#error" do
+    it "isn't successful" do
+      result = ErrorInteractor.new.call
+      assert !result.success?, "Expected `result' to not be successful"
+    end
+
+    it "accumulates errors" do
+      result = ErrorInteractor.new.call
+      result.errors.must_equal [
+        "There was an error while preparing data.",
+        "There was an error while persisting data."
+      ]
+    end
+
+    it "doesn't interrupt the flow" do
+      result = ErrorInteractor.new.call
+      result.operations.must_equal [:prepare!, :persist!, :log!]
+    end
+  end
+
+  describe "#error!" do
+    it "isn't successful" do
+      result = ErrorBangInteractor.new.call
+      assert !result.success?, "Expected `result' to not be successful"
+    end
+
+    it "stops at the first error" do
+      result = ErrorBangInteractor.new.call
+      result.errors.must_equal [
+        "There was an error while persisting data."
+      ]
+    end
+
+    it "interrupts the flow" do
+      result = ErrorBangInteractor.new.call
+      result.operations.must_equal [:persist!]
     end
   end
 end
@@ -114,6 +206,14 @@ describe Lotus::Interactor::Result do
     it 'is successful by default' do
       result = Lotus::Interactor::Result.new
       assert result.success?, "Expected `result' to be successful"
+    end
+
+    describe "when it has errors" do
+      it "isn't successful" do
+        result = Lotus::Interactor::Result.new
+        result.prepare!(_errors: ["There was a problem"])
+        assert !result.success?, "Expected `result' to NOT be successful"
+      end
     end
   end
 
@@ -139,6 +239,34 @@ describe Lotus::Interactor::Result do
       returning = result.prepare!(foo: 23)
 
       assert returning == result, "Expected `returning' to equal `result'"
+    end
+  end
+
+  describe "#errors" do
+    it "empty by default" do
+      result = Lotus::Interactor::Result.new
+      result.errors.must_be :empty?
+    end
+
+    it "returns all the errors" do
+      result = Lotus::Interactor::Result.new
+      result.prepare!(_errors: ['Error 1', 'Error 2'])
+
+      result.errors.must_equal ['Error 1', 'Error 2']
+    end
+  end
+
+  describe "#error" do
+    it "nil by default" do
+      result = Lotus::Interactor::Result.new
+      result.error.must_be_nil
+    end
+
+    it "returns only the first error" do
+      result = Lotus::Interactor::Result.new
+      result.prepare!(_errors: ['Error 1', 'Error 2'])
+
+      result.error.must_equal 'Error 1'
     end
   end
 

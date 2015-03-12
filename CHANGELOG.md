@@ -1,6 +1,11 @@
 # Lotus::Utils
 Ruby core extentions and class utilities for Lotus
 
+## v0.3.5 - 2015-03-12
+### Added
+- [Luca Guidi] Introduced `Lotus::Interactor`
+- [Luca Guidi] Introduced `Lotus::Utils::BasicObject`
+
 ## v0.3.4 - 2015-01-30
 ### Added
 - [Alfonso Uceda Pompa] Aliased `Lotus::Utils::Attributes#get` with `#[]`

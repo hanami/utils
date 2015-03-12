@@ -4,19 +4,19 @@ require 'lotus/utils/hash'
 module Lotus
   # Lotus Interactor
   #
-  # @since x.x.x
+  # @since 0.3.5
   module Interactor
     # Result of an operation
     #
-    # @since x.x.x
+    # @since 0.3.5
     class Result < Utils::BasicObject
       # Concrete methods
       #
-      # @since x.x.x
+      # @since 0.3.5
       # @api private
       #
       # @see Lotus::Interactor::Result#respond_to_missing?
-      METHODS = {initialize: true, success?: true, fail!: true, prepare!: true}.freeze
+      METHODS = {initialize: true, success?: true, fail!: true, prepare!: true, errors: true, error: true}.freeze
 
       # Initialize a new result
       #
@@ -24,7 +24,7 @@ module Lotus
       #
       # @return [Lotus::Interactor::Result]
       #
-      # @since x.x.x
+      # @since 0.3.5
       # @api private
       def initialize(payload = {})
         @payload = _payload(payload)
@@ -35,23 +35,51 @@ module Lotus
       #
       # @return [TrueClass,FalseClass] the result of the check
       #
-      # @since x.x.x
+      # @since 0.3.5
       def success?
-        @success
+        @success && errors.empty?
       end
 
       # Force the status to be a failure
       #
-      # @since x.x.x
+      # @since 0.3.5
       def fail!
         @success = false
+      end
+
+      # Returns all the errors collected during an operation
+      #
+      # @return [Array] the errors
+      #
+      # @since 0.3.5
+      #
+      # @see Lotus::Interactor::Result#error
+      # @see Lotus::Interactor#call
+      # @see Lotus::Interactor#error
+      # @see Lotus::Interactor#error!
+      def errors
+        @payload.fetch(:_errors) { [] }
+      end
+
+      # Returns the first errors collected during an operation
+      #
+      # @return [nil,String] the error, if present
+      #
+      # @since 0.3.5
+      #
+      # @see Lotus::Interactor::Result#errors
+      # @see Lotus::Interactor#call
+      # @see Lotus::Interactor#error
+      # @see Lotus::Interactor#error!
+      def error
+        errors.first
       end
 
       # Prepare the result before to be returned
       #
       # @param payload [Hash] an updated payload
       #
-      # @since x.x.x
+      # @since 0.3.5
       # @api private
       def prepare!(payload)
         @payload.merge!(_payload(payload))
@@ -59,26 +87,26 @@ module Lotus
       end
 
       protected
-      # @since x.x.x
+      # @since 0.3.5
       # @api private
       def method_missing(m, *)
         @payload.fetch(m) { super }
       end
 
-      # @since x.x.x
+      # @since 0.3.5
       # @api private
       def respond_to_missing?(method_name, include_all)
         method_name = method_name.to_sym
         METHODS[method_name] || @payload.key?(method_name)
       end
 
-      # @since x.x.x
+      # @since 0.3.5
       # @api private
       def _payload(payload)
         Utils::Hash.new(payload).symbolize!
       end
 
-      # @since x.x.x
+      # @since 0.3.5
       # @api private
       def __inspect
         " @success=#{ @success } @payload=#{ @payload.inspect }"
@@ -87,7 +115,7 @@ module Lotus
 
     # Override for <tt>Module#included</tt>.
     #
-    # @since x.x.x
+    # @since 0.3.5
     # @api private
     def self.included(base)
       super
@@ -99,7 +127,7 @@ module Lotus
 
     # Interactor interface
     #
-    # @since x.x.x
+    # @since 0.3.5
     module Interface
       # Initialize an interactor
       #
@@ -110,7 +138,7 @@ module Lotus
       #
       # @return [Lotus::Interactor] the interactor
       #
-      # @since x.x.x
+      # @since 0.3.5
       #
       # @example Override #initialize
       #   require 'lotus/interactor'
@@ -130,7 +158,8 @@ module Lotus
       def initialize(*args)
         super
       ensure
-        @_result = ::Lotus::Interactor::Result.new
+        @__result = ::Lotus::Interactor::Result.new
+        @_errors  = []
       end
 
       # Triggers the operation and return a result.
@@ -213,14 +242,14 @@ module Lotus
     #
     # @return [TrueClass,FalseClass] the result of the check
     #
-    # @since x.x.x
+    # @since 0.3.5
     def valid?
       true
     end
 
     # Fail and interrupt the current flow.
     #
-    # @since x.x.x
+    # @since 0.3.5
     #
     # @example
     #   require 'lotus/interactor'
@@ -254,40 +283,143 @@ module Lotus
     #   result = CreateEmailTest.new(account_id: 1).call
     #   result.success? # => false
     def fail!
-      @_result.fail!
+      @__result.fail!
       throw :fail
     end
 
-    # @since x.x.x
+    # Log an error without interrupting the flow.
+    #
+    # When used, the returned result won't be successful.
+    #
+    # @param message [String] the error message
+    #
+    # @since 0.3.5
+    #
+    # @see Lotus::Interactor#error!
+    #
+    # @example
+    #   require 'lotus/interactor'
+    #
+    #   class CreateRecord
+    #     include Lotus::Interactor
+    #
+    #     def initialize
+    #       @logger = []
+    #     end
+    #
+    #     def call
+    #       prepare_data!
+    #       persist!
+    #       sync!
+    #     end
+    #
+    #     private
+    #     def prepare_data!
+    #       @logger << __method__
+    #       error "Prepare data error"
+    #     end
+    #
+    #     def persist!
+    #       @logger << __method__
+    #       error "Persist error"
+    #     end
+    #
+    #     def sync!
+    #       @logger << __method__
+    #     end
+    #   end
+    #
+    #   result = CreateRecord.new.call
+    #   result.success? # => false
+    #
+    #   result.errors # => ["Prepare data error", "Persist error"]
+    #   result.logger # => [:prepare_data!, :persist!, :sync!]
+    def error(message)
+      @_errors << message
+    end
+
+    # Log an error AND interrupting the flow.
+    #
+    # When used, the returned result won't be successful.
+    #
+    # @param message [String] the error message
+    #
+    # @since 0.3.5
+    #
+    # @see Lotus::Interactor#error
+    #
+    # @example
+    #   require 'lotus/interactor'
+    #
+    #   class CreateRecord
+    #     include Lotus::Interactor
+    #
+    #     def initialize
+    #       @logger = []
+    #     end
+    #
+    #     def call
+    #       prepare_data!
+    #       persist!
+    #       sync!
+    #     end
+    #
+    #     private
+    #     def prepare_data!
+    #       @logger << __method__
+    #       error "Prepare data error"
+    #     end
+    #
+    #     def persist!
+    #       @logger << __method__
+    #       error! "Persist error"
+    #     end
+    #
+    #     # THIS WILL NEVER BE INVOKED BECAUSE WE USE #error! IN #persist!
+    #     def sync!
+    #       @logger << __method__
+    #     end
+    #   end
+    #
+    #   result = CreateRecord.new.call
+    #   result.success? # => false
+    #
+    #   result.errors # => ["Prepare data error", "Persist error"]
+    #   result.logger # => [:prepare_data!, :persist!]
+    def error!(message)
+      error(message)
+      fail!
+    end
+
+    # @since 0.3.5
     # @api private
     def _call
       catch :fail do
-        _validate!
+        validate!
         yield
       end
 
       _prepare!
     end
 
-    # @since x.x.x
-    # @api private
-    def _validate!
+    # @since 0.3.5
+    def validate!
       fail! unless valid?
     end
 
-    # @since x.x.x
+    # @since 0.3.5
     # @api private
     def _prepare!
-      @_result.prepare!(_instance_variables)
+      @__result.prepare!(_instance_variables)
     end
 
-    # @since x.x.x
+    # @since 0.3.5
     # @api private
     def _instance_variables
       Hash[].tap do |result|
         instance_variables.each do |iv|
           name = iv.to_s.sub(/\A@/, '')
-          next if name.match(/\A_/)
+          next if name.match(/\A__/)
 
           result[name.to_sym] = instance_variable_get(iv)
         end

@@ -2,11 +2,11 @@ module Lotus
   module Utils
     # BasicObject
     #
-    # @since x.x.x
+    # @since 0.3.5
     class BasicObject < ::BasicObject
       # Return the class for debugging purposes.
       #
-      # @since x.x.x
+      # @since 0.3.5
       #
       # @see http://ruby-doc.org/core/Object.html#method-i-class
       def class
@@ -17,7 +17,7 @@ module Lotus
       #
       # @return [String] the inspect string
       #
-      # @since x.x.x
+      # @since 0.3.5
       #
       # @see http://ruby-doc.org/core/Object.html#method-i-inspect
       def inspect
@@ -28,7 +28,7 @@ module Lotus
       #
       # @return [TrueClass,FalseClass] the result of the check
       #
-      # @since x.x.x
+      # @since 0.3.5
       #
       # @see http://ruby-doc.org/core-2.2.1/Object.html#method-i-respond_to-3F
       def respond_to?(method_name, include_all = false)
@@ -38,13 +38,13 @@ module Lotus
       private
       # Must be overridden by descendants
       #
-      # @since x.x.x
+      # @since 0.3.5
       # @api private
       def respond_to_missing?(method_name, include_all)
         ::Kernel.raise ::NotImplementedError
       end
 
-      # @since x.x.x
+      # @since 0.3.5
       # @api private
       def __inspect
       end
