@@ -16,5 +16,7 @@ rvm:
   - jruby-head
 
 matrix:
+  include:
+    - rvm: jruby-head
   allow_failures:
     - rvm: jruby-head
