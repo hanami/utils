@@ -286,7 +286,7 @@ module Lotus
         case value
         when NilClass, FalseClass, TrueClass, Symbol, Numeric
           value
-        when Hash
+        when Hash, Attributes
           value.deep_dup
         when ::Hash
           Hash.new(value).deep_dup.to_h

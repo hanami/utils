@@ -30,7 +30,7 @@ module Lotus
       #   attributes = Lotus::Utils::Attributes.new(a: 1, b: { 2 => [3, 4] } })
       #   attributes.to_h # => { "a" => 1, "b" => { "2" => [3, 4] } }
       def initialize(hash = {})
-        @attributes = Utils::Hash.new(hash, &nil).stringify!
+        @attributes = self.class.from_hash(hash)
       end
 
       # Get the value associated with the given attribute
@@ -111,6 +111,25 @@ module Lotus
       # @see Lotus::Utils::Hash
       def to_h
         @attributes.deep_dup
+      end
+
+      alias_method :deep_dup, :to_h
+
+      # Returns a stringified version of the hash with each nested hash wrapped
+      # in an Attributes instance
+      #
+      # @param hash [#to_h] a Hash or any object that implements #to_h
+      #
+      # @return [Lotus::Utils::Hash]
+      #
+      # @since x.x.x
+      #
+      # @see Lotus::Utils::Attributes#initialize
+      def self.from_hash(hash)
+        hash.to_h.each_with_object(Utils::Hash.new) do |(k, v), result|
+          v = Attributes.new(v) if v.is_a?(::Hash)
+          result[k.to_s] = v
+        end
       end
     end
   end
