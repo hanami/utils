@@ -113,7 +113,14 @@ module Lotus
         @attributes.deep_dup
       end
 
-      alias_method :deep_dup, :to_h
+      # Equality
+      #
+      # @return [TrueClass,FalseClass]
+      #
+      # @since x.x.x
+      def ==(other)
+        @attributes == other.to_h
+      end
 
       # Returns a stringified version of the hash with each nested hash wrapped
       # in an Attributes instance
