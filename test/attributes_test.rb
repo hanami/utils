@@ -26,9 +26,14 @@ describe Lotus::Utils::Attributes do
       attributes.get('uknown').must_be_nil
     end
 
-    it 'recursively stringify keys' do
+    it 'recursively stringifies keys' do
       attributes = Lotus::Utils::Attributes.new({a: 1, b: { 2 => [3, 4] }})
-      attributes.to_h.must_equal({'a'=>1, 'b'=>{'2'=>[3,4]}})
+      attributes.to_h.must_equal({'a'=>1, 'b'=>Lotus::Utils::Attributes.new({'2'=>[3,4]})})
+    end
+
+    it 'stores nested hashes as Attributes' do
+      attributes = Lotus::Utils::Attributes.new({a: 1, b: { 2 => [3, 4] }})
+      attributes.get(:b).class.must_equal Lotus::Utils::Attributes
     end
   end
 
