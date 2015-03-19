@@ -4,7 +4,7 @@ module Lotus
     #
     # Based on OWASP research and OWASP ESAPI code
     #
-    # @since x.x.x
+    # @since 0.4.0
     #
     # @see https://www.owasp.org
     # @see https://www.owasp.org/index.php/Cross-site_Scripting_%28XSS%29
@@ -14,7 +14,7 @@ module Lotus
     module Escape
       # Hex base for base 10 integer conversion
       #
-      # @since x.x.x
+      # @since 0.4.0
       # @api private
       #
       # @see http://www.ruby-doc.org/core/Fixnum.html#method-i-to_s
@@ -22,19 +22,19 @@ module Lotus
 
       # Limit for non printable chars
       #
-      # @since x.x.x
+      # @since 0.4.0
       # @api private
       LOW_HEX_CODE_LIMIT = 0xff
 
       # Replacement hex for non printable characters
       #
-      # @since x.x.x
+      # @since 0.4.0
       # @api private
       REPLACEMENT_HEX  = "fffd".freeze
 
       # Low hex codes lookup table
       #
-      # @since x.x.x
+      # @since 0.4.0
       # @api private
       HEX_CODES = (0..255).each_with_object({}) do |c, codes|
         if (c >= 0x30 && c <= 0x39) || (c >= 0x41 && c <= 0x5A) || (c >= 0x61 && c <= 0x7A)
@@ -48,7 +48,7 @@ module Lotus
       #
       # This is a Hash instead of a Set, to make lookup faster.
       #
-      # @since x.x.x
+      # @since 0.4.0
       # @api private
       #
       # @see https://gist.github.com/jodosha/ac5dd54416de744b9600
@@ -69,7 +69,7 @@ module Lotus
 
       # Lookup table for HTML escape
       #
-      # @since x.x.x
+      # @since 0.4.0
       # @api private
       #
       # @see Lotus::Utils::Escape.html
@@ -86,7 +86,7 @@ module Lotus
       #
       # This is a Hash instead of a Set, to make lookup faster.
       #
-      # @since x.x.x
+      # @since 0.4.0
       # @api private
       #
       # @see Lookup::Utils::Escape.html_attribute
@@ -97,7 +97,7 @@ module Lotus
 
       # Lookup table for HTML attribute escape
       #
-      # @since x.x.x
+      # @since 0.4.0
       # @api private
       #
       # @see Lotus::Utils::Escape.html_attribute
@@ -358,7 +358,7 @@ module Lotus
 
       # Allowed URL schemes
       #
-      # @since x.x.x
+      # @since 0.4.0
       # @api private
       #
       # @see Lotus::Utils::Escape.url
@@ -371,12 +371,12 @@ module Lotus
       #   * Don't double escape the same string (this is for `Lotus::Helpers` compatibility)
       #   * Leave open the possibility to developers to mark a string as safe with an higher API (eg. `#raw` in `Lotus::View` or `Lotus::Helpers`)
       #
-      # @since x.x.x
+      # @since 0.4.0
       # @api private
       class SafeString < ::String
         # @return [SafeString] the duped string
         #
-        # @since x.x.x
+        # @since 0.4.0
         # @api private
         #
         # @see http://www.ruby-doc.org/core/String.html#method-i-to_s
@@ -388,7 +388,7 @@ module Lotus
         #
         # @return [SafeString] an encoded SafeString
         #
-        # @since x.x.x
+        # @since 0.4.0
         # @api private
         #
         # @see http://www.ruby-doc.org/core/String.html#method-i-encode
@@ -406,7 +406,7 @@ module Lotus
       #
       # @return [String] the escaped string
       #
-      # @since x.x.x
+      # @since 0.4.0
       #
       # @see https://www.owasp.org/index.php/XSS_%28Cross_Site_Scripting%29_Prevention_Cheat_Sheet OWASP XSS Cheat Sheet Rule #1
       #
@@ -440,7 +440,7 @@ module Lotus
       #
       # @return [String] the escaped string
       #
-      # @since x.x.x
+      # @since 0.4.0
       #
       # @see https://www.owasp.org/index.php/XSS_%28Cross_Site_Scripting%29_Prevention_Cheat_Sheet OWASP XSS Cheat Sheet Rule #2
       #
@@ -476,7 +476,7 @@ module Lotus
       #
       # @return [String] the escaped string
       #
-      # @since x.x.x
+      # @since 0.4.0
       #
       # @see Lotus::Utils::Escape::DEFAULT_URL_SCHEMES
       # @see http://www.ruby-doc.org/stdlib/libdoc/uri/rdoc/URI.html#method-c-extract
@@ -525,7 +525,7 @@ module Lotus
       #
       # @return [String] an UTF-8 encoded string
       #
-      # @since x.x.x
+      # @since 0.4.0
       # @api private
       def self.encode(input)
         input.to_s.encode(Encoding::UTF_8)
@@ -538,7 +538,7 @@ module Lotus
       #
       # @return [String] an HTML encoded string
       #
-      # @since x.x.x
+      # @since 0.4.0
       # @api private
       def self.encode_char(char, safe_chars = {})
         return char if safe_chars[char]
@@ -560,7 +560,7 @@ module Lotus
 
       # Transforms the given char code
       #
-      # @since x.x.x
+      # @since 0.4.0
       # @api private
       def self.hex_for_non_alphanumeric_code(input)
         if input < LOW_HEX_CODE_LIMIT

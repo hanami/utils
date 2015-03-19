@@ -1,6 +1,12 @@
 # Lotus::Utils
 Ruby core extentions and class utilities for Lotus
 
+## v0.4.0 - 2015-03-23
+### Added
+- [Luca Guidi] Introduced `Lotus::Utils::Escape`. It implements OWASP/ESAPI suggestions for HTML, HTML attribute and URL escape utilities.
+- [Luca Guidi] Introduced `Lotus::Utils::String#dasherize`
+- [Luca Guidi] Introduced `Lotus::Utils::String#titleize`
+
 ## v0.3.5 - 2015-03-12
 ### Added
 - [Luca Guidi] Introduced `Lotus::Interactor`
