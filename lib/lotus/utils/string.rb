@@ -42,13 +42,13 @@ module Lotus
 
       # Separator for #titleize
       #
-      # @since x.x.x
+      # @since 0.4.0
       # @api private
       TITLEIZE_SEPARATOR = ' '.freeze
 
       # Separator for #dasherize
       #
-      # @since x.x.x
+      # @since 0.4.0
       # @api private
       DASHERIZE_SEPARATOR = '-'.freeze
 
@@ -73,7 +73,7 @@ module Lotus
       #
       # @return [Lotus::Utils::String] the transformed string
       #
-      # @since x.x.x
+      # @since 0.4.0
       #
       # @example
       #   require 'lotus/utils/string'
@@ -133,7 +133,7 @@ module Lotus
       #
       # @return [Lotus::Utils::String] the transformed string
       #
-      # @since x.x.x
+      # @since 0.4.0
       #
       # @example
       #   require 'lotus/utils/string'
