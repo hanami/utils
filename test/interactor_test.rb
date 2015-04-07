@@ -100,6 +100,24 @@ class ErrorBangInteractor
   end
 end
 
+class PublishVideo
+  include Lotus::Interactor
+
+  def call
+  end
+
+  def valid?
+    owns?
+  end
+
+  private
+  def owns?
+    # fake failed ownership check
+    1 == 0 or
+      error "You're not owner of this video"
+  end
+end
+
 describe Lotus::Interactor do
   describe '#initialize' do
     it "works when it isn't overridden" do
@@ -167,6 +185,12 @@ describe Lotus::Interactor do
     it "doesn't interrupt the flow" do
       result = ErrorInteractor.new.call
       result.operations.must_equal [:prepare!, :persist!, :log!]
+    end
+
+    # See https://github.com/lotus/utils/issues/69
+    it 'returns false as control flow for caller' do
+      interactor = PublishVideo.new
+      assert !interactor.valid?, "Expected interactor to not be valid"
     end
   end
 
