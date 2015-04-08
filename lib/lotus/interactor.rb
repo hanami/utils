@@ -293,6 +293,8 @@ module Lotus
     #
     # @param message [String] the error message
     #
+    # @return false
+    #
     # @since 0.3.5
     #
     # @see Lotus::Interactor#error!
@@ -336,6 +338,7 @@ module Lotus
     #   result.logger # => [:prepare_data!, :persist!, :sync!]
     def error(message)
       @_errors << message
+      false
     end
 
     # Log an error AND interrupting the flow.
