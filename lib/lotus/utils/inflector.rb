@@ -8,11 +8,15 @@ module Lotus
         end
 
         def ===(other)
-          @rules.key?(other) || @rules.value?(other)
+          key = other.downcase
+          @rules.key?(key) || @rules.value?(key)
         end
 
         def apply(string)
-          @rules[string] || @rules.rassoc(string).last
+          key    = string.downcase
+          result = @rules[key] || @rules.rassoc(key).last
+
+          string[0] + result[1..-1]
         end
       end
 
@@ -27,6 +31,8 @@ module Lotus
           string.sub(@matcher, @replacement)
         end
       end
+
+      BLANK_STRING_MATCHER = /\A[[:space:]]*\z/.freeze
 
       CHES = 'ches'.freeze
       IES  = 'ies'.freeze
@@ -195,6 +201,8 @@ module Lotus
       })
 
       def self.pluralize(string)
+        return string if string.nil? || string.match(BLANK_STRING_MATCHER)
+
         case string
         when PLURAL_IRREGULAR
           PLURAL_IRREGULAR.apply(string)
