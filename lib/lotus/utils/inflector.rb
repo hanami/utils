@@ -173,8 +173,8 @@ module Lotus
           $1 + INA
         when PLURAL_F_S
           PLURAL_F_S.apply(string)
-        when /\A(.*)f[e]*\z/
-          $1 + VES
+        when /\A(.*)(?:([^f]))f[e]*\z/
+          $1 + $2 + VES
         when PLURAL_US_I
           PLURAL_US_I.apply(string)
         when /\A(.*)us\z/

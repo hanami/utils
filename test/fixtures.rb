@@ -584,7 +584,7 @@ TEST_PLURALS = {
   "rice"        => "rice",
   "news"        => "news",
   # fallback (add s)
-  # "giraffe" => "giraffes",
+  "giraffe"      => "giraffes",
   "test"         => "tests",
   "feature"      => "features",
   "fixture"      => "fixtures",
