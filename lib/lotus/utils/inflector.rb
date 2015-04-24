@@ -27,6 +27,10 @@ module Lotus
           @replacement = replacement
         end
 
+        def ===(other)
+          @rules.key?(other.downcase)
+        end
+
         def apply(string)
           string.sub(@matcher, @replacement)
         end
