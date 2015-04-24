@@ -19,6 +19,19 @@ describe Lotus::Utils::Inflector do
       actual.must_equal string
     end
 
+    it "returns instance of String" do
+      result = Lotus::Utils::Inflector.pluralize("Lotus")
+      result.class.must_equal ::String
+    end
+
+    it "doesn't modify original string" do
+      string = "application"
+      result = Lotus::Utils::Inflector.pluralize(string)
+
+      result.object_id.wont_equal(string.object_id)
+      string.must_equal("application")
+    end
+
     TEST_PLURALS.each do |singular, plural|
       it %(pluralizes "#{ singular }" to "#{ plural }") do
         actual = Lotus::Utils::Inflector.pluralize(singular)

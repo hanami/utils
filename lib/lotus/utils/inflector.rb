@@ -1,17 +1,30 @@
 module Lotus
   module Utils
+    # String inflector
+    #
+    # @since x.x.x
     module Inflector
+      # Rule for irregular plural
+      #
+      # @since x.x.x
+      # @api private
       class IrregularRule
+        # @since x.x.x
+        # @api private
         def initialize(rules)
           @rules = rules
           @rules.freeze
         end
 
+        # @since x.x.x
+        # @api private
         def ===(other)
           key = other.downcase
           @rules.key?(key) || @rules.value?(key)
         end
 
+        # @since x.x.x
+        # @api private
         def apply(string)
           key    = string.downcase
           result = @rules[key] || @rules.rassoc(key).last
@@ -20,6 +33,10 @@ module Lotus
         end
       end
 
+      # Rule for irregular plural, that uses a suffix.
+      #
+      # @since x.x.x
+      # @api private
       class SuffixRule < IrregularRule
         def initialize(matcher, replacement, rules)
           super(rules)
@@ -27,30 +44,77 @@ module Lotus
           @replacement = replacement
         end
 
+        # @since x.x.x
+        # @api private
         def ===(other)
           @rules.key?(other.downcase)
         end
 
+        # @since x.x.x
+        # @api private
         def apply(string)
           string.sub(@matcher, @replacement)
         end
       end
 
+      # Matcher for blank strings
+      #
+      # @since x.x.x
+      # @api private
       BLANK_STRING_MATCHER = /\A[[:space:]]*\z/.freeze
 
+      # @since x.x.x
+      # @api private
       CHES = 'ches'.freeze
+
+      # @since x.x.x
+      # @api private
       IES  = 'ies'.freeze
+
+      # @since x.x.x
+      # @api private
       ICE  = 'ice'.freeze
+
+      # @since x.x.x
+      # @api private
       ICES = 'ices'.freeze
+
+      # @since x.x.x
+      # @api private
       XES  = 'xes'.freeze
+
+      # @since x.x.x
+      # @api private
       A    = 'a'.freeze
+
+      # @since x.x.x
+      # @api private
       EAUX = 'eaux'.freeze
+
+      # @since x.x.x
+      # @api private
       INA  = 'ina'.freeze
+
+      # @since x.x.x
+      # @api private
       VES  = 'ves'.freeze
+
+      # @since x.x.x
+      # @api private
       SSES = 'sses'.freeze
+
+      # @since x.x.x
+      # @api private
       USES = 'uses'.freeze
+
+      # @since x.x.x
+      # @api private
       S    = 's'.freeze
 
+      # Plural rule "is" => "es"
+      #
+      # @since x.x.x
+      # @api private
       PLURAL_IS_ES = SuffixRule.new( /is\z/, 'es', {
         'analysis'    => true,
         'axis'        => true,
@@ -67,16 +131,28 @@ module Lotus
         'thesis'      => true,
       })
 
+      # Plural rule "is" => "ides"
+      #
+      # @since x.x.x
+      # @api private
       PLURAL_IS_IDES = SuffixRule.new( /is\z/, 'ides', {
         'clitoris' => true,
         'iris'     => true,
       })
 
+      # Plural rule "f" => "s"
+      #
+      # @since x.x.x
+      # @api private
       PLURAL_F_S = SuffixRule.new( /\z/, 's', {
         'chief' => true,
         'spoof' => true,
       })
 
+      # Plural rule "o" => "oes"
+      #
+      # @since x.x.x
+      # @api private
       PLURAL_O_OES = SuffixRule.new( /\z/, 'es', {
         'buffalo'  => true,
         'domino'   => true,
@@ -90,6 +166,10 @@ module Lotus
         'veto'     => true,
       })
 
+      # Irregular rules
+      #
+      # @since x.x.x
+      # @api private
       PLURAL_IRREGULAR = IrregularRule.new({
         # irregular
         'cactus'       => 'cacti',
@@ -204,6 +284,13 @@ module Lotus
         'trellis'      => 'trellises',
       })
 
+      # Pluralize the given string
+      #
+      # @param [String] the singular string
+      #
+      # @return [String,NilClass] the pluralized string, if present
+      #
+      # @since x.x.x
       def self.pluralize(string)
         return string if string.nil? || string.match(BLANK_STRING_MATCHER)
 
