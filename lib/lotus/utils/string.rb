@@ -1,3 +1,5 @@
+require 'lotus/utils/inflector'
+
 module Lotus
   module Utils
     # String on steroids
@@ -218,6 +220,17 @@ module Lotus
         end
 
         nil
+      end
+
+      # Return a pluralized version of self.
+      #
+      # @return [Lotus::Utils::String] the pluralized string.
+      #
+      # @since x.x.x
+      #
+      # @see Lotus::Utils::Inflector
+      def pluralize
+        self.class.new Inflector.pluralize(self)
       end
 
       # Returns the hash of the internal string
