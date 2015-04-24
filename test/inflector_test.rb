@@ -8,6 +8,11 @@ describe Lotus::Utils::Inflector do
         actual = Lotus::Utils::Inflector.pluralize(singular)
         actual.must_equal plural
       end
+
+      it %(doesn't pluralize "#{ plural }" as it's already plural) do
+        actual = Lotus::Utils::Inflector.pluralize(plural)
+        actual.must_equal plural
+      end
     end
   end
 end

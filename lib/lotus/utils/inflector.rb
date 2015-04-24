@@ -8,11 +8,11 @@ module Lotus
         end
 
         def ===(other)
-          @rules.key?(other)
+          @rules.key?(other) || @rules.value?(other)
         end
 
         def apply(string)
-          @rules[string]
+          @rules[string] || @rules.rassoc(string).last
         end
       end
 
@@ -37,33 +37,9 @@ module Lotus
       EAUX = 'eaux'.freeze
       INA  = 'ina'.freeze
       VES  = 'ves'.freeze
-      SES  = 'ses'.freeze
+      SSES = 'sses'.freeze
       USES = 'uses'.freeze
-      ATA  = 'ata'.freeze
       S    = 's'.freeze
-
-      PLURAL_A_AE = SuffixRule.new( /\z/, 'e', {
-        'alga'     => true,
-        'alumna'   => true,
-        'antenna'  => true,
-        'formula'  => true,
-        'nebula'   => true,
-        'persona'  => true,
-        'vertebra' => true,
-        'vita'     => true,
-      })
-
-      PLURAL_US_I = SuffixRule.new( /us\z/, 'i', {
-        'alumnus'   => true,
-        'alveolus'  => true,
-        'bacillus'  => true,
-        'bronchus'  => true,
-        'locus'     => true,
-        'meniscus'  => true,
-        'nucleus'   => true,
-        'stimulus'  => true,
-        'thesaurus' => true,
-      })
 
       PLURAL_IS_ES = SuffixRule.new( /is\z/, 'es', {
         'analysis'    => true,
@@ -104,47 +80,118 @@ module Lotus
         'veto'     => true,
       })
 
-      PLURAL_ON_A = SuffixRule.new( /on\z/, 'a', {
-        'aphelion'     => true,
-        'asyndeton'    => true,
-        'criterion'    => true,
-        'hyperbaton'   => true,
-        'noumenon'     => true,
-        'organon'      => true,
-        'perihelion'   => true,
-        'phenomenon'   => true,
-        'prolegomenon' => true,
-      })
-
       PLURAL_IRREGULAR = IrregularRule.new({
         # irregular
-        'cactus'      => 'cacti',
-        'child'       => 'children',
-        'corpus'      => 'corpora',
-        'foot'        => 'feet',
-        'genus'       => 'genera',
-        'goose'       => 'geese',
-        'man'         => 'men',
-        'ox'          => 'oxen',
-        'person'      => 'people',
-        'quiz'        => 'quizzes',
-        'sex'         => 'sexes',
-        'testis'      => 'testes',
-        'tooth'       => 'teeth',
-        'woman'       => 'women',
+        'cactus'       => 'cacti',
+        'child'        => 'children',
+        'corpus'       => 'corpora',
+        'foot'         => 'feet',
+        'genus'        => 'genera',
+        'goose'        => 'geese',
+        'man'          => 'men',
+        'ox'           => 'oxen',
+        'person'       => 'people',
+        'quiz'         => 'quizzes',
+        'sex'          => 'sexes',
+        'testis'       => 'testes',
+        'tooth'        => 'teeth',
+        'woman'        => 'women',
         # uncountable
-        'deer'        => 'deer',
-        'equipment'   => 'equipment',
-        'fish'        => 'fish',
-        'information' => 'information',
-        'means'       => 'means',
-        'money'       => 'money',
-        'news'        => 'news',
-        'offspring'   => 'offspring',
-        'rice'        => 'rice',
-        'series'      => 'series',
-        'sheep'       => 'sheep',
-        'species'     => 'species',
+        'deer'         => 'deer',
+        'equipment'    => 'equipment',
+        'fish'         => 'fish',
+        'information'  => 'information',
+        'means'        => 'means',
+        'money'        => 'money',
+        'news'         => 'news',
+        'offspring'    => 'offspring',
+        'rice'         => 'rice',
+        'series'       => 'series',
+        'sheep'        => 'sheep',
+        'species'      => 'species',
+        # a            => ae
+        'alumna'       => 'alumnae',
+        'alga'         => 'algae',
+        'vertebra'     => 'vertebrae',
+        'persona'      => 'personae',
+        'antenna'      => 'antennae',
+        'formula'      => 'formulae',
+        'nebula'       => 'nebulae',
+        'vita'         => 'vitae',
+        # on           => a
+        'criterion'    => 'criteria',
+        'perihelion'   => 'perihelia',
+        'aphelion'     => 'aphelia',
+        'phenomenon'   => 'phenomena',
+        'prolegomenon' => 'prolegomena',
+        'noumenon'     => 'noumena',
+        'organon'      => 'organa',
+        'asyndeton'    => 'asyndeta',
+        'hyperbaton'   => 'hyperbata',
+        # us           => i
+        'alumnus'      => 'alumni',
+        'alveolus'     => 'alveoli',
+        'bacillus'     => 'bacilli',
+        'bronchus'     => 'bronchi',
+        'locus'        => 'loci',
+        'nucleus'      => 'nuclei',
+        'stimulus'     => 'stimuli',
+        'meniscus'     => 'menisci',
+        'thesaurus'    => 'thesauri',
+        # a            => ata
+        'anathema'     => 'anathemata',
+        'enema'        => 'enemata',
+        'oedema'       => 'oedemata',
+        'bema'         => 'bemata',
+        'enigma'       => 'enigmata',
+        'sarcoma'      => 'sarcomata',
+        'carcinoma'    => 'carcinomata',
+        'gumma'        => 'gummata',
+        'schema'       => 'schemata',
+        'charisma'     => 'charismata',
+        'lemma'        => 'lemmata',
+        'soma'         => 'somata',
+        'diploma'      => 'diplomata',
+        'lymphoma'     => 'lymphomata',
+        'stigma'       => 'stigmata',
+        'dogma'        => 'dogmata',
+        'magma'        => 'magmata',
+        'stoma'        => 'stomata',
+        'drama'        => 'dramata',
+        'melisma'      => 'melismata',
+        'trauma'       => 'traumata',
+        'edema'        => 'edemata',
+        'miasma'       => 'miasmata',
+        # s => es
+        'acropolis'    => 'acropolises',
+        'chaos'        => 'chaoses',
+        'lens'         => 'lenses',
+        'aegis'        => 'aegises',
+        'cosmos'       => 'cosmoses',
+        'mantis'       => 'mantises',
+        'alias'        => 'aliases',
+        'dais'         => 'daises',
+        'marquis'      => 'marquises',
+        'asbestos'     => 'asbestoses',
+        'digitalis'    => 'digitalises',
+        'metropolis'   => 'metropolises',
+        'atlas'        => 'atlases',
+        'epidermis'    => 'epidermises',
+        'pathos'       => 'pathoses',
+        'bathos'       => 'bathoses',
+        'ethos'        => 'ethoses',
+        'pelvis'       => 'pelvises',
+        'bias'         => 'biases',
+        'gas'          => 'gases',
+        'polis'        => 'polises',
+        'caddis'       => 'caddises',
+        'rhinoceros'   => 'rhinoceroses',
+        'cannabis'     => 'cannabises',
+        'glottis'      => 'glottises',
+        'sassafras'    => 'sassafrases',
+        'canvas'       => 'canvases',
+        'ibis'         => 'ibises',
+        'trellis'      => 'trellises',
       })
 
       def self.pluralize(string)
@@ -157,38 +204,32 @@ module Lotus
           $1 + IES
         when /\A(.*)(ex|ix)\z/
           $1 + ICES
+        when /\A(.*)(eau|#{ EAUX })\z/
+          $1 + EAUX
         when /\A(.*)x\z/
           $1 + XES
-        when PLURAL_ON_A
-          PLURAL_ON_A.apply(string)
-        when /\A(.*)um\z/
+        when /\A(.*)(um|#{ A })\z/
           $1 + A
-        when /\A(.*)eau\z/
-          $1 + EAUX
-        when /\A(.*)ouse\z/
+        when /\A(.*)(ouse|#{ ICE })\z/
           $1 + ICE
         when PLURAL_O_OES
           PLURAL_O_OES.apply(string)
-        when /\A(.*)en\z/
+        when /\A(.*)(en|#{ INA })\z/
           $1 + INA
         when PLURAL_F_S
           PLURAL_F_S.apply(string)
         when /\A(.*)(?:([^f]))f[e]*\z/
           $1 + $2 + VES
-        when PLURAL_US_I
-          PLURAL_US_I.apply(string)
         when /\A(.*)us\z/
           $1 + USES
         when PLURAL_IS_ES
           PLURAL_IS_ES.apply(string)
         when PLURAL_IS_IDES
           PLURAL_IS_IDES.apply(string)
-        when /\A(.*)s\z/
-          $1 + SES
-        when PLURAL_A_AE
-          PLURAL_A_AE.apply(string)
-        when /\A(.*)a\z/
-          $1 + ATA
+        when /\A(.*)ss\z/
+          $1 + SSES
+        when /s\z/
+          string
         else
           string + S
         end

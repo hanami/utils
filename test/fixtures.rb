@@ -275,7 +275,7 @@ TEST_PLURALS = {
   "vortex"   => "vortices",
   "index"    => "indices",
   "simplex"  => "simplices",
-  # ix => ices
+  # # ix => ices
   "radix" => "radices",
   "helix" => "helices",
   # This used to be ix => ixes, but English dictionary reports ix => ices as a
@@ -583,6 +583,7 @@ TEST_PLURALS = {
   "information" => "information",
   "rice"        => "rice",
   "news"        => "news",
+  "police"      => "police",
   # fallback (add s)
   "giraffe"      => "giraffes",
   "test"         => "tests",
