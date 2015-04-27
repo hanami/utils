@@ -284,6 +284,124 @@ module Lotus
         'trellis'      => 'trellises',
       })
 
+
+      # Irregular rules
+      #
+      # @since x.x.x
+      # @api private
+      SINGULAR_IRREGULAR = IrregularRule.new({
+        # irregular
+        'cacti'   => 'cactus',
+        'children'=> 'child',
+        'corpora' => 'corpus',
+        'feet'    => 'foot',
+        'genera'  => 'genus',
+        'geese'   => 'goose',
+        'men'     => 'man',
+        'oxen'    => 'ox',
+        'people'  => 'person',
+        'quizzes' => 'quiz',
+        'sexes'   => 'sex',
+        'testes'  => 'testis',
+        'teeth'   => 'tooth',
+        'women'   => 'woman',
+        # uncountable
+        'deer'        => 'deer',
+        'equipment'   => 'equipment',
+        'fish'        => 'fish',
+        'information' => 'information',
+        'means'       => 'means',
+        'money'       => 'money',
+        'news'        => 'news',
+        'offspring'   => 'offspring',
+        'rice'        => 'rice',
+        'series'      => 'series',
+        'sheep'       => 'sheep',
+        'species'     => 'species',
+        'police'      => 'police',
+        # ae => a
+        'alumnae'   => 'alumna',
+        'algae'     => 'alga',
+        'vertebrae' => 'vertebra',
+        'personae'  => 'persona',
+        'antennae'  => 'antenna',
+        'formulae'  => 'formula',
+        'nebulae'   => 'nebula',
+        'vitae'     => 'vita',
+        # a = on
+        'criteria'    => 'criterion',
+        'perihelia'   => 'perihelion',
+        'aphelia'     => 'aphelion',
+        'phenomena'   => 'phenomenon',
+        'prolegomena' => 'prolegomenon',
+        'noumena'     => 'noumenon',
+        'organa'      => 'organon',
+        'asyndeta'    => 'asyndeton',
+        'hyperbata'   => 'hyperbaton',
+        # ses => s
+        'acropolises'  => 'acropolis',
+        'chaoses'      => 'chaos',
+        'lenses'       => 'lens',
+        'aegises'      => 'aegis',
+        'cosmoses'     => 'cosmos',
+        'mantises'     => 'mantis',
+        'aliases'      => 'alias',
+        'daises'       => 'dais',
+        'marquises'    => 'marquis',
+        'asbestoses'   => 'asbestos',
+        'digitalises'  => 'digitalis',
+        'metropolises' => 'metropolis',
+        'atlases'      => 'atlas',
+        'epidermises'  => 'epidermis',
+        'pathoses'     => 'pathos',
+        'bathoses'     => 'bathos',
+        'ethoses'      => 'ethos',
+        'pelvises'     => 'pelvis',
+        'biases'       => 'bias',
+        'gases'        => 'gas',
+        'polises'      => 'polis',
+        'caddises'     => 'caddis',
+        'rhinoceroses' => 'rhinoceros',
+        'cannabises'   => 'cannabis',
+        'glottises'    => 'glottis',
+        'sassafrases'  => 'sassafras',
+        'canvases'     => 'canvas',
+        'ibises'       => 'ibis',
+        'trellises'    => 'trellis',
+        # fallback
+        'hives' => 'hive',
+        # ices => ex
+        "codices"    => "codex",
+        "murices"    => "murex",
+        "silices"    => "silex",
+        "apices"     => "apex",
+        "latices"    => "latex",
+        "vertices"   => "vertex",
+        "cortices"   => "cortex",
+        "pontifices" => "pontifex",
+        "vortices"   => "vortex",
+        "indices"    => "index",
+        "simplices"  => "simplex",
+        # ices => ix
+        "radices"    => "radix",
+        "helices"    => "helix",
+        "appendices" => "appendix",
+        # es => is
+        "axes"        => "axis",
+        "analyses"    => "analysis",
+        "bases"       => "basis",
+        "crises"      => "crisis",
+        "diagnoses"   => "diagnosis",
+        "ellipses"    => "ellipsis",
+        "hypotheses"  => "hypothesis",
+        "oases"       => "oasis",
+        "paralyses"   => "paralysis",
+        "parentheses" => "parenthesis",
+        "syntheses"   => "synthesis",
+        "synopses"    => "synopsis",
+        "theses"      => "thesis",
+      })
+
       # Pluralize the given string
       #
       # @param [String] the singular string
@@ -331,6 +449,56 @@ module Lotus
           string
         else
           string + S
+        end
+      end
+
+      # Singularize the given string
+      #
+      # @param [String] the pliral string
+      #
+      # @return [String,NilClass] the singularized string, if present
+      #
+      # @since x.x.x
+      def self.singularize(string)
+        return string if string.nil? || string.match(BLANK_STRING_MATCHER)
+
+        case string
+        when SINGULAR_IRREGULAR
+          SINGULAR_IRREGULAR.apply(string)
+        when /\A.*[^aeiou]#{CHES}\z/
+          string.sub(CHES, 'ch')
+        when /\A.*[^aeiou]#{IES}\z/
+          string.sub(IES, 'y')
+        when /\A(.*)#{ICE}\z/
+          $1 + 'ouse'
+        when /\A.*#{EAUX}\z/
+          string.chop
+        when /\A(.*)ides\z/
+          $1 + 'is'
+        when /\A(.*)us\z/
+          $1 + 'i'
+        when /\A(.*)ses\z/
+          $1 + 's'
+        when /\A(.*)ouse\z/
+          $1 + 'ice'
+        when /\A(.*)mata\z/
+          $1 + 'ma'
+        when /\A(.*)oes\z/
+          $1 + 'o'
+        when /\A(.*)mina\z/
+          $1 + 'men'
+        when /\A(.*)xes\z/
+          $1 + 'x'
+        when /\A(.*)ives\z/
+          $1 + 'ife'
+        when /\A(.*)ves\z/
+          $1 + 'f'
+        when /\A(.*)i\z/
+          $1 + 'us'
+        when /\A(.*)a\z/
+          $1 + 'um'
+        else
+          string.chop
         end
       end
     end

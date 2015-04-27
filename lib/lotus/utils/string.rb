@@ -233,6 +233,17 @@ module Lotus
         self.class.new Inflector.pluralize(self)
       end
 
+      # Return a singularized version of self.
+      #
+      # @return [Lotus::Utils::String] the singularized string.
+      #
+      # @since x.x.x
+      #
+      # @see Lotus::Utils::Inflector
+      def singularize
+        self.class.new Inflector.singularize(self)
+      end
+
       # Returns the hash of the internal string
       #
       # @return [Fixnum]
