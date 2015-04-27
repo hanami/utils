@@ -72,16 +72,16 @@ describe Lotus::Utils::Inflector do
     end
 
     it "returns instance of String" do
-      result = Lotus::Utils::Inflector.singularize("Lotus")
+      result = Lotus::Utils::Inflector.singularize("application")
       result.class.must_equal ::String
     end
 
     it "doesn't modify original string" do
-      string = "application"
+      string = "applications"
       result = Lotus::Utils::Inflector.singularize(string)
 
       result.object_id.wont_equal(string.object_id)
-      string.must_equal("application")
+      string.must_equal("applications")
     end
   end
 

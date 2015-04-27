@@ -497,6 +497,8 @@ module Lotus
           $1 + 'us'
         when /\A(.*)a\z/
           $1 + 'um'
+        when /[^s]\z/
+          string
         else
           string.chop
         end
