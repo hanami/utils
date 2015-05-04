@@ -110,7 +110,24 @@ module Lotus
       #
       # @see Lotus::Utils::Hash
       def to_h
-        @attributes.deep_dup
+        {}.tap do |result|
+          @attributes.each do |k, v|
+            result[k] = _read_value(v)
+          end
+        end
+      end
+
+      private
+
+      # @since x.x.x
+      # @api private
+      def _read_value(value)
+        case val = value
+        when ->(v) { !v.nil? && v.respond_to?(:to_h) }
+          val.to_h
+        else
+          val
+        end
       end
     end
   end
