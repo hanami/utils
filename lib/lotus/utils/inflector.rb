@@ -3,6 +3,7 @@ module Lotus
     # String inflector
     #
     # @since x.x.x
+    # @api private
     module Inflector
       # Rule for irregular plural
       #
@@ -65,11 +66,27 @@ module Lotus
 
       # @since x.x.x
       # @api private
+      A    = 'a'.freeze
+
+      # @since x.x.x
+      # @api private
+      CH   = 'ch'.freeze
+
+      # @since x.x.x
+      # @api private
       CHES = 'ches'.freeze
 
       # @since x.x.x
       # @api private
-      IES  = 'ies'.freeze
+      EAUX = 'eaux'.freeze
+
+      # @since x.x.x
+      # @api private
+      F    = 'f'.freeze
+
+      # @since x.x.x
+      # @api private
+      I    = 'i'.freeze
 
       # @since x.x.x
       # @api private
@@ -81,15 +98,15 @@ module Lotus
 
       # @since x.x.x
       # @api private
-      XES  = 'xes'.freeze
+      IDES = 'ides'.freeze
 
       # @since x.x.x
       # @api private
-      A    = 'a'.freeze
+      IES  = 'ies'.freeze
 
       # @since x.x.x
       # @api private
-      EAUX = 'eaux'.freeze
+      IFE  = 'ife'.freeze
 
       # @since x.x.x
       # @api private
@@ -97,7 +114,47 @@ module Lotus
 
       # @since x.x.x
       # @api private
-      VES  = 'ves'.freeze
+      IS   = 'is'.freeze
+
+      # @since x.x.x
+      # @api private
+      IVES = 'ives'.freeze
+
+      # @since x.x.x
+      # @api private
+      MA   = 'ma'.freeze
+
+      # @since x.x.x
+      # @api private
+      MATA = 'mata'.freeze
+
+      # @since x.x.x
+      # @api private
+      MEN  = 'men'.freeze
+
+      # @since x.x.x
+      # @api private
+      MINA = 'mina'.freeze
+
+      # @since x.x.x
+      # @api private
+      O    = 'o'.freeze
+
+      # @since x.x.x
+      # @api private
+      OES  = 'oes'.freeze
+
+      # @since x.x.x
+      # @api private
+      OUSE = 'ouse'.freeze
+
+      # @since x.x.x
+      # @api private
+      S    = 's'.freeze
+
+      # @since x.x.x
+      # @api private
+      SES  = 'ses'.freeze
 
       # @since x.x.x
       # @api private
@@ -105,11 +162,31 @@ module Lotus
 
       # @since x.x.x
       # @api private
+      UM   = 'um'.freeze
+
+      # @since x.x.x
+      # @api private
+      US   = 'us'.freeze
+
+      # @since x.x.x
+      # @api private
       USES = 'uses'.freeze
 
       # @since x.x.x
       # @api private
-      S    = 's'.freeze
+      VES  = 'ves'.freeze
+
+      # @since x.x.x
+      # @api private
+      X    = 'x'.freeze
+
+      # @since x.x.x
+      # @api private
+      XES  = 'xes'.freeze
+
+      # @since x.x.x
+      # @api private
+      Y    = 'y'.freeze
 
       # Plural rule "is" => "es"
       #
@@ -284,12 +361,130 @@ module Lotus
         'trellis'      => 'trellises',
       })
 
+      # Irregular rules
+      #
+      # @since x.x.x
+      # @api private
+      SINGULAR_IRREGULAR = IrregularRule.new({
+        # irregular
+        'cacti'   => 'cactus',
+        'children'=> 'child',
+        'corpora' => 'corpus',
+        'feet'    => 'foot',
+        'genera'  => 'genus',
+        'geese'   => 'goose',
+        'men'     => 'man',
+        'oxen'    => 'ox',
+        'people'  => 'person',
+        'quizzes' => 'quiz',
+        'sexes'   => 'sex',
+        'testes'  => 'testis',
+        'teeth'   => 'tooth',
+        'women'   => 'woman',
+        # uncountable
+        'deer'        => 'deer',
+        'equipment'   => 'equipment',
+        'fish'        => 'fish',
+        'information' => 'information',
+        'means'       => 'means',
+        'money'       => 'money',
+        'news'        => 'news',
+        'offspring'   => 'offspring',
+        'rice'        => 'rice',
+        'series'      => 'series',
+        'sheep'       => 'sheep',
+        'species'     => 'species',
+        'police'      => 'police',
+        # ae => a
+        'alumnae'   => 'alumna',
+        'algae'     => 'alga',
+        'vertebrae' => 'vertebra',
+        'personae'  => 'persona',
+        'antennae'  => 'antenna',
+        'formulae'  => 'formula',
+        'nebulae'   => 'nebula',
+        'vitae'     => 'vita',
+        # a = on
+        'criteria'    => 'criterion',
+        'perihelia'   => 'perihelion',
+        'aphelia'     => 'aphelion',
+        'phenomena'   => 'phenomenon',
+        'prolegomena' => 'prolegomenon',
+        'noumena'     => 'noumenon',
+        'organa'      => 'organon',
+        'asyndeta'    => 'asyndeton',
+        'hyperbata'   => 'hyperbaton',
+        # ses => s
+        'acropolises'  => 'acropolis',
+        'chaoses'      => 'chaos',
+        'lenses'       => 'lens',
+        'aegises'      => 'aegis',
+        'cosmoses'     => 'cosmos',
+        'mantises'     => 'mantis',
+        'aliases'      => 'alias',
+        'daises'       => 'dais',
+        'marquises'    => 'marquis',
+        'asbestoses'   => 'asbestos',
+        'digitalises'  => 'digitalis',
+        'metropolises' => 'metropolis',
+        'atlases'      => 'atlas',
+        'epidermises'  => 'epidermis',
+        'pathoses'     => 'pathos',
+        'bathoses'     => 'bathos',
+        'ethoses'      => 'ethos',
+        'pelvises'     => 'pelvis',
+        'biases'       => 'bias',
+        'gases'        => 'gas',
+        'polises'      => 'polis',
+        'caddises'     => 'caddis',
+        'rhinoceroses' => 'rhinoceros',
+        'cannabises'   => 'cannabis',
+        'glottises'    => 'glottis',
+        'sassafrases'  => 'sassafras',
+        'canvases'     => 'canvas',
+        'ibises'       => 'ibis',
+        'trellises'    => 'trellis',
+        # fallback
+        'hives' => 'hive',
+        # ices => ex
+        "codices"    => "codex",
+        "murices"    => "murex",
+        "silices"    => "silex",
+        "apices"     => "apex",
+        "latices"    => "latex",
+        "vertices"   => "vertex",
+        "cortices"   => "cortex",
+        "pontifices" => "pontifex",
+        "vortices"   => "vortex",
+        "indices"    => "index",
+        "simplices"  => "simplex",
+        # ices => ix
+        "radices"    => "radix",
+        "helices"    => "helix",
+        "appendices" => "appendix",
+        # es => is
+        "axes"        => "axis",
+        "analyses"    => "analysis",
+        "bases"       => "basis",
+        "crises"      => "crisis",
+        "diagnoses"   => "diagnosis",
+        "ellipses"    => "ellipsis",
+        "hypotheses"  => "hypothesis",
+        "oases"       => "oasis",
+        "paralyses"   => "paralysis",
+        "parentheses" => "parenthesis",
+        "syntheses"   => "synthesis",
+        "synopses"    => "synopsis",
+        "theses"      => "thesis",
+      })
+
       # Pluralize the given string
       #
       # @param [String] the singular string
       #
       # @return [String,NilClass] the pluralized string, if present
       #
+      # @api private
       # @since x.x.x
       def self.pluralize(string)
         return string if string.nil? || string.match(BLANK_STRING_MATCHER)
@@ -331,6 +526,59 @@ module Lotus
           string
         else
           string + S
+        end
+      end
+
+      # Singularize the given string
+      #
+      # @param [String] the pliral string
+      #
+      # @return [String,NilClass] the singularized string, if present
+      #
+      # @api private
+      # @since x.x.x
+      def self.singularize(string)
+        return string if string.nil? || string.match(BLANK_STRING_MATCHER)
+
+        case string
+        when SINGULAR_IRREGULAR
+          SINGULAR_IRREGULAR.apply(string)
+        when /\A.*[^aeiou]#{CHES}\z/
+          string.sub(CHES, CH)
+        when /\A.*[^aeiou]#{IES}\z/
+          string.sub(IES, Y)
+        when /\A(.*)#{ICE}\z/
+          $1 + OUSE
+        when /\A.*#{EAUX}\z/
+          string.chop
+        when /\A(.*)#{IDES}\z/
+          $1 + IS
+        when /\A(.*)#{US}\z/
+          $1 + I
+        when /\A(.*)#{SES}\z/
+          $1 + S
+        when /\A(.*)#{OUSE}\z/
+          $1 + ICE
+        when /\A(.*)#{MATA}\z/
+          $1 + MA
+        when /\A(.*)#{OES}\z/
+          $1 + O
+        when /\A(.*)#{MINA}\z/
+          $1 + MEN
+        when /\A(.*)#{XES}\z/
+          $1 + X
+        when /\A(.*)#{IVES}\z/
+          $1 + IFE
+        when /\A(.*)#{VES}\z/
+          $1 + F
+        when /\A(.*)#{I}\z/
+          $1 + US
+        when /\A(.*)#{A}\z/
+          $1 + UM
+        when /[^s]\z/
+          string
+        else
+          string.chop
         end
       end
     end

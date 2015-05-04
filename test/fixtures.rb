@@ -614,3 +614,5 @@ TEST_PLURALS = {
   "car"          => "cars",
   "hive"         => "hives",
 }.freeze
+
+TEST_SINGULAR = TEST_PLURALS
