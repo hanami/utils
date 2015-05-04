@@ -145,6 +145,14 @@ describe Lotus::Utils::Attributes do
   end
 
   describe '#to_h' do
+    before do
+      @value = Class.new do
+        def to_h
+          {'foo' => 'bar'}
+        end
+      end.new
+    end
+
     it 'returns a ::Hash' do
       attributes = Lotus::Utils::Attributes.new(foo: 'bar')
       attributes.to_h.must_equal({'foo' => 'bar'})
@@ -156,6 +164,11 @@ describe Lotus::Utils::Attributes do
       hash.merge!('b' => 2)
 
       actual.get('b').must_be_nil
+    end
+
+    it 'forces ::Hash values' do
+      attributes = Lotus::Utils::Attributes.new(val: @value)
+      attributes.to_h.must_equal({'val' => { 'foo' => 'bar'}})
     end
   end
 end

@@ -210,6 +210,29 @@ describe Lotus::Utils::String do
     end
   end
 
+  describe "#pluralize" do
+    before do
+      @singular, @plural = *TEST_PLURALS.to_a.sample
+    end
+
+    it 'returns a Lotus::Utils::String instance' do
+      result = Lotus::Utils::String.new(@singular).pluralize
+      result.must_be_kind_of(Lotus::Utils::String)
+    end
+
+    it 'pluralizes string' do
+      result = Lotus::Utils::String.new(@singular).pluralize
+      result.must_equal(@plural)
+    end
+
+    it "doesn't modify the original string" do
+      string = Lotus::Utils::String.new(@singular)
+
+      string.pluralize.must_equal(@plural)
+      string.must_equal(@singular)
+    end
+  end
+
   describe 'string interface' do
     it 'responds to ::String methods and returns a new Lotus::Utils::String' do
       string = Lotus::Utils::String.new("Lotus\n").chomp
