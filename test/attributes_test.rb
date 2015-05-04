@@ -153,7 +153,12 @@ describe Lotus::Utils::Attributes do
       end.new
     end
 
-    it 'returns a ::Hash' do
+    it 'returns an instance of ::Lotus::Utils::Hash' do
+      attributes = Lotus::Utils::Attributes.new
+      attributes.to_h.must_be_kind_of(::Lotus::Utils::Hash)
+    end
+
+    it 'returns a hash serialization' do
       attributes = Lotus::Utils::Attributes.new(foo: 'bar')
       attributes.to_h.must_equal({'foo' => 'bar'})
     end
@@ -166,9 +171,12 @@ describe Lotus::Utils::Attributes do
       actual.get('b').must_be_nil
     end
 
-    it 'forces ::Hash values' do
+    it 'forces ::Lotus::Utils::Hash values' do
       attributes = Lotus::Utils::Attributes.new(val: @value)
-      attributes.to_h.must_equal({'val' => { 'foo' => 'bar'}})
+      actual     = attributes.to_h
+
+      actual.must_equal({'val' => { 'foo' => 'bar'}})
+      actual['val'].must_be_kind_of(Lotus::Utils::Hash)
     end
   end
 end
