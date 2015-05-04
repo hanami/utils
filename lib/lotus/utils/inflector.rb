@@ -3,6 +3,7 @@ module Lotus
     # String inflector
     #
     # @since x.x.x
+    # @api private
     module Inflector
       # Rule for irregular plural
       #
@@ -65,11 +66,27 @@ module Lotus
 
       # @since x.x.x
       # @api private
+      A    = 'a'.freeze
+
+      # @since x.x.x
+      # @api private
+      CH   = 'ch'.freeze
+
+      # @since x.x.x
+      # @api private
       CHES = 'ches'.freeze
 
       # @since x.x.x
       # @api private
-      IES  = 'ies'.freeze
+      EAUX = 'eaux'.freeze
+
+      # @since x.x.x
+      # @api private
+      F    = 'f'.freeze
+
+      # @since x.x.x
+      # @api private
+      I    = 'i'.freeze
 
       # @since x.x.x
       # @api private
@@ -81,15 +98,15 @@ module Lotus
 
       # @since x.x.x
       # @api private
-      XES  = 'xes'.freeze
+      IDES = 'ides'.freeze
 
       # @since x.x.x
       # @api private
-      A    = 'a'.freeze
+      IES  = 'ies'.freeze
 
       # @since x.x.x
       # @api private
-      EAUX = 'eaux'.freeze
+      IFE  = 'ife'.freeze
 
       # @since x.x.x
       # @api private
@@ -97,7 +114,47 @@ module Lotus
 
       # @since x.x.x
       # @api private
-      VES  = 'ves'.freeze
+      IS   = 'is'.freeze
+
+      # @since x.x.x
+      # @api private
+      IVES = 'ives'.freeze
+
+      # @since x.x.x
+      # @api private
+      MA   = 'ma'.freeze
+
+      # @since x.x.x
+      # @api private
+      MATA = 'mata'.freeze
+
+      # @since x.x.x
+      # @api private
+      MEN  = 'men'.freeze
+
+      # @since x.x.x
+      # @api private
+      MINA = 'mina'.freeze
+
+      # @since x.x.x
+      # @api private
+      O    = 'o'.freeze
+
+      # @since x.x.x
+      # @api private
+      OES  = 'oes'.freeze
+
+      # @since x.x.x
+      # @api private
+      OUSE = 'ouse'.freeze
+
+      # @since x.x.x
+      # @api private
+      S    = 's'.freeze
+
+      # @since x.x.x
+      # @api private
+      SES  = 'ses'.freeze
 
       # @since x.x.x
       # @api private
@@ -105,11 +162,31 @@ module Lotus
 
       # @since x.x.x
       # @api private
+      UM   = 'um'.freeze
+
+      # @since x.x.x
+      # @api private
+      US   = 'us'.freeze
+
+      # @since x.x.x
+      # @api private
       USES = 'uses'.freeze
 
       # @since x.x.x
       # @api private
-      S    = 's'.freeze
+      VES  = 'ves'.freeze
+
+      # @since x.x.x
+      # @api private
+      X    = 'x'.freeze
+
+      # @since x.x.x
+      # @api private
+      XES  = 'xes'.freeze
+
+      # @since x.x.x
+      # @api private
+      Y    = 'y'.freeze
 
       # Plural rule "is" => "es"
       #
@@ -284,7 +361,6 @@ module Lotus
         'trellis'      => 'trellises',
       })
 
-
       # Irregular rules
       #
       # @since x.x.x
@@ -408,6 +484,7 @@ module Lotus
       #
       # @return [String,NilClass] the pluralized string, if present
       #
+      # @api private
       # @since x.x.x
       def self.pluralize(string)
         return string if string.nil? || string.match(BLANK_STRING_MATCHER)
@@ -458,6 +535,7 @@ module Lotus
       #
       # @return [String,NilClass] the singularized string, if present
       #
+      # @api private
       # @since x.x.x
       def self.singularize(string)
         return string if string.nil? || string.match(BLANK_STRING_MATCHER)
@@ -466,37 +544,37 @@ module Lotus
         when SINGULAR_IRREGULAR
           SINGULAR_IRREGULAR.apply(string)
         when /\A.*[^aeiou]#{CHES}\z/
-          string.sub(CHES, 'ch')
+          string.sub(CHES, CH)
         when /\A.*[^aeiou]#{IES}\z/
-          string.sub(IES, 'y')
+          string.sub(IES, Y)
         when /\A(.*)#{ICE}\z/
-          $1 + 'ouse'
+          $1 + OUSE
         when /\A.*#{EAUX}\z/
           string.chop
-        when /\A(.*)ides\z/
-          $1 + 'is'
-        when /\A(.*)us\z/
-          $1 + 'i'
-        when /\A(.*)ses\z/
-          $1 + 's'
-        when /\A(.*)ouse\z/
-          $1 + 'ice'
-        when /\A(.*)mata\z/
-          $1 + 'ma'
-        when /\A(.*)oes\z/
-          $1 + 'o'
-        when /\A(.*)mina\z/
-          $1 + 'men'
-        when /\A(.*)xes\z/
-          $1 + 'x'
-        when /\A(.*)ives\z/
-          $1 + 'ife'
-        when /\A(.*)ves\z/
-          $1 + 'f'
-        when /\A(.*)i\z/
-          $1 + 'us'
-        when /\A(.*)a\z/
-          $1 + 'um'
+        when /\A(.*)#{IDES}\z/
+          $1 + IS
+        when /\A(.*)#{US}\z/
+          $1 + I
+        when /\A(.*)#{SES}\z/
+          $1 + S
+        when /\A(.*)#{OUSE}\z/
+          $1 + ICE
+        when /\A(.*)#{MATA}\z/
+          $1 + MA
+        when /\A(.*)#{OES}\z/
+          $1 + O
+        when /\A(.*)#{MINA}\z/
+          $1 + MEN
+        when /\A(.*)#{XES}\z/
+          $1 + X
+        when /\A(.*)#{IVES}\z/
+          $1 + IFE
+        when /\A(.*)#{VES}\z/
+          $1 + F
+        when /\A(.*)#{I}\z/
+          $1 + US
+        when /\A(.*)#{A}\z/
+          $1 + UM
         when /[^s]\z/
           string
         else

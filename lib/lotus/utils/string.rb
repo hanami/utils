@@ -226,6 +226,7 @@ module Lotus
       #
       # @return [Lotus::Utils::String] the pluralized string.
       #
+      # @api private
       # @since x.x.x
       #
       # @see Lotus::Utils::Inflector
@@ -237,6 +238,7 @@ module Lotus
       #
       # @return [Lotus::Utils::String] the singularized string.
       #
+      # @api private
       # @since x.x.x
       #
       # @see Lotus::Utils::Inflector
