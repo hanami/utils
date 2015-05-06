@@ -147,6 +147,10 @@ describe Lotus::Utils::Attributes do
   describe '#to_h' do
     before do
       @value = Class.new do
+        def lotus_nested_attributes?
+          true
+        end
+
         def to_h
           {'foo' => 'bar'}
         end
@@ -171,12 +175,22 @@ describe Lotus::Utils::Attributes do
       actual.get('b').must_be_nil
     end
 
-    it 'forces ::Lotus::Utils::Hash values' do
+    it 'forces ::Lotus::Utils::Hash values when a validations nested attributes is given' do
       attributes = Lotus::Utils::Attributes.new(val: @value)
       actual     = attributes.to_h
 
       actual.must_equal({'val' => { 'foo' => 'bar'}})
       actual['val'].must_be_kind_of(Lotus::Utils::Hash)
+    end
+
+    # Bug
+    # See: https://github.com/lotus/validations/issues/58#issuecomment-99144243
+    it 'fallbacks to the original value if TypeError is raised' do
+      attributes = Lotus::Utils::Attributes.new(val: [1, 2])
+      actual     = attributes.to_h
+
+      actual.must_equal({'val' => [1, 2]})
+      actual['val'].must_be_kind_of(Array)
     end
   end
 end
