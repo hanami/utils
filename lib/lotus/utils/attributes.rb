@@ -123,7 +123,7 @@ module Lotus
       # @api private
       def _read_value(value)
         case val = value
-        when ->(v) { !v.nil? && v.respond_to?(:to_h) }
+        when ::Hash, ::Lotus::Utils::Hash, ->(v) { v.respond_to?(:lotus_nested_attributes?) }
           Utils::Hash.new(val)
         else
           val
