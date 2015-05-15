@@ -159,7 +159,7 @@ describe Lotus::Utils::Attributes do
 
     it 'returns an instance of ::Lotus::Utils::Hash' do
       attributes = Lotus::Utils::Attributes.new
-      attributes.to_h.must_be_kind_of(::Lotus::Utils::Hash)
+      attributes.to_h.must_be_kind_of(::Hash)
     end
 
     it 'returns a hash serialization' do

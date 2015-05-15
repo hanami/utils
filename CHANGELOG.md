@@ -1,6 +1,10 @@
 # Lotus::Utils
 Ruby core extentions and class utilities for Lotus
 
+## v0.4.2 - 2015-05-15
+### Fixed
+- [Luca Guidi] Ensure `Lotus::Utils::Attributes#to_h` to return `::Hash`
+
 ## v0.4.1 - 2015-05-15
 ### Added
 - [Luca Guidi & Alfonso Uceda Pompa] Introduced `Lotus::Utils::Inflector`, `Lotus::Utils::String#pluralize` and `#singularize`
