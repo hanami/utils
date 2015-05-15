@@ -180,7 +180,7 @@ describe Lotus::Utils::Attributes do
       actual     = attributes.to_h
 
       actual.must_equal({'val' => { 'foo' => 'bar'}})
-      actual['val'].must_be_kind_of(Lotus::Utils::Hash)
+      actual['val'].must_be_kind_of(::Hash)
     end
 
     # Bug
