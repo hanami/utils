@@ -29,7 +29,7 @@ describe Lotus::Utils::Deprecation do
 
     stack = if Lotus::Utils.jruby?
       $0 == __FILE__ ? "#{ __FILE__ }:27:in `(root)'" :
-        "#{ __FILE__ }:27:in `test_0001_prints a deprecation warning for direct call'"
+        "#{ __FILE__ }:27:in `block in test_0001_prints a deprecation warning for direct call'"
     elsif Lotus::Utils.rubinius?
       $0 == __FILE__ ? "#{ ::File.expand_path(__FILE__) }:27:in `__script__'" :
         "#{ __FILE__ }:27:in `__script__'"
