@@ -119,7 +119,7 @@ module Lotus
 
       private
 
-      # @since x.x.x
+      # @since 0.4.1
       # @api private
       def _read_value(value)
         case val = value
