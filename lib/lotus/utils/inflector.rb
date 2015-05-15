@@ -2,29 +2,29 @@ module Lotus
   module Utils
     # String inflector
     #
-    # @since x.x.x
+    # @since 0.4.1
     # @api private
     module Inflector
       # Rule for irregular plural
       #
-      # @since x.x.x
+      # @since 0.4.1
       # @api private
       class IrregularRule
-        # @since x.x.x
+        # @since 0.4.1
         # @api private
         def initialize(rules)
           @rules = rules
           @rules.freeze
         end
 
-        # @since x.x.x
+        # @since 0.4.1
         # @api private
         def ===(other)
           key = other.downcase
           @rules.key?(key) || @rules.value?(key)
         end
 
-        # @since x.x.x
+        # @since 0.4.1
         # @api private
         def apply(string)
           key    = string.downcase
@@ -36,7 +36,7 @@ module Lotus
 
       # Rule for irregular plural, that uses a suffix.
       #
-      # @since x.x.x
+      # @since 0.4.1
       # @api private
       class SuffixRule < IrregularRule
         def initialize(matcher, replacement, rules)
@@ -45,13 +45,13 @@ module Lotus
           @replacement = replacement
         end
 
-        # @since x.x.x
+        # @since 0.4.1
         # @api private
         def ===(other)
           @rules.key?(other.downcase)
         end
 
-        # @since x.x.x
+        # @since 0.4.1
         # @api private
         def apply(string)
           string.sub(@matcher, @replacement)
@@ -60,137 +60,137 @@ module Lotus
 
       # Matcher for blank strings
       #
-      # @since x.x.x
+      # @since 0.4.1
       # @api private
       BLANK_STRING_MATCHER = /\A[[:space:]]*\z/.freeze
 
-      # @since x.x.x
+      # @since 0.4.1
       # @api private
       A    = 'a'.freeze
 
-      # @since x.x.x
+      # @since 0.4.1
       # @api private
       CH   = 'ch'.freeze
 
-      # @since x.x.x
+      # @since 0.4.1
       # @api private
       CHES = 'ches'.freeze
 
-      # @since x.x.x
+      # @since 0.4.1
       # @api private
       EAUX = 'eaux'.freeze
 
-      # @since x.x.x
+      # @since 0.4.1
       # @api private
       F    = 'f'.freeze
 
-      # @since x.x.x
+      # @since 0.4.1
       # @api private
       I    = 'i'.freeze
 
-      # @since x.x.x
+      # @since 0.4.1
       # @api private
       ICE  = 'ice'.freeze
 
-      # @since x.x.x
+      # @since 0.4.1
       # @api private
       ICES = 'ices'.freeze
 
-      # @since x.x.x
+      # @since 0.4.1
       # @api private
       IDES = 'ides'.freeze
 
-      # @since x.x.x
+      # @since 0.4.1
       # @api private
       IES  = 'ies'.freeze
 
-      # @since x.x.x
+      # @since 0.4.1
       # @api private
       IFE  = 'ife'.freeze
 
-      # @since x.x.x
+      # @since 0.4.1
       # @api private
       INA  = 'ina'.freeze
 
-      # @since x.x.x
+      # @since 0.4.1
       # @api private
       IS   = 'is'.freeze
 
-      # @since x.x.x
+      # @since 0.4.1
       # @api private
       IVES = 'ives'.freeze
 
-      # @since x.x.x
+      # @since 0.4.1
       # @api private
       MA   = 'ma'.freeze
 
-      # @since x.x.x
+      # @since 0.4.1
       # @api private
       MATA = 'mata'.freeze
 
-      # @since x.x.x
+      # @since 0.4.1
       # @api private
       MEN  = 'men'.freeze
 
-      # @since x.x.x
+      # @since 0.4.1
       # @api private
       MINA = 'mina'.freeze
 
-      # @since x.x.x
+      # @since 0.4.1
       # @api private
       O    = 'o'.freeze
 
-      # @since x.x.x
+      # @since 0.4.1
       # @api private
       OES  = 'oes'.freeze
 
-      # @since x.x.x
+      # @since 0.4.1
       # @api private
       OUSE = 'ouse'.freeze
 
-      # @since x.x.x
+      # @since 0.4.1
       # @api private
       S    = 's'.freeze
 
-      # @since x.x.x
+      # @since 0.4.1
       # @api private
       SES  = 'ses'.freeze
 
-      # @since x.x.x
+      # @since 0.4.1
       # @api private
       SSES = 'sses'.freeze
 
-      # @since x.x.x
+      # @since 0.4.1
       # @api private
       UM   = 'um'.freeze
 
-      # @since x.x.x
+      # @since 0.4.1
       # @api private
       US   = 'us'.freeze
 
-      # @since x.x.x
+      # @since 0.4.1
       # @api private
       USES = 'uses'.freeze
 
-      # @since x.x.x
+      # @since 0.4.1
       # @api private
       VES  = 'ves'.freeze
 
-      # @since x.x.x
+      # @since 0.4.1
       # @api private
       X    = 'x'.freeze
 
-      # @since x.x.x
+      # @since 0.4.1
       # @api private
       XES  = 'xes'.freeze
 
-      # @since x.x.x
+      # @since 0.4.1
       # @api private
       Y    = 'y'.freeze
 
       # Plural rule "is" => "es"
       #
-      # @since x.x.x
+      # @since 0.4.1
       # @api private
       PLURAL_IS_ES = SuffixRule.new( /is\z/, 'es', {
         'analysis'    => true,
@@ -210,7 +210,7 @@ module Lotus
 
       # Plural rule "is" => "ides"
       #
-      # @since x.x.x
+      # @since 0.4.1
       # @api private
       PLURAL_IS_IDES = SuffixRule.new( /is\z/, 'ides', {
         'clitoris' => true,
@@ -219,7 +219,7 @@ module Lotus
 
       # Plural rule "f" => "s"
       #
-      # @since x.x.x
+      # @since 0.4.1
       # @api private
       PLURAL_F_S = SuffixRule.new( /\z/, 's', {
         'chief' => true,
@@ -228,7 +228,7 @@ module Lotus
 
       # Plural rule "o" => "oes"
       #
-      # @since x.x.x
+      # @since 0.4.1
       # @api private
       PLURAL_O_OES = SuffixRule.new( /\z/, 'es', {
         'buffalo'  => true,
@@ -245,7 +245,7 @@ module Lotus
 
       # Irregular rules
       #
-      # @since x.x.x
+      # @since 0.4.1
       # @api private
       PLURAL_IRREGULAR = IrregularRule.new({
         # irregular
@@ -363,7 +363,7 @@ module Lotus
 
       # Irregular rules
       #
-      # @since x.x.x
+      # @since 0.4.1
       # @api private
       SINGULAR_IRREGULAR = IrregularRule.new({
         # irregular
@@ -480,12 +480,12 @@ module Lotus
 
       # Pluralize the given string
       #
-      # @param [String] the singular string
+      # @param string [String] a string to pluralize
       #
       # @return [String,NilClass] the pluralized string, if present
       #
       # @api private
-      # @since x.x.x
+      # @since 0.4.1
       def self.pluralize(string)
         return string if string.nil? || string.match(BLANK_STRING_MATCHER)
 
@@ -531,12 +531,12 @@ module Lotus
 
       # Singularize the given string
       #
-      # @param [String] the pliral string
+      # @param string [String] a string to singularize
       #
       # @return [String,NilClass] the singularized string, if present
       #
       # @api private
-      # @since x.x.x
+      # @since 0.4.1
       def self.singularize(string)
         return string if string.nil? || string.match(BLANK_STRING_MATCHER)
 

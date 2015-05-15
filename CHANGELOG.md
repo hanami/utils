@@ -1,6 +1,14 @@
 # Lotus::Utils
 Ruby core extentions and class utilities for Lotus
 
+## v0.4.1 - 2015-05-15
+### Added
+- [Luca Guidi & Alfonso Uceda Pompa] Introduced `Lotus::Utils::Inflector`, `Lotus::Utils::String#pluralize` and `#singularize`
+
+### Fixed
+- [Luca Guidi] Ensure `Lotus::Utils::Attributes#to_h` to safely return nested `::Hash` instances for complex data structures.
+- [Luca Guidi] Let `Lotus::Interactor#error` to return a falsey value for control flow. (eg. `check_permissions or error "You can't access"`)
+
 ## v0.4.0 - 2015-03-23
 ### Added
 - [Luca Guidi] Introduced `Lotus::Utils::Escape`. It implements OWASP/ESAPI suggestions for HTML, HTML attribute and URL escape utilities.
