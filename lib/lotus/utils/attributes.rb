@@ -104,13 +104,11 @@ module Lotus
 
       # Returns a deep duplicated copy of the attributes as a Hash
       #
-      # @return [Lotus::Utils::Hash]
+      # @return [::Hash]
       #
       # @since 0.3.2
-      #
-      # @see Lotus::Utils::Hash
       def to_h
-        Utils::Hash.new.tap do |result|
+        ::Hash[].tap do |result|
           @attributes.each do |k, v|
             result[k] = _read_value(v)
           end
