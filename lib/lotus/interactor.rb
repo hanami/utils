@@ -176,6 +176,8 @@ module Lotus
       #   require 'lotus/interactor'
       #
       #   class Signup
+      #     include Lotus::Interactor
+      #
       #     def initialize(params)
       #       @params = params
       #       @user   = User.new(@params)
@@ -198,6 +200,8 @@ module Lotus
       #   require 'lotus/interactor'
       #
       #   class Signup
+      #     include Lotus::Interactor
+      #
       #     def initialize(params)
       #       @params = params
       #       @user   = User.new(@params)
