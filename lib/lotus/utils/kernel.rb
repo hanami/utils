@@ -140,7 +140,7 @@ module Lotus
           Set.new(::Kernel.Array(arg))
         end
       rescue NoMethodError
-        raise TypeError.new("can't convert into Set")
+        raise TypeError.new("can't convert #{inspect_type_error(arg)}into Set")
       end
 
       # Coerces the argument to be a Hash.
@@ -205,7 +205,7 @@ module Lotus
             super(arg)
           end
         rescue NoMethodError
-          raise TypeError.new "can't convert into Hash"
+          raise TypeError.new "can't convert #{inspect_type_error(arg)}into Hash"
         end
       else
         def self.Hash(arg)
@@ -217,7 +217,7 @@ module Lotus
             super(arg)
           end
         rescue ArgumentError, NoMethodError
-          raise TypeError.new "can't convert into Hash"
+          raise TypeError.new "can't convert #{inspect_type_error(arg)}into Hash"
         end
       end
 
@@ -336,13 +336,13 @@ module Lotus
           when NilClass, ->(a) { a.respond_to?(:to_i) && a.to_s.match(NUMERIC_MATCHER) }
             arg.to_i
           else
-            raise TypeError.new "can't convert into Integer"
+            raise TypeError.new "can't convert #{inspect_type_error(arg)}into Integer"
           end
         rescue NoMethodError
-          raise TypeError.new "can't convert into Integer"
+          raise TypeError.new "can't convert #{inspect_type_error(arg)}into Integer"
         end
       rescue RangeError
-        raise TypeError.new "can't convert into Integer"
+        raise TypeError.new "can't convert #{inspect_type_error(arg)}into Integer"
       end
 
       # Coerces the argument to be a BigDecimal.
@@ -426,10 +426,10 @@ module Lotus
         when ->(a) { a.to_s.match(NUMERIC_MATCHER) }
           BigDecimal.new(arg)
         else
-          raise TypeError.new "can't convert into BigDecimal"
+          raise TypeError.new "can't convert #{inspect_type_error(arg)}into BigDecimal"
         end
       rescue NoMethodError
-        raise TypeError.new "can't convert into BigDecimal"
+        raise TypeError.new "can't convert #{inspect_type_error(arg)}into BigDecimal"
       end
 
       # Coerces the argument to be a Float.
@@ -552,13 +552,13 @@ module Lotus
           when NilClass, ->(a) { a.respond_to?(:to_f) && a.to_s.match(NUMERIC_MATCHER) }
             arg.to_f
           else
-            raise TypeError.new "can't convert into Float"
+            raise TypeError.new "can't convert #{inspect_type_error(arg)}into Float"
           end
         rescue NoMethodError
-          raise TypeError.new "can't convert into Float"
+          raise TypeError.new "can't convert #{inspect_type_error(arg)}into Float"
         end
       rescue RangeError
-        raise TypeError.new "can't convert into Float"
+        raise TypeError.new "can't convert #{inspect_type_error(arg)}into Float"
       end
 
       # Coerces the argument to be a String.
@@ -659,14 +659,14 @@ module Lotus
             super(arg)
           end
         rescue NoMethodError
-          raise TypeError.new "can't convert into String"
+          raise TypeError.new "can't convert #{inspect_type_error(arg)}into String"
         end
       else
         def self.String(arg)
           arg = arg.to_str if arg.respond_to?(:to_str)
           super(arg)
         rescue NoMethodError
-          raise TypeError.new "can't convert into String"
+          raise TypeError.new "can't convert #{inspect_type_error(arg)}into String"
         end
       end
 
@@ -731,7 +731,7 @@ module Lotus
           Date.parse(arg.to_s)
         end
       rescue ArgumentError, NoMethodError
-        raise TypeError.new "can't convert into Date"
+        raise TypeError.new "can't convert #{inspect_type_error(arg)}into Date"
       end
 
       # Coerces the argument to be a DateTime.
@@ -799,7 +799,7 @@ module Lotus
           DateTime.parse(arg.to_s)
         end
       rescue ArgumentError, NoMethodError
-        raise TypeError.new "can't convert into DateTime"
+        raise TypeError.new "can't convert #{inspect_type_error(arg)}into DateTime"
       end
 
       # Coerces the argument to be a Time.
@@ -864,7 +864,7 @@ module Lotus
           Time.parse(arg.to_s)
         end
       rescue ArgumentError, NoMethodError
-        raise TypeError.new "can't convert into Time"
+        raise TypeError.new "can't convert #{inspect_type_error(arg)}into Time"
       end
 
       # Coerces the argument to be a Boolean.
@@ -917,7 +917,7 @@ module Lotus
           !!arg
         end
       rescue NoMethodError
-        raise TypeError.new "can't convert into Boolean"
+        raise TypeError.new "can't convert #{inspect_type_error(arg)}into Boolean"
       end
 
       # Coerces the argument to be a Pathname.
@@ -975,7 +975,7 @@ module Lotus
           super
         end
       rescue NoMethodError
-        raise TypeError.new "can't convert into Pathname"
+        raise TypeError.new "can't convert #{inspect_type_error(arg)}into Pathname"
       end
 
       # Coerces the argument to be a String.
@@ -1021,13 +1021,38 @@ module Lotus
       #   Lotus::Utils::Kernel.Symbol(input) # => TypeError
       def self.Symbol(arg)
         case arg
-        when '' then raise TypeError.new "can't convert into Symbol"
+        when '' then raise TypeError.new "can't convert #{inspect_type_error(arg)}into Symbol"
         when ->(a) { a.respond_to?(:to_sym) } then arg.to_sym
         else
-          raise TypeError.new "can't convert into Symbol"
+          raise TypeError.new "can't convert #{inspect_type_error(arg)}into Symbol"
         end
       rescue NoMethodError
-        raise TypeError.new "can't convert into Symbol"
+        raise TypeError.new "can't convert #{inspect_type_error(arg)}into Symbol"
+      end
+
+      # Returns the most useful type error possible
+      #
+      # If the object does not respond_to?(:inspect), we return the class, else we
+      # return nil. In all cases, this method is tightly bound to callers, as this
+      # method appends the required space to make the error message look good.
+      #
+      # @since x.x.x
+      # @api private
+      def self.inspect_type_error(arg)
+        (arg.respond_to?(:inspect) ? arg.inspect : arg.to_s) << " "
+      rescue NoMethodError => _
+        # missing the #respond_to? method, fall back to returning the class' name
+        begin
+          arg.class.name << " instance "
+        rescue NoMethodError
+          # missing the #class method, can't fall back to anything better than nothing
+          # Callers will have to guess from their code
+          nil
+        end
+      end
+
+      class << self
+        private :inspect_type_error
       end
     end
   end
