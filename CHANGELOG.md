@@ -1,6 +1,10 @@
 # Lotus::Utils
 Ruby core extentions and class utilities for Lotus
 
+## v0.4.3 - 2015-05-22
+### Added
+- [François Beausoleil] Improved `Lotus::Utils::Kernel` messages for `TypeError`.
+
 ## v0.4.2 - 2015-05-15
 ### Fixed
 - [Luca Guidi] Ensure `Lotus::Utils::Attributes#to_h` to return `::Hash`
