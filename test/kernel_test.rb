@@ -630,7 +630,7 @@ describe Lotus::Utils::Kernel do
           begin
             Lotus::Utils::Kernel.Integer(input)
           rescue => e
-            e.message.must_equal "can't convert into Integer"
+            e.message.must_equal "can't convert #{input.inspect} into Integer"
           end
         end
       end
@@ -654,7 +654,7 @@ describe Lotus::Utils::Kernel do
           begin
             Lotus::Utils::Kernel.Integer(input)
           rescue => e
-            e.message.must_equal "can't convert into Integer"
+            e.message.must_equal "can't convert #{input.inspect} into Integer"
           end
         end
       end
@@ -670,7 +670,7 @@ describe Lotus::Utils::Kernel do
           begin
             Lotus::Utils::Kernel.Integer(input)
           rescue => e
-            e.message.must_equal "can't convert into Integer"
+            e.message.must_equal "can't convert #{input.inspect} into Integer"
           end
         end
       end
@@ -686,7 +686,7 @@ describe Lotus::Utils::Kernel do
           begin
             Lotus::Utils::Kernel.Integer(input)
           rescue => e
-            e.message.must_equal "can't convert into Integer"
+            e.message.must_equal "can't convert #{input.inspect} into Integer"
           end
         end
       end
@@ -696,7 +696,7 @@ describe Lotus::Utils::Kernel do
 
         it 'raises error' do
           exception = -> { Lotus::Utils::Kernel.Integer(input) }.must_raise(TypeError)
-          exception.message.must_equal "can't convert into Integer"
+          exception.message.must_equal "can't convert #{input.inspect} into Integer"
         end
       end
 
@@ -705,7 +705,7 @@ describe Lotus::Utils::Kernel do
 
         it 'raises error' do
           exception = -> { Lotus::Utils::Kernel.Integer(input) }.must_raise(TypeError)
-          exception.message.must_equal "can't convert into Integer"
+          exception.message.must_equal "can't convert #{input.inspect} into Integer"
         end
       end
     end
@@ -920,7 +920,7 @@ describe Lotus::Utils::Kernel do
 
         it 'raises error' do
           exception = -> { Lotus::Utils::Kernel.BigDecimal(input) }.must_raise(TypeError)
-          exception.message.must_equal "can't convert into BigDecimal"
+          exception.message.must_equal "can't convert #{input.inspect} into BigDecimal"
         end
       end
 
@@ -929,7 +929,7 @@ describe Lotus::Utils::Kernel do
 
         it 'raises error' do
           exception = -> { Lotus::Utils::Kernel.BigDecimal(input) }.must_raise(TypeError)
-          exception.message.must_equal "can't convert into BigDecimal"
+          exception.message.must_equal "can't convert #{input.inspect} into BigDecimal"
         end
       end
 
@@ -1155,7 +1155,7 @@ describe Lotus::Utils::Kernel do
 
         it 'raises error' do
           exception = -> { Lotus::Utils::Kernel.Float(input) }.must_raise(TypeError)
-          exception.message.must_equal "can't convert into Float"
+          exception.message.must_equal "can't convert #{input.inspect} into Float"
         end
       end
 
@@ -1164,7 +1164,7 @@ describe Lotus::Utils::Kernel do
 
         it 'raises error' do
           exception = -> { Lotus::Utils::Kernel.Float(input) }.must_raise(TypeError)
-          exception.message.must_equal "can't convert into Float"
+          exception.message.must_equal "can't convert #{input.inspect} into Float"
         end
       end
 
@@ -1203,7 +1203,7 @@ describe Lotus::Utils::Kernel do
           begin
             Lotus::Utils::Kernel.Float(input)
           rescue => e
-            e.message.must_equal "can't convert into Float"
+            e.message.must_equal "can't convert #{input.inspect} into Float"
           end
         end
       end
@@ -1219,7 +1219,7 @@ describe Lotus::Utils::Kernel do
           begin
             Lotus::Utils::Kernel.Float(input)
           rescue => e
-            e.message.must_equal "can't convert into Float"
+            e.message.must_equal "can't convert #{input.inspect} into Float"
           end
         end
       end
@@ -1729,7 +1729,7 @@ describe Lotus::Utils::Kernel do
           begin
             Lotus::Utils::Kernel.Date(input)
           rescue => e
-            e.message.must_equal "can't convert into Date"
+            e.message.must_equal "can't convert #{input.inspect} into Date"
           end
         end
       end
@@ -1745,7 +1745,7 @@ describe Lotus::Utils::Kernel do
           begin
             Lotus::Utils::Kernel.Date(input)
           rescue => e
-            e.message.must_equal "can't convert into Date"
+            e.message.must_equal "can't convert #{input.inspect} into Date"
           end
         end
       end
@@ -1761,7 +1761,7 @@ describe Lotus::Utils::Kernel do
           begin
             Lotus::Utils::Kernel.Date(input)
           rescue => e
-            e.message.must_equal "can't convert into Date"
+            e.message.must_equal "can't convert #{input.inspect} into Date"
           end
         end
       end
@@ -1777,7 +1777,7 @@ describe Lotus::Utils::Kernel do
           begin
             Lotus::Utils::Kernel.Date(input)
           rescue => e
-            e.message.must_equal "can't convert into Date"
+            e.message.must_equal "can't convert #{input.inspect} into Date"
           end
         end
       end
@@ -1793,7 +1793,7 @@ describe Lotus::Utils::Kernel do
           begin
             Lotus::Utils::Kernel.Date(input)
           rescue => e
-            e.message.must_equal "can't convert into Date"
+            e.message.must_equal "can't convert #{input.inspect} into Date"
           end
         end
       end
@@ -1809,7 +1809,7 @@ describe Lotus::Utils::Kernel do
           begin
             Lotus::Utils::Kernel.Date(input)
           rescue => e
-            e.message.must_equal "can't convert into Date"
+            e.message.must_equal "can't convert #{input.inspect} into Date"
           end
         end
       end
@@ -1825,7 +1825,7 @@ describe Lotus::Utils::Kernel do
           begin
             Lotus::Utils::Kernel.Date(input)
           rescue => e
-            e.message.must_equal "can't convert into Date"
+            e.message.must_equal "can't convert #{input.inspect} into Date"
           end
         end
       end
@@ -1974,7 +1974,7 @@ describe Lotus::Utils::Kernel do
           begin
             Lotus::Utils::Kernel.DateTime(input)
           rescue => e
-            e.message.must_equal "can't convert into DateTime"
+            e.message.must_equal "can't convert #{input.inspect} into DateTime"
           end
         end
       end
@@ -1990,7 +1990,7 @@ describe Lotus::Utils::Kernel do
           begin
             Lotus::Utils::Kernel.DateTime(input)
           rescue => e
-            e.message.must_equal "can't convert into DateTime"
+            e.message.must_equal "can't convert #{input.inspect} into DateTime"
           end
         end
       end
@@ -2006,7 +2006,7 @@ describe Lotus::Utils::Kernel do
           begin
             Lotus::Utils::Kernel.DateTime(input)
           rescue => e
-            e.message.must_equal "can't convert into DateTime"
+            e.message.must_equal "can't convert #{input.inspect} into DateTime"
           end
         end
       end
@@ -2022,7 +2022,7 @@ describe Lotus::Utils::Kernel do
           begin
             Lotus::Utils::Kernel.DateTime(input)
           rescue => e
-            e.message.must_equal "can't convert into DateTime"
+            e.message.must_equal "can't convert #{input.inspect} into DateTime"
           end
         end
       end
@@ -2171,7 +2171,7 @@ describe Lotus::Utils::Kernel do
           begin
             Lotus::Utils::Kernel.Time(input)
           rescue => e
-            e.message.must_equal "can't convert into Time"
+            e.message.must_equal "can't convert #{input.inspect} into Time"
           end
         end
       end
@@ -2187,7 +2187,7 @@ describe Lotus::Utils::Kernel do
           begin
             Lotus::Utils::Kernel.Time(input)
           rescue => e
-            e.message.must_equal "can't convert into Time"
+            e.message.must_equal "can't convert #{input.inspect} into Time"
           end
         end
       end
@@ -2203,7 +2203,7 @@ describe Lotus::Utils::Kernel do
           begin
             Lotus::Utils::Kernel.Time(input)
           rescue => e
-            e.message.must_equal "can't convert into Time"
+            e.message.must_equal "can't convert #{input.inspect} into Time"
           end
         end
       end
@@ -2219,7 +2219,7 @@ describe Lotus::Utils::Kernel do
           begin
             Lotus::Utils::Kernel.Time(input)
           rescue => e
-            e.message.must_equal "can't convert into Time"
+            e.message.must_equal "can't convert #{input.inspect} into Time"
           end
         end
       end
