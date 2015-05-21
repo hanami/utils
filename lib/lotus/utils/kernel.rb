@@ -1030,31 +1030,28 @@ module Lotus
         raise TypeError.new "can't convert #{inspect_type_error(arg)}into Symbol"
       end
 
-      class << self
-        # Returns the most useful type error possible
-        #
-        # If the object does not respond_to?(:inspect), we return the class, else we
-        # return nil. In all cases, this method is tightly bound to callers, as this
-        # method appends the required space to make the error message look good.
-        #
-        # Used internally by Lotus::Utils::Kernel. This method is not part of the public
-        # API.
-        #
-        # @since x.x.x
-        #
-        # @api private
-        def inspect_type_error(arg)
-          (arg.respond_to?(:inspect) ? arg.inspect : arg.to_s) << " "
-        rescue NoMethodError => _
-          # missing the #respond_to? method, fall back to returning the class' name
-          begin
-            arg.class.name << " instance "
-          rescue NoMethodError => _
-            # missing the #class method, can't fall back to anything better than nothing
-            # Callers will have to guess from their code
-            nil
-          end
+      # Returns the most useful type error possible
+      #
+      # If the object does not respond_to?(:inspect), we return the class, else we
+      # return nil. In all cases, this method is tightly bound to callers, as this
+      # method appends the required space to make the error message look good.
+      #
+      # @since x.x.x
+      # @api private
+      def self.inspect_type_error(arg)
+        (arg.respond_to?(:inspect) ? arg.inspect : arg.to_s) << " "
+      rescue NoMethodError => _
+        # missing the #respond_to? method, fall back to returning the class' name
+        begin
+          arg.class.name << " instance "
+        rescue NoMethodError
+          # missing the #class method, can't fall back to anything better than nothing
+          # Callers will have to guess from their code
+          nil
         end
+      end
+
+      class << self
         private :inspect_type_error
       end
     end
