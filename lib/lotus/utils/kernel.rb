@@ -1036,7 +1036,7 @@ module Lotus
       # return nil. In all cases, this method is tightly bound to callers, as this
       # method appends the required space to make the error message look good.
       #
-      # @since x.x.x
+      # @since 0.4.3
       # @api private
       def self.inspect_type_error(arg)
         (arg.respond_to?(:inspect) ? arg.inspect : arg.to_s) << " "
