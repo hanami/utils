@@ -1,4 +1,5 @@
 require 'lotus/utils/basic_object'
+require 'lotus/utils/class_attribute'
 require 'lotus/utils/hash'
 
 module Lotus
@@ -122,6 +123,7 @@ module Lotus
 
       base.class_eval do
         prepend Interface
+        extend  ClassMethods
       end
     end
 
@@ -417,19 +419,40 @@ module Lotus
     # @since 0.3.5
     # @api private
     def _prepare!
-      @__result.prepare!(_instance_variables)
+      @__result.prepare!(_exposures)
     end
 
-    # @since 0.3.5
+    # @since x.x.x
     # @api private
-    def _instance_variables
+    def _exposures
       Hash[].tap do |result|
-        instance_variables.each do |iv|
-          name = iv.to_s.sub(/\A@/, '')
-          next if name.match(/\A__/)
-
-          result[name.to_sym] = instance_variable_get(iv)
+        self.class.exposures.each do |name, ivar|
+          result[name] = instance_variable_get(ivar)
         end
+      end
+    end
+  end
+
+  # @since x.x.x
+  # @api private
+  module ClassMethods
+    # @since x.x.x
+    # @api private
+    def self.extended(interactor)
+      interactor.class_eval do
+        include Utils::ClassAttribute
+
+        class_attribute :exposures
+        self.exposures = Utils::Hash.new
+
+        expose :_errors
+      end
+    end
+
+    # @since x.x.x
+    def expose(*attributes)
+      attributes.each do |name|
+        exposures[name] = "@#{ name }"
       end
     end
   end

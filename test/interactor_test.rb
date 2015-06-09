@@ -32,6 +32,7 @@ end
 
 class Signup
   include Lotus::Interactor
+  expose :user, :params
 
   def initialize(params)
     @params  = params
@@ -53,6 +54,7 @@ end
 
 class ErrorInteractor
   include Lotus::Interactor
+  expose :operations
 
   def initialize
     @operations = []
@@ -82,6 +84,7 @@ end
 
 class ErrorBangInteractor
   include Lotus::Interactor
+  expose :operations
 
   def initialize
     @operations = []
@@ -124,6 +127,7 @@ end
 
 class CreateUser
   include Lotus::Interactor
+  expose :user
 
   def initialize(params)
     @user = User.new(params)
