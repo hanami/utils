@@ -21,6 +21,10 @@ class User
     @attributes.fetch(:name, nil)
   end
 
+  def name=(value)
+    @attributes[:name] = value
+  end
+
   def persist!
     raise if name.nil?
   end
@@ -118,6 +122,31 @@ class PublishVideo
   end
 end
 
+class CreateUser
+  include Lotus::Interactor
+
+  def initialize(params)
+    @user = User.new(params)
+  end
+
+  def call
+    persist
+  end
+
+  private
+
+  def persist
+    @user.persist!
+  end
+end
+
+class UpdateUser < CreateUser
+  def initialize(user, params)
+    super(params)
+    @user.name = params.fetch(:name)
+  end
+end
+
 describe Lotus::Interactor do
   describe '#initialize' do
     it "works when it isn't overridden" do
@@ -165,6 +194,23 @@ describe Lotus::Interactor do
 
     it "raises error when #call isn't implemented" do
       -> { InteractorWithoutCall.new.call }.must_raise NoMethodError
+    end
+
+    describe "inheritance" do
+      it "is successful for super class" do
+        result = CreateUser.new(name: 'L').call
+
+        assert result.success?, "Expected `result' to be successful"
+        result.user.name.must_equal 'L'
+      end
+
+      it "is successful for sub class" do
+        user   = User.new(name: 'L')
+        result = UpdateUser.new(user, name: 'MG').call
+
+        assert result.success?, "Expected `result' to be successful"
+        result.user.name.must_equal 'MG'
+      end
     end
   end
 
