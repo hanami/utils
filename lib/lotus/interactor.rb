@@ -1,4 +1,5 @@
 require 'lotus/utils/basic_object'
+require 'lotus/utils/class_attribute'
 require 'lotus/utils/hash'
 
 module Lotus
@@ -28,6 +29,7 @@ module Lotus
       # @api private
       def initialize(payload = {})
         @payload = _payload(payload)
+        @errors  = []
         @success = true
       end
 
@@ -58,7 +60,15 @@ module Lotus
       # @see Lotus::Interactor#error
       # @see Lotus::Interactor#error!
       def errors
-        @payload.fetch(:_errors) { [] }
+        @errors.dup
+      end
+
+      # @since x.x.x
+      # @api private
+      def add_error(*errors)
+        @errors << errors
+        @errors.flatten!
+        nil
       end
 
       # Returns the first errors collected during an operation
@@ -122,6 +132,7 @@ module Lotus
 
       base.class_eval do
         prepend Interface
+        extend  ClassMethods
       end
     end
 
@@ -146,8 +157,8 @@ module Lotus
       #   class UpdateProfile
       #     include Lotus::Interactor
       #
-      #     def initialize(person, params)
-      #       @person = person
+      #     def initialize(user, params)
+      #       @user   = user
       #       @params = params
       #     end
       #
@@ -159,7 +170,6 @@ module Lotus
         super
       ensure
         @__result = ::Lotus::Interactor::Result.new
-        @_errors  = []
       end
 
       # Triggers the operation and return a result.
@@ -172,11 +182,12 @@ module Lotus
       #
       # @raise [NoMethodError] if this isn't implemented by the including class.
       #
-      # @example Instance variables in result payload
+      # @example Expose instance variables in result payload
       #   require 'lotus/interactor'
       #
       #   class Signup
       #     include Lotus::Interactor
+      #     expose :user, :params
       #
       #     def initialize(params)
       #       @params = params
@@ -194,13 +205,14 @@ module Lotus
       #
       #   result.user   # => #<User:0x007fa311105778 @id=1 @name="Luca">
       #   result.params # => { :name=>"Luca" }
-      #   result.foo    # => "Bar"
+      #   result.foo    # => raises NoMethodError
       #
       # @example Failed precondition
       #   require 'lotus/interactor'
       #
       #   class Signup
       #     include Lotus::Interactor
+      #     expose :user
       #
       #     def initialize(params)
       #       @params = params
@@ -308,6 +320,7 @@ module Lotus
     #
     #   class CreateRecord
     #     include Lotus::Interactor
+    #     expose :logger
     #
     #     def initialize
     #       @logger = []
@@ -341,7 +354,7 @@ module Lotus
     #   result.errors # => ["Prepare data error", "Persist error"]
     #   result.logger # => [:prepare_data!, :persist!, :sync!]
     def error(message)
-      @_errors << message
+      @__result.add_error message
       false
     end
 
@@ -360,6 +373,7 @@ module Lotus
     #
     #   class CreateRecord
     #     include Lotus::Interactor
+    #     expose :logger
     #
     #     def initialize
     #       @logger = []
@@ -417,19 +431,66 @@ module Lotus
     # @since 0.3.5
     # @api private
     def _prepare!
-      @__result.prepare!(_instance_variables)
+      @__result.prepare!(_exposures)
     end
 
-    # @since 0.3.5
+    # @since x.x.x
     # @api private
-    def _instance_variables
+    def _exposures
       Hash[].tap do |result|
-        instance_variables.each do |iv|
-          name = iv.to_s.sub(/\A@/, '')
-          next if name.match(/\A__/)
-
-          result[name.to_sym] = instance_variable_get(iv)
+        self.class.exposures.each do |name, ivar|
+          result[name] = instance_variable_get(ivar)
         end
+      end
+    end
+  end
+
+  # @since x.x.x
+  # @api private
+  module ClassMethods
+    # @since x.x.x
+    # @api private
+    def self.extended(interactor)
+      interactor.class_eval do
+        include Utils::ClassAttribute
+
+        class_attribute :exposures
+        self.exposures = Utils::Hash.new
+      end
+    end
+
+    # Expose local instance variables into the returing value of <tt>#call</tt>
+    #
+    # @param instance_variable_names [Symbol,Array<Symbol>] one or more instance
+    #   variable names
+    #
+    # @since x.x.x
+    #
+    # @see Lotus::Interactor::Result
+    #
+    # @example Expose instance variable
+    #
+    #   class Signup
+    #     include Lotus::Interactor
+    #     expose :user
+    #
+    #     def initialize(params)
+    #       @params = params
+    #       @user   = User.new(@params[:user])
+    #     end
+    #
+    #     def call
+    #       # ...
+    #     end
+    #   end
+    #
+    #   result = Signup.new(user: { name: "Luca" }).call
+    #
+    #   result.user   # => #<User:0x007fa85c58ccd8 @name="Luca">
+    #   result.params # => NoMethodError
+    def expose(*instance_variable_names)
+      instance_variable_names.each do |name|
+        exposures[name] = "@#{ name }"
       end
     end
   end

@@ -21,6 +21,10 @@ class User
     @attributes.fetch(:name, nil)
   end
 
+  def name=(value)
+    @attributes[:name] = value
+  end
+
   def persist!
     raise if name.nil?
   end
@@ -28,6 +32,7 @@ end
 
 class Signup
   include Lotus::Interactor
+  expose :user, :params
 
   def initialize(params)
     @params  = params
@@ -49,6 +54,7 @@ end
 
 class ErrorInteractor
   include Lotus::Interactor
+  expose :operations
 
   def initialize
     @operations = []
@@ -78,6 +84,7 @@ end
 
 class ErrorBangInteractor
   include Lotus::Interactor
+  expose :operations
 
   def initialize
     @operations = []
@@ -115,6 +122,32 @@ class PublishVideo
     # fake failed ownership check
     1 == 0 or
       error "You're not owner of this video"
+  end
+end
+
+class CreateUser
+  include Lotus::Interactor
+  expose :user
+
+  def initialize(params)
+    @user = User.new(params)
+  end
+
+  def call
+    persist
+  end
+
+  private
+
+  def persist
+    @user.persist!
+  end
+end
+
+class UpdateUser < CreateUser
+  def initialize(user, params)
+    super(params)
+    @user.name = params.fetch(:name)
   end
 end
 
@@ -165,6 +198,23 @@ describe Lotus::Interactor do
 
     it "raises error when #call isn't implemented" do
       -> { InteractorWithoutCall.new.call }.must_raise NoMethodError
+    end
+
+    describe "inheritance" do
+      it "is successful for super class" do
+        result = CreateUser.new(name: 'L').call
+
+        assert result.success?, "Expected `result' to be successful"
+        result.user.name.must_equal 'L'
+      end
+
+      it "is successful for sub class" do
+        user   = User.new(name: 'L')
+        result = UpdateUser.new(user, name: 'MG').call
+
+        assert result.success?, "Expected `result' to be successful"
+        result.user.name.must_equal 'MG'
+      end
     end
   end
 
@@ -235,7 +285,7 @@ describe Lotus::Interactor::Result do
     describe "when it has errors" do
       it "isn't successful" do
         result = Lotus::Interactor::Result.new
-        result.prepare!(_errors: ["There was a problem"])
+        result.add_error "There was a problem"
         assert !result.success?, "Expected `result' to NOT be successful"
       end
     end
@@ -274,7 +324,16 @@ describe Lotus::Interactor::Result do
 
     it "returns all the errors" do
       result = Lotus::Interactor::Result.new
-      result.prepare!(_errors: ['Error 1', 'Error 2'])
+      result.add_error ['Error 1', 'Error 2']
+
+      result.errors.must_equal ['Error 1', 'Error 2']
+    end
+
+    it "prevents information escape" do
+      result = Lotus::Interactor::Result.new
+      result.add_error ['Error 1', 'Error 2']
+
+      result.errors.clear
 
       result.errors.must_equal ['Error 1', 'Error 2']
     end
@@ -288,7 +347,7 @@ describe Lotus::Interactor::Result do
 
     it "returns only the first error" do
       result = Lotus::Interactor::Result.new
-      result.prepare!(_errors: ['Error 1', 'Error 2'])
+      result.add_error ['Error 1', 'Error 2']
 
       result.error.must_equal 'Error 1'
     end
