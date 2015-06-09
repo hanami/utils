@@ -285,7 +285,7 @@ describe Lotus::Interactor::Result do
     describe "when it has errors" do
       it "isn't successful" do
         result = Lotus::Interactor::Result.new
-        result.prepare!(_errors: ["There was a problem"])
+        result.add_error "There was a problem"
         assert !result.success?, "Expected `result' to NOT be successful"
       end
     end
@@ -324,7 +324,16 @@ describe Lotus::Interactor::Result do
 
     it "returns all the errors" do
       result = Lotus::Interactor::Result.new
-      result.prepare!(_errors: ['Error 1', 'Error 2'])
+      result.add_error ['Error 1', 'Error 2']
+
+      result.errors.must_equal ['Error 1', 'Error 2']
+    end
+
+    it "prevents information escape" do
+      result = Lotus::Interactor::Result.new
+      result.add_error ['Error 1', 'Error 2']
+
+      result.errors.clear
 
       result.errors.must_equal ['Error 1', 'Error 2']
     end
@@ -338,7 +347,7 @@ describe Lotus::Interactor::Result do
 
     it "returns only the first error" do
       result = Lotus::Interactor::Result.new
-      result.prepare!(_errors: ['Error 1', 'Error 2'])
+      result.add_error ['Error 1', 'Error 2']
 
       result.error.must_equal 'Error 1'
     end

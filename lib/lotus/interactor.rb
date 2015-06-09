@@ -29,6 +29,7 @@ module Lotus
       # @api private
       def initialize(payload = {})
         @payload = _payload(payload)
+        @errors  = []
         @success = true
       end
 
@@ -59,7 +60,14 @@ module Lotus
       # @see Lotus::Interactor#error
       # @see Lotus::Interactor#error!
       def errors
-        @payload.fetch(:_errors) { [] }
+        @errors.dup
+      end
+
+      # @since x.x.x
+      # @api private
+      def add_error(*errors)
+        @errors << errors
+        @errors.flatten!
       end
 
       # Returns the first errors collected during an operation
@@ -161,7 +169,6 @@ module Lotus
         super
       ensure
         @__result = ::Lotus::Interactor::Result.new
-        @_errors  = []
       end
 
       # Triggers the operation and return a result.
@@ -343,7 +350,7 @@ module Lotus
     #   result.errors # => ["Prepare data error", "Persist error"]
     #   result.logger # => [:prepare_data!, :persist!, :sync!]
     def error(message)
-      @_errors << message
+      @__result.add_error << message
       false
     end
 
@@ -444,8 +451,6 @@ module Lotus
 
         class_attribute :exposures
         self.exposures = Utils::Hash.new
-
-        expose :_errors
       end
     end
 
