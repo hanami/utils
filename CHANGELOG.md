@@ -1,6 +1,13 @@
 # Lotus::Utils
 Ruby core extentions and class utilities for Lotus
 
+## v0.5.0 - 2015-06-23
+### Added
+- [Luca Guidi] Extracted `Lotus::Logger` from `lotusrb`
+
+### Changed
+- [Luca Guidi] `Lotus::Interactor::Result` contains only objects explicitly exposed via `Lotus::Interactor.expose`.
+
 ## v0.4.3 - 2015-05-22
 ### Added
 - [François Beausoleil] Improved `Lotus::Utils::Kernel` messages for `TypeError`.

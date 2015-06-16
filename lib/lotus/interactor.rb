@@ -63,7 +63,7 @@ module Lotus
         @errors.dup
       end
 
-      # @since x.x.x
+      # @since 0.5.0
       # @api private
       def add_error(*errors)
         @errors << errors
@@ -434,7 +434,7 @@ module Lotus
       @__result.prepare!(_exposures)
     end
 
-    # @since x.x.x
+    # @since 0.5.0
     # @api private
     def _exposures
       Hash[].tap do |result|
@@ -445,10 +445,10 @@ module Lotus
     end
   end
 
-  # @since x.x.x
+  # @since 0.5.0
   # @api private
   module ClassMethods
-    # @since x.x.x
+    # @since 0.5.0
     # @api private
     def self.extended(interactor)
       interactor.class_eval do
@@ -464,7 +464,7 @@ module Lotus
     # @param instance_variable_names [Symbol,Array<Symbol>] one or more instance
     #   variable names
     #
-    # @since x.x.x
+    # @since 0.5.0
     #
     # @see Lotus::Interactor::Result
     #
