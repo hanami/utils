@@ -82,7 +82,7 @@ module Lotus
         prefix = @string.gsub(@separator, separator)
 
         self.class.new(
-          [prefix, strings].join(separator).chomp("/"),
+          [prefix, strings].join(separator).chomp(separator),
           separator
         ).relative!
       end
