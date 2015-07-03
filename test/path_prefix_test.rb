@@ -29,6 +29,11 @@ describe Lotus::Utils::PathPrefix do
       prefix.join('/cherries').must_equal '/fruits/cherries'
     end
 
+    it 'joins a string that is the same as the prefix' do
+      prefix = Lotus::Utils::PathPrefix.new('fruits')
+      prefix.join('fruits').must_equal '/fruits/fruits'
+    end
+
     it 'joins a string when the root is blank' do
       prefix = Lotus::Utils::PathPrefix.new
       prefix.join('tea').must_equal '/tea'
