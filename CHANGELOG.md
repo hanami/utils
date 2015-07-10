@@ -1,6 +1,10 @@
 # Lotus::Utils
 Ruby core extentions and class utilities for Lotus
 
+## v0.5.1 - 2015-07-10
+### Fixed
+- [Thiago Felippe] Ensure `Lotus::Utils::PathPrefix#join` won't remote duplicate entries (eg `/admin/dashboard/admin`)
+
 ## v0.5.0 - 2015-06-23
 ### Added
 - [Luca Guidi] Extracted `Lotus::Logger` from `lotusrb`
