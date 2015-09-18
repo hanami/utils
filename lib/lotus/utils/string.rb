@@ -50,7 +50,7 @@ module Lotus
 
       # Separator for #capitalize
       #
-      # @since x.x.x
+      # @since 0.5.2
       # @api private
       CAPITALIZE_SEPARATOR = ' '.freeze
 
@@ -96,7 +96,7 @@ module Lotus
       #
       # @return [Lotus::Utils::String] the transformed string
       #
-      # @since x.x.x
+      # @since 0.5.2
       #
       # @example
       #   require 'lotus/utils/string'

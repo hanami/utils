@@ -2,6 +2,6 @@ require 'test_helper'
 
 describe Lotus::Utils::VERSION do
   it 'exposes version' do
-    Lotus::Utils::VERSION.must_equal '0.5.1'
+    Lotus::Utils::VERSION.must_equal '0.5.2'
   end
 end
