@@ -25,3 +25,4 @@ matrix:
   allow_failures:
     - rvm: ruby-head
     - rvm: jruby-head
+    - rvm: jruby-9000 # See https://github.com/department-of-veterans-affairs/connect_vbms/issues/15 and https://github.com/rvm/rvm/issues/3475
