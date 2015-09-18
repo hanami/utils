@@ -8,7 +8,7 @@ describe Lotus::Utils::String do
       Lotus::Utils::String.new('lotus').titleize.must_be_kind_of(Lotus::Utils::String)
     end
 
-    it 'keep self untouched' do
+    it "doesn't mutate self" do
       string = Lotus::Utils::String.new('lotus')
       string.titleize
       string.must_equal 'lotus'
@@ -25,6 +25,40 @@ describe Lotus::Utils::String do
       Lotus::Utils::String.new("lotus` utils").titleize.must_equal "Lotus` Utils"
       # Ruby's upcase works only with ASCII chars.
       # Lotus::Utils::String.new("è vero?").titleize.must_equal "È Vero?"
+    end
+  end
+
+  describe '#capitalize' do
+    # it 'returns an instance of Lotus::Utils::String' do
+    #   Lotus::Utils::String.new('lotus').capitalize.must_be_kind_of(Lotus::Utils::String)
+    # end
+
+    # it "doesn't mutate self" do
+    #   string = Lotus::Utils::String.new('lotus')
+    #   string.capitalize
+    #   string.must_equal 'lotus'
+    # end
+
+    it 'returns an capitalized string' do
+      Lotus::Utils::String.new('lotus').capitalize.must_equal 'Lotus'
+      Lotus::Utils::String.new('LotusUtils').capitalize.must_equal  'Lotus utils'
+      Lotus::Utils::String.new('lotus utils').capitalize.must_equal 'Lotus utils'
+      Lotus::Utils::String.new('lotus_utils').capitalize.must_equal 'Lotus utils'
+      Lotus::Utils::String.new('lotus-utils').capitalize.must_equal 'Lotus utils'
+      Lotus::Utils::String.new("lotus' utils").capitalize.must_equal "Lotus' utils"
+      Lotus::Utils::String.new("lotus’ utils").capitalize.must_equal "Lotus’ utils"
+      Lotus::Utils::String.new("lotus` utils").capitalize.must_equal "Lotus` utils"
+      # Ruby's upcase works only with ASCII chars.
+      # Lotus::Utils::String.new("è vero?").capitalize.must_equal "È vero?"
+      Lotus::Utils::String.new('OneTwoThree').capitalize.must_equal   'One two three'
+      Lotus::Utils::String.new('one Two three').capitalize.must_equal 'One two three'
+      Lotus::Utils::String.new('one_two_three').capitalize.must_equal 'One two three'
+      Lotus::Utils::String.new('one-two-three').capitalize.must_equal 'One two three'
+
+      Lotus::Utils::String.new(:LotusUtils).capitalize.must_equal    'Lotus utils'
+      Lotus::Utils::String.new(:'lotus utils').capitalize.must_equal 'Lotus utils'
+      Lotus::Utils::String.new(:lotus_utils).capitalize.must_equal   'Lotus utils'
+      Lotus::Utils::String.new(:'lotus-utils').capitalize.must_equal 'Lotus utils'
     end
   end
 
@@ -54,7 +88,7 @@ describe Lotus::Utils::String do
       Lotus::Utils::String.new('Lotus').underscore.must_be_kind_of(Lotus::Utils::String)
     end
 
-    it 'keep self untouched' do
+    it "doesn't mutate self" do
       string = Lotus::Utils::String.new('Lotus')
       string.underscore
       string.must_equal 'Lotus'
@@ -106,7 +140,7 @@ describe Lotus::Utils::String do
       Lotus::Utils::String.new('Lotus').dasherize.must_be_kind_of(Lotus::Utils::String)
     end
 
-    it 'keep self untouched' do
+    it "doesn't mutate self" do
       string = Lotus::Utils::String.new('Lotus')
       string.dasherize
       string.must_equal 'Lotus'

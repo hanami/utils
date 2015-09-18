@@ -1,6 +1,11 @@
 # Lotus::Utils
 Ruby core extentions and class utilities for Lotus
 
+## v0.5.2 - 2015-09-23
+### Added
+- [Luca Guidi] Added `Lotus::Utils::String#capitalize`
+- [Trung Lê] Official support for JRuby 9k+
+
 ## v0.5.1 - 2015-07-10
 ### Fixed
 - [Thiago Felippe] Ensure `Lotus::Utils::PathPrefix#join` won't remote duplicate entries (eg `/admin/dashboard/admin`)
