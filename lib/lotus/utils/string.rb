@@ -48,6 +48,12 @@ module Lotus
       # @api private
       TITLEIZE_SEPARATOR = ' '.freeze
 
+      # Separator for #capitalize
+      #
+      # @since x.x.x
+      # @api private
+      CAPITALIZE_SEPARATOR = ' '.freeze
+
       # Separator for #dasherize
       #
       # @since 0.4.0
@@ -84,6 +90,37 @@ module Lotus
       #   string.titleize # => "Lotus Utils"
       def titleize
         self.class.new underscore.split(CLASSIFY_SEPARATOR).map(&:capitalize).join(TITLEIZE_SEPARATOR)
+      end
+
+      # Return a capitalized version of the string
+      #
+      # @return [Lotus::Utils::String] the transformed string
+      #
+      # @since x.x.x
+      #
+      # @example
+      #   require 'lotus/utils/string'
+      #
+      #   string = Lotus::Utils::String.new 'lotus'
+      #   string.capitalize # => "Lotus"
+      #
+      #   string = Lotus::Utils::String.new 'lotus utils'
+      #   string.capitalize # => "Lotus utils"
+      #
+      #   string = Lotus::Utils::String.new 'Lotus Utils'
+      #   string.capitalize # => "Lotus utils"
+      #
+      #   string = Lotus::Utils::String.new 'lotus_utils'
+      #   string.capitalize # => "Lotus utils"
+      #
+      #   string = Lotus::Utils::String.new 'lotus-utils'
+      #   string.capitalize # => "Lotus utils"
+      def capitalize
+        head, *tail = underscore.split(CLASSIFY_SEPARATOR)
+
+        self.class.new(
+          tail.unshift(head.capitalize).join(CAPITALIZE_SEPARATOR)
+        )
       end
 
       # Return a CamelCase version of the string
