@@ -1,7 +1,7 @@
 # Lotus::Utils
 Ruby core extentions and class utilities for Lotus
 
-## v0.5.2 - 2015-09-23
+## v0.5.2 - 2015-09-30
 ### Added
 - [Luca Guidi] Added `Lotus::Utils::String#capitalize`
 - [Trung Lê] Official support for JRuby 9k+
