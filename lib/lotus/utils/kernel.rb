@@ -978,7 +978,7 @@ module Lotus
         raise TypeError.new "can't convert #{inspect_type_error(arg)}into Pathname"
       end
 
-      # Coerces the argument to be a String.
+      # Coerces the argument to be a Symbol.
       #
       # @param arg [#to_sym] the argument
       #
