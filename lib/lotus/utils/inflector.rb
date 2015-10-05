@@ -444,6 +444,7 @@ module Lotus
         'canvases'     => 'canvas',
         'ibises'       => 'ibis',
         'trellises'    => 'trellis',
+        'horses'       => 'horse',
         # fallback
         'hives' => 'hive',
         # ices => ex
