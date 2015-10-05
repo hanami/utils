@@ -528,9 +528,10 @@ module Lotus
       # @since 0.4.0
       # @api private
       def self.encode(input)
-        input.to_s.encode(Encoding::UTF_8)
+        return '' if input.nil?
+        input.encode(Encoding::UTF_8)
       rescue Encoding::UndefinedConversionError
-        input.to_s.force_encoding(Encoding::UTF_8)
+        input.dup.force_encoding(Encoding::UTF_8)
       end
 
       # Encode the given UTF-8 char.

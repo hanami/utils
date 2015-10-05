@@ -105,8 +105,14 @@ describe Lotus::Utils::Escape do
     it "escapes 'тест'" do
       skip "There is no ASCII-8BIT encoding" unless Encoding.name_list.include?('ASCII-8BIT')
 
-      result = mod.html('тест'.force_encoding('ASCII-8BIT'))
+      string   = 'тест'.force_encoding('ASCII-8BIT')
+      encoding = string.encoding
+
+      result = mod.html(string)
       result.must_equal 'тест'
+      result.encoding.must_equal Encoding::UTF_8
+
+      string.encoding.must_equal encoding
     end
   end
 
