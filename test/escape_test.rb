@@ -101,10 +101,10 @@ describe Lotus::Utils::Escape do
       end
     end
 
-    # 'тест' means test in russian
-    it "escapes 'тест'" do
+    it "escapes word with different encoding" do
       skip "There is no ASCII-8BIT encoding" unless Encoding.name_list.include?('ASCII-8BIT')
 
+      # 'тест' means test in russian
       string   = 'тест'.force_encoding('ASCII-8BIT')
       encoding = string.encoding
 
