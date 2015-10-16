@@ -266,7 +266,7 @@ module Lotus
 
       # Block for custom inflection rules.
       #
-      # @param [blk] custom inflections
+      # @param [Proc] blk custom inflections
       #
       # @since x.x.x
       #
@@ -308,7 +308,7 @@ module Lotus
 
       # Add an uncountable word
       #
-      # @param [String] word
+      # @param [Array<String>] words
       #
       # @since x.x.x
       #
