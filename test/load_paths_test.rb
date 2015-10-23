@@ -98,7 +98,7 @@ describe Lotus::Utils::LoadPaths do
       paths = Lotus::Utils::LoadPaths.new '.'
       paths << ['..', '../..']
 
-      paths.must_include ['..', '../..']
+      assert paths ==  ['.', '..', '../..']
     end
 
     it 'returns self so multiple operations can be performed' do
@@ -164,6 +164,43 @@ describe Lotus::Utils::LoadPaths do
       paths.freeze
 
       -> { paths.push '.' }.must_raise RuntimeError
+    end
+  end
+
+  describe '#==' do
+    it "checks equality with LoadPaths" do
+      paths = Lotus::Utils::LoadPaths.new('.', '.')
+      other = Lotus::Utils::LoadPaths.new('.')
+
+      other.must_equal paths
+    end
+
+    it "it returns false if the paths aren't equal" do
+      paths = Lotus::Utils::LoadPaths.new('.', '..')
+      other = Lotus::Utils::LoadPaths.new('.')
+
+      other.wont_equal paths
+    end
+
+    it "checks equality with Array" do
+      paths = Lotus::Utils::LoadPaths.new('.', '.')
+      other = ['.']
+
+      other.must_equal paths
+    end
+
+    it "it returns false if given array isn't equal" do
+      paths = Lotus::Utils::LoadPaths.new('.', '..')
+      other = ['.']
+
+      other.wont_equal paths
+    end
+
+    it "it returns false the type isn't matchable" do
+      paths = Lotus::Utils::LoadPaths.new('.', '..')
+      other = nil
+
+      other.wont_equal paths
     end
   end
 end

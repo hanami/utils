@@ -18,7 +18,7 @@ module Lotus
       # @see http://ruby-doc.org/stdlib/libdoc/pathname/rdoc/Pathname.html
       # @see Lotus::Utils::Kernel.Pathname
       def initialize(*paths)
-        @paths = Array(paths)
+        @paths = Utils::Kernel.Array(paths)
       end
 
       # It specifies the policy for initialize copies of the object, when #clone
@@ -61,7 +61,7 @@ module Lotus
       #
       # @since 0.2.0
       def each
-        Utils::Kernel.Array(@paths).each do |path|
+        @paths.each do |path|
           yield realpath(path)
         end
       end
@@ -111,6 +111,7 @@ module Lotus
       #   paths << '.' << '../..'
       def push(*paths)
         @paths.push(*paths)
+        @paths.flatten!
         self
       end
 
@@ -135,6 +136,22 @@ module Lotus
         super
         @paths.freeze
       end
+
+      # @since x.x.x
+      # @api private
+      def ==(other)
+        case other
+        when self.class
+          other.paths == paths
+        else
+          other == paths
+        end
+      end
+
+      protected
+      # @since x.x.x
+      # @api private
+      attr_reader :paths
 
       private
       # Allow subclasses to define their own policy to discover the realpath
