@@ -111,7 +111,7 @@ module Lotus
       #   paths << '.' << '../..'
       def push(*paths)
         @paths.push(*paths)
-        @paths.flatten!
+        @paths = Kernel.Array(@paths)
         self
       end
 

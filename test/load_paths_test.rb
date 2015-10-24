@@ -71,6 +71,18 @@ describe Lotus::Utils::LoadPaths do
       paths.must_include '../..'
     end
 
+    it 'removes duplicates' do
+      paths = Lotus::Utils::LoadPaths.new '.'
+      paths.push '.', '.'
+      paths.each(&Proc.new{}).size.must_equal 1
+    end
+
+    it 'removes nil' do
+      paths = Lotus::Utils::LoadPaths.new '.'
+      paths.push nil
+      paths.each(&Proc.new{}).size.must_equal 1
+    end
+
     it 'returns self so multiple operations can be performed' do
       paths = Lotus::Utils::LoadPaths.new
 
