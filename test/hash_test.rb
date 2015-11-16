@@ -381,7 +381,7 @@ describe Lotus::Utils::Hash do
         end
 
         exception = -> { hash.all? { |_, v| v.foo } }.must_raise NoMethodError
-        exception.message.must_equal exception_message
+        exception.message.must_match exception_message
       end
     end
   end
