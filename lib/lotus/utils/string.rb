@@ -340,6 +340,40 @@ module Lotus
         end
       end
 
+      # Replace the rightmost match of <tt>pattern</tt> with <tt>replacement</tt>
+      #
+      # If the pattern cannot be matched, it returns the original string.
+      #
+      # This method does NOT mutate the original string.
+      #
+      # @param pattern [Regexp, String] the pattern to find
+      # @param replacement [String, Lotus::Utils::String] the string to replace
+      #
+      # @return [Lotus::Utils::String] the replaced string
+      #
+      # @since x.x.x
+      #
+      # @example
+      #   require 'lotus/utils/string'
+      #
+      #   string = Lotus::Utils::String.new('authors/books/index')
+      #   result = string.rsub(/\//, '#')
+      #
+      #   puts string
+      #     # => #<Lotus::Utils::String:0x007fdb41233ad8 @string="authors/books/index">
+      #
+      #   puts result
+      #     # => #<Lotus::Utils::String:0x007fdb41232ed0 @string="authors/books#index">
+      def rsub(pattern, replacement)
+        if i = rindex(pattern)
+          s    = @string.dup
+          s[i] = replacement
+          self.class.new s
+        else
+          self
+        end
+      end
+
       # Override Ruby's method_missing in order to provide ::String interface
       #
       # @api private
