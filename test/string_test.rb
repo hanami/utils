@@ -267,6 +267,42 @@ describe Lotus::Utils::String do
     end
   end
 
+  describe "#rsub" do
+    it 'returns a Lotus::Utils::String instance' do
+      result = Lotus::Utils::String.new('authors/books/index').rsub(//, '')
+      result.must_be_kind_of(Lotus::Utils::String)
+    end
+
+    it "doesn't mutate original string" do
+      string = Lotus::Utils::String.new('authors/books/index')
+      string.rsub(/\//, '#')
+
+      string.must_equal('authors/books/index')
+    end
+
+    it 'replaces rightmost instance (regexp)' do
+      result = Lotus::Utils::String.new('authors/books/index').rsub(/\//, '#')
+      result.must_equal('authors/books#index')
+    end
+
+    it 'replaces rightmost instance (string)' do
+      result = Lotus::Utils::String.new('authors/books/index').rsub('/', '#')
+      result.must_equal('authors/books#index')
+    end
+
+    it 'accepts Lotus::Utils::String as replacement' do
+      replacement = Lotus::Utils::String.new('#')
+      result      = Lotus::Utils::String.new('authors/books/index').rsub(/\//, replacement)
+
+      result.must_equal('authors/books#index')
+    end
+
+    it 'returns the initial string no match' do
+      result = Lotus::Utils::String.new('index').rsub(/\//, '#')
+      result.must_equal('index')
+    end
+  end
+
   describe 'string interface' do
     it 'responds to ::String methods and returns a new Lotus::Utils::String' do
       string = Lotus::Utils::String.new("Lotus\n").chomp
