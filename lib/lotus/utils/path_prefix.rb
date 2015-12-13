@@ -80,10 +80,13 @@ module Lotus
       def relative_join(strings, separator = @separator)
         raise TypeError if separator.nil?
         prefix = @string.gsub(@separator, separator)
+        result = [prefix, strings]
+        result.flatten!
+        result.compact!
+        result.reject! {|string| string == separator }
 
         self.class.new(
-          [prefix, strings].flatten.compact.join(separator),
-          separator
+          result.join(separator), separator
         ).relative!
       end
 

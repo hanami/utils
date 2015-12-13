@@ -55,6 +55,11 @@ describe Lotus::Utils::PathPrefix do
       prefix.join('/assets', 'application.js').must_equal '/myapp/assets/application.js'
     end
 
+    it 'rejects entries that are matching separator' do
+      prefix = Lotus::Utils::PathPrefix.new('/assets')
+      prefix.join('/').must_equal '/assets'
+    end
+
     it 'removes trailing occurrences of separator' do
       prefix = Lotus::Utils::PathPrefix.new('curcuma')
       prefix.join(nil).must_equal '/curcuma'
@@ -106,6 +111,11 @@ describe Lotus::Utils::PathPrefix do
     it 'removes trailing occurrences of separator' do
       prefix = Lotus::Utils::PathPrefix.new('jojoba')
       prefix.relative_join(nil).must_equal 'jojoba'
+    end
+
+    it 'rejects entries that are matching separator' do
+      prefix = Lotus::Utils::PathPrefix.new('assets')
+      prefix.relative_join('/').must_equal 'assets'
     end
 
     it 'raises error if the given separator is nil' do
