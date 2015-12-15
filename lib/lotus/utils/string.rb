@@ -6,6 +6,12 @@ module Lotus
     #
     # @since 0.1.0
     class String
+      # Empty string for #classify
+      #
+      # @since 0.6.0
+      # @api private
+      EMPTY_STRING        = ''.freeze
+
       # Separator between Ruby namespaces
       #
       # @since 0.1.0
@@ -135,14 +141,14 @@ module Lotus
       #   string = Lotus::Utils::String.new 'lotus_utils'
       #   string.classify # => 'LotusUtils'
       def classify
-        words = split(CLASSIFY_WORD_SEPARATOR).map(&:capitalize)
+        words = split(CLASSIFY_WORD_SEPARATOR).map!(&:capitalize)
         delimiters = scan(CLASSIFY_WORD_SEPARATOR)
 
         delimiters.map! do |delimiter|
-          delimiter == CLASSIFY_SEPARATOR ? nil : NAMESPACE_SEPARATOR
+          delimiter == CLASSIFY_SEPARATOR ? EMPTY_STRING : NAMESPACE_SEPARATOR
         end
 
-        self.class.new words.zip(delimiters).compact.join
+        self.class.new words.zip(delimiters).join
       end
 
       # Return a downcased and underscore separated version of the string
@@ -338,6 +344,17 @@ module Lotus
         else
           @string.gsub(pattern, replacement)
         end
+      end
+
+      # Both forms iterate through str, matching the pattern
+      #
+      # @return [String,nil]
+      #
+      # @see http://www.ruby-doc.org/core/String.html#method-i-scan
+      #
+      # @since 0.6.0
+      def scan(pattern, &blk)
+        @string.scan(pattern, &blk)
       end
 
       # Replace the rightmost match of <tt>pattern</tt> with <tt>replacement</tt>
