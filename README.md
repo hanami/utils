@@ -43,9 +43,15 @@ Or install it yourself as:
 ## Usage
 
 __Lotus::Utils__ is designed to enhance Ruby's code and stdlib.
-By default this gem doesn't load any code, you must require what you need.
+**By default this gem doesn't load any code, you must require what you need.**
 
-Please read the documentation of each module.
+## Features
+
+### Lotus::Interactor
+
+Standardized Service Object with small interface and rich returning result.
+
+[API doc](http://www.rubydoc.info/gems/lotus-utils/Lotus/Interactor)
 
 ## Versioning
 
