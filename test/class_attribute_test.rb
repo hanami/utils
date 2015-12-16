@@ -59,74 +59,94 @@ describe Lotus::Utils::ClassAttribute do
     ClassAttributeTest.callbacks.must_equal([:a])
   end
 
-  it 'the value it is inherited by subclasses' do
-    SubclassAttributeTest.callbacks.must_equal([:a])
-  end
-
-  it 'if the superclass value changes it does not affects subclasses' do
-    ClassAttributeTest.functions = [:y]
-    SubclassAttributeTest.functions.must_equal([:x, :y])
-  end
-
-  it 'if the subclass value changes it does not affects superclass' do
-    SubclassAttributeTest.values = [3,2]
-    ClassAttributeTest.values.must_equal([1])
-  end
-
-  describe 'when the subclass is defined in a different namespace' do
+  describe "inheritance" do
     before do
-      module Lts
-        module Routing
-          class Resource
-            class Action
-              include Lotus::Utils::ClassAttribute
-              class_attribute :verb
+      @debug = $DEBUG
+      $DEBUG = true
+    end
+
+    after do
+      $DEBUG = @debug
+    end
+
+    it 'the value it is inherited by subclasses' do
+      SubclassAttributeTest.callbacks.must_equal([:a])
+    end
+
+    it 'if the superclass value changes it does not affects subclasses' do
+      ClassAttributeTest.functions = [:y]
+      SubclassAttributeTest.functions.must_equal([:x, :y])
+    end
+
+    it 'if the subclass value changes it does not affects superclass' do
+      SubclassAttributeTest.values = [3,2]
+      ClassAttributeTest.values.must_equal([1])
+    end
+
+    describe 'when the subclass is defined in a different namespace' do
+      before do
+        module Lts
+          module Routing
+            class Resource
+              class Action
+                include Lotus::Utils::ClassAttribute
+                class_attribute :verb
+              end
+
+              class New < Action
+                self.verb = :get
+              end
             end
 
-            class New < Action
-              self.verb = :get
-            end
-          end
-
-          class Resources < Resource
-            class New < Resource::New
+            class Resources < Resource
+              class New < Resource::New
+              end
             end
           end
         end
       end
+
+      it 'refers to the superclass value' do
+        Lts::Routing::Resources::New.verb.must_equal :get
+      end
     end
 
-    it 'refers to the superclass value' do
-      Lts::Routing::Resources::New.verb.must_equal :get
+    # it 'if the subclass value changes it affects subclasses' do
+    #   values = [3,2]
+    #   SubclassAttributeTest.values = values
+    #   SubclassAttributeTest.values.must_equal(values)
+    #   SubSubclassAttributeTest.values.must_equal(values)
+    # end
+
+    it 'if the subclass defines an attribute it should not be available for the superclass' do
+      $DEBUG = @debug
+      -> { ClassAttributeTest.subattribute }.must_raise(NoMethodError)
     end
-  end
 
-  # it 'if the subclass value changes it affects subclasses' do
-  #   values = [3,2]
-  #   SubclassAttributeTest.values = values
-  #   SubclassAttributeTest.values.must_equal(values)
-  #   SubSubclassAttributeTest.values.must_equal(values)
-  # end
+    it 'if the subclass defines an attribute it should be available for its subclasses' do
+      SubSubclassAttributeTest.subattribute.must_equal 42
+    end
 
-  it 'if the subclass defines an attribute it should not be available for the superclass' do
-    -> { ClassAttributeTest.subattribute }.must_raise(NoMethodError)
-  end
+    it 'preserves values within the inheritance chain' do
+      Vehicle.engines.must_equal 0
+      Vehicle.wheels.must_equal  0
 
-  it 'if the subclass defines an attribute it should be available for its subclasses' do
-    SubSubclassAttributeTest.subattribute.must_equal 42
-  end
+      Car.engines.must_equal 1
+      Car.wheels.must_equal  4
 
-  it 'preserves values within the inheritance chain' do
-    Vehicle.engines.must_equal 0
-    Vehicle.wheels.must_equal  0
+      Airplane.engines.must_equal 4
+      Airplane.wheels.must_equal  16
 
-    Car.engines.must_equal 1
-    Car.wheels.must_equal  4
+      SmallAirplane.engines.must_equal 2
+      SmallAirplane.wheels.must_equal  8
+    end
 
-    Airplane.engines.must_equal 4
-    Airplane.wheels.must_equal  16
+    it "doesn't print warnings when it gets inherited" do
+      _, stderr = capture_io do
+        Class.new(Vehicle)
+      end
 
-    SmallAirplane.engines.must_equal 2
-    SmallAirplane.wheels.must_equal  8
+      stderr.must_be_empty
+    end
   end
 end

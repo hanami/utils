@@ -1,8 +1,24 @@
+require 'lotus/utils/duplicable'
+
 module Lotus
   module Utils
     # Hash on steroids
     # @since 0.1.0
     class Hash
+      # @since x.x.x
+      # @api private
+      #
+      # @see Lotus::Utils::Hash#deep_dup
+      # @see Lotus::Utils::Duplicable
+      DUPLICATE_LOGIC = Proc.new do |value|
+        case value
+        when Hash
+          value.deep_dup
+        when ::Hash
+          Hash.new(value).deep_dup.to_h
+        end
+      end.freeze
+
       # Initialize the hash
       #
       # @param hash [#to_h] the value we want to use to initialize this instance
@@ -145,7 +161,7 @@ module Lotus
       #   duped['u_hash'].class # => Lotus::Utils::Hash
       def deep_dup
         Hash.new.tap do |result|
-          @hash.each {|k, v| result[k] = duplicate(v) }
+          @hash.each {|k, v| result[k] = Duplicable.dup(v, &DUPLICATE_LOGIC) }
         end
       end
 
@@ -277,22 +293,6 @@ module Lotus
       # @since 0.3.0
       def respond_to_missing?(m, include_private=false)
         @hash.respond_to?(m, include_private)
-      end
-
-      private
-      # @api private
-      # @since 0.3.1
-      def duplicate(value)
-        case value
-        when NilClass, FalseClass, TrueClass, Symbol, Numeric
-          value
-        when Hash
-          value.deep_dup
-        when ::Hash
-          Hash.new(value).deep_dup.to_h
-        else
-          value.dup
-        end
       end
     end
   end
