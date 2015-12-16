@@ -1,4 +1,5 @@
 require 'set'
+require 'lotus/utils/duplicable'
 
 module Lotus
   module Utils
@@ -74,7 +75,7 @@ module Lotus
         def inherited(subclass)
           class_attributes.each do |attr|
             value = send(attr)
-            value = value.dup rescue value
+            value = Duplicable.dup(value)
             subclass.class_attribute attr
             subclass.send("#{attr}=", value)
           end
