@@ -1,3 +1,4 @@
+
 # Lotus::Utils
 
 Ruby core extentions and class utilities for [Lotus](http://lotusrb.org)
@@ -49,9 +50,72 @@ __Lotus::Utils__ is designed to enhance Ruby's code and stdlib.
 
 ### Lotus::Interactor
 
-Standardized Service Object with small interface and rich returning result.
+Standardized Service Object with small interface and rich returning result. [[API doc](http://www.rubydoc.info/gems/lotus-utils/Lotus/Interactor)]
 
-[API doc](http://www.rubydoc.info/gems/lotus-utils/Lotus/Interactor)
+### Lotus::Logger
+
+Enhanced version of Ruby's `Logger`. [[API doc](http://www.rubydoc.info/gems/lotus-utils/Lotus/Logger)]
+
+### Lotus::Utils::Attributes
+
+Set of attributes with indifferent access. [[API doc](http://www.rubydoc.info/gems/lotus-utils/Lotus/Utils/Attributes)]
+
+### Lotus::Utils::BasicObject
+
+Enhanced version of Ruby's `BasicObject`. [[API doc](http://www.rubydoc.info/gems/lotus-utils/Lotus/Utils/BasicObject)]
+
+### Lotus::Utils::Callbacks
+
+Callbacks to decorate methods with `before` and `after` logic. It supports polymorphic callbacks (methods and procs). [[API doc](http://www.rubydoc.info/gems/lotus-utils/Lotus/Utils/Callbacks)]
+
+### Lotus::Utils::Class
+
+Load classes from strings. It also supports namespaces. [[API doc](http://www.rubydoc.info/gems/lotus-utils/Lotus/Utils/Class)]
+
+### Lotus::Utils::ClassAttribute
+
+Inheritable class attributes. [[API doc](http://www.rubydoc.info/gems/lotus-utils/Lotus/Utils/ClassAttribute)]
+
+### Lotus::Utils::Deprecation
+
+Deprecate Lotus features. [[API doc](http://www.rubydoc.info/gems/lotus-utils/Lotus/Utils/Deprecation)]
+
+### Lotus::Utils::Duplicable
+
+Safe `#dup` logic for Ruby objects. [[API doc](http://www.rubydoc.info/gems/lotus-utils/Lotus/Utils/Deprecation)]
+
+
+### Lotus::Utils::Escape
+
+Safe and fast escape for URLs, HTML content and attributes. Based on OWASP/ESAPI code. [[API doc](http://www.rubydoc.info/gems/lotus-utils/Lotus/Utils/Escape)]
+
+### Lotus::Utils::Hash
+
+Enhanced version of Ruby's `Hash`. [[API doc](http://www.rubydoc.info/gems/lotus-utils/Lotus/Utils/Hash)]
+
+### Lotus::Utils::IO
+
+Silence Ruby warnings. [[API doc](http://www.rubydoc.info/gems/lotus-utils/Lotus/Utils/IO)]
+
+### Lotus::Utils::Inflector
+
+Complete and customizable english inflections (pluralization and singularization). [[API doc](http://www.rubydoc.info/gems/lotus-utils/Lotus/Utils/Inflector)]
+
+### Lotus::Utils::Kernel
+
+Type coercions for most common Ruby types. [[API doc](http://www.rubydoc.info/gems/lotus-utils/Lotus/Utils/Kernel)]
+
+### Lotus::Utils::LoadPaths
+
+Manage directories where to find Ruby source code or web static assets. [[API doc](http://www.rubydoc.info/gems/lotus-utils/Lotus/Utils/LoadPaths)]
+
+### Lotus::Utils::PathPrefix
+
+Safe logic to manage relative URLs. [[API doc](http://www.rubydoc.info/gems/lotus-utils/Lotus/Utils/PathPrefix)]
+
+### Lotus::Utils::String
+
+Enhanced version of Ruby's `String`. [[API doc](http://www.rubydoc.info/gems/lotus-utils/Lotus/Utils/String)]
 
 ## Versioning
 
