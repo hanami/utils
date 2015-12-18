@@ -1,6 +1,16 @@
 # Lotus::Utils
 Ruby core extentions and class utilities for Lotus
 
+## v0.6.0 - (unreleased)
+### Added
+- [Luca Guidi] Custom inflections
+- [Luca Guidi] Introduced `Lotus::Utils::Duplicable` as a safe dup logic for Ruby types
+- [Luca Guidi] Added `Lotus::Utils::String#rsub` replace rightmost occurrence
+
+### Fixed
+- [Luca Guidi] Fix `Lotus::Utils::PathPrefix#join` and `#relative_join` by rejecting arguments that are equal to the separator
+- [Karim Kiatlottiavi] Fix `Encoding::UndefinedConversionError` in `Lotus::Utils::Escape.encode`
+
 ## v0.5.2 - 2015-09-30
 ### Added
 - [Luca Guidi] Added `Lotus::Utils::String#capitalize`
