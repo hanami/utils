@@ -1,5 +1,3 @@
-require 'lotus/utils/deprecation'
-
 module Lotus
   module Utils
     # Before and After callbacks
