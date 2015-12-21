@@ -13,6 +13,7 @@ Ruby core extentions and class utilities for Lotus
 
 ### Changed
 - [Luca Guidi] Removed `Lotus::Utils::Callbacks#add` in favor of `#append`
+- [Luca Guidi] Removed pattern support for `Utils::Class.load!` (eg. `Articles(Controller|::Controller)`)
 
 ## v0.5.2 - 2015-09-30
 ### Added

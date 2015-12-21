@@ -35,14 +35,6 @@ describe Lotus::Utils::Class do
     it 'raises an error in case of missing class' do
       -> { Lotus::Utils::Class.load!('Missing') }.must_raise(NameError)
     end
-
-    it 'prints a deprecation warning if used with a pattern' do
-      _, err = capture_io do
-        Lotus::Utils::Class.load!('(Layer|Layer::)Step', App).must_equal(App::Layer::Step)
-      end
-
-      err.must_include "Using Lotus::Utils::Class.load! with a pattern is deprecated, please use Lotus::Utils::Class.load_from_pattern!: (Layer|Layer::)Step, App"
-    end
   end
 
   describe '.load_from_pattern!' do
