@@ -11,6 +11,9 @@ Ruby core extentions and class utilities for Lotus
 - [Luca Guidi] Fix `Lotus::Utils::PathPrefix#join` and `#relative_join` by rejecting arguments that are equal to the separator
 - [Karim Kiatlottiavi] Fix `Encoding::UndefinedConversionError` in `Lotus::Utils::Escape.encode`
 
+### Changed
+- [Luca Guidi] Removed `Lotus::Utils::Callbacks#add` in favor of `#append`
+
 ## v0.5.2 - 2015-09-30
 ### Added
 - [Luca Guidi] Added `Lotus::Utils::String#capitalize`

@@ -60,16 +60,6 @@ module Lotus
           @chain.uniq!
         end
 
-        # @since 0.1.0
-        # @deprecated Use Lotus::Utils::Callbacks::Chain#append as it has the
-        #   same effect, but it's more consistent with the new API.
-        #
-        # @see Lotus::Utils::Callbacks::Chain#append
-        def add(*callbacks, &blk)
-          Utils::Deprecation.new("Lotus::Utils::Callbacks::Chain#add is deprecated, use #append instead.")
-          append(*callbacks, &blk)
-        end
-
         # Prepends the given callbacks to the beginning of the chain.
         #
         # @param callbacks [Array] one or multiple callbacks to add
@@ -133,7 +123,7 @@ module Lotus
         #   params = Hash[id: 23]
         #
         #   chain = Lotus::Utils::Callbacks::Chain.new
-        #   chain.add :authenticate!, :set_article
+        #   chain.append :authenticate!, :set_article
         #
         #   chain.run(action, params)
         #
@@ -143,11 +133,11 @@ module Lotus
         #
         #   chain = Lotus::Utils::Callbacks::Chain.new
         #
-        #   chain.add do
+        #   chain.append do
         #     # some authentication logic
         #   end
         #
-        #   chain.add do |params|
+        #   chain.append do |params|
         #     # some other logic that requires `params`
         #   end
         #
@@ -174,7 +164,7 @@ module Lotus
         #
         #   chain.frozen?  # => true
         #
-        #   chain.add :authenticate! # => RuntimeError
+        #   chain.append :authenticate! # => RuntimeError
         def freeze
           super
           @chain.freeze
