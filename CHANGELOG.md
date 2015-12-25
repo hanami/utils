@@ -3,6 +3,7 @@ Ruby core extentions and class utilities for Lotus
 
 ## v0.6.0 - (unreleased)
 ### Added
+- [Luca Guidi] Official support for Ruby 2.3
 - [Luca Guidi] Custom inflections
 - [Luca Guidi] Introduced `Lotus::Utils::Duplicable` as a safe dup logic for Ruby types
 - [Luca Guidi] Added `Lotus::Utils::String#rsub` replace rightmost occurrence
@@ -12,6 +13,7 @@ Ruby core extentions and class utilities for Lotus
 - [Karim Kiatlottiavi] Fix `Encoding::UndefinedConversionError` in `Lotus::Utils::Escape.encode`
 
 ### Changed
+- [Luca Guidi] Deprecate Ruby 2.0
 - [Luca Guidi] Removed `Lotus::Utils::Callbacks#add` in favor of `#append`
 - [Luca Guidi] Removed pattern support for `Utils::Class.load!` (eg. `Articles(Controller|::Controller)`)
 
