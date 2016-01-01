@@ -812,10 +812,16 @@ describe Hanami::Utils::Kernel do
       end
 
       describe 'when a rational number is given' do
-        let(:input) { Rational(0.3) }
+        let(:input)     { Rational(0.3) }
+        let(:precision) { 1 }
 
         it 'returns an BigDecimal' do
-          @result.must_equal BigDecimal.new(input.to_s)
+          if Hanami::Utils.jruby?
+            @result = Hanami::Utils::Kernel.BigDecimal(input, precision: precision)
+            @result.must_equal BigDecimal.new(input, precision)
+          else
+            @result.must_equal BigDecimal.new(input.to_s)
+          end
         end
       end
 
@@ -859,6 +865,22 @@ describe Hanami::Utils::Kernel do
         it 'returns a BigDecimal' do
           @result.must_equal BigDecimal.new(23)
         end
+      end
+    end
+
+    describe 'when a string without numbers is given' do
+      let(:input) { 'home' }
+
+      it 'returns an BigDecimal' do
+        Hanami::Utils::Kernel.BigDecimal(input).must_equal BigDecimal.new(0)
+      end
+    end
+
+    describe 'when a string which starts with a big decimal is given' do
+      let(:input) { '23.0 street' }
+
+      it 'returns an BigDecimal' do
+        Hanami::Utils::Kernel.BigDecimal(input).must_equal BigDecimal.new(23)
       end
     end
 
@@ -908,24 +930,6 @@ describe Hanami::Utils::Kernel do
 
         it 'raises error' do
           -> { Hanami::Utils::Kernel.BigDecimal(input) }.must_raise(TypeError)
-        end
-      end
-
-      describe 'when a string without numbers is given' do
-        let(:input) { 'home' }
-
-        it 'raises error' do
-          exception = -> { Hanami::Utils::Kernel.BigDecimal(input) }.must_raise(TypeError)
-          exception.message.must_equal "can't convert #{input.inspect} into BigDecimal"
-        end
-      end
-
-      describe 'when a string which starts with a big decimal is given' do
-        let(:input) { '23.0 street' }
-
-        it 'raises error' do
-          exception = -> { Hanami::Utils::Kernel.BigDecimal(input) }.must_raise(TypeError)
-          exception.message.must_equal "can't convert #{input.inspect} into BigDecimal"
         end
       end
 
