@@ -368,7 +368,7 @@ module Lotus
       #
       # @return [Lotus::Utils::String] the replaced string
       #
-      # @since x.x.x
+      # @since 0.6.0
       #
       # @example
       #   require 'lotus/utils/string'

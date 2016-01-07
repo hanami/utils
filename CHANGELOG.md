@@ -1,7 +1,7 @@
 # Lotus::Utils
 Ruby core extentions and class utilities for Lotus
 
-## v0.6.0 - (unreleased)
+## v0.6.0 - 2016-01-12
 ### Added
 - [Luca Guidi] Official support for Ruby 2.3
 - [Luca Guidi] Custom inflections
@@ -13,7 +13,7 @@ Ruby core extentions and class utilities for Lotus
 - [Karim Kiatlottiavi] Fix `Encoding::UndefinedConversionError` in `Lotus::Utils::Escape.encode`
 
 ### Changed
-- [Luca Guidi] Deprecate Ruby 2.0
+- [Luca Guidi] Deprecate Ruby 2.0 and 2.1
 - [Luca Guidi] Removed `Lotus::Utils::Callbacks#add` in favor of `#append`
 - [Luca Guidi] Removed pattern support for `Utils::Class.load!` (eg. `Articles(Controller|::Controller)`)
 

@@ -5,7 +5,7 @@ module Lotus
     # Hash on steroids
     # @since 0.1.0
     class Hash
-      # @since x.x.x
+      # @since 0.6.0
       # @api private
       #
       # @see Lotus::Utils::Hash#deep_dup
