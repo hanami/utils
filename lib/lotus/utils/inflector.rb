@@ -8,29 +8,29 @@ module Lotus
     module Inflector
       # Rules for irregular plurals
       #
-      # @since x.x.x
+      # @since 0.6.0
       # @api private
       class IrregularRules
-        # @since x.x.x
+        # @since 0.6.0
         # @api private
         def initialize(rules)
           @rules = rules
         end
 
-        # @since x.x.x
+        # @since 0.6.0
         # @api private
         def add(key, value)
           @rules[key.downcase] = value.downcase
         end
 
-        # @since x.x.x
+        # @since 0.6.0
         # @api private
         def ===(other)
           key = other.downcase
           @rules.key?(key) || @rules.value?(key)
         end
 
-        # @since x.x.x
+        # @since 0.6.0
         # @api private
         def apply(string)
           key    = string.downcase
@@ -62,7 +62,7 @@ module Lotus
       # @api private
       EAUX = 'eaux'.freeze
 
-      # @since x.x.x
+      # @since 0.6.0
       # @api private
       ES   = 'es'.freeze
 
@@ -122,11 +122,11 @@ module Lotus
       # @api private
       MINA = 'mina'.freeze
 
-      # @since x.x.x
+      # @since 0.6.0
       # @api private
       NA   = 'na'.freeze
 
-      # @since x.x.x
+      # @since 0.6.0
       # @api private
       NON  = 'non'.freeze
 
@@ -154,7 +154,7 @@ module Lotus
       # @api private
       SSES = 'sses'.freeze
 
-      # @since x.x.x
+      # @since 0.6.0
       # @api private
       TA   = 'ta'.freeze
 
@@ -190,7 +190,7 @@ module Lotus
 
       # Irregular rules for plurals
       #
-      # @since x.x.x
+      # @since 0.6.0
       # @api private
       class_attribute :plurals
       self.plurals = IrregularRules.new({
@@ -226,7 +226,7 @@ module Lotus
 
       # Irregular rules for singulars
       #
-      # @since x.x.x
+      # @since 0.6.0
       # @api private
       class_attribute :singulars
       self.singulars = IrregularRules.new({
@@ -268,7 +268,7 @@ module Lotus
       #
       # @param [Proc] blk custom inflections
       #
-      # @since x.x.x
+      # @since 0.6.0
       #
       # @see Lotus::Utils::Inflector.exception
       # @see Lotus::Utils::Inflector.uncountable
@@ -290,7 +290,7 @@ module Lotus
       # @param [String] singular form
       # @param [String] plural form
       #
-      # @since x.x.x
+      # @since 0.6.0
       #
       # @see Lotus::Utils::Inflector.inflections
       # @see Lotus::Utils::Inflector.uncountable
@@ -310,7 +310,7 @@ module Lotus
       #
       # @param [Array<String>] words
       #
-      # @since x.x.x
+      # @since 0.6.0
       #
       # @see Lotus::Utils::Inflector.inflections
       # @see Lotus::Utils::Inflector.exception

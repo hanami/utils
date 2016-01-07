@@ -2,7 +2,7 @@ module Lotus
   module Utils
     # Safe dup logic
     #
-    # @since x.x.x
+    # @since 0.6.0
     module Duplicable
       # Duplicates the given value.
       #
@@ -23,7 +23,7 @@ module Lotus
       #
       # @return [Object] the duped value
       #
-      # @since x.x.x
+      # @since 0.6.0
       #
       # @example Basic Usage With Types That Can't Be Duped
       #   require 'lotus/utils/duplicable'

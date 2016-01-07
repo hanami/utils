@@ -137,7 +137,7 @@ module Lotus
         @paths.freeze
       end
 
-      # @since x.x.x
+      # @since 0.6.0
       # @api private
       def ==(other)
         case other
@@ -149,7 +149,7 @@ module Lotus
       end
 
       protected
-      # @since x.x.x
+      # @since 0.6.0
       # @api private
       attr_reader :paths
 

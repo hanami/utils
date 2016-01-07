@@ -9,7 +9,7 @@ Gem::Specification.new do |spec|
   spec.authors       = ['Luca Guidi', 'Trung Lê', 'Alfonso Uceda']
   spec.email         = ['me@lucaguidi.com', 'trung.le@ruby-journal.com', 'uceda73@gmail.com']
   spec.description   = %q{Lotus utilities}
-  spec.summary       = %q{Ruby core extentions and Louts utilities}
+  spec.summary       = %q{Ruby core extentions and Lotus utilities}
   spec.homepage      = 'http://lotusrb.org'
   spec.license       = 'MIT'
 
