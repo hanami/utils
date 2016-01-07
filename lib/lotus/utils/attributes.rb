@@ -27,7 +27,7 @@ module Lotus
       # @example
       #   require 'lotus/utils/attributes'
       #
-      #   attributes = Lotus::Utils::Attributes.new(a: 1, b: { 2 => [3, 4] } })
+      #   attributes = Lotus::Utils::Attributes.new(a: 1, b: { 2 => [3, 4] })
       #   attributes.to_h # => { "a" => 1, "b" => { "2" => [3, 4] } }
       def initialize(hash = {})
         @attributes = Utils::Hash.new(hash, &nil).stringify!
