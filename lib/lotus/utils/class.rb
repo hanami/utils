@@ -67,17 +67,17 @@ module Lotus
       #   end
       #
       #   # basic usage
-      #   Lotus::Utils::Class.load!('App::Service') # => App::Service
+      #   Lotus::Utils::Class.load_from_pattern!('App::Service') # => App::Service
       #
       #   # with explicit namespace
-      #   Lotus::Utils::Class.load!('Service', App) # => App::Service
+      #   Lotus::Utils::Class.load_from_pattern!('Service', App) # => App::Service
       #
       #   # with pattern
-      #   Lotus::Utils::Class.load!('App::Service(::Endpoint|Endpoint)') # => App::Service::Endpoint
-      #   Lotus::Utils::Class.load!('App::Service(Endpoint|::Endpoint)') # => App::ServiceEndpoint
+      #   Lotus::Utils::Class.load_from_pattern!('App::Service(::Endpoint|Endpoint)') # => App::Service::Endpoint
+      #   Lotus::Utils::Class.load_from_pattern!('App::Service(Endpoint|::Endpoint)') # => App::ServiceEndpoint
       #
       #   # with missing constant
-      #   Lotus::Utils::Class.load!('Unknown') # => raises NameError
+      #   Lotus::Utils::Class.load_from_pattern!('Unknown') # => raises NameError
       def self.load_from_pattern!(pattern, namespace = Object)
         String.new(pattern).tokenize do |token|
           begin
