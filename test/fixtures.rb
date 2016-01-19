@@ -597,8 +597,8 @@ TEST_SINGULARS = {
   "kiss"       => "kisses",
 }.merge(TEST_PLURALS)
 
-require 'lotus/utils/inflector'
-Lotus::Utils::Inflector.inflections do
+require 'hanami/utils/inflector'
+Hanami::Utils::Inflector.inflections do
   exception   'analysis', 'analyses'
   exception   'alga',     'algae'
   uncountable 'music', 'butter'

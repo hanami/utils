@@ -1,6 +1,6 @@
-require 'lotus/utils/inflector'
+require 'hanami/utils/inflector'
 
-module Lotus
+module Hanami
   module Utils
     # String on steroids
     #
@@ -85,42 +85,42 @@ module Lotus
 
       # Return a titleized version of the string
       #
-      # @return [Lotus::Utils::String] the transformed string
+      # @return [Hanami::Utils::String] the transformed string
       #
       # @since 0.4.0
       #
       # @example
-      #   require 'lotus/utils/string'
+      #   require 'hanami/utils/string'
       #
-      #   string = Lotus::Utils::String.new 'lotus utils'
-      #   string.titleize # => "Lotus Utils"
+      #   string = Hanami::Utils::String.new 'hanami utils'
+      #   string.titleize # => "Hanami Utils"
       def titleize
         self.class.new underscore.split(CLASSIFY_SEPARATOR).map(&:capitalize).join(TITLEIZE_SEPARATOR)
       end
 
       # Return a capitalized version of the string
       #
-      # @return [Lotus::Utils::String] the transformed string
+      # @return [Hanami::Utils::String] the transformed string
       #
       # @since 0.5.2
       #
       # @example
-      #   require 'lotus/utils/string'
+      #   require 'hanami/utils/string'
       #
-      #   string = Lotus::Utils::String.new 'lotus'
-      #   string.capitalize # => "Lotus"
+      #   string = Hanami::Utils::String.new 'hanami'
+      #   string.capitalize # => "Hanami"
       #
-      #   string = Lotus::Utils::String.new 'lotus utils'
-      #   string.capitalize # => "Lotus utils"
+      #   string = Hanami::Utils::String.new 'hanami utils'
+      #   string.capitalize # => "Hanami utils"
       #
-      #   string = Lotus::Utils::String.new 'Lotus Utils'
-      #   string.capitalize # => "Lotus utils"
+      #   string = Hanami::Utils::String.new 'Hanami Utils'
+      #   string.capitalize # => "Hanami utils"
       #
-      #   string = Lotus::Utils::String.new 'lotus_utils'
-      #   string.capitalize # => "Lotus utils"
+      #   string = Hanami::Utils::String.new 'hanami_utils'
+      #   string.capitalize # => "Hanami utils"
       #
-      #   string = Lotus::Utils::String.new 'lotus-utils'
-      #   string.capitalize # => "Lotus utils"
+      #   string = Hanami::Utils::String.new 'hanami-utils'
+      #   string.capitalize # => "Hanami utils"
       def capitalize
         head, *tail = underscore.split(CLASSIFY_SEPARATOR)
 
@@ -136,10 +136,10 @@ module Lotus
       # @since 0.1.0
       #
       # @example
-      #   require 'lotus/utils/string'
+      #   require 'hanami/utils/string'
       #
-      #   string = Lotus::Utils::String.new 'lotus_utils'
-      #   string.classify # => 'LotusUtils'
+      #   string = Hanami::Utils::String.new 'hanami_utils'
+      #   string.classify # => 'HanamiUtils'
       def classify
         words = split(CLASSIFY_WORD_SEPARATOR).map!(&:capitalize)
         delimiters = scan(CLASSIFY_WORD_SEPARATOR)
@@ -161,10 +161,10 @@ module Lotus
       # @since 0.1.0
       #
       # @example
-      #   require 'lotus/utils/string'
+      #   require 'hanami/utils/string'
       #
-      #   string = Lotus::Utils::String.new 'LotusUtils'
-      #   string.underscore # => 'lotus_utils'
+      #   string = Hanami::Utils::String.new 'HanamiUtils'
+      #   string.underscore # => 'hanami_utils'
       def underscore
         new_string = gsub(NAMESPACE_SEPARATOR, UNDERSCORE_SEPARATOR)
         new_string.gsub!(/([A-Z\d]+)([A-Z][a-z])/, UNDERSCORE_DIVISION_TARGET)
@@ -176,21 +176,21 @@ module Lotus
 
       # Return a downcased and dash separated version of the string
       #
-      # @return [Lotus::Utils::String] the transformed string
+      # @return [Hanami::Utils::String] the transformed string
       #
       # @since 0.4.0
       #
       # @example
-      #   require 'lotus/utils/string'
+      #   require 'hanami/utils/string'
       #
-      #   string = Lotus::Utils::String.new 'Lotus Utils'
-      #   string.dasherize # => 'lotus-utils'
+      #   string = Hanami::Utils::String.new 'Hanami Utils'
+      #   string.dasherize # => 'hanami-utils'
       #
-      #   string = Lotus::Utils::String.new 'lotus_utils'
-      #   string.dasherize # => 'lotus-utils'
+      #   string = Hanami::Utils::String.new 'hanami_utils'
+      #   string.dasherize # => 'hanami-utils'
       #
-      #   string = Lotus::Utils::String.new 'LotusUtils'
-      #   string.dasherize # => "lotus-utils"
+      #   string = Hanami::Utils::String.new 'HanamiUtils'
+      #   string.dasherize # => "hanami-utils"
       def dasherize
         self.class.new underscore.split(CLASSIFY_SEPARATOR).join(DASHERIZE_SEPARATOR)
       end
@@ -202,12 +202,12 @@ module Lotus
       # @since 0.1.0
       #
       # @example
-      #   require 'lotus/utils/string'
+      #   require 'hanami/utils/string'
       #
-      #   string = Lotus::Utils::String.new 'Lotus::Utils::String'
+      #   string = Hanami::Utils::String.new 'Hanami::Utils::String'
       #   string.demodulize # => 'String'
       #
-      #   string = Lotus::Utils::String.new 'String'
+      #   string = Hanami::Utils::String.new 'String'
       #   string.demodulize # => 'String'
       def demodulize
         self.class.new split(NAMESPACE_SEPARATOR).last
@@ -220,12 +220,12 @@ module Lotus
       # @since 0.1.2
       #
       # @example
-      #   require 'lotus/utils/string'
+      #   require 'hanami/utils/string'
       #
-      #   string = Lotus::Utils::String.new 'Lotus::Utils::String'
-      #   string.namespace # => 'Lotus'
+      #   string = Hanami::Utils::String.new 'Hanami::Utils::String'
+      #   string.namespace # => 'Hanami'
       #
-      #   string = Lotus::Utils::String.new 'String'
+      #   string = Hanami::Utils::String.new 'String'
       #   string.namespace # => 'String'
       def namespace
         self.class.new split(NAMESPACE_SEPARATOR).first
@@ -241,16 +241,16 @@ module Lotus
       # @since 0.1.0
       #
       # @example
-      #   require 'lotus/utils/string'
+      #   require 'hanami/utils/string'
       #
-      #   string = Lotus::Utils::String.new 'Lotus::(Utils|App)'
+      #   string = Hanami::Utils::String.new 'Hanami::(Utils|App)'
       #   string.tokenize do |token|
       #     puts token
       #   end
       #
       #   # =>
-      #     'Lotus::Utils'
-      #     'Lotus::App'
+      #     'Hanami::Utils'
+      #     'Hanami::App'
       def tokenize
         if match = TOKENIZE_REGEXP.match(@string)
           pre, post = match.pre_match, match.post_match
@@ -267,24 +267,24 @@ module Lotus
 
       # Return a pluralized version of self.
       #
-      # @return [Lotus::Utils::String] the pluralized string.
+      # @return [Hanami::Utils::String] the pluralized string.
       #
       # @api private
       # @since 0.4.1
       #
-      # @see Lotus::Utils::Inflector
+      # @see Hanami::Utils::Inflector
       def pluralize
         self.class.new Inflector.pluralize(self)
       end
 
       # Return a singularized version of self.
       #
-      # @return [Lotus::Utils::String] the singularized string.
+      # @return [Hanami::Utils::String] the singularized string.
       #
       # @api private
       # @since 0.4.1
       #
-      # @see Lotus::Utils::Inflector
+      # @see Hanami::Utils::Inflector
       def singularize
         self.class.new Inflector.singularize(self)
       end
@@ -364,23 +364,23 @@ module Lotus
       # This method does NOT mutate the original string.
       #
       # @param pattern [Regexp, String] the pattern to find
-      # @param replacement [String, Lotus::Utils::String] the string to replace
+      # @param replacement [String, Hanami::Utils::String] the string to replace
       #
-      # @return [Lotus::Utils::String] the replaced string
+      # @return [Hanami::Utils::String] the replaced string
       #
       # @since 0.6.0
       #
       # @example
-      #   require 'lotus/utils/string'
+      #   require 'hanami/utils/string'
       #
-      #   string = Lotus::Utils::String.new('authors/books/index')
+      #   string = Hanami::Utils::String.new('authors/books/index')
       #   result = string.rsub(/\//, '#')
       #
       #   puts string
-      #     # => #<Lotus::Utils::String:0x007fdb41233ad8 @string="authors/books/index">
+      #     # => #<Hanami::Utils::String:0x007fdb41233ad8 @string="authors/books/index">
       #
       #   puts result
-      #     # => #<Lotus::Utils::String:0x007fdb41232ed0 @string="authors/books#index">
+      #     # => #<Hanami::Utils::String:0x007fdb41232ed0 @string="authors/books#index">
       def rsub(pattern, replacement)
         if i = rindex(pattern)
           s    = @string.dup

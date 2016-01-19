@@ -1,9 +1,9 @@
 require 'test_helper'
 require 'set'
 require 'bigdecimal'
-require 'lotus/utils/duplicable'
+require 'hanami/utils/duplicable'
 
-describe Lotus::Utils::Duplicable do
+describe Hanami::Utils::Duplicable do
   describe "#dup" do
     describe "non duplicable types" do
       before do
@@ -28,7 +28,7 @@ describe Lotus::Utils::Duplicable do
       end
 
       it "doesn't dup symbol" do
-        assert_same_duped_object :lotus
+        assert_same_duped_object :hanami
       end
 
       it "doesn't dup integer" do
@@ -62,7 +62,7 @@ describe Lotus::Utils::Duplicable do
       end
 
       it "duplicates string" do
-        assert_different_duped_object "Lotus"
+        assert_different_duped_object "Hanami"
       end
 
       it "duplicates date" do
@@ -84,7 +84,7 @@ describe Lotus::Utils::Duplicable do
       actual = nil
 
       _, stderr = capture_io do
-        actual = Lotus::Utils::Duplicable.dup(object)
+        actual = Hanami::Utils::Duplicable.dup(object)
       end
 
       stderr.must_be_empty
@@ -94,7 +94,7 @@ describe Lotus::Utils::Duplicable do
     end
 
     def assert_different_duped_object(object)
-      actual = Lotus::Utils::Duplicable.dup(object)
+      actual = Hanami::Utils::Duplicable.dup(object)
 
       actual.must_equal           object
       actual.object_id.wont_equal object.object_id

@@ -1,15 +1,15 @@
 require 'test_helper'
-require 'lotus/interactor'
+require 'hanami/interactor'
 
 class InteractorWithoutInitialize
-  include Lotus::Interactor
+  include Hanami::Interactor
 
   def call
   end
 end
 
 class InteractorWithoutCall
-  include Lotus::Interactor
+  include Hanami::Interactor
 end
 
 class User
@@ -31,7 +31,7 @@ class User
 end
 
 class Signup
-  include Lotus::Interactor
+  include Hanami::Interactor
   expose :user, :params
 
   def initialize(params)
@@ -53,7 +53,7 @@ class Signup
 end
 
 class ErrorInteractor
-  include Lotus::Interactor
+  include Hanami::Interactor
   expose :operations
 
   def initialize
@@ -83,7 +83,7 @@ class ErrorInteractor
 end
 
 class ErrorBangInteractor
-  include Lotus::Interactor
+  include Hanami::Interactor
   expose :operations
 
   def initialize
@@ -108,7 +108,7 @@ class ErrorBangInteractor
 end
 
 class PublishVideo
-  include Lotus::Interactor
+  include Hanami::Interactor
 
   def call
   end
@@ -126,7 +126,7 @@ class PublishVideo
 end
 
 class CreateUser
-  include Lotus::Interactor
+  include Hanami::Interactor
   expose :user
 
   def initialize(params)
@@ -151,7 +151,7 @@ class UpdateUser < CreateUser
   end
 end
 
-describe Lotus::Interactor do
+describe Hanami::Interactor do
   describe '#initialize' do
     it "works when it isn't overridden" do
       InteractorWithoutInitialize.new
@@ -165,7 +165,7 @@ describe Lotus::Interactor do
   describe '#call' do
     it "returns a result" do
       result = Signup.new(name: 'Luca').call
-      assert result.class == Lotus::Interactor::Result, "Expected `result' to be kind of `Lotus::Interactor::Result'"
+      assert result.class == Hanami::Interactor::Result, "Expected `result' to be kind of `Hanami::Interactor::Result'"
     end
 
     it "is successful by default" do
@@ -237,7 +237,7 @@ describe Lotus::Interactor do
       result.operations.must_equal [:prepare!, :persist!, :log!]
     end
 
-    # See https://github.com/lotus/utils/issues/69
+    # See https://github.com/hanami/utils/issues/69
     it 'returns false as control flow for caller' do
       interactor = PublishVideo.new
       assert !interactor.valid?, "Expected interactor to not be valid"
@@ -264,27 +264,27 @@ describe Lotus::Interactor do
   end
 end
 
-describe Lotus::Interactor::Result do
+describe Hanami::Interactor::Result do
   describe '#initialize' do
     it 'allows to skip payload' do
-      Lotus::Interactor::Result.new
+      Hanami::Interactor::Result.new
     end
 
     it 'accepts a payload' do
-      result = Lotus::Interactor::Result.new(foo: 'bar')
+      result = Hanami::Interactor::Result.new(foo: 'bar')
       result.foo.must_equal 'bar'
     end
   end
 
   describe '#success?' do
     it 'is successful by default' do
-      result = Lotus::Interactor::Result.new
+      result = Hanami::Interactor::Result.new
       assert result.success?, "Expected `result' to be successful"
     end
 
     describe "when it has errors" do
       it "isn't successful" do
-        result = Lotus::Interactor::Result.new
+        result = Hanami::Interactor::Result.new
         result.add_error "There was a problem"
         assert !result.success?, "Expected `result' to NOT be successful"
       end
@@ -293,7 +293,7 @@ describe Lotus::Interactor::Result do
 
   describe '#fail!' do
     it 'causes a failure' do
-      result = Lotus::Interactor::Result.new
+      result = Hanami::Interactor::Result.new
       result.fail!
 
       assert !result.success?, "Expected `result' to NOT be successful"
@@ -302,14 +302,14 @@ describe Lotus::Interactor::Result do
 
   describe '#prepare!' do
     it 'merges the current payload' do
-      result = Lotus::Interactor::Result.new(foo: 'bar')
+      result = Hanami::Interactor::Result.new(foo: 'bar')
       result.prepare!(foo: 23)
 
       result.foo.must_equal 23
     end
 
     it 'returns self' do
-      result = Lotus::Interactor::Result.new(foo: 'bar')
+      result = Hanami::Interactor::Result.new(foo: 'bar')
       returning = result.prepare!(foo: 23)
 
       assert returning == result, "Expected `returning' to equal `result'"
@@ -318,19 +318,19 @@ describe Lotus::Interactor::Result do
 
   describe "#errors" do
     it "empty by default" do
-      result = Lotus::Interactor::Result.new
+      result = Hanami::Interactor::Result.new
       result.errors.must_be :empty?
     end
 
     it "returns all the errors" do
-      result = Lotus::Interactor::Result.new
+      result = Hanami::Interactor::Result.new
       result.add_error ['Error 1', 'Error 2']
 
       result.errors.must_equal ['Error 1', 'Error 2']
     end
 
     it "prevents information escape" do
-      result = Lotus::Interactor::Result.new
+      result = Hanami::Interactor::Result.new
       result.add_error ['Error 1', 'Error 2']
 
       result.errors.clear
@@ -341,12 +341,12 @@ describe Lotus::Interactor::Result do
 
   describe "#error" do
     it "nil by default" do
-      result = Lotus::Interactor::Result.new
+      result = Hanami::Interactor::Result.new
       result.error.must_be_nil
     end
 
     it "returns only the first error" do
-      result = Lotus::Interactor::Result.new
+      result = Hanami::Interactor::Result.new
       result.add_error ['Error 1', 'Error 2']
 
       result.error.must_equal 'Error 1'
@@ -355,21 +355,21 @@ describe Lotus::Interactor::Result do
 
   describe '#respond_to?' do
     it 'returns true for concrete methods' do
-      result = Lotus::Interactor::Result.new
+      result = Hanami::Interactor::Result.new
 
       assert result.respond_to?(:success?),  "Expected `result' to respond to `#success?'"
       assert result.respond_to?('success?'), "Expected `result' to respond to `#success?'"
     end
 
     it 'returns true for methods derived from payload' do
-      result = Lotus::Interactor::Result.new(foo: 1)
+      result = Hanami::Interactor::Result.new(foo: 1)
 
       assert result.respond_to?(:foo),  "Expected `result' to respond to `#foo'"
       assert result.respond_to?('foo'), "Expected `result' to respond to `#foo'"
     end
 
     it 'returns true for methods derived from merged payload' do
-      result = Lotus::Interactor::Result.new
+      result = Hanami::Interactor::Result.new
       result.prepare!('bar' => 2)
 
       assert result.respond_to?(:bar),  "Expected `result' to respond to `#bar'"
@@ -378,10 +378,10 @@ describe Lotus::Interactor::Result do
   end
 
   describe '#inspect' do
-    let(:result) { Lotus::Interactor::Result.new(id: 23, user: User.new) }
+    let(:result) { Hanami::Interactor::Result.new(id: 23, user: User.new) }
 
     it 'reports the class name and the object_id' do
-      result.inspect.must_match %(#<Lotus::Interactor::Result)
+      result.inspect.must_match %(#<Hanami::Interactor::Result)
     end
 
     it 'reports the object_id' do
@@ -400,13 +400,13 @@ describe Lotus::Interactor::Result do
 
   describe 'payload' do
     it 'returns all the values passed in the payload' do
-      result = Lotus::Interactor::Result.new(a: 1, b: 2)
+      result = Hanami::Interactor::Result.new(a: 1, b: 2)
       result.a.must_equal 1
       result.b.must_equal 2
     end
 
     it 'returns all the values after a merge' do
-      result = Lotus::Interactor::Result.new(a: 1, b: 2)
+      result = Hanami::Interactor::Result.new(a: 1, b: 2)
       result.prepare!(a: 23, c: 3)
 
       result.a.must_equal 23
@@ -415,17 +415,17 @@ describe Lotus::Interactor::Result do
     end
 
     it "doesn't ignore forwarded messages" do
-      result = Lotus::Interactor::Result.new(params: {name: 'Luca'})
+      result = Hanami::Interactor::Result.new(params: {name: 'Luca'})
       result.params[:name].must_equal 'Luca'
     end
 
     it 'raises an error when unknown message is passed' do
-      result = Lotus::Interactor::Result.new
+      result = Hanami::Interactor::Result.new
       -> { result.unknown }.must_raise NoMethodError
     end
 
     it 'raises an error when unknown message is passed with args' do
-      result = Lotus::Interactor::Result.new
+      result = Hanami::Interactor::Result.new
       -> { result.unknown(:foo) }.must_raise NoMethodError
     end
   end

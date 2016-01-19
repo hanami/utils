@@ -1,7 +1,7 @@
 require 'test_helper'
-require 'lotus/utils/callbacks'
+require 'hanami/utils/callbacks'
 
-Lotus::Utils::Callbacks::Chain.class_eval do
+Hanami::Utils::Callbacks::Chain.class_eval do
   def size
     @chain.size
   end
@@ -41,9 +41,9 @@ class Action
   end
 end
 
-describe Lotus::Utils::Callbacks::Chain do
+describe Hanami::Utils::Callbacks::Chain do
   before do
-    @chain = Lotus::Utils::Callbacks::Chain.new
+    @chain = Hanami::Utils::Callbacks::Chain.new
   end
 
   describe '#append' do
@@ -263,17 +263,17 @@ describe Lotus::Utils::Callbacks::Chain do
   end
 end
 
-describe Lotus::Utils::Callbacks::Factory do
+describe Hanami::Utils::Callbacks::Factory do
   describe '.fabricate' do
     before do
-      @callback = Lotus::Utils::Callbacks::Factory.fabricate(callback)
+      @callback = Hanami::Utils::Callbacks::Factory.fabricate(callback)
     end
 
     describe 'when a callable is passed' do
       let(:callback) { Callable.new }
 
       it 'fabricates a Callback' do
-        @callback.must_be_kind_of(Lotus::Utils::Callbacks::Callback)
+        @callback.must_be_kind_of(Hanami::Utils::Callbacks::Callback)
       end
 
       it 'wraps the given callback' do
@@ -285,7 +285,7 @@ describe Lotus::Utils::Callbacks::Factory do
       let(:callback) { :symbolize! }
 
       it 'fabricates a MethodCallback' do
-        @callback.must_be_kind_of(Lotus::Utils::Callbacks::MethodCallback)
+        @callback.must_be_kind_of(Hanami::Utils::Callbacks::MethodCallback)
       end
 
       it 'wraps the given callback' do
@@ -295,9 +295,9 @@ describe Lotus::Utils::Callbacks::Factory do
   end
 end
 
-describe Lotus::Utils::Callbacks::Callback do
+describe Hanami::Utils::Callbacks::Callback do
   before do
-    @callback = Lotus::Utils::Callbacks::Callback.new(callback)
+    @callback = Hanami::Utils::Callbacks::Callback.new(callback)
   end
 
   let(:callback) { Proc.new{|params| logger.push("set_article: #{ params[:id] }") } }
@@ -311,9 +311,9 @@ describe Lotus::Utils::Callbacks::Callback do
   end
 end
 
-describe Lotus::Utils::Callbacks::MethodCallback do
+describe Hanami::Utils::Callbacks::MethodCallback do
   before do
-    @callback = Lotus::Utils::Callbacks::MethodCallback.new(callback)
+    @callback = Hanami::Utils::Callbacks::MethodCallback.new(callback)
   end
 
   let(:callback) { :set_article }
@@ -327,7 +327,7 @@ describe Lotus::Utils::Callbacks::MethodCallback do
   end
 
   it 'implements #hash' do
-    cb = Lotus::Utils::Callbacks::MethodCallback.new(callback)
+    cb = Hanami::Utils::Callbacks::MethodCallback.new(callback)
     cb.send(:hash).must_equal(@callback.send(:hash))
   end
 end

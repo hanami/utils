@@ -1,12 +1,12 @@
-require 'lotus/utils/string'
-require 'lotus/utils/kernel'
+require 'hanami/utils/string'
+require 'hanami/utils/kernel'
 
-module Lotus
+module Hanami
   module Utils
     # Prefixed string
     #
     # @since 0.1.0
-    class PathPrefix < Lotus::Utils::String
+    class PathPrefix < Hanami::Utils::String
       # Path separator
       #
       # @since 0.3.1
@@ -22,7 +22,7 @@ module Lotus
       #
       # @since 0.1.0
       #
-      # @see Lotus::Utils::PathPrefix::DEFAULT_SEPARATOR
+      # @see Hanami::Utils::PathPrefix::DEFAULT_SEPARATOR
       def initialize(string = nil, separator = DEFAULT_SEPARATOR)
         super(string)
         @separator = separator
@@ -33,25 +33,25 @@ module Lotus
       #
       # @param strings [::String] the token(s) we want to join
       #
-      # @return [Lotus::Utils::PathPrefix] the joined string
+      # @return [Hanami::Utils::PathPrefix] the joined string
       #
       # @since 0.1.0
       #
       # @example Single string
-      #   require 'lotus/utils/path_prefix'
+      #   require 'hanami/utils/path_prefix'
       #
-      #   path_prefix = Lotus::Utils::PathPrefix.new('/posts')
+      #   path_prefix = Hanami::Utils::PathPrefix.new('/posts')
       #   path_prefix.join('new').to_s  # => "/posts/new"
       #   path_prefix.join('/new').to_s # => "/posts/new"
       #
-      #   path_prefix = Lotus::Utils::PathPrefix.new('posts')
+      #   path_prefix = Hanami::Utils::PathPrefix.new('posts')
       #   path_prefix.join('new').to_s  # => "/posts/new"
       #   path_prefix.join('/new').to_s # => "/posts/new"
       #
       # @example Multiple strings
-      #   require 'lotus/utils/path_prefix'
+      #   require 'hanami/utils/path_prefix'
       #
-      #   path_prefix = Lotus::Utils::PathPrefix.new('myapp')
+      #   path_prefix = Hanami::Utils::PathPrefix.new('myapp')
       #   path_prefix.join('/assets', 'application.js').to_s
       #     # => "/myapp/assets/application.js"
       def join(*strings)
@@ -64,7 +64,7 @@ module Lotus
       # @param strings [::String] the tokens we want to join
       # @param separator [::String] the separator used between tokens
       #
-      # @return [Lotus::Utils::PathPrefix] the joined string
+      # @return [Hanami::Utils::PathPrefix] the joined string
       #
       # @raise [TypeError] if one of the argument can't be treated as a
       #   string
@@ -72,9 +72,9 @@ module Lotus
       # @since 0.1.0
       #
       # @example
-      #   require 'lotus/utils/path_prefix'
+      #   require 'hanami/utils/path_prefix'
       #
-      #   path_prefix = Lotus::Utils::PathPrefix.new 'posts'
+      #   path_prefix = Hanami::Utils::PathPrefix.new 'posts'
       #   path_prefix.relative_join('new').to_s      # => 'posts/new'
       #   path_prefix.relative_join('new', '_').to_s # => 'posts_new'
       def relative_join(strings, separator = @separator)
@@ -114,10 +114,10 @@ module Lotus
       # @api private
       #
       # @example
-      #   require 'lotus/utils/path_prefix'
+      #   require 'hanami/utils/path_prefix'
       #
-      #   Lotus::Utils::PathPrefix.new('/posts').absolute? #=> true
-      #   Lotus::Utils::PathPrefix.new('posts').absolute?  #=> false
+      #   Hanami::Utils::PathPrefix.new('/posts').absolute? #=> true
+      #   Hanami::Utils::PathPrefix.new('posts').absolute?  #=> false
       def absolute?
         @string.start_with?(separator)
       end

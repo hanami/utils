@@ -1,4 +1,4 @@
-module Lotus
+module Hanami
   module Utils
     # Safe dup logic
     #
@@ -26,40 +26,40 @@ module Lotus
       # @since 0.6.0
       #
       # @example Basic Usage With Types That Can't Be Duped
-      #   require 'lotus/utils/duplicable'
+      #   require 'hanami/utils/duplicable'
       #
       #   object = 23
       #   puts object.object_id # => 47
       #
-      #   result = Lotus::Utils::Duplicable.dup(object)
+      #   result = Hanami::Utils::Duplicable.dup(object)
       #
       #   puts result           # => 23
       #   puts result.object_id # => 47 - Same object, because numbers can't be duped
       #
       # @example Basic Usage With Types That Can Be Duped
-      #   require 'lotus/utils/duplicable'
+      #   require 'hanami/utils/duplicable'
       #
       #   object = "hello"
       #   puts object.object_id # => 70172661782360
       #
-      #   result = Lotus::Utils::Duplicable.dup(object)
+      #   result = Hanami::Utils::Duplicable.dup(object)
       #
       #   puts result           # => "hello"
       #   puts result.object_id # => 70172671467020 – Different object
       #
       # @example Custom Logic
-      #   require 'lotus/utils/duplicable'
-      #   require 'lotus/utils/hash'
+      #   require 'hanami/utils/duplicable'
+      #   require 'hanami/utils/hash'
       #
       #   hash = { a: 1 }
       #   puts hash.object_id # => 70207105061680
       #
-      #   result = Lotus::Utils::Duplicable.dup(hash) do |value|
+      #   result = Hanami::Utils::Duplicable.dup(hash) do |value|
       #     case value
-      #     when Lotus::Utils::Hash
+      #     when Hanami::Utils::Hash
       #       value.deep_dup
       #     when ::Hash
-      #       Lotus::Utils::Hash.new(value).deep_dup.to_h
+      #       Hanami::Utils::Hash.new(value).deep_dup.to_h
       #     end
       #   end
       #

@@ -1,6 +1,6 @@
-require 'lotus/utils'
+require 'hanami/utils'
 
-module Lotus
+module Hanami
   module Utils
     # Prints a deprecation warning when initialized
     #
@@ -13,11 +13,11 @@ module Lotus
       # @since 0.3.1
       #
       # @example Direct usage
-      #   require 'lotus/utils/deprecation'
+      #   require 'hanami/utils/deprecation'
       #
       #   class Engine
       #     def old_method
-      #       Lotus::Utils::Deprecation.new('old_method is deprecated, please use new_method')
+      #       Hanami::Utils::Deprecation.new('old_method is deprecated, please use new_method')
       #       new_method
       #     end
       #
@@ -31,11 +31,11 @@ module Lotus
       #     # => started
       #
       # @example Indirect usage
-      #   require 'lotus/utils/deprecation'
+      #   require 'hanami/utils/deprecation'
       #
       #   class Engine
       #     def old_method
-      #       Lotus::Utils::Deprecation.new('old_method is deprecated, please use new_method')
+      #       Hanami::Utils::Deprecation.new('old_method is deprecated, please use new_method')
       #       new_method
       #     end
       #

@@ -1,6 +1,6 @@
-require 'lotus/utils/kernel'
+require 'hanami/utils/kernel'
 
-module Lotus
+module Hanami
   module Utils
     # A collection of loading paths.
     #
@@ -11,12 +11,12 @@ module Lotus
       # @param paths [String, Pathname, Array<String>, Array<Pathname>] A single
       #   or a collection of objects that can be converted into a Pathname
       #
-      # @return [Lotus::Utils::LoadPaths] self
+      # @return [Hanami::Utils::LoadPaths] self
       #
       # @since 0.2.0
       #
       # @see http://ruby-doc.org/stdlib/libdoc/pathname/rdoc/Pathname.html
-      # @see Lotus::Utils::Kernel.Pathname
+      # @see Hanami::Utils::Kernel.Pathname
       def initialize(*paths)
         @paths = Utils::Kernel.Array(paths)
       end
@@ -31,19 +31,19 @@ module Lotus
       # @see http://ruby-doc.org/core/Object.html#method-i-dup
       #
       # @example
-      #   require 'lotus/utils/load_paths'
+      #   require 'hanami/utils/load_paths'
       #
-      #   paths  = Lotus::Utils::LoadPaths.new '.'
+      #   paths  = Hanami::Utils::LoadPaths.new '.'
       #   paths2 = paths.dup
       #
       #   paths  << '..'
       #   paths2 << '../..'
       #
       #   paths
-      #     # => #<Lotus::Utils::LoadPaths:0x007f84e0cad430 @paths=[".", ".."]>
+      #     # => #<Hanami::Utils::LoadPaths:0x007f84e0cad430 @paths=[".", ".."]>
       #
       #   paths2
-      #     # => #<Lotus::Utils::LoadPaths:0x007faedc4ad3e0 @paths=[".", "../.."]>
+      #     # => #<Hanami::Utils::LoadPaths:0x007faedc4ad3e0 @paths=[".", "../.."]>
       def initialize_copy(original)
         @paths = original.instance_variable_get(:@paths).dup
       end
@@ -73,41 +73,41 @@ module Lotus
       # @param paths [String, Pathname, Array<String>, Array<Pathname>] A single
       #   or a collection of objects that can be converted into a Pathname
       #
-      # @return [Lotus::Utils::LoadPaths] self
+      # @return [Hanami::Utils::LoadPaths] self
       #
       # @raise [RuntimeError] if the object was previously frozen
       #
       # @since 0.2.0
       #
       # @see http://ruby-doc.org/stdlib/libdoc/pathname/rdoc/Pathname.html
-      # @see Lotus::Utils::Kernel.Pathname
-      # @see Lotus::Utils::LoadPaths#freeze
+      # @see Hanami::Utils::Kernel.Pathname
+      # @see Hanami::Utils::LoadPaths#freeze
       #
       # @example Basic usage
-      #   require 'lotus/utils/load_paths'
+      #   require 'hanami/utils/load_paths'
       #
-      #   paths = Lotus::Utils::LoadPaths.new
+      #   paths = Hanami::Utils::LoadPaths.new
       #   paths.push '.'
       #   paths.push '..', '../..'
       #
       # @example Chainable calls
-      #   require 'lotus/utils/load_paths'
+      #   require 'hanami/utils/load_paths'
       #
-      #   paths = Lotus::Utils::LoadPaths.new
+      #   paths = Hanami::Utils::LoadPaths.new
       #   paths.push('.')
       #        .push('..', '../..')
       #
       # @example Shovel alias (#<<)
-      #   require 'lotus/utils/load_paths'
+      #   require 'hanami/utils/load_paths'
       #
-      #   paths = Lotus::Utils::LoadPaths.new
+      #   paths = Hanami::Utils::LoadPaths.new
       #   paths << '.'
       #   paths << ['..', '../..']
       #
       # @example Chainable calls with shovel alias (#<<)
-      #   require 'lotus/utils/load_paths'
+      #   require 'hanami/utils/load_paths'
       #
-      #   paths = Lotus::Utils::LoadPaths.new
+      #   paths = Hanami::Utils::LoadPaths.new
       #   paths << '.' << '../..'
       def push(*paths)
         @paths.push(*paths)
@@ -124,9 +124,9 @@ module Lotus
       # @see http://ruby-doc.org/core/Object.html#method-i-freeze
       #
       # @example
-      #   require 'lotus/utils/load_paths'
+      #   require 'hanami/utils/load_paths'
       #
-      #   paths = Lotus::Utils::LoadPaths.new
+      #   paths = Hanami::Utils::LoadPaths.new
       #   paths.freeze
       #
       #   paths.frozen?  # => true

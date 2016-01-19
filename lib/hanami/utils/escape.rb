@@ -1,4 +1,4 @@
-module Lotus
+module Hanami
   module Utils
     # HTML escape utilities
     #
@@ -72,7 +72,7 @@ module Lotus
       # @since 0.4.0
       # @api private
       #
-      # @see Lotus::Utils::Escape.html
+      # @see Hanami::Utils::Escape.html
       HTML_CHARS = {
         '&' => '&amp;',
         '<' => '&lt;',
@@ -100,7 +100,7 @@ module Lotus
       # @since 0.4.0
       # @api private
       #
-      # @see Lotus::Utils::Escape.html_attribute
+      # @see Hanami::Utils::Escape.html_attribute
       HTML_ENTITIES = {
         34   => 'quot',     # quotation mark
         38   => 'amp',      # ampersand
@@ -361,15 +361,15 @@ module Lotus
       # @since 0.4.0
       # @api private
       #
-      # @see Lotus::Utils::Escape.url
+      # @see Hanami::Utils::Escape.url
       DEFAULT_URL_SCHEMES = ['http', 'https', 'mailto'].freeze
 
       # The output of an escape.
       #
       # It's marked with this special class for two reasons:
       #
-      #   * Don't double escape the same string (this is for `Lotus::Helpers` compatibility)
-      #   * Leave open the possibility to developers to mark a string as safe with an higher API (eg. `#raw` in `Lotus::View` or `Lotus::Helpers`)
+      #   * Don't double escape the same string (this is for `Hanami::Helpers` compatibility)
+      #   * Leave open the possibility to developers to mark a string as safe with an higher API (eg. `#raw` in `Hanami::View` or `Hanami::Helpers`)
       #
       # @since 0.4.0
       # @api private
@@ -411,12 +411,12 @@ module Lotus
       # @see https://www.owasp.org/index.php/XSS_%28Cross_Site_Scripting%29_Prevention_Cheat_Sheet OWASP XSS Cheat Sheet Rule #1
       #
       # @example Good practice
-      #   <div><%= Lotus::Utils::Escape.html('<script>alert(1);</script>') %></div>
+      #   <div><%= Hanami::Utils::Escape.html('<script>alert(1);</script>') %></div>
       #   <div>&lt;script&gt;alert(1);&lt;&#x2F;script&gt;</div>
       #
       # @example Bad practice
       #   # WRONG Use Escape.html_attribute
-      #   <a title="<%= Lotus::Utils::Escape.html('...') %>">link</a>
+      #   <a title="<%= Hanami::Utils::Escape.html('...') %>">link</a>
       def self.html(input)
         input = encode(input)
         return input if input.is_a?(SafeString)
@@ -445,11 +445,11 @@ module Lotus
       # @see https://www.owasp.org/index.php/XSS_%28Cross_Site_Scripting%29_Prevention_Cheat_Sheet OWASP XSS Cheat Sheet Rule #2
       #
       # @example Good practice
-      #   <a title="<%= Lotus::Utils::Escape.html_attribute('...') %>">link</a>
+      #   <a title="<%= Hanami::Utils::Escape.html_attribute('...') %>">link</a>
       #
       # @example Good but expensive practice
       #   # Alternatively you can use Escape.html
-      #   <p><%= Lotus::Utils::Escape.html_attribute('...') %></p>
+      #   <p><%= Hanami::Utils::Escape.html_attribute('...') %></p>
       def self.html_attribute(input)
         input = encode(input)
         return input if input.is_a?(SafeString)
@@ -478,16 +478,16 @@ module Lotus
       #
       # @since 0.4.0
       #
-      # @see Lotus::Utils::Escape::DEFAULT_URL_SCHEMES
+      # @see Hanami::Utils::Escape::DEFAULT_URL_SCHEMES
       # @see http://www.ruby-doc.org/stdlib/libdoc/uri/rdoc/URI.html#method-c-extract
       #
       # @example Basic usage
       #   <%
-      #     good_input = "http://lotusrb.org"
+      #     good_input = "http://hanamirb.org"
       #     evil_input = "javascript:alert('xss')"
       #
-      #     escaped_good_input = Lotus::Utils::Escape.url(good_input) # => "http://lotusrb.org"
-      #     escaped_evil_input = Lotus::Utils::Escape.url(evil_input) # => ""
+      #     escaped_good_input = Hanami::Utils::Escape.url(good_input) # => "http://hanamirb.org"
+      #     escaped_evil_input = Hanami::Utils::Escape.url(evil_input) # => ""
       #   %>
       #
       #   <a href="<%= escaped_good_input %>">personal website</a>
@@ -500,8 +500,8 @@ module Lotus
       #     accepted = "ftps://ftp.example.org"
       #     rejected = "http://www.example.org"
       #
-      #     escaped_accepted = Lotus::Utils::Escape.url(accepted) # => "ftps://ftp.example.org"
-      #     escaped_rejected = Lotus::Utils::Escape.url(rejected) # => ""
+      #     escaped_accepted = Hanami::Utils::Escape.url(accepted) # => "ftps://ftp.example.org"
+      #     escaped_rejected = Hanami::Utils::Escape.url(rejected) # => ""
       #   %>
       #
       #   <a href="<%= escaped_accepted %>">FTP</a>

@@ -1,7 +1,7 @@
 require 'test_helper'
-require 'lotus/utils/load_paths'
+require 'hanami/utils/load_paths'
 
-Lotus::Utils::LoadPaths.class_eval do
+Hanami::Utils::LoadPaths.class_eval do
   def empty?
     @paths.empty?
   end
@@ -11,20 +11,20 @@ Lotus::Utils::LoadPaths.class_eval do
   end
 end
 
-describe Lotus::Utils::LoadPaths do
+describe Hanami::Utils::LoadPaths do
   describe '#initialize' do
     it 'can be initialized with zero paths' do
-      paths = Lotus::Utils::LoadPaths.new
+      paths = Hanami::Utils::LoadPaths.new
       paths.must_be_empty
     end
 
     it 'can be initialized with one path' do
-      paths = Lotus::Utils::LoadPaths.new '..'
+      paths = Hanami::Utils::LoadPaths.new '..'
       paths.must_include '..'
     end
 
     it 'can be initialized with more paths' do
-      paths = Lotus::Utils::LoadPaths.new '..', '../..'
+      paths = Hanami::Utils::LoadPaths.new '..', '../..'
       paths.must_include '..'
       paths.must_include '../..'
     end
@@ -32,7 +32,7 @@ describe Lotus::Utils::LoadPaths do
 
   describe '#each' do
     it 'coerces the given paths to pathnames and yields a block' do
-      paths = Lotus::Utils::LoadPaths.new '..', '../..'
+      paths = Hanami::Utils::LoadPaths.new '..', '../..'
 
       paths.each do |path|
         path.must_be_kind_of Pathname
@@ -40,12 +40,12 @@ describe Lotus::Utils::LoadPaths do
     end
 
     it 'remove duplicates' do
-      paths   = Lotus::Utils::LoadPaths.new '..', '..'
+      paths   = Hanami::Utils::LoadPaths.new '..', '..'
       paths.each(&Proc.new{}).size.must_equal 1
     end
 
     it 'raises an error if a path is unknown' do
-      paths = Lotus::Utils::LoadPaths.new 'unknown/path'
+      paths = Hanami::Utils::LoadPaths.new 'unknown/path'
 
       -> {
         paths.each { }
@@ -55,7 +55,7 @@ describe Lotus::Utils::LoadPaths do
 
   describe '#push' do
     it 'adds the given path' do
-      paths = Lotus::Utils::LoadPaths.new '.'
+      paths = Hanami::Utils::LoadPaths.new '.'
       paths.push '..'
 
       paths.must_include '.'
@@ -63,7 +63,7 @@ describe Lotus::Utils::LoadPaths do
     end
 
     it 'adds the given paths' do
-      paths = Lotus::Utils::LoadPaths.new '.'
+      paths = Hanami::Utils::LoadPaths.new '.'
       paths.push '..', '../..'
 
       paths.must_include '.'
@@ -72,19 +72,19 @@ describe Lotus::Utils::LoadPaths do
     end
 
     it 'removes duplicates' do
-      paths = Lotus::Utils::LoadPaths.new '.'
+      paths = Hanami::Utils::LoadPaths.new '.'
       paths.push '.', '.'
       paths.each(&Proc.new{}).size.must_equal 1
     end
 
     it 'removes nil' do
-      paths = Lotus::Utils::LoadPaths.new '.'
+      paths = Hanami::Utils::LoadPaths.new '.'
       paths.push nil
       paths.each(&Proc.new{}).size.must_equal 1
     end
 
     it 'returns self so multiple operations can be performed' do
-      paths = Lotus::Utils::LoadPaths.new
+      paths = Hanami::Utils::LoadPaths.new
 
       returning = paths.push('.')
       returning.must_be_same_as(paths)
@@ -99,7 +99,7 @@ describe Lotus::Utils::LoadPaths do
 
   describe '#<< (alias of #push)' do
     it 'adds the given path' do
-      paths = Lotus::Utils::LoadPaths.new '.'
+      paths = Hanami::Utils::LoadPaths.new '.'
       paths << '..'
 
       paths.must_include '.'
@@ -107,14 +107,14 @@ describe Lotus::Utils::LoadPaths do
     end
 
     it 'adds the given paths' do
-      paths = Lotus::Utils::LoadPaths.new '.'
+      paths = Hanami::Utils::LoadPaths.new '.'
       paths << ['..', '../..']
 
       assert paths ==  ['.', '..', '../..']
     end
 
     it 'returns self so multiple operations can be performed' do
-      paths = Lotus::Utils::LoadPaths.new
+      paths = Hanami::Utils::LoadPaths.new
 
       returning = paths << '.'
       returning.must_be_same_as(paths)
@@ -129,7 +129,7 @@ describe Lotus::Utils::LoadPaths do
 
   describe '#dup' do
     it 'returns a copy of self' do
-      paths  = Lotus::Utils::LoadPaths.new '.'
+      paths  = Hanami::Utils::LoadPaths.new '.'
       paths2 = paths.dup
 
       paths  << '..'
@@ -147,7 +147,7 @@ describe Lotus::Utils::LoadPaths do
 
   describe '#clone' do
     it 'returns a copy of self' do
-      paths  = Lotus::Utils::LoadPaths.new '.'
+      paths  = Hanami::Utils::LoadPaths.new '.'
       paths2 = paths.clone
 
       paths  << '..'
@@ -165,14 +165,14 @@ describe Lotus::Utils::LoadPaths do
 
   describe '#freeze' do
     it 'freezes the object' do
-      paths = Lotus::Utils::LoadPaths.new
+      paths = Hanami::Utils::LoadPaths.new
       paths.freeze
 
       paths.must_be :frozen?
     end
 
     it "doesn't allow to push paths" do
-      paths = Lotus::Utils::LoadPaths.new
+      paths = Hanami::Utils::LoadPaths.new
       paths.freeze
 
       -> { paths.push '.' }.must_raise RuntimeError
@@ -181,35 +181,35 @@ describe Lotus::Utils::LoadPaths do
 
   describe '#==' do
     it "checks equality with LoadPaths" do
-      paths = Lotus::Utils::LoadPaths.new('.', '.')
-      other = Lotus::Utils::LoadPaths.new('.')
+      paths = Hanami::Utils::LoadPaths.new('.', '.')
+      other = Hanami::Utils::LoadPaths.new('.')
 
       other.must_equal paths
     end
 
     it "it returns false if the paths aren't equal" do
-      paths = Lotus::Utils::LoadPaths.new('.', '..')
-      other = Lotus::Utils::LoadPaths.new('.')
+      paths = Hanami::Utils::LoadPaths.new('.', '..')
+      other = Hanami::Utils::LoadPaths.new('.')
 
       other.wont_equal paths
     end
 
     it "checks equality with Array" do
-      paths = Lotus::Utils::LoadPaths.new('.', '.')
+      paths = Hanami::Utils::LoadPaths.new('.', '.')
       other = ['.']
 
       other.must_equal paths
     end
 
     it "it returns false if given array isn't equal" do
-      paths = Lotus::Utils::LoadPaths.new('.', '..')
+      paths = Hanami::Utils::LoadPaths.new('.', '..')
       other = ['.']
 
       other.wont_equal paths
     end
 
     it "it returns false the type isn't matchable" do
-      paths = Lotus::Utils::LoadPaths.new('.', '..')
+      paths = Hanami::Utils::LoadPaths.new('.', '..')
       other = nil
 
       other.wont_equal paths

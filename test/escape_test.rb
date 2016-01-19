@@ -1,15 +1,15 @@
 require 'test_helper'
-require 'lotus/utils'
-require 'lotus/utils/escape'
+require 'hanami/utils'
+require 'hanami/utils/escape'
 
-describe Lotus::Utils::Escape do
-  let(:mod) { Lotus::Utils::Escape }
+describe Hanami::Utils::Escape do
+  let(:mod) { Hanami::Utils::Escape }
 
   describe '.html' do
     TEST_ENCODINGS.each do |encoding|
       describe "#{ encoding }" do
         it "doesn't escape safe string" do
-          input  = Lotus::Utils::Escape::SafeString.new('&')
+          input  = Hanami::Utils::Escape::SafeString.new('&')
           result = mod.html(input.encode(encoding))
           result.must_equal '&'
         end
@@ -120,7 +120,7 @@ describe Lotus::Utils::Escape do
     TEST_ENCODINGS.each do |encoding|
       describe "#{ encoding }" do
         it "doesn't escape safe string" do
-          input  = Lotus::Utils::Escape::SafeString.new('&')
+          input  = Hanami::Utils::Escape::SafeString.new('&')
           result = mod.html_attribute(input.encode(encoding))
           result.must_equal '&'
         end
@@ -260,7 +260,7 @@ describe Lotus::Utils::Escape do
     end
 
     TEST_HTML_ENTITIES.each do |char, entity|
-      test_name = Lotus::Utils.jruby? ? char.ord : char
+      test_name = Hanami::Utils.jruby? ? char.ord : char
 
       it "escapes #{ test_name }" do
         result = mod.html_attribute(char)
@@ -273,7 +273,7 @@ describe Lotus::Utils::Escape do
     TEST_ENCODINGS.each do |encoding|
       describe "#{ encoding }" do
         it "doesn't escape safe string" do
-          input  = Lotus::Utils::Escape::SafeString.new('javascript:alert(0);')
+          input  = Hanami::Utils::Escape::SafeString.new('javascript:alert(0);')
           result = mod.url(input.encode(encoding))
           result.must_equal 'javascript:alert(0);'
         end
@@ -288,24 +288,24 @@ describe Lotus::Utils::Escape do
           result.must_equal ''
         end
 
-        it "escapes 'http://lotusrb.org'" do
-          result = mod.url('http://lotusrb.org'.encode(encoding))
-          result.must_equal 'http://lotusrb.org'
+        it "escapes 'http://hanamirb.org'" do
+          result = mod.url('http://hanamirb.org'.encode(encoding))
+          result.must_equal 'http://hanamirb.org'
         end
 
-        it "escapes 'https://lotusrb.org'" do
-          result = mod.url('https://lotusrb.org'.encode(encoding))
-          result.must_equal 'https://lotusrb.org'
+        it "escapes 'https://hanamirb.org'" do
+          result = mod.url('https://hanamirb.org'.encode(encoding))
+          result.must_equal 'https://hanamirb.org'
         end
 
-        it "escapes 'https://lotusrb.org#introduction'" do
-          result = mod.url('https://lotusrb.org#introduction'.encode(encoding))
-          result.must_equal 'https://lotusrb.org#introduction'
+        it "escapes 'https://hanamirb.org#introduction'" do
+          result = mod.url('https://hanamirb.org#introduction'.encode(encoding))
+          result.must_equal 'https://hanamirb.org#introduction'
         end
 
-        it "escapes 'https://lotusrb.org/guides/index.html'" do
-          result = mod.url('https://lotusrb.org/guides/index.html'.encode(encoding))
-          result.must_equal 'https://lotusrb.org/guides/index.html'
+        it "escapes 'https://hanamirb.org/guides/index.html'" do
+          result = mod.url('https://hanamirb.org/guides/index.html'.encode(encoding))
+          result.must_equal 'https://hanamirb.org/guides/index.html'
         end
 
         it "escapes 'mailto:user@example.com'" do

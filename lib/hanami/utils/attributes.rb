@@ -1,6 +1,6 @@
-require 'lotus/utils/hash'
+require 'hanami/utils/hash'
 
-module Lotus
+module Hanami
   module Utils
     # A set of attributes.
     #
@@ -20,14 +20,14 @@ module Lotus
       #
       # @param hash [#to_h] a Hash or any object that implements #to_h
       #
-      # @return [Lotus::Utils::Attributes] self
+      # @return [Hanami::Utils::Attributes] self
       #
       # @since 0.3.2
       #
       # @example
-      #   require 'lotus/utils/attributes'
+      #   require 'hanami/utils/attributes'
       #
-      #   attributes = Lotus::Utils::Attributes.new(a: 1, b: { 2 => [3, 4] })
+      #   attributes = Hanami::Utils::Attributes.new(a: 1, b: { 2 => [3, 4] })
       #   attributes.to_h # => { "a" => 1, "b" => { "2" => [3, 4] } }
       def initialize(hash = {})
         @attributes = Utils::Hash.new(hash, &nil).stringify!
@@ -42,9 +42,9 @@ module Lotus
       # @since 0.3.2
       #
       # @example
-      #   require 'lotus/utils/attributes'
+      #   require 'hanami/utils/attributes'
       #
-      #   attributes = Lotus::Utils::Attributes.new(a: 1, 'b' => 2, 23 => 'foo')
+      #   attributes = Hanami::Utils::Attributes.new(a: 1, 'b' => 2, 23 => 'foo')
       #
       #   attributes.get(:a)  # => 1
       #   attributes.get('a') # => 1
@@ -82,9 +82,9 @@ module Lotus
       # @since 0.3.2
       #
       # @example
-      #   require 'lotus/utils/attributes'
+      #   require 'hanami/utils/attributes'
       #
-      #   attributes = Lotus::Utils::Attributes.new
+      #   attributes = Hanami::Utils::Attributes.new
       #
       #   attributes.set(:a, 1)
       #   attributes.get(:a)  # => 1
@@ -121,7 +121,7 @@ module Lotus
       # @api private
       def _read_value(value)
         case val = value
-        when ::Hash, ::Lotus::Utils::Hash, ->(v) { v.respond_to?(:lotus_nested_attributes?) }
+        when ::Hash, ::Hanami::Utils::Hash, ->(v) { v.respond_to?(:hanami_nested_attributes?) }
           val.to_h
         else
           val

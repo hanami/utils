@@ -3,7 +3,7 @@ require 'date'
 require 'time'
 require 'pathname'
 require 'bigdecimal'
-require 'lotus/utils'
+require 'hanami/utils'
 
 # Define top level constant Boolean, so it can be easily used by other libraries
 # in coercions DSLs
@@ -12,7 +12,7 @@ require 'lotus/utils'
 class Boolean
 end unless defined?(Boolean)
 
-module Lotus
+module Hanami
   module Utils
     # Kernel utilities
     # @since 0.1.1
@@ -22,7 +22,7 @@ module Lotus
       # @since 0.3.3
       # @api private
       #
-      # @see Lotus::Utils::Kernel.Integer
+      # @see Hanami::Utils::Kernel.Integer
       NUMERIC_MATCHER = /\A([\d\/\.\+iE]+|NaN|Infinity)\z/.freeze
 
       # Coerces the argument to be an Array.
@@ -47,19 +47,19 @@ module Lotus
       # @see http://www.ruby-doc.org/core/Array.html#method-i-uniq
       #
       # @example Basic Usage
-      #   require 'lotus/utils/kernel'
+      #   require 'hanami/utils/kernel'
       #
-      #   Lotus::Utils::Kernel.Array(nil)              # => []
-      #   Lotus::Utils::Kernel.Array(true)             # => [true]
-      #   Lotus::Utils::Kernel.Array(false)            # => [false]
-      #   Lotus::Utils::Kernel.Array(1)                # => [1]
-      #   Lotus::Utils::Kernel.Array([1])              # => [1]
-      #   Lotus::Utils::Kernel.Array([1, [2]])         # => [1,2]
-      #   Lotus::Utils::Kernel.Array([1, [2, nil]])    # => [1,2]
-      #   Lotus::Utils::Kernel.Array([1, [2, nil, 1]]) # => [1,2]
+      #   Hanami::Utils::Kernel.Array(nil)              # => []
+      #   Hanami::Utils::Kernel.Array(true)             # => [true]
+      #   Hanami::Utils::Kernel.Array(false)            # => [false]
+      #   Hanami::Utils::Kernel.Array(1)                # => [1]
+      #   Hanami::Utils::Kernel.Array([1])              # => [1]
+      #   Hanami::Utils::Kernel.Array([1, [2]])         # => [1,2]
+      #   Hanami::Utils::Kernel.Array([1, [2, nil]])    # => [1,2]
+      #   Hanami::Utils::Kernel.Array([1, [2, nil, 1]]) # => [1,2]
       #
       # @example Array Interface
-      #   require 'lotus/utils/kernel'
+      #   require 'hanami/utils/kernel'
       #
       #   ResultSet = Struct.new(:records) do
       #     def to_a
@@ -74,10 +74,10 @@ module Lotus
       #   end
       #
       #   set = ResultSet.new([2,1,3])
-      #   Lotus::Utils::Kernel.Array(set)              # => [1,2,3]
+      #   Hanami::Utils::Kernel.Array(set)              # => [1,2,3]
       #
       #   response = Response.new(200, {}, 'hello')
-      #   Lotus::Utils::Kernel.Array(response)         # => [200, {}, "hello"]
+      #   Hanami::Utils::Kernel.Array(response)         # => [200, {}, "hello"]
       def self.Array(arg)
         super(arg).dup.tap do |a|
           a.flatten!
@@ -97,21 +97,21 @@ module Lotus
       # @since 0.1.1
       #
       # @example Basic Usage
-      #   require 'lotus/utils/kernel'
+      #   require 'hanami/utils/kernel'
       #
-      #   Lotus::Utils::Kernel.Set(nil)              # => #<Set: {}>
-      #   Lotus::Utils::Kernel.Set(true)             # => #<Set: {true}>
-      #   Lotus::Utils::Kernel.Set(false)            # => #<Set: {false}>
-      #   Lotus::Utils::Kernel.Set(1)                # => #<Set: {1}>
-      #   Lotus::Utils::Kernel.Set([1])              # => #<Set: {1}>
-      #   Lotus::Utils::Kernel.Set([1, 1])           # => #<Set: {1}>
-      #   Lotus::Utils::Kernel.Set([1, [2]])         # => #<Set: {1, [2]}>
-      #   Lotus::Utils::Kernel.Set([1, [2, nil]])    # => #<Set: {1, [2, nil]}>
-      #   Lotus::Utils::Kernel.Set({a: 1})           # => #<Set: {[:a, 1]}>
+      #   Hanami::Utils::Kernel.Set(nil)              # => #<Set: {}>
+      #   Hanami::Utils::Kernel.Set(true)             # => #<Set: {true}>
+      #   Hanami::Utils::Kernel.Set(false)            # => #<Set: {false}>
+      #   Hanami::Utils::Kernel.Set(1)                # => #<Set: {1}>
+      #   Hanami::Utils::Kernel.Set([1])              # => #<Set: {1}>
+      #   Hanami::Utils::Kernel.Set([1, 1])           # => #<Set: {1}>
+      #   Hanami::Utils::Kernel.Set([1, [2]])         # => #<Set: {1, [2]}>
+      #   Hanami::Utils::Kernel.Set([1, [2, nil]])    # => #<Set: {1, [2, nil]}>
+      #   Hanami::Utils::Kernel.Set({a: 1})           # => #<Set: {[:a, 1]}>
       #
       # @example Set Interface
       #   require 'securerandom'
-      #   require 'lotus/utils/kernel'
+      #   require 'hanami/utils/kernel'
       #
       #   UuidSet = Class.new do
       #     def initialize(*uuids)
@@ -126,13 +126,13 @@ module Lotus
       #   end
       #
       #   uuids = UuidSet.new(SecureRandom.uuid)
-      #   Lotus::Utils::Kernel.Set(uuids)
+      #   Hanami::Utils::Kernel.Set(uuids)
       #     # => #<Set: {"daa798b4-630c-4e11-b29d-92f0b1c7d075"}>
       #
       # @example Unchecked Exceptions
-      #   require 'lotus/utils/kernel'
+      #   require 'hanami/utils/kernel'
       #
-      #   Lotus::Utils::Kernel.Set(BasicObject.new) # => TypeError
+      #   Hanami::Utils::Kernel.Set(BasicObject.new) # => TypeError
       def self.Set(arg)
         if arg.respond_to?(:to_set)
           arg.to_set
@@ -156,15 +156,15 @@ module Lotus
       # @see http://www.ruby-doc.org/core/Kernel.html#method-i-Hash
       #
       # @example Basic Usage
-      #   require 'lotus/utils/kernel'
+      #   require 'hanami/utils/kernel'
       #
-      #   Lotus::Utils::Kernel.Hash(nil)                 # => {}
-      #   Lotus::Utils::Kernel.Hash({a: 1})              # => { :a => 1 }
-      #   Lotus::Utils::Kernel.Hash([[:a, 1]])           # => { :a => 1 }
-      #   Lotus::Utils::Kernel.Hash(Set.new([[:a, 1]]))  # => { :a => 1 }
+      #   Hanami::Utils::Kernel.Hash(nil)                 # => {}
+      #   Hanami::Utils::Kernel.Hash({a: 1})              # => { :a => 1 }
+      #   Hanami::Utils::Kernel.Hash([[:a, 1]])           # => { :a => 1 }
+      #   Hanami::Utils::Kernel.Hash(Set.new([[:a, 1]]))  # => { :a => 1 }
       #
       # @example Hash Interface
-      #   require 'lotus/utils/kernel'
+      #   require 'hanami/utils/kernel'
       #
       #   Room = Class.new do
       #     def initialize(*args)
@@ -187,16 +187,16 @@ module Lotus
       #   end
       #
       #   room = Room.new(:key, 123456)
-      #   Lotus::Utils::Kernel.Hash(room)        # => { :key => 123456 }
+      #   Hanami::Utils::Kernel.Hash(room)        # => { :key => 123456 }
       #
       #   record = Record.new(name: 'L')
-      #   Lotus::Utils::Kernel.Hash(record)      # => { :name => "L" }
+      #   Hanami::Utils::Kernel.Hash(record)      # => { :name => "L" }
       #
       # @example Unchecked Exceptions
-      #   require 'lotus/utils/kernel'
+      #   require 'hanami/utils/kernel'
       #
       #   input = BasicObject.new
-      #   Lotus::Utils::Kernel.Hash(input) # => TypeError
+      #   Hanami::Utils::Kernel.Hash(input) # => TypeError
       if RUBY_VERSION >= '2.1'
         def self.Hash(arg)
           if arg.respond_to?(:to_h)
@@ -238,23 +238,23 @@ module Lotus
       #
       # @example Basic Usage
       #   require 'bigdecimal'
-      #   require 'lotus/utils/kernel'
+      #   require 'hanami/utils/kernel'
       #
-      #   Lotus::Utils::Kernel.Integer(1)                        # => 1
-      #   Lotus::Utils::Kernel.Integer(1.2)                      # => 1
-      #   Lotus::Utils::Kernel.Integer(011)                      # => 9
-      #   Lotus::Utils::Kernel.Integer(0xf5)                     # => 245
-      #   Lotus::Utils::Kernel.Integer("1")                      # => 1
-      #   Lotus::Utils::Kernel.Integer(Rational(0.3))            # => 0
-      #   Lotus::Utils::Kernel.Integer(Complex(0.3))             # => 0
-      #   Lotus::Utils::Kernel.Integer(BigDecimal.new(12.00001)) # => 12
-      #   Lotus::Utils::Kernel.Integer(176605528590345446089)
+      #   Hanami::Utils::Kernel.Integer(1)                        # => 1
+      #   Hanami::Utils::Kernel.Integer(1.2)                      # => 1
+      #   Hanami::Utils::Kernel.Integer(011)                      # => 9
+      #   Hanami::Utils::Kernel.Integer(0xf5)                     # => 245
+      #   Hanami::Utils::Kernel.Integer("1")                      # => 1
+      #   Hanami::Utils::Kernel.Integer(Rational(0.3))            # => 0
+      #   Hanami::Utils::Kernel.Integer(Complex(0.3))             # => 0
+      #   Hanami::Utils::Kernel.Integer(BigDecimal.new(12.00001)) # => 12
+      #   Hanami::Utils::Kernel.Integer(176605528590345446089)
       #     # => 176605528590345446089
       #
-      #   Lotus::Utils::Kernel.Integer(Time.now)                 # => 1396947161
+      #   Hanami::Utils::Kernel.Integer(Time.now)                 # => 1396947161
       #
       # @example Integer Interface
-      #   require 'lotus/utils/kernel'
+      #   require 'hanami/utils/kernel'
       #
       #   UltimateAnswer = Struct.new(:question) do
       #     def to_int
@@ -263,71 +263,71 @@ module Lotus
       #   end
       #
       #   answer = UltimateAnswer.new('The Ultimate Question of Life')
-      #   Lotus::Utils::Kernel.Integer(answer) # => 42
+      #   Hanami::Utils::Kernel.Integer(answer) # => 42
       #
       # @example Error Handling
-      #   require 'lotus/utils/kernel'
+      #   require 'hanami/utils/kernel'
       #
       #   # nil
       #   Kernel.Integer(nil)               # => TypeError
-      #   Lotus::Utils::Kernel.Integer(nil) # => 0
+      #   Hanami::Utils::Kernel.Integer(nil) # => 0
       #
       #   # float represented as a string
       #   Kernel.Integer("23.4")               # => TypeError
-      #   Lotus::Utils::Kernel.Integer("23.4") # => 23
+      #   Hanami::Utils::Kernel.Integer("23.4") # => 23
       #
       #   # rational represented as a string
       #   Kernel.Integer("2/3")               # => TypeError
-      #   Lotus::Utils::Kernel.Integer("2/3") # => 2
+      #   Hanami::Utils::Kernel.Integer("2/3") # => 2
       #
       #   # complex represented as a string
       #   Kernel.Integer("2.5/1")               # => TypeError
-      #   Lotus::Utils::Kernel.Integer("2.5/1") # => 2
+      #   Hanami::Utils::Kernel.Integer("2.5/1") # => 2
       #
       # @example Unchecked Exceptions
       #   require 'date'
       #   require 'bigdecimal'
-      #   require 'lotus/utils/kernel'
+      #   require 'hanami/utils/kernel'
       #
       #   # Missing #to_int and #to_i
       #   input = OpenStruct.new(color: 'purple')
-      #   Lotus::Utils::Kernel.Integer(input) # => TypeError
+      #   Hanami::Utils::Kernel.Integer(input) # => TypeError
       #
       #   # String that doesn't represent an integer
       #   input = 'hello'
-      #   Lotus::Utils::Kernel.Integer(input) # => TypeError
+      #   Hanami::Utils::Kernel.Integer(input) # => TypeError
       #
       #   # When true
       #   input = true
-      #   Lotus::Utils::Kernel.Integer(input) # => TypeError
+      #   Hanami::Utils::Kernel.Integer(input) # => TypeError
       #
       #   # When false
       #   input = false
-      #   Lotus::Utils::Kernel.Integer(input) # => TypeError
+      #   Hanami::Utils::Kernel.Integer(input) # => TypeError
       #
       #   # When Date
       #   input = Date.today
-      #   Lotus::Utils::Kernel.Integer(input) # => TypeError
+      #   Hanami::Utils::Kernel.Integer(input) # => TypeError
       #
       #   # When DateTime
       #   input = DateTime.now
-      #   Lotus::Utils::Kernel.Integer(input) # => TypeError
+      #   Hanami::Utils::Kernel.Integer(input) # => TypeError
       #
       #   # bigdecimal infinity
       #   input = BigDecimal.new("Infinity")
-      #   Lotus::Utils::Kernel.Integer(input) # => TypeError
+      #   Hanami::Utils::Kernel.Integer(input) # => TypeError
       #
       #   # bigdecimal NaN
       #   input = BigDecimal.new("NaN")
-      #   Lotus::Utils::Kernel.Integer(input) # => TypeError
+      #   Hanami::Utils::Kernel.Integer(input) # => TypeError
       #
       #   # big rational
       #   input = Rational(-8) ** Rational(1, 3)
-      #   Lotus::Utils::Kernel.Integer(input) # => TypeError
+      #   Hanami::Utils::Kernel.Integer(input) # => TypeError
       #
       #   # big complex represented as a string
       #   input = Complex(2, 3)
-      #   Lotus::Utils::Kernel.Integer(input) # => TypeError
+      #   Hanami::Utils::Kernel.Integer(input) # => TypeError
       def self.Integer(arg)
         super(arg)
       rescue ArgumentError, TypeError, NoMethodError
@@ -358,21 +358,21 @@ module Lotus
       # @see http://www.ruby-doc.org/stdlib/libdoc/bigdecimal/rdoc/BigDecimal.html
       #
       # @example Basic Usage
-      #   require 'lotus/utils/kernel'
+      #   require 'hanami/utils/kernel'
       #
-      #   Lotus::Utils::Kernel.BigDecimal(1)                        # => 1
-      #   Lotus::Utils::Kernel.BigDecimal(1.2)                      # => 1
-      #   Lotus::Utils::Kernel.BigDecimal(011)                      # => 9
-      #   Lotus::Utils::Kernel.BigDecimal(0xf5)                     # => 245
-      #   Lotus::Utils::Kernel.BigDecimal("1")                      # => 1
-      #   Lotus::Utils::Kernel.BigDecimal(Rational(0.3))            # => 0.3
-      #   Lotus::Utils::Kernel.BigDecimal(Complex(0.3))             # => 0.3
-      #   Lotus::Utils::Kernel.BigDecimal(BigDecimal.new(12.00001)) # => 12.00001
-      #   Lotus::Utils::Kernel.BigDecimal(176605528590345446089)
+      #   Hanami::Utils::Kernel.BigDecimal(1)                        # => 1
+      #   Hanami::Utils::Kernel.BigDecimal(1.2)                      # => 1
+      #   Hanami::Utils::Kernel.BigDecimal(011)                      # => 9
+      #   Hanami::Utils::Kernel.BigDecimal(0xf5)                     # => 245
+      #   Hanami::Utils::Kernel.BigDecimal("1")                      # => 1
+      #   Hanami::Utils::Kernel.BigDecimal(Rational(0.3))            # => 0.3
+      #   Hanami::Utils::Kernel.BigDecimal(Complex(0.3))             # => 0.3
+      #   Hanami::Utils::Kernel.BigDecimal(BigDecimal.new(12.00001)) # => 12.00001
+      #   Hanami::Utils::Kernel.BigDecimal(176605528590345446089)
       #     # => 176605528590345446089
       #
       # @example BigDecimal Interface
-      #   require 'lotus/utils/kernel'
+      #   require 'hanami/utils/kernel'
       #
       #   UltimateAnswer = Struct.new(:question) do
       #     def to_d
@@ -381,43 +381,43 @@ module Lotus
       #   end
       #
       #   answer = UltimateAnswer.new('The Ultimate Question of Life')
-      #   Lotus::Utils::Kernel.BigDecimal(answer)
+      #   Hanami::Utils::Kernel.BigDecimal(answer)
       #     # => #<BigDecimal:7fabfd148588,'0.42E2',9(27)>
       #
       # @example Unchecked exceptions
-      #   require 'lotus/utils/kernel'
+      #   require 'hanami/utils/kernel'
       #
       #   # When nil
       #   input = nil
-      #   Lotus::Utils::Kernel.BigDecimal(nil) # => TypeError
+      #   Hanami::Utils::Kernel.BigDecimal(nil) # => TypeError
       #
       #   # When true
       #   input = true
-      #   Lotus::Utils::Kernel.BigDecimal(input) # => TypeError
+      #   Hanami::Utils::Kernel.BigDecimal(input) # => TypeError
       #
       #   # When false
       #   input = false
-      #   Lotus::Utils::Kernel.BigDecimal(input) # => TypeError
+      #   Hanami::Utils::Kernel.BigDecimal(input) # => TypeError
       #
       #   # When Date
       #   input = Date.today
-      #   Lotus::Utils::Kernel.BigDecimal(input) # => TypeError
+      #   Hanami::Utils::Kernel.BigDecimal(input) # => TypeError
       #
       #   # When DateTime
       #   input = DateTime.now
-      #   Lotus::Utils::Kernel.BigDecimal(input) # => TypeError
+      #   Hanami::Utils::Kernel.BigDecimal(input) # => TypeError
       #
       #   # When Time
       #   input = Time.now
-      #   Lotus::Utils::Kernel.BigDecimal(input) # => TypeError
+      #   Hanami::Utils::Kernel.BigDecimal(input) # => TypeError
       #
       #   # String that doesn't represent a big decimal
       #   input = 'hello'
-      #   Lotus::Utils::Kernel.BigDecimal(input) # => TypeError
+      #   Hanami::Utils::Kernel.BigDecimal(input) # => TypeError
       #
       #   # Missing #respond_to?
       #   input = BasicObject.new
-      #   Lotus::Utils::Kernel.BigDecimal(input) # => TypeError
+      #   Hanami::Utils::Kernel.BigDecimal(input) # => TypeError
       def self.BigDecimal(arg)
         case arg
         when ->(a) { a.respond_to?(:to_d) } then arg.to_d
@@ -449,23 +449,23 @@ module Lotus
       #
       # @example Basic Usage
       #   require 'bigdecimal'
-      #   require 'lotus/utils/kernel'
+      #   require 'hanami/utils/kernel'
       #
-      #   Lotus::Utils::Kernel.Float(1)                        # => 1.0
-      #   Lotus::Utils::Kernel.Float(1.2)                      # => 1.2
-      #   Lotus::Utils::Kernel.Float(011)                      # => 9.0
-      #   Lotus::Utils::Kernel.Float(0xf5)                     # => 245.0
-      #   Lotus::Utils::Kernel.Float("1")                      # => 1.0
-      #   Lotus::Utils::Kernel.Float(Rational(0.3))            # => 0.3
-      #   Lotus::Utils::Kernel.Float(Complex(0.3))             # => 0.3
-      #   Lotus::Utils::Kernel.Float(BigDecimal.new(12.00001)) # => 12.00001
-      #   Lotus::Utils::Kernel.Float(176605528590345446089)
+      #   Hanami::Utils::Kernel.Float(1)                        # => 1.0
+      #   Hanami::Utils::Kernel.Float(1.2)                      # => 1.2
+      #   Hanami::Utils::Kernel.Float(011)                      # => 9.0
+      #   Hanami::Utils::Kernel.Float(0xf5)                     # => 245.0
+      #   Hanami::Utils::Kernel.Float("1")                      # => 1.0
+      #   Hanami::Utils::Kernel.Float(Rational(0.3))            # => 0.3
+      #   Hanami::Utils::Kernel.Float(Complex(0.3))             # => 0.3
+      #   Hanami::Utils::Kernel.Float(BigDecimal.new(12.00001)) # => 12.00001
+      #   Hanami::Utils::Kernel.Float(176605528590345446089)
       #     # => 176605528590345446089.0
       #
-      #   Lotus::Utils::Kernel.Float(Time.now) # => 397750945.515169
+      #   Hanami::Utils::Kernel.Float(Time.now) # => 397750945.515169
       #
       # @example Float Interface
-      #   require 'lotus/utils/kernel'
+      #   require 'hanami/utils/kernel'
       #
       #   class Pi
       #     def to_f
@@ -474,76 +474,76 @@ module Lotus
       #   end
       #
       #   pi = Pi.new
-      #   Lotus::Utils::Kernel.Float(pi) # => 3.14
+      #   Hanami::Utils::Kernel.Float(pi) # => 3.14
       #
       # @example Error Handling
       #   require 'bigdecimal'
-      #   require 'lotus/utils/kernel'
+      #   require 'hanami/utils/kernel'
       #
       #   # nil
       #   Kernel.Float(nil)               # => TypeError
-      #   Lotus::Utils::Kernel.Float(nil) # => 0.0
+      #   Hanami::Utils::Kernel.Float(nil) # => 0.0
       #
       #   # float represented as a string
       #   Kernel.Float("23.4")               # => TypeError
-      #   Lotus::Utils::Kernel.Float("23.4") # => 23.4
+      #   Hanami::Utils::Kernel.Float("23.4") # => 23.4
       #
       #   # rational represented as a string
       #   Kernel.Float("2/3")               # => TypeError
-      #   Lotus::Utils::Kernel.Float("2/3") # => 2.0
+      #   Hanami::Utils::Kernel.Float("2/3") # => 2.0
       #
       #   # complex represented as a string
       #   Kernel.Float("2.5/1")               # => TypeError
-      #   Lotus::Utils::Kernel.Float("2.5/1") # => 2.5
+      #   Hanami::Utils::Kernel.Float("2.5/1") # => 2.5
       #
       #   # bigdecimal infinity
       #   input = BigDecimal.new("Infinity")
-      #   Lotus::Utils::Kernel.Float(input) # => Infinity
+      #   Hanami::Utils::Kernel.Float(input) # => Infinity
       #
       #   # bigdecimal NaN
       #   input = BigDecimal.new("NaN")
-      #   Lotus::Utils::Kernel.Float(input) # => NaN
+      #   Hanami::Utils::Kernel.Float(input) # => NaN
       #
       # @example Unchecked Exceptions
       #   require 'date'
       #   require 'bigdecimal'
-      #   require 'lotus/utils/kernel'
+      #   require 'hanami/utils/kernel'
       #
       #   # Missing #to_f
       #   input = OpenStruct.new(color: 'purple')
-      #   Lotus::Utils::Kernel.Float(input) # => TypeError
+      #   Hanami::Utils::Kernel.Float(input) # => TypeError
       #
       #   # When true
       #   input = true
-      #   Lotus::Utils::Kernel.Float(input) # => TypeError
+      #   Hanami::Utils::Kernel.Float(input) # => TypeError
       #
       #   # When false
       #   input = false
-      #   Lotus::Utils::Kernel.Float(input) # => TypeError
+      #   Hanami::Utils::Kernel.Float(input) # => TypeError
       #
       #   # When Date
       #   input = Date.today
-      #   Lotus::Utils::Kernel.Float(input) # => TypeError
+      #   Hanami::Utils::Kernel.Float(input) # => TypeError
       #
       #   # When DateTime
       #   input = DateTime.now
-      #   Lotus::Utils::Kernel.Float(input) # => TypeError
+      #   Hanami::Utils::Kernel.Float(input) # => TypeError
       #
       #   # Missing #nil?
       #   input = BasicObject.new
-      #   Lotus::Utils::Kernel.Float(input) # => TypeError
+      #   Hanami::Utils::Kernel.Float(input) # => TypeError
       #
       #   # String that doesn't represent a float
       #   input = 'hello'
-      #   Lotus::Utils::Kernel.Float(input) # => TypeError
+      #   Hanami::Utils::Kernel.Float(input) # => TypeError
       #
       #   # big rational
       #   input = Rational(-8) ** Rational(1, 3)
-      #   Lotus::Utils::Kernel.Float(input) # => TypeError
+      #   Hanami::Utils::Kernel.Float(input) # => TypeError
       #
       #   # big complex represented as a string
       #   input = Complex(2, 3)
-      #   Lotus::Utils::Kernel.Float(input) # => TypeError
+      #   Hanami::Utils::Kernel.Float(input) # => TypeError
       def self.Float(arg)
         super(arg)
       rescue ArgumentError, TypeError
@@ -579,43 +579,43 @@ module Lotus
       # @example Basic Usage
       #   require 'date'
       #   require 'bigdecimal'
-      #   require 'lotus/utils/kernel'
+      #   require 'hanami/utils/kernel'
       #
-      #   Lotus::Utils::Kernel.String('')                            # => ""
-      #   Lotus::Utils::Kernel.String('ciao')                        # => "ciao"
+      #   Hanami::Utils::Kernel.String('')                            # => ""
+      #   Hanami::Utils::Kernel.String('ciao')                        # => "ciao"
       #
-      #   Lotus::Utils::Kernel.String(true)                          # => "true"
-      #   Lotus::Utils::Kernel.String(false)                         # => "false"
+      #   Hanami::Utils::Kernel.String(true)                          # => "true"
+      #   Hanami::Utils::Kernel.String(false)                         # => "false"
       #
-      #   Lotus::Utils::Kernel.String(:lotus)                        # => "lotus"
+      #   Hanami::Utils::Kernel.String(:hanami)                        # => "hanami"
       #
-      #   Lotus::Utils::Kernel.String(Picture)                       # => "Picture" # class
-      #   Lotus::Utils::Kernel.String(Lotus)                         # => "Lotus" # module
+      #   Hanami::Utils::Kernel.String(Picture)                       # => "Picture" # class
+      #   Hanami::Utils::Kernel.String(Hanami)                         # => "Hanami" # module
       #
-      #   Lotus::Utils::Kernel.String([])                            # => "[]"
-      #   Lotus::Utils::Kernel.String([1,2,3])                       # => "[1, 2, 3]"
-      #   Lotus::Utils::Kernel.String(%w[a b c])                     # => "[\"a\", \"b\", \"c\"]"
+      #   Hanami::Utils::Kernel.String([])                            # => "[]"
+      #   Hanami::Utils::Kernel.String([1,2,3])                       # => "[1, 2, 3]"
+      #   Hanami::Utils::Kernel.String(%w[a b c])                     # => "[\"a\", \"b\", \"c\"]"
       #
-      #   Lotus::Utils::Kernel.String({})                            # => "{}"
-      #   Lotus::Utils::Kernel.String({a: 1, 'b' => 'c'})            # => "{:a=>1, \"b\"=>\"c\"}"
+      #   Hanami::Utils::Kernel.String({})                            # => "{}"
+      #   Hanami::Utils::Kernel.String({a: 1, 'b' => 'c'})            # => "{:a=>1, \"b\"=>\"c\"}"
       #
-      #   Lotus::Utils::Kernel.String(Date.today)                    # => "2014-04-11"
-      #   Lotus::Utils::Kernel.String(DateTime.now)                  # => "2014-04-11T10:15:06+02:00"
-      #   Lotus::Utils::Kernel.String(Time.now)                      # => "2014-04-11 10:15:53 +0200"
+      #   Hanami::Utils::Kernel.String(Date.today)                    # => "2014-04-11"
+      #   Hanami::Utils::Kernel.String(DateTime.now)                  # => "2014-04-11T10:15:06+02:00"
+      #   Hanami::Utils::Kernel.String(Time.now)                      # => "2014-04-11 10:15:53 +0200"
       #
-      #   Lotus::Utils::Kernel.String(1)                             # => "1"
-      #   Lotus::Utils::Kernel.String(3.14)                          # => "3.14"
-      #   Lotus::Utils::Kernel.String(013)                           # => "11"
-      #   Lotus::Utils::Kernel.String(0xc0ff33)                      # => "12648243"
+      #   Hanami::Utils::Kernel.String(1)                             # => "1"
+      #   Hanami::Utils::Kernel.String(3.14)                          # => "3.14"
+      #   Hanami::Utils::Kernel.String(013)                           # => "11"
+      #   Hanami::Utils::Kernel.String(0xc0ff33)                      # => "12648243"
       #
-      #   Lotus::Utils::Kernel.String(Rational(-22))                 # => "-22/1"
-      #   Lotus::Utils::Kernel.String(Complex(11, 2))                # => "11+2i"
-      #   Lotus::Utils::Kernel.String(BigDecimal.new(7944.2343, 10)) # => "0.79442343E4"
-      #   Lotus::Utils::Kernel.String(BigDecimal.new('Infinity'))    # => "Infinity"
-      #   Lotus::Utils::Kernel.String(BigDecimal.new('NaN'))         # => "Infinity"
+      #   Hanami::Utils::Kernel.String(Rational(-22))                 # => "-22/1"
+      #   Hanami::Utils::Kernel.String(Complex(11, 2))                # => "11+2i"
+      #   Hanami::Utils::Kernel.String(BigDecimal.new(7944.2343, 10)) # => "0.79442343E4"
+      #   Hanami::Utils::Kernel.String(BigDecimal.new('Infinity'))    # => "Infinity"
+      #   Hanami::Utils::Kernel.String(BigDecimal.new('NaN'))         # => "Infinity"
       #
       # @example String interface
-      #   require 'lotus/utils/kernel'
+      #   require 'hanami/utils/kernel'
       #
       #   SimpleObject = Class.new(BasicObject) do
       #     def to_s
@@ -632,22 +632,22 @@ module Lotus
       #   simple = SimpleObject.new
       #   isbn   = Isbn.new(123)
       #
-      #   Lotus::Utils::Kernel.String(simple) # => "simple object"
-      #   Lotus::Utils::Kernel.String(isbn)   # => "123"
+      #   Hanami::Utils::Kernel.String(simple) # => "simple object"
+      #   Hanami::Utils::Kernel.String(isbn)   # => "123"
       #
       # @example Comparison with Ruby
-      #   require 'lotus/utils/kernel'
+      #   require 'hanami/utils/kernel'
       #
       #   # nil
       #   Kernel.String(nil)               # => ""
-      #   Lotus::Utils::Kernel.String(nil) # => ""
+      #   Hanami::Utils::Kernel.String(nil) # => ""
       #
       # @example Unchecked Exceptions
-      #   require 'lotus/utils/kernel'
+      #   require 'hanami/utils/kernel'
       #
       #   # Missing #to_s or #to_str
       #   input = BaseObject.new
-      #   Lotus::Utils::Kernel.String(input) # => TypeError
+      #   Hanami::Utils::Kernel.String(input) # => TypeError
       if Utils.rubinius?
         def self.String(arg)
           case arg
@@ -681,25 +681,25 @@ module Lotus
       # @since 0.1.1
       #
       # @example Basic Usage
-      #   require 'lotus/utils/kernel'
+      #   require 'hanami/utils/kernel'
       #
-      #   Lotus::Utils::Kernel.Date(Date.today)
+      #   Hanami::Utils::Kernel.Date(Date.today)
       #     # => #<Date: 2014-04-17 ((2456765j,0s,0n),+0s,2299161j)>
       #
-      #   Lotus::Utils::Kernel.Date(DateTime.now)
+      #   Hanami::Utils::Kernel.Date(DateTime.now)
       #     # => #<Date: 2014-04-17 ((2456765j,0s,0n),+0s,2299161j)>
       #
-      #   Lotus::Utils::Kernel.Date(Time.now)
+      #   Hanami::Utils::Kernel.Date(Time.now)
       #     # => #<Date: 2014-04-17 ((2456765j,0s,0n),+0s,2299161j)>
       #
-      #   Lotus::Utils::Kernel.Date('2014-04-17')
+      #   Hanami::Utils::Kernel.Date('2014-04-17')
       #     # => #<Date: 2014-04-17 ((2456765j,0s,0n),+0s,2299161j)>
       #
-      #   Lotus::Utils::Kernel.Date('2014-04-17 22:37:15')
+      #   Hanami::Utils::Kernel.Date('2014-04-17 22:37:15')
       #     # => #<Date: 2014-04-17 ((2456765j,0s,0n),+0s,2299161j)>
       #
       # @example Date Interface
-      #   require 'lotus/utils/kernel'
+      #   require 'hanami/utils/kernel'
       #
       #   class Christmas
       #     def to_date
@@ -707,23 +707,23 @@ module Lotus
       #     end
       #   end
       #
-      #   Lotus::Utils::Kernel.Date(Christmas.new)
+      #   Hanami::Utils::Kernel.Date(Christmas.new)
       #     # => #<Date: 2014-12-25 ((2457017j,0s,0n),+0s,2299161j)>
       #
       # @example Unchecked Exceptions
-      #   require 'lotus/utils/kernel'
+      #   require 'hanami/utils/kernel'
       #
       #   # nil
       #   input = nil
-      #   Lotus::Utils::Kernel.Date(input) # => TypeError
+      #   Hanami::Utils::Kernel.Date(input) # => TypeError
       #
       #   # Missing #respond_to?
       #   input = BasicObject.new
-      #   Lotus::Utils::Kernel.Date(input) # => TypeError
+      #   Hanami::Utils::Kernel.Date(input) # => TypeError
       #
       #   # Missing #to_s?
       #   input = BasicObject.new
-      #   Lotus::Utils::Kernel.Date(input) # => TypeError
+      #   Hanami::Utils::Kernel.Date(input) # => TypeError
       def self.Date(arg)
         if arg.respond_to?(:to_date)
           arg.to_date
@@ -745,28 +745,28 @@ module Lotus
       # @since 0.1.1
       #
       # @example Basic Usage
-      #   require 'lotus/utils/kernel'
+      #   require 'hanami/utils/kernel'
       #
-      #   Lotus::Utils::Kernel.DateTime(3483943)
+      #   Hanami::Utils::Kernel.DateTime(3483943)
       #     # => Time.at(3483943).to_datetime #<DateTime: 1970-02-10T08:45:43+01:00 ((2440628j,27943s,0n),+3600s,2299161j)>
       #
-      #   Lotus::Utils::Kernel.DateTime(DateTime.now)
+      #   Hanami::Utils::Kernel.DateTime(DateTime.now)
       #     # => #<DateTime: 2014-04-18T09:33:49+02:00 ((2456766j,27229s,690849000n),+7200s,2299161j)>
       #
-      #   Lotus::Utils::Kernel.DateTime(Date.today)
+      #   Hanami::Utils::Kernel.DateTime(Date.today)
       #     # => #<DateTime: 2014-04-18T00:00:00+00:00 ((2456766j,0s,0n),+0s,2299161j)>
       #
-      #   Lotus::Utils::Kernel.Date(Time.now)
+      #   Hanami::Utils::Kernel.Date(Time.now)
       #     # => #<DateTime: 2014-04-18T09:34:49+02:00 ((2456766j,27289s,832907000n),+7200s,2299161j)>
       #
-      #   Lotus::Utils::Kernel.DateTime('2014-04-18')
+      #   Hanami::Utils::Kernel.DateTime('2014-04-18')
       #     # => #<DateTime: 2014-04-18T00:00:00+00:00 ((2456766j,0s,0n),+0s,2299161j)>
       #
-      #   Lotus::Utils::Kernel.DateTime('2014-04-18 09:35:42')
+      #   Hanami::Utils::Kernel.DateTime('2014-04-18 09:35:42')
       #     # => #<DateTime: 2014-04-18T09:35:42+00:00 ((2456766j,34542s,0n),+0s,2299161j)>
       #
       # @example DateTime Interface
-      #   require 'lotus/utils/kernel'
+      #   require 'hanami/utils/kernel'
       #
       #   class NewYearEve
       #     def to_datetime
@@ -774,23 +774,23 @@ module Lotus
       #     end
       #   end
       #
-      #   Lotus::Utils::Kernel.Date(NewYearEve.new)
+      #   Hanami::Utils::Kernel.Date(NewYearEve.new)
       #     # => #<DateTime: 2014-01-01T00:00:00+00:00 ((2456659j,0s,0n),+0s,2299161j)>
       #
       # @example Unchecked Exceptions
-      #   require 'lotus/utils/kernel'
+      #   require 'hanami/utils/kernel'
       #
       #   # When nil
       #   input = nil
-      #   Lotus::Utils::Kernel.DateTime(input) # => TypeError
+      #   Hanami::Utils::Kernel.DateTime(input) # => TypeError
       #
       #   # Missing #respond_to?
       #   input = BasicObject.new
-      #   Lotus::Utils::Kernel.DateTime(input) # => TypeError
+      #   Hanami::Utils::Kernel.DateTime(input) # => TypeError
       #
       #   # Missing #to_s?
       #   input = BasicObject.new
-      #   Lotus::Utils::Kernel.DateTime(input) # => TypeError
+      #   Hanami::Utils::Kernel.DateTime(input) # => TypeError
       def self.DateTime(arg)
         case arg
         when ->(a) { a.respond_to?(:to_datetime) } then arg.to_datetime
@@ -813,25 +813,25 @@ module Lotus
       # @since 0.1.1
       #
       # @example Basic Usage
-      #   require 'lotus/utils/kernel'
+      #   require 'hanami/utils/kernel'
       #
-      #   Lotus::Utils::Kernel.Time(Time.now)
+      #   Hanami::Utils::Kernel.Time(Time.now)
       #     # => 2014-04-18 15:56:39 +0200
       #
-      #   Lotus::Utils::Kernel.Time(DateTime.now)
+      #   Hanami::Utils::Kernel.Time(DateTime.now)
       #     # => 2014-04-18 15:56:39 +0200
       #
-      #   Lotus::Utils::Kernel.Time(Date.today)
+      #   Hanami::Utils::Kernel.Time(Date.today)
       #     # => 2014-04-18 00:00:00 +0200
       #
-      #   Lotus::Utils::Kernel.Time('2014-04-18')
+      #   Hanami::Utils::Kernel.Time('2014-04-18')
       #     # => 2014-04-18 00:00:00 +0200
       #
-      #   Lotus::Utils::Kernel.Time('2014-04-18 15:58:02')
+      #   Hanami::Utils::Kernel.Time('2014-04-18 15:58:02')
       #     # => 2014-04-18 15:58:02 +0200
       #
       # @example Time Interface
-      #   require 'lotus/utils/kernel'
+      #   require 'hanami/utils/kernel'
       #
       #   class Epoch
       #     def to_time
@@ -839,23 +839,23 @@ module Lotus
       #     end
       #   end
       #
-      #   Lotus::Utils::Kernel.Time(Epoch.new)
+      #   Hanami::Utils::Kernel.Time(Epoch.new)
       #     # => 1970-01-01 01:00:00 +0100
       #
       # @example Unchecked Exceptions
-      #   require 'lotus/utils/kernel'
+      #   require 'hanami/utils/kernel'
       #
       #   # When nil
       #   input = nil
-      #   Lotus::Utils::Kernel.Time(input) # => TypeError
+      #   Hanami::Utils::Kernel.Time(input) # => TypeError
       #
       #   # Missing #respond_to?
       #   input = BasicObject.new
-      #   Lotus::Utils::Kernel.Time(input) # => TypeError
+      #   Hanami::Utils::Kernel.Time(input) # => TypeError
       #
       #   # Missing #to_s?
       #   input = BasicObject.new
-      #   Lotus::Utils::Kernel.Time(input) # => TypeError
+      #   Hanami::Utils::Kernel.Time(input) # => TypeError
       def self.Time(arg)
         case arg
         when ->(a) { a.respond_to?(:to_time) } then arg.to_time
@@ -878,17 +878,17 @@ module Lotus
       # @since 0.1.1
       #
       # @example Basic Usage
-      #   require 'lotus/utils/kernel'
+      #   require 'hanami/utils/kernel'
       #
-      #   Lotus::Utils::Kernel.Boolean(nil)                      # => false
-      #   Lotus::Utils::Kernel.Boolean(0)                        # => false
-      #   Lotus::Utils::Kernel.Boolean(1)                        # => true
-      #   Lotus::Utils::Kernel.Boolean('0')                      # => false
-      #   Lotus::Utils::Kernel.Boolean('1')                      # => true
-      #   Lotus::Utils::Kernel.Boolean(Object.new)               # => true
+      #   Hanami::Utils::Kernel.Boolean(nil)                      # => false
+      #   Hanami::Utils::Kernel.Boolean(0)                        # => false
+      #   Hanami::Utils::Kernel.Boolean(1)                        # => true
+      #   Hanami::Utils::Kernel.Boolean('0')                      # => false
+      #   Hanami::Utils::Kernel.Boolean('1')                      # => true
+      #   Hanami::Utils::Kernel.Boolean(Object.new)               # => true
       #
       # @example Boolean Interface
-      #   require 'lotus/utils/kernel'
+      #   require 'hanami/utils/kernel'
       #
       #   Answer = Struct.new(:answer) do
       #     def to_bool
@@ -900,14 +900,14 @@ module Lotus
       #   end
       #
       #   answer = Answer.new('yes')
-      #   Lotus::Utils::Kernel.Boolean(answer) # => true
+      #   Hanami::Utils::Kernel.Boolean(answer) # => true
       #
       # @example Unchecked Exceptions
-      #   require 'lotus/utils/kernel'
+      #   require 'hanami/utils/kernel'
       #
       #   # Missing #respond_to?
       #   input = BasicObject.new
-      #   Lotus::Utils::Kernel.Boolean(input) # => TypeError
+      #   Hanami::Utils::Kernel.Boolean(input) # => TypeError
       def self.Boolean(arg)
         case arg
         when Numeric     then arg > 0 && arg <= 1
@@ -931,13 +931,13 @@ module Lotus
       # @since 0.1.2
       #
       # @example Basic Usage
-      #   require 'lotus/utils/kernel'
+      #   require 'hanami/utils/kernel'
       #
-      #   Lotus::Utils::Kernel.Pathname(Pathname.new('/path/to')) # => #<Pathname:/path/to>
-      #   Lotus::Utils::Kernel.Pathname('/path/to')               # => #<Pathname:/path/to>
+      #   Hanami::Utils::Kernel.Pathname(Pathname.new('/path/to')) # => #<Pathname:/path/to>
+      #   Hanami::Utils::Kernel.Pathname('/path/to')               # => #<Pathname:/path/to>
       #
       # @example Pathname Interface
-      #   require 'lotus/utils/kernel'
+      #   require 'hanami/utils/kernel'
       #
       #   class HomePath
       #     def to_pathname
@@ -945,10 +945,10 @@ module Lotus
       #     end
       #   end
       #
-      #   Lotus::Utils::Kernel.Pathname(HomePath.new) # => #<Pathname:/Users/luca>
+      #   Hanami::Utils::Kernel.Pathname(HomePath.new) # => #<Pathname:/Users/luca>
       #
       # @example String Interface
-      #   require 'lotus/utils/kernel'
+      #   require 'hanami/utils/kernel'
       #
       #   class RootPath
       #     def to_str
@@ -956,18 +956,18 @@ module Lotus
       #     end
       #   end
       #
-      #   Lotus::Utils::Kernel.Pathname(RootPath.new) # => #<Pathname:/>
+      #   Hanami::Utils::Kernel.Pathname(RootPath.new) # => #<Pathname:/>
       #
       # @example Unchecked Exceptions
-      #   require 'lotus/utils/kernel'
+      #   require 'hanami/utils/kernel'
       #
       #   # When nil
       #   input = nil
-      #   Lotus::Utils::Kernel.Pathname(input) # => TypeError
+      #   Hanami::Utils::Kernel.Pathname(input) # => TypeError
       #
       #   # Missing #respond_to?
       #   input = BasicObject.new
-      #   Lotus::Utils::Kernel.Pathname(input) # => TypeError
+      #   Hanami::Utils::Kernel.Pathname(input) # => TypeError
       def self.Pathname(arg)
         case arg
         when ->(a) { a.respond_to?(:to_pathname) } then arg.to_pathname
@@ -989,13 +989,13 @@ module Lotus
       # @since 0.2.0
       #
       # @example Basic Usage
-      #   require 'lotus/utils/kernel'
+      #   require 'hanami/utils/kernel'
       #
-      #   Lotus::Utils::Kernel.Symbol(:hello)  # => :hello
-      #   Lotus::Utils::Kernel.Symbol('hello') # => :hello
+      #   Hanami::Utils::Kernel.Symbol(:hello)  # => :hello
+      #   Hanami::Utils::Kernel.Symbol('hello') # => :hello
       #
       # @example Symbol Interface
-      #   require 'lotus/utils/kernel'
+      #   require 'hanami/utils/kernel'
       #
       #   class StatusSymbol
       #     def to_sym
@@ -1003,22 +1003,22 @@ module Lotus
       #     end
       #   end
       #
-      #   Lotus::Utils::Kernel.Symbol(StatusSymbol.new) # => :success
+      #   Hanami::Utils::Kernel.Symbol(StatusSymbol.new) # => :success
       #
       # @example Unchecked Exceptions
-      #   require 'lotus/utils/kernel'
+      #   require 'hanami/utils/kernel'
       #
       #   # When nil
       #   input = nil
-      #   Lotus::Utils::Kernel.Symbol(input) # => TypeError
+      #   Hanami::Utils::Kernel.Symbol(input) # => TypeError
       #
       #   # When empty string
       #   input = ''
-      #   Lotus::Utils::Kernel.Symbol(input) # => TypeError
+      #   Hanami::Utils::Kernel.Symbol(input) # => TypeError
       #
       #   # Missing #respond_to?
       #   input = BasicObject.new
-      #   Lotus::Utils::Kernel.Symbol(input) # => TypeError
+      #   Hanami::Utils::Kernel.Symbol(input) # => TypeError
       def self.Symbol(arg)
         case arg
         when '' then raise TypeError.new "can't convert #{inspect_type_error(arg)}into Symbol"

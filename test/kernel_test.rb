@@ -1,9 +1,9 @@
 require 'test_helper'
 require 'ostruct'
 require 'bigdecimal'
-require 'lotus/utils/kernel'
+require 'hanami/utils/kernel'
 
-describe Lotus::Utils::Kernel do
+describe Hanami::Utils::Kernel do
   describe '.Array' do
     describe 'successful operations' do
       before do
@@ -19,7 +19,7 @@ describe Lotus::Utils::Kernel do
           end
         end
 
-        @result = Lotus::Utils::Kernel.Array(input)
+        @result = Hanami::Utils::Kernel.Array(input)
       end
 
       after do
@@ -153,7 +153,7 @@ describe Lotus::Utils::Kernel do
 
     describe 'successful operations' do
       before do
-        @result = Lotus::Utils::Kernel.Set(input)
+        @result = Hanami::Utils::Kernel.Set(input)
       end
 
       describe 'when nil is given' do
@@ -259,12 +259,12 @@ describe Lotus::Utils::Kernel do
         let(:input) { BaseObject.new }
 
         it 'raises error' do
-          -> { Lotus::Utils::Kernel.Set(input) }.must_raise(TypeError)
+          -> { Hanami::Utils::Kernel.Set(input) }.must_raise(TypeError)
         end
 
         it 'returns informations about the failure' do
           begin
-            Lotus::Utils::Kernel.Set(input)
+            Hanami::Utils::Kernel.Set(input)
           rescue => e
             e.message.must_match "can't convert into Set"
           end
@@ -310,7 +310,7 @@ describe Lotus::Utils::Kernel do
 
     describe 'successful operations' do
       before do
-        @result = Lotus::Utils::Kernel.Hash(input)
+        @result = Hanami::Utils::Kernel.Hash(input)
       end
 
       describe 'when nil is given' do
@@ -367,12 +367,12 @@ describe Lotus::Utils::Kernel do
         let(:input) { BaseObject.new }
 
         it 'raises error' do
-          -> { Lotus::Utils::Kernel.Hash(input) }.must_raise(TypeError)
+          -> { Hanami::Utils::Kernel.Hash(input) }.must_raise(TypeError)
         end
 
         it 'returns useful informations about the failure' do
           begin
-            Lotus::Utils::Kernel.Hash(input)
+            Hanami::Utils::Kernel.Hash(input)
           rescue => e
             e.message.must_equal "can't convert into Hash"
           end
@@ -383,7 +383,7 @@ describe Lotus::Utils::Kernel do
         let(:input) { true }
 
         it 'raises error' do
-          -> { Lotus::Utils::Kernel.Hash(input) }.must_raise(TypeError)
+          -> { Hanami::Utils::Kernel.Hash(input) }.must_raise(TypeError)
         end
       end
 
@@ -391,7 +391,7 @@ describe Lotus::Utils::Kernel do
         let(:input) { false }
 
         it 'raises error' do
-          -> { Lotus::Utils::Kernel.Hash(input) }.must_raise(TypeError)
+          -> { Hanami::Utils::Kernel.Hash(input) }.must_raise(TypeError)
         end
       end
 
@@ -399,7 +399,7 @@ describe Lotus::Utils::Kernel do
         let(:input) { [1] }
 
         it 'raises error' do
-          -> { Lotus::Utils::Kernel.Hash(input) }.must_raise(TypeError)
+          -> { Hanami::Utils::Kernel.Hash(input) }.must_raise(TypeError)
         end
       end
 
@@ -408,7 +408,7 @@ describe Lotus::Utils::Kernel do
           let(:input) { [:a, 1] }
 
           it 'raises error' do
-            -> { Lotus::Utils::Kernel.Hash(input) }.must_raise(TypeError)
+            -> { Hanami::Utils::Kernel.Hash(input) }.must_raise(TypeError)
           end
         end
       end
@@ -417,7 +417,7 @@ describe Lotus::Utils::Kernel do
         let(:input) { Set.new([1]) }
 
         it 'raises error' do
-          -> { Lotus::Utils::Kernel.Hash(input) }.must_raise(TypeError)
+          -> { Hanami::Utils::Kernel.Hash(input) }.must_raise(TypeError)
         end
       end
 
@@ -426,7 +426,7 @@ describe Lotus::Utils::Kernel do
           let(:input) { Set.new([:a, 1]) }
 
           it 'raises error' do
-            -> { Lotus::Utils::Kernel.Hash(input) }.must_raise(TypeError)
+            -> { Hanami::Utils::Kernel.Hash(input) }.must_raise(TypeError)
           end
         end
       end
@@ -442,7 +442,7 @@ describe Lotus::Utils::Kernel do
           end
         end
 
-        @result = Lotus::Utils::Kernel.Integer(input)
+        @result = Hanami::Utils::Kernel.Integer(input)
       end
 
       after do
@@ -575,7 +575,7 @@ describe Lotus::Utils::Kernel do
         let(:input) { true }
 
         it 'raises error' do
-          -> { Lotus::Utils::Kernel.Integer(input) }.must_raise(TypeError)
+          -> { Hanami::Utils::Kernel.Integer(input) }.must_raise(TypeError)
         end
       end
 
@@ -583,7 +583,7 @@ describe Lotus::Utils::Kernel do
         let(:input) { false }
 
         it 'raises error' do
-          -> { Lotus::Utils::Kernel.Integer(input) }.must_raise(TypeError)
+          -> { Hanami::Utils::Kernel.Integer(input) }.must_raise(TypeError)
         end
       end
 
@@ -591,7 +591,7 @@ describe Lotus::Utils::Kernel do
         let(:input) { Date.today }
 
         it 'raises error' do
-          -> { Lotus::Utils::Kernel.Integer(input) }.must_raise(TypeError)
+          -> { Hanami::Utils::Kernel.Integer(input) }.must_raise(TypeError)
         end
       end
 
@@ -599,7 +599,7 @@ describe Lotus::Utils::Kernel do
         let(:input) { DateTime.now }
 
         it 'raises error' do
-          -> { Lotus::Utils::Kernel.Integer(input) }.must_raise(TypeError)
+          -> { Hanami::Utils::Kernel.Integer(input) }.must_raise(TypeError)
         end
       end
 
@@ -607,12 +607,12 @@ describe Lotus::Utils::Kernel do
         let(:input) { BasicObject.new }
 
         it 'raises error' do
-          -> { Lotus::Utils::Kernel.Integer(input) }.must_raise(TypeError)
+          -> { Hanami::Utils::Kernel.Integer(input) }.must_raise(TypeError)
         end
 
         it 'returns useful informations about the failure' do
           begin
-            Lotus::Utils::Kernel.Integer(input)
+            Hanami::Utils::Kernel.Integer(input)
           rescue => e
             e.message.must_equal "can't convert into Integer"
           end
@@ -623,12 +623,12 @@ describe Lotus::Utils::Kernel do
         let(:input) { OpenStruct.new(color: 'purple') }
 
         it 'raises error' do
-          -> { Lotus::Utils::Kernel.Integer(input) }.must_raise(TypeError)
+          -> { Hanami::Utils::Kernel.Integer(input) }.must_raise(TypeError)
         end
 
         it 'returns useful informations about the failure' do
           begin
-            Lotus::Utils::Kernel.Integer(input)
+            Hanami::Utils::Kernel.Integer(input)
           rescue => e
             e.message.must_equal "can't convert #{input.inspect} into Integer"
           end
@@ -639,7 +639,7 @@ describe Lotus::Utils::Kernel do
         let(:input) { BigDecimal.new('Infinity') }
 
         it 'raises error' do
-          -> { Lotus::Utils::Kernel.Integer(input) }.must_raise(TypeError)
+          -> { Hanami::Utils::Kernel.Integer(input) }.must_raise(TypeError)
         end
       end
 
@@ -647,12 +647,12 @@ describe Lotus::Utils::Kernel do
         let(:input) { BigDecimal.new('NaN') }
 
         it 'raises error' do
-          -> { Lotus::Utils::Kernel.Integer(input) }.must_raise(TypeError)
+          -> { Hanami::Utils::Kernel.Integer(input) }.must_raise(TypeError)
         end
 
         it 'returns useful informations about the failure' do
           begin
-            Lotus::Utils::Kernel.Integer(input)
+            Hanami::Utils::Kernel.Integer(input)
           rescue => e
             e.message.must_equal "can't convert #{input.inspect} into Integer"
           end
@@ -663,12 +663,12 @@ describe Lotus::Utils::Kernel do
         let(:input) { Complex(2,3) }
 
         it 'raises error' do
-          -> { Lotus::Utils::Kernel.Integer(input) }.must_raise(TypeError)
+          -> { Hanami::Utils::Kernel.Integer(input) }.must_raise(TypeError)
         end
 
         it 'returns useful informations about the failure' do
           begin
-            Lotus::Utils::Kernel.Integer(input)
+            Hanami::Utils::Kernel.Integer(input)
           rescue => e
             e.message.must_equal "can't convert #{input.inspect} into Integer"
           end
@@ -679,12 +679,12 @@ describe Lotus::Utils::Kernel do
         let(:input) { Rational(-8) ** Rational(1, 3) }
 
         it 'raises error' do
-          -> { Lotus::Utils::Kernel.Integer(input) }.must_raise(TypeError)
+          -> { Hanami::Utils::Kernel.Integer(input) }.must_raise(TypeError)
         end
 
         it 'returns useful informations about the failure' do
           begin
-            Lotus::Utils::Kernel.Integer(input)
+            Hanami::Utils::Kernel.Integer(input)
           rescue => e
             e.message.must_equal "can't convert #{input.inspect} into Integer"
           end
@@ -695,7 +695,7 @@ describe Lotus::Utils::Kernel do
         let(:input) { 'home' }
 
         it 'raises error' do
-          exception = -> { Lotus::Utils::Kernel.Integer(input) }.must_raise(TypeError)
+          exception = -> { Hanami::Utils::Kernel.Integer(input) }.must_raise(TypeError)
           exception.message.must_equal "can't convert #{input.inspect} into Integer"
         end
       end
@@ -704,7 +704,7 @@ describe Lotus::Utils::Kernel do
         let(:input) { '23 street' }
 
         it 'raises error' do
-          exception = -> { Lotus::Utils::Kernel.Integer(input) }.must_raise(TypeError)
+          exception = -> { Hanami::Utils::Kernel.Integer(input) }.must_raise(TypeError)
           exception.message.must_equal "can't convert #{input.inspect} into Integer"
         end
       end
@@ -720,7 +720,7 @@ describe Lotus::Utils::Kernel do
           end
         end
 
-        @result = Lotus::Utils::Kernel.BigDecimal(input)
+        @result = Hanami::Utils::Kernel.BigDecimal(input)
       end
 
       after do
@@ -871,7 +871,7 @@ describe Lotus::Utils::Kernel do
         let(:input) { nil }
 
         it 'raises error' do
-          -> { Lotus::Utils::Kernel.BigDecimal(input) }.must_raise(TypeError)
+          -> { Hanami::Utils::Kernel.BigDecimal(input) }.must_raise(TypeError)
         end
       end
 
@@ -879,7 +879,7 @@ describe Lotus::Utils::Kernel do
         let(:input) { true }
 
         it 'raises error' do
-          -> { Lotus::Utils::Kernel.BigDecimal(input) }.must_raise(TypeError)
+          -> { Hanami::Utils::Kernel.BigDecimal(input) }.must_raise(TypeError)
         end
       end
 
@@ -887,7 +887,7 @@ describe Lotus::Utils::Kernel do
         let(:input) { false }
 
         it 'raises error' do
-          -> { Lotus::Utils::Kernel.BigDecimal(input) }.must_raise(TypeError)
+          -> { Hanami::Utils::Kernel.BigDecimal(input) }.must_raise(TypeError)
         end
       end
 
@@ -895,7 +895,7 @@ describe Lotus::Utils::Kernel do
         let(:input) { Date.today }
 
         it 'raises error' do
-          -> { Lotus::Utils::Kernel.BigDecimal(input) }.must_raise(TypeError)
+          -> { Hanami::Utils::Kernel.BigDecimal(input) }.must_raise(TypeError)
         end
       end
 
@@ -903,7 +903,7 @@ describe Lotus::Utils::Kernel do
         let(:input) { DateTime.now }
 
         it 'raises error' do
-          -> { Lotus::Utils::Kernel.BigDecimal(input) }.must_raise(TypeError)
+          -> { Hanami::Utils::Kernel.BigDecimal(input) }.must_raise(TypeError)
         end
       end
 
@@ -911,7 +911,7 @@ describe Lotus::Utils::Kernel do
         let(:input) { Time.now }
 
         it 'raises error' do
-          -> { Lotus::Utils::Kernel.BigDecimal(input) }.must_raise(TypeError)
+          -> { Hanami::Utils::Kernel.BigDecimal(input) }.must_raise(TypeError)
         end
       end
 
@@ -919,7 +919,7 @@ describe Lotus::Utils::Kernel do
         let(:input) { 'home' }
 
         it 'raises error' do
-          exception = -> { Lotus::Utils::Kernel.BigDecimal(input) }.must_raise(TypeError)
+          exception = -> { Hanami::Utils::Kernel.BigDecimal(input) }.must_raise(TypeError)
           exception.message.must_equal "can't convert #{input.inspect} into BigDecimal"
         end
       end
@@ -928,7 +928,7 @@ describe Lotus::Utils::Kernel do
         let(:input) { '23.0 street' }
 
         it 'raises error' do
-          exception = -> { Lotus::Utils::Kernel.BigDecimal(input) }.must_raise(TypeError)
+          exception = -> { Hanami::Utils::Kernel.BigDecimal(input) }.must_raise(TypeError)
           exception.message.must_equal "can't convert #{input.inspect} into BigDecimal"
         end
       end
@@ -937,12 +937,12 @@ describe Lotus::Utils::Kernel do
         let(:input) { BasicObject.new }
 
         it 'raises error' do
-          -> { Lotus::Utils::Kernel.BigDecimal(input) }.must_raise(TypeError)
+          -> { Hanami::Utils::Kernel.BigDecimal(input) }.must_raise(TypeError)
         end
 
         it 'returns useful informations about the failure' do
           begin
-            Lotus::Utils::Kernel.BigDecimal(input)
+            Hanami::Utils::Kernel.BigDecimal(input)
           rescue => e
             e.message.must_equal "can't convert into BigDecimal"
           end
@@ -960,7 +960,7 @@ describe Lotus::Utils::Kernel do
           end
         end
 
-        @result = Lotus::Utils::Kernel.Float(input)
+        @result = Hanami::Utils::Kernel.Float(input)
       end
 
       after do
@@ -1122,7 +1122,7 @@ describe Lotus::Utils::Kernel do
         let(:input) { true }
 
         it 'raises error' do
-          -> { Lotus::Utils::Kernel.Float(input) }.must_raise(TypeError)
+          -> { Hanami::Utils::Kernel.Float(input) }.must_raise(TypeError)
         end
       end
 
@@ -1130,7 +1130,7 @@ describe Lotus::Utils::Kernel do
         let(:input) { false }
 
         it 'raises error' do
-          -> { Lotus::Utils::Kernel.Float(input) }.must_raise(TypeError)
+          -> { Hanami::Utils::Kernel.Float(input) }.must_raise(TypeError)
         end
       end
 
@@ -1138,7 +1138,7 @@ describe Lotus::Utils::Kernel do
         let(:input) { Date.today }
 
         it 'raises error' do
-          -> { Lotus::Utils::Kernel.Float(input) }.must_raise(TypeError)
+          -> { Hanami::Utils::Kernel.Float(input) }.must_raise(TypeError)
         end
       end
 
@@ -1146,7 +1146,7 @@ describe Lotus::Utils::Kernel do
         let(:input) { DateTime.now }
 
         it 'raises error' do
-          -> { Lotus::Utils::Kernel.Float(input) }.must_raise(TypeError)
+          -> { Hanami::Utils::Kernel.Float(input) }.must_raise(TypeError)
         end
       end
 
@@ -1154,7 +1154,7 @@ describe Lotus::Utils::Kernel do
         let(:input) { 'home' }
 
         it 'raises error' do
-          exception = -> { Lotus::Utils::Kernel.Float(input) }.must_raise(TypeError)
+          exception = -> { Hanami::Utils::Kernel.Float(input) }.must_raise(TypeError)
           exception.message.must_equal "can't convert #{input.inspect} into Float"
         end
       end
@@ -1163,7 +1163,7 @@ describe Lotus::Utils::Kernel do
         let(:input) { '23.0 street' }
 
         it 'raises error' do
-          exception = -> { Lotus::Utils::Kernel.Float(input) }.must_raise(TypeError)
+          exception = -> { Hanami::Utils::Kernel.Float(input) }.must_raise(TypeError)
           exception.message.must_equal "can't convert #{input.inspect} into Float"
         end
       end
@@ -1172,12 +1172,12 @@ describe Lotus::Utils::Kernel do
         let(:input) { BasicObject.new }
 
         it 'raises error' do
-          -> { Lotus::Utils::Kernel.Float(input) }.must_raise(TypeError)
+          -> { Hanami::Utils::Kernel.Float(input) }.must_raise(TypeError)
         end
 
         it 'returns useful informations about the failure' do
           begin
-            Lotus::Utils::Kernel.Float(input)
+            Hanami::Utils::Kernel.Float(input)
           rescue => e
             e.message.must_equal "can't convert into Float"
           end
@@ -1188,7 +1188,7 @@ describe Lotus::Utils::Kernel do
         let(:input) { OpenStruct.new(color: 'purple') }
 
         it 'raises error' do
-          -> { Lotus::Utils::Kernel.Float(input) }.must_raise(TypeError)
+          -> { Hanami::Utils::Kernel.Float(input) }.must_raise(TypeError)
         end
       end
 
@@ -1196,12 +1196,12 @@ describe Lotus::Utils::Kernel do
         let(:input) { Complex(2,3) }
 
         it 'raises error' do
-          -> { Lotus::Utils::Kernel.Float(input) }.must_raise(TypeError)
+          -> { Hanami::Utils::Kernel.Float(input) }.must_raise(TypeError)
         end
 
         it 'returns useful informations about the failure' do
           begin
-            Lotus::Utils::Kernel.Float(input)
+            Hanami::Utils::Kernel.Float(input)
           rescue => e
             e.message.must_equal "can't convert #{input.inspect} into Float"
           end
@@ -1212,12 +1212,12 @@ describe Lotus::Utils::Kernel do
         let(:input) { Rational(-8) ** Rational(1, 3) }
 
         it 'raises error' do
-          -> { Lotus::Utils::Kernel.Float(input) }.must_raise(TypeError)
+          -> { Hanami::Utils::Kernel.Float(input) }.must_raise(TypeError)
         end
 
         it 'returns useful informations about the failure' do
           begin
-            Lotus::Utils::Kernel.Float(input)
+            Hanami::Utils::Kernel.Float(input)
           rescue => e
             e.message.must_equal "can't convert #{input.inspect} into Float"
           end
@@ -1255,7 +1255,7 @@ describe Lotus::Utils::Kernel do
 
     describe 'successful operations' do
       before do
-        @result = Lotus::Utils::Kernel.String(input)
+        @result = Hanami::Utils::Kernel.String(input)
       end
 
       describe 'when nil is given' do
@@ -1419,10 +1419,10 @@ describe Lotus::Utils::Kernel do
       end
 
       describe 'when a symbol is given' do
-        let(:input) { :lotus }
+        let(:input) { :hanami }
 
         it 'returns the string representation' do
-          @result.must_equal 'lotus'
+          @result.must_equal 'hanami'
         end
       end
 
@@ -1475,10 +1475,10 @@ describe Lotus::Utils::Kernel do
       end
 
       describe 'when a module is given' do
-        let(:input) { Lotus }
+        let(:input) { Hanami }
 
         it 'returns the string representation' do
-          @result.must_equal 'Lotus'
+          @result.must_equal 'Hanami'
         end
       end
 
@@ -1504,7 +1504,7 @@ describe Lotus::Utils::Kernel do
         let(:input) { BasicObject.new }
 
         it 'raises error' do
-          -> { Lotus::Utils::Kernel.String(input) }.must_raise(TypeError)
+          -> { Hanami::Utils::Kernel.String(input) }.must_raise(TypeError)
         end
       end
     end
@@ -1532,7 +1532,7 @@ describe Lotus::Utils::Kernel do
 
     describe 'successful operations' do
       before do
-        @result = Lotus::Utils::Kernel.Boolean(input)
+        @result = Hanami::Utils::Kernel.Boolean(input)
       end
 
       describe 'when nil is given' do
@@ -1629,12 +1629,12 @@ describe Lotus::Utils::Kernel do
         let(:input) { BasicObject.new }
 
         it 'raises error' do
-          -> { Lotus::Utils::Kernel.Boolean(input) }.must_raise(TypeError)
+          -> { Hanami::Utils::Kernel.Boolean(input) }.must_raise(TypeError)
         end
 
         it 'returns useful informations about the failure' do
           begin
-            Lotus::Utils::Kernel.Boolean(input)
+            Hanami::Utils::Kernel.Boolean(input)
           rescue => e
             e.message.must_equal "can't convert into Boolean"
           end
@@ -1665,7 +1665,7 @@ describe Lotus::Utils::Kernel do
 
     describe 'successful operations' do
       before do
-        @result = Lotus::Utils::Kernel.Date(input)
+        @result = Hanami::Utils::Kernel.Date(input)
       end
 
       describe 'when a date is given' do
@@ -1722,12 +1722,12 @@ describe Lotus::Utils::Kernel do
         let(:input) { nil }
 
         it 'raises error' do
-          -> { Lotus::Utils::Kernel.Date(input) }.must_raise TypeError
+          -> { Hanami::Utils::Kernel.Date(input) }.must_raise TypeError
         end
 
         it 'returns useful informations about the failure' do
           begin
-            Lotus::Utils::Kernel.Date(input)
+            Hanami::Utils::Kernel.Date(input)
           rescue => e
             e.message.must_equal "can't convert #{input.inspect} into Date"
           end
@@ -1738,12 +1738,12 @@ describe Lotus::Utils::Kernel do
         let(:input) { true }
 
         it 'raises error' do
-          -> { Lotus::Utils::Kernel.Date(input) }.must_raise TypeError
+          -> { Hanami::Utils::Kernel.Date(input) }.must_raise TypeError
         end
 
         it 'returns useful informations about the failure' do
           begin
-            Lotus::Utils::Kernel.Date(input)
+            Hanami::Utils::Kernel.Date(input)
           rescue => e
             e.message.must_equal "can't convert #{input.inspect} into Date"
           end
@@ -1754,12 +1754,12 @@ describe Lotus::Utils::Kernel do
         let(:input) { false }
 
         it 'raises error' do
-          -> { Lotus::Utils::Kernel.Date(input) }.must_raise TypeError
+          -> { Hanami::Utils::Kernel.Date(input) }.must_raise TypeError
         end
 
         it 'returns useful informations about the failure' do
           begin
-            Lotus::Utils::Kernel.Date(input)
+            Hanami::Utils::Kernel.Date(input)
           rescue => e
             e.message.must_equal "can't convert #{input.inspect} into Date"
           end
@@ -1770,12 +1770,12 @@ describe Lotus::Utils::Kernel do
         let(:input) { 2 }
 
         it 'raises error' do
-          -> { Lotus::Utils::Kernel.Date(input) }.must_raise TypeError
+          -> { Hanami::Utils::Kernel.Date(input) }.must_raise TypeError
         end
 
         it 'returns useful informations about the failure' do
           begin
-            Lotus::Utils::Kernel.Date(input)
+            Hanami::Utils::Kernel.Date(input)
           rescue => e
             e.message.must_equal "can't convert #{input.inspect} into Date"
           end
@@ -1786,12 +1786,12 @@ describe Lotus::Utils::Kernel do
         let(:input) { 2332.903007 }
 
         it 'raises error' do
-          -> { Lotus::Utils::Kernel.Date(input) }.must_raise TypeError
+          -> { Hanami::Utils::Kernel.Date(input) }.must_raise TypeError
         end
 
         it 'returns useful informations about the failure' do
           begin
-            Lotus::Utils::Kernel.Date(input)
+            Hanami::Utils::Kernel.Date(input)
           rescue => e
             e.message.must_equal "can't convert #{input.inspect} into Date"
           end
@@ -1802,12 +1802,12 @@ describe Lotus::Utils::Kernel do
         let(:input) { 'lego' }
 
         it 'raises error' do
-          -> { Lotus::Utils::Kernel.Date(input) }.must_raise TypeError
+          -> { Hanami::Utils::Kernel.Date(input) }.must_raise TypeError
         end
 
         it 'returns useful informations about the failure' do
           begin
-            Lotus::Utils::Kernel.Date(input)
+            Hanami::Utils::Kernel.Date(input)
           rescue => e
             e.message.must_equal "can't convert #{input.inspect} into Date"
           end
@@ -1818,12 +1818,12 @@ describe Lotus::Utils::Kernel do
         let(:input) { '18:55' }
 
         it 'raises error' do
-          -> { Lotus::Utils::Kernel.Date(input) }.must_raise TypeError
+          -> { Hanami::Utils::Kernel.Date(input) }.must_raise TypeError
         end
 
         it 'returns useful informations about the failure' do
           begin
-            Lotus::Utils::Kernel.Date(input)
+            Hanami::Utils::Kernel.Date(input)
           rescue => e
             e.message.must_equal "can't convert #{input.inspect} into Date"
           end
@@ -1834,12 +1834,12 @@ describe Lotus::Utils::Kernel do
         let(:input) { BasicObject.new }
 
         it 'raises error' do
-          -> { Lotus::Utils::Kernel.Date(input) }.must_raise TypeError
+          -> { Hanami::Utils::Kernel.Date(input) }.must_raise TypeError
         end
 
         it 'returns useful informations about the failure' do
           begin
-            Lotus::Utils::Kernel.Date(input)
+            Hanami::Utils::Kernel.Date(input)
           rescue => e
             e.message.must_equal "can't convert into Date"
           end
@@ -1850,12 +1850,12 @@ describe Lotus::Utils::Kernel do
         let(:input) { BaseObject.new }
 
         it 'raises error' do
-          -> { Lotus::Utils::Kernel.Date(input) }.must_raise TypeError
+          -> { Hanami::Utils::Kernel.Date(input) }.must_raise TypeError
         end
 
         it 'returns useful informations about the failure' do
           begin
-            Lotus::Utils::Kernel.Date(input)
+            Hanami::Utils::Kernel.Date(input)
           rescue => e
             e.message.must_equal "can't convert into Date"
           end
@@ -1886,7 +1886,7 @@ describe Lotus::Utils::Kernel do
 
     describe 'successful operations' do
       before do
-        @result = Lotus::Utils::Kernel.DateTime(input)
+        @result = Hanami::Utils::Kernel.DateTime(input)
       end
 
       describe 'when a datetime is given' do
@@ -1967,12 +1967,12 @@ describe Lotus::Utils::Kernel do
         let(:input) { nil }
 
         it 'raises error' do
-          -> { Lotus::Utils::Kernel.DateTime(input) }.must_raise TypeError
+          -> { Hanami::Utils::Kernel.DateTime(input) }.must_raise TypeError
         end
 
         it 'returns useful informations about the failure' do
           begin
-            Lotus::Utils::Kernel.DateTime(input)
+            Hanami::Utils::Kernel.DateTime(input)
           rescue => e
             e.message.must_equal "can't convert #{input.inspect} into DateTime"
           end
@@ -1983,12 +1983,12 @@ describe Lotus::Utils::Kernel do
         let(:input) { true }
 
         it 'raises error' do
-          -> { Lotus::Utils::Kernel.DateTime(input) }.must_raise TypeError
+          -> { Hanami::Utils::Kernel.DateTime(input) }.must_raise TypeError
         end
 
         it 'returns useful informations about the failure' do
           begin
-            Lotus::Utils::Kernel.DateTime(input)
+            Hanami::Utils::Kernel.DateTime(input)
           rescue => e
             e.message.must_equal "can't convert #{input.inspect} into DateTime"
           end
@@ -1999,12 +1999,12 @@ describe Lotus::Utils::Kernel do
         let(:input) { false }
 
         it 'raises error' do
-          -> { Lotus::Utils::Kernel.DateTime(input) }.must_raise TypeError
+          -> { Hanami::Utils::Kernel.DateTime(input) }.must_raise TypeError
         end
 
         it 'returns useful informations about the failure' do
           begin
-            Lotus::Utils::Kernel.DateTime(input)
+            Hanami::Utils::Kernel.DateTime(input)
           rescue => e
             e.message.must_equal "can't convert #{input.inspect} into DateTime"
           end
@@ -2015,12 +2015,12 @@ describe Lotus::Utils::Kernel do
         let(:input) { 'crab' }
 
         it 'raises error' do
-          -> { Lotus::Utils::Kernel.DateTime(input) }.must_raise TypeError
+          -> { Hanami::Utils::Kernel.DateTime(input) }.must_raise TypeError
         end
 
         it 'returns useful informations about the failure' do
           begin
-            Lotus::Utils::Kernel.DateTime(input)
+            Hanami::Utils::Kernel.DateTime(input)
           rescue => e
             e.message.must_equal "can't convert #{input.inspect} into DateTime"
           end
@@ -2031,12 +2031,12 @@ describe Lotus::Utils::Kernel do
         let(:input) { BasicObject.new }
 
         it 'raises error' do
-          -> { Lotus::Utils::Kernel.DateTime(input) }.must_raise TypeError
+          -> { Hanami::Utils::Kernel.DateTime(input) }.must_raise TypeError
         end
 
         it 'returns useful informations about the failure' do
           begin
-            Lotus::Utils::Kernel.DateTime(input)
+            Hanami::Utils::Kernel.DateTime(input)
           rescue => e
             e.message.must_equal "can't convert into DateTime"
           end
@@ -2047,12 +2047,12 @@ describe Lotus::Utils::Kernel do
         let(:input) { BaseObject.new }
 
         it 'raises error' do
-          -> { Lotus::Utils::Kernel.DateTime(input) }.must_raise TypeError
+          -> { Hanami::Utils::Kernel.DateTime(input) }.must_raise TypeError
         end
 
         it 'returns useful informations about the failure' do
           begin
-            Lotus::Utils::Kernel.DateTime(input)
+            Hanami::Utils::Kernel.DateTime(input)
           rescue => e
             e.message.must_equal "can't convert into DateTime"
           end
@@ -2083,7 +2083,7 @@ describe Lotus::Utils::Kernel do
 
     describe 'successful operations' do
       before do
-        @result = Lotus::Utils::Kernel.Time(input)
+        @result = Hanami::Utils::Kernel.Time(input)
       end
 
       describe 'when a time is given' do
@@ -2164,12 +2164,12 @@ describe Lotus::Utils::Kernel do
         let(:input) { nil }
 
         it 'raises error' do
-          -> { Lotus::Utils::Kernel.Time(input) }.must_raise TypeError
+          -> { Hanami::Utils::Kernel.Time(input) }.must_raise TypeError
         end
 
         it 'returns useful informations about the failure' do
           begin
-            Lotus::Utils::Kernel.Time(input)
+            Hanami::Utils::Kernel.Time(input)
           rescue => e
             e.message.must_equal "can't convert #{input.inspect} into Time"
           end
@@ -2180,12 +2180,12 @@ describe Lotus::Utils::Kernel do
         let(:input) { true }
 
         it 'raises error' do
-          -> { Lotus::Utils::Kernel.Time(input) }.must_raise TypeError
+          -> { Hanami::Utils::Kernel.Time(input) }.must_raise TypeError
         end
 
         it 'returns useful informations about the failure' do
           begin
-            Lotus::Utils::Kernel.Time(input)
+            Hanami::Utils::Kernel.Time(input)
           rescue => e
             e.message.must_equal "can't convert #{input.inspect} into Time"
           end
@@ -2196,12 +2196,12 @@ describe Lotus::Utils::Kernel do
         let(:input) { false }
 
         it 'raises error' do
-          -> { Lotus::Utils::Kernel.Time(input) }.must_raise TypeError
+          -> { Hanami::Utils::Kernel.Time(input) }.must_raise TypeError
         end
 
         it 'returns useful informations about the failure' do
           begin
-            Lotus::Utils::Kernel.Time(input)
+            Hanami::Utils::Kernel.Time(input)
           rescue => e
             e.message.must_equal "can't convert #{input.inspect} into Time"
           end
@@ -2212,12 +2212,12 @@ describe Lotus::Utils::Kernel do
         let(:input) { 'boat' }
 
         it 'raises error' do
-          -> { Lotus::Utils::Kernel.Time(input) }.must_raise TypeError
+          -> { Hanami::Utils::Kernel.Time(input) }.must_raise TypeError
         end
 
         it 'returns useful informations about the failure' do
           begin
-            Lotus::Utils::Kernel.Time(input)
+            Hanami::Utils::Kernel.Time(input)
           rescue => e
             e.message.must_equal "can't convert #{input.inspect} into Time"
           end
@@ -2228,12 +2228,12 @@ describe Lotus::Utils::Kernel do
         let(:input) { BasicObject.new }
 
         it 'raises error' do
-          -> { Lotus::Utils::Kernel.Time(input) }.must_raise TypeError
+          -> { Hanami::Utils::Kernel.Time(input) }.must_raise TypeError
         end
 
         it 'returns useful informations about the failure' do
           begin
-            Lotus::Utils::Kernel.Time(input)
+            Hanami::Utils::Kernel.Time(input)
           rescue => e
             e.message.must_equal "can't convert into Time"
           end
@@ -2244,12 +2244,12 @@ describe Lotus::Utils::Kernel do
         let(:input) { BaseObject.new }
 
         it 'raises error' do
-          -> { Lotus::Utils::Kernel.Time(input) }.must_raise TypeError
+          -> { Hanami::Utils::Kernel.Time(input) }.must_raise TypeError
         end
 
         it 'returns useful informations about the failure' do
           begin
-            Lotus::Utils::Kernel.Time(input)
+            Hanami::Utils::Kernel.Time(input)
           rescue => e
             e.message.must_equal "can't convert into Time"
           end
@@ -2273,7 +2273,7 @@ describe Lotus::Utils::Kernel do
           end
         end
 
-        @result = Lotus::Utils::Kernel.Pathname(input)
+        @result = Hanami::Utils::Kernel.Pathname(input)
       end
 
       after do
@@ -2319,7 +2319,7 @@ describe Lotus::Utils::Kernel do
         let(:input) { nil }
 
         it 'raises error' do
-          -> { Lotus::Utils::Kernel.Pathname(input) }.must_raise TypeError
+          -> { Hanami::Utils::Kernel.Pathname(input) }.must_raise TypeError
         end
       end
 
@@ -2327,7 +2327,7 @@ describe Lotus::Utils::Kernel do
         let(:input) { true }
 
         it 'raises error' do
-          -> { Lotus::Utils::Kernel.Pathname(input) }.must_raise TypeError
+          -> { Hanami::Utils::Kernel.Pathname(input) }.must_raise TypeError
         end
       end
 
@@ -2335,7 +2335,7 @@ describe Lotus::Utils::Kernel do
         let(:input) { false }
 
         it 'raises error' do
-          -> { Lotus::Utils::Kernel.Pathname(input) }.must_raise TypeError
+          -> { Hanami::Utils::Kernel.Pathname(input) }.must_raise TypeError
         end
       end
 
@@ -2343,7 +2343,7 @@ describe Lotus::Utils::Kernel do
         let(:input) { 12 }
 
         it 'raises error' do
-          -> { Lotus::Utils::Kernel.Pathname(input) }.must_raise TypeError
+          -> { Hanami::Utils::Kernel.Pathname(input) }.must_raise TypeError
         end
       end
 
@@ -2351,7 +2351,7 @@ describe Lotus::Utils::Kernel do
         let(:input) { Date.today }
 
         it 'raises error' do
-          -> { Lotus::Utils::Kernel.Pathname(input) }.must_raise TypeError
+          -> { Hanami::Utils::Kernel.Pathname(input) }.must_raise TypeError
         end
       end
 
@@ -2359,7 +2359,7 @@ describe Lotus::Utils::Kernel do
         let(:input) { DateTime.now }
 
         it 'raises error' do
-          -> { Lotus::Utils::Kernel.Pathname(input) }.must_raise TypeError
+          -> { Hanami::Utils::Kernel.Pathname(input) }.must_raise TypeError
         end
       end
 
@@ -2367,7 +2367,7 @@ describe Lotus::Utils::Kernel do
         let(:input) { Time.now }
 
         it 'raises error' do
-          -> { Lotus::Utils::Kernel.Pathname(input) }.must_raise TypeError
+          -> { Hanami::Utils::Kernel.Pathname(input) }.must_raise TypeError
         end
       end
 
@@ -2375,12 +2375,12 @@ describe Lotus::Utils::Kernel do
         let(:input) { BasicObject.new }
 
         it 'raises error' do
-          -> { Lotus::Utils::Kernel.Pathname(input) }.must_raise TypeError
+          -> { Hanami::Utils::Kernel.Pathname(input) }.must_raise TypeError
         end
 
         it 'returns useful informations about the failure' do
           begin
-            Lotus::Utils::Kernel.Pathname(input)
+            Hanami::Utils::Kernel.Pathname(input)
           rescue => e
             e.message.must_equal "can't convert into Pathname"
           end
@@ -2398,7 +2398,7 @@ describe Lotus::Utils::Kernel do
           end
         end
 
-        @result = Lotus::Utils::Kernel.Symbol(input)
+        @result = Hanami::Utils::Kernel.Symbol(input)
       end
 
       after do
@@ -2435,7 +2435,7 @@ describe Lotus::Utils::Kernel do
         let(:input) { nil }
 
         it 'raises error' do
-          -> { Lotus::Utils::Kernel.Symbol(input) }.must_raise TypeError
+          -> { Hanami::Utils::Kernel.Symbol(input) }.must_raise TypeError
         end
       end
 
@@ -2443,7 +2443,7 @@ describe Lotus::Utils::Kernel do
         let(:input) { '' }
 
         it 'raises error' do
-          -> { Lotus::Utils::Kernel.Symbol(input) }.must_raise TypeError
+          -> { Hanami::Utils::Kernel.Symbol(input) }.must_raise TypeError
         end
       end
 
@@ -2451,7 +2451,7 @@ describe Lotus::Utils::Kernel do
         let(:input) { true }
 
         it 'raises error' do
-          -> { Lotus::Utils::Kernel.Symbol(input) }.must_raise TypeError
+          -> { Hanami::Utils::Kernel.Symbol(input) }.must_raise TypeError
         end
       end
 
@@ -2459,7 +2459,7 @@ describe Lotus::Utils::Kernel do
         let(:input) { false }
 
         it 'raises error' do
-          -> { Lotus::Utils::Kernel.Symbol(input) }.must_raise TypeError
+          -> { Hanami::Utils::Kernel.Symbol(input) }.must_raise TypeError
         end
       end
 
@@ -2467,7 +2467,7 @@ describe Lotus::Utils::Kernel do
         let(:input) { 12 }
 
         it 'raises error' do
-          -> { Lotus::Utils::Kernel.Symbol(input) }.must_raise TypeError
+          -> { Hanami::Utils::Kernel.Symbol(input) }.must_raise TypeError
         end
       end
 
@@ -2475,7 +2475,7 @@ describe Lotus::Utils::Kernel do
         let(:input) { Date.today }
 
         it 'raises error' do
-          -> { Lotus::Utils::Kernel.Symbol(input) }.must_raise TypeError
+          -> { Hanami::Utils::Kernel.Symbol(input) }.must_raise TypeError
         end
       end
 
@@ -2483,7 +2483,7 @@ describe Lotus::Utils::Kernel do
         let(:input) { DateTime.now }
 
         it 'raises error' do
-          -> { Lotus::Utils::Kernel.Symbol(input) }.must_raise TypeError
+          -> { Hanami::Utils::Kernel.Symbol(input) }.must_raise TypeError
         end
       end
 
@@ -2491,7 +2491,7 @@ describe Lotus::Utils::Kernel do
         let(:input) { Time.now }
 
         it 'raises error' do
-          -> { Lotus::Utils::Kernel.Symbol(input) }.must_raise TypeError
+          -> { Hanami::Utils::Kernel.Symbol(input) }.must_raise TypeError
         end
       end
 
@@ -2499,12 +2499,12 @@ describe Lotus::Utils::Kernel do
         let(:input) { BasicObject.new }
 
         it 'raises error' do
-          -> { Lotus::Utils::Kernel.Symbol(input) }.must_raise TypeError
+          -> { Hanami::Utils::Kernel.Symbol(input) }.must_raise TypeError
         end
 
         it 'returns useful informations about the failure' do
           begin
-            Lotus::Utils::Kernel.Symbol(input)
+            Hanami::Utils::Kernel.Symbol(input)
           rescue => e
             e.message.must_equal "can't convert into Symbol"
           end

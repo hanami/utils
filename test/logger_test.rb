@@ -1,7 +1,7 @@
 require 'test_helper'
-require 'lotus/logger'
+require 'hanami/logger'
 
-describe Lotus::Logger do
+describe Hanami::Logger do
 
   before do
     #clear defined class
@@ -9,14 +9,14 @@ describe Lotus::Logger do
   end
 
   it 'like std logger, sets log level to info by default' do
-    class TestLogger < Lotus::Logger; end
+    class TestLogger < Hanami::Logger; end
     TestLogger.new.info?.must_equal true
   end
 
   it 'always use STDOUT' do
     output =
       stub_stdout_constant do
-        class TestLogger < Lotus::Logger; end
+        class TestLogger < Hanami::Logger; end
         logger = TestLogger.new
         logger.info('foo')
       end
@@ -27,7 +27,7 @@ describe Lotus::Logger do
   it 'has application_name when log' do
     output =
       stub_stdout_constant do
-        module App; class TestLogger < Lotus::Logger; end; end
+        module App; class TestLogger < Hanami::Logger; end; end
         logger = App::TestLogger.new
         logger.info('foo')
       end
@@ -36,13 +36,13 @@ describe Lotus::Logger do
   end
 
   it 'has default app tag when not in any namespace' do
-    class TestLogger < Lotus::Logger; end
-    TestLogger.new.application_name.must_equal 'Lotus'
+    class TestLogger < Hanami::Logger; end
+    TestLogger.new.application_name.must_equal 'Hanami'
   end
 
   it 'infers apptag from namespace' do
     module App2
-      class TestLogger < Lotus::Logger;end
+      class TestLogger < Hanami::Logger;end
       class Bar
         def hoge
           TestLogger.new.send(:application_name).must_equal 'App2'
@@ -53,7 +53,7 @@ describe Lotus::Logger do
   end
 
   it 'uses custom application_name from override class' do
-    class TestLogger < Lotus::Logger; def application_name; 'bar'; end; end
+    class TestLogger < Hanami::Logger; def application_name; 'bar'; end; end
 
     output =
       stub_stdout_constant do
@@ -67,10 +67,10 @@ describe Lotus::Logger do
     stub_time_now do
       output =
         stub_stdout_constant do
-          class TestLogger < Lotus::Logger;end
+          class TestLogger < Hanami::Logger;end
           TestLogger.new.info('foo')
         end
-      output.must_equal "I, [1988-09-01T00:00:00.000000 ##{Process.pid}]  INFO -- [Lotus] : foo\n"
+      output.must_equal "I, [1988-09-01T00:00:00.000000 ##{Process.pid}]  INFO -- [Hanami] : foo\n"
     end
   end
 end

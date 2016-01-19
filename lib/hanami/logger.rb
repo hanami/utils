@@ -1,20 +1,20 @@
 require 'logger'
-require 'lotus/utils/string'
+require 'hanami/utils/string'
 
-module Lotus
-  # Lotus logger
+module Hanami
+  # Hanami logger
   #
   # Implement with the same interface of Ruby std lib `Logger`.
   # It uses `STDOUT` as output device.
   #
   #
   #
-  # When a Lotus application is initialized, it creates a logger for that specific application.
+  # When a Hanami application is initialized, it creates a logger for that specific application.
   # For instance for a `Bookshelf::Application` a `Bookshelf::Logger` will be available.
   #
   # This is useful for auto-tagging the output. Eg (`[Booshelf]`).
   #
-  # When used stand alone (eg. `Lotus::Logger.info`), it tags lines with `[Shared]`.
+  # When used stand alone (eg. `Hanami::Logger.info`), it tags lines with `[Shared]`.
   #
   #
   #
@@ -35,10 +35,10 @@ module Lotus
   # @see http://www.ruby-doc.org/stdlib/libdoc/logger/rdoc/Logger/Severity.html
   #
   # @example Basic usage
-  #   require 'lotus'
+  #   require 'hanami'
   #
   #   module Bookshelf
-  #     class Application < Lotus::Application
+  #     class Application < Hanami::Application
   #     end
   #   end
   #
@@ -54,21 +54,21 @@ module Lotus
   #   # => I, [2015-01-10T21:55:12.727259 #80487]  INFO -- [Bookshelf] : Hello
   #
   # @example Standalone usage
-  #   require 'lotus'
+  #   require 'hanami'
   #
-  #   Lotus::Logger.info('Hello')
-  #   # => I, [2015-01-10T21:55:12.727259 #80487]  INFO -- [Lotus] : Hello
+  #   Hanami::Logger.info('Hello')
+  #   # => I, [2015-01-10T21:55:12.727259 #80487]  INFO -- [Hanami] : Hello
   #
-  #   Lotus::Logger.new.info('Hello')
-  #   # => I, [2015-01-10T21:55:12.727259 #80487]  INFO -- [Lotus] : Hello
+  #   Hanami::Logger.new.info('Hello')
+  #   # => I, [2015-01-10T21:55:12.727259 #80487]  INFO -- [Hanami] : Hello
   #
   # @example Custom tagging
-  #   require 'lotus'
+  #   require 'hanami'
   #
-  #   Lotus::Logger.new('FOO').info('Hello')
+  #   Hanami::Logger.new('FOO').info('Hello')
   #   # => I, [2015-01-10T21:55:12.727259 #80487]  INFO -- [FOO] : Hello
   class Logger < ::Logger
-    # Lotus::Logger default formatter
+    # Hanami::Logger default formatter
     #
     # @since 0.5.0
     # @api private
@@ -94,7 +94,7 @@ module Lotus
     #
     # @since 0.5.0
     # @api private
-    DEFAULT_APPLICATION_NAME = 'Lotus'.freeze
+    DEFAULT_APPLICATION_NAME = 'Hanami'.freeze
 
     # @since 0.5.0
     # @api private
@@ -110,7 +110,7 @@ module Lotus
       super(STDOUT)
 
       @application_name = application_name
-      @formatter        = Lotus::Logger::Formatter.new.tap { |f| f.application_name = self.application_name }
+      @formatter        = Hanami::Logger::Formatter.new.tap { |f| f.application_name = self.application_name }
     end
 
     # Returns the current application name, this is used for tagging purposes

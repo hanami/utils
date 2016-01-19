@@ -1,10 +1,10 @@
 require 'test_helper'
-require 'lotus/utils/class_attribute'
+require 'hanami/utils/class_attribute'
 
-describe Lotus::Utils::ClassAttribute do
+describe Hanami::Utils::ClassAttribute do
   before do
     class ClassAttributeTest
-      include Lotus::Utils::ClassAttribute
+      include Hanami::Utils::ClassAttribute
       class_attribute :callbacks, :functions, :values
       self.callbacks = [:a]
       self.values    = [1]
@@ -20,7 +20,7 @@ describe Lotus::Utils::ClassAttribute do
     end
 
     class Vehicle
-      include Lotus::Utils::ClassAttribute
+      include Hanami::Utils::ClassAttribute
       class_attribute :engines, :wheels
 
       self.engines = 0
@@ -89,7 +89,7 @@ describe Lotus::Utils::ClassAttribute do
           module Routing
             class Resource
               class Action
-                include Lotus::Utils::ClassAttribute
+                include Hanami::Utils::ClassAttribute
                 class_attribute :verb
               end
 

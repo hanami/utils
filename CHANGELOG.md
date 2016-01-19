@@ -1,76 +1,76 @@
-# Lotus::Utils
-Ruby core extentions and class utilities for Lotus
+# Hanami::Utils
+Ruby core extentions and class utilities for Hanami
 
 ## v0.6.1 - 2016-01-19
 ### Fixed
-- [Anton Davydov] Ensure `Lotus::Utils::String#classify` to work properly with dashes (eg. `"app-store" => "App::Store"`)
+- [Anton Davydov] Ensure `Hanami::Utils::String#classify` to work properly with dashes (eg. `"app-store" => "App::Store"`)
 
 ## v0.6.0 - 2016-01-12
 ### Added
 - [Luca Guidi] Official support for Ruby 2.3
 - [Luca Guidi] Custom inflections
-- [Luca Guidi] Introduced `Lotus::Utils::Duplicable` as a safe dup logic for Ruby types
-- [Luca Guidi] Added `Lotus::Utils::String#rsub` replace rightmost occurrence
+- [Luca Guidi] Introduced `Hanami::Utils::Duplicable` as a safe dup logic for Ruby types
+- [Luca Guidi] Added `Hanami::Utils::String#rsub` replace rightmost occurrence
 
 ### Fixed
-- [Luca Guidi] Fix `Lotus::Utils::PathPrefix#join` and `#relative_join` by rejecting arguments that are equal to the separator
-- [Karim Kiatlottiavi] Fix `Encoding::UndefinedConversionError` in `Lotus::Utils::Escape.encode`
+- [Luca Guidi] Fix `Hanami::Utils::PathPrefix#join` and `#relative_join` by rejecting arguments that are equal to the separator
+- [Karim Kiatlottiavi] Fix `Encoding::UndefinedConversionError` in `Hanami::Utils::Escape.encode`
 
 ### Changed
 - [Luca Guidi] Deprecate Ruby 2.0 and 2.1
-- [Luca Guidi] Removed `Lotus::Utils::Callbacks#add` in favor of `#append`
+- [Luca Guidi] Removed `Hanami::Utils::Callbacks#add` in favor of `#append`
 - [Luca Guidi] Removed pattern support for `Utils::Class.load!` (eg. `Articles(Controller|::Controller)`)
 
 ## v0.5.2 - 2015-09-30
 ### Added
-- [Luca Guidi] Added `Lotus::Utils::String#capitalize`
+- [Luca Guidi] Added `Hanami::Utils::String#capitalize`
 - [Trung Lê] Official support for JRuby 9k+
 
 ## v0.5.1 - 2015-07-10
 ### Fixed
-- [Thiago Felippe] Ensure `Lotus::Utils::PathPrefix#join` won't remote duplicate entries (eg `/admin/dashboard/admin`)
+- [Thiago Felippe] Ensure `Hanami::Utils::PathPrefix#join` won't remote duplicate entries (eg `/admin/dashboard/admin`)
 
 ## v0.5.0 - 2015-06-23
 ### Added
-- [Luca Guidi] Extracted `Lotus::Logger` from `lotusrb`
+- [Luca Guidi] Extracted `Hanami::Logger` from `hanamirb`
 
 ### Changed
-- [Luca Guidi] `Lotus::Interactor::Result` contains only objects explicitly exposed via `Lotus::Interactor.expose`.
+- [Luca Guidi] `Hanami::Interactor::Result` contains only objects explicitly exposed via `Hanami::Interactor.expose`.
 
 ## v0.4.3 - 2015-05-22
 ### Added
-- [François Beausoleil] Improved `Lotus::Utils::Kernel` messages for `TypeError`.
+- [François Beausoleil] Improved `Hanami::Utils::Kernel` messages for `TypeError`.
 
 ## v0.4.2 - 2015-05-15
 ### Fixed
-- [Luca Guidi] Ensure `Lotus::Utils::Attributes#to_h` to return `::Hash`
+- [Luca Guidi] Ensure `Hanami::Utils::Attributes#to_h` to return `::Hash`
 
 ## v0.4.1 - 2015-05-15
 ### Added
-- [Luca Guidi & Alfonso Uceda Pompa] Introduced `Lotus::Utils::Inflector`, `Lotus::Utils::String#pluralize` and `#singularize`
+- [Luca Guidi & Alfonso Uceda Pompa] Introduced `Hanami::Utils::Inflector`, `Hanami::Utils::String#pluralize` and `#singularize`
 
 ### Fixed
-- [Luca Guidi] Ensure `Lotus::Utils::Attributes#to_h` to safely return nested `::Hash` instances for complex data structures.
-- [Luca Guidi] Let `Lotus::Interactor#error` to return a falsey value for control flow. (eg. `check_permissions or error "You can't access"`)
+- [Luca Guidi] Ensure `Hanami::Utils::Attributes#to_h` to safely return nested `::Hash` instances for complex data structures.
+- [Luca Guidi] Let `Hanami::Interactor#error` to return a falsey value for control flow. (eg. `check_permissions or error "You can't access"`)
 
 ## v0.4.0 - 2015-03-23
 ### Added
-- [Luca Guidi] Introduced `Lotus::Utils::Escape`. It implements OWASP/ESAPI suggestions for HTML, HTML attribute and URL escape utilities.
-- [Luca Guidi] Introduced `Lotus::Utils::String#dasherize`
-- [Luca Guidi] Introduced `Lotus::Utils::String#titleize`
+- [Luca Guidi] Introduced `Hanami::Utils::Escape`. It implements OWASP/ESAPI suggestions for HTML, HTML attribute and URL escape utilities.
+- [Luca Guidi] Introduced `Hanami::Utils::String#dasherize`
+- [Luca Guidi] Introduced `Hanami::Utils::String#titleize`
 
 ## v0.3.5 - 2015-03-12
 ### Added
-- [Luca Guidi] Introduced `Lotus::Interactor`
-- [Luca Guidi] Introduced `Lotus::Utils::BasicObject`
+- [Luca Guidi] Introduced `Hanami::Interactor`
+- [Luca Guidi] Introduced `Hanami::Utils::BasicObject`
 
 ## v0.3.4 - 2015-01-30
 ### Added
-- [Alfonso Uceda Pompa] Aliased `Lotus::Utils::Attributes#get` with `#[]`
-- [Simone Carletti] Introduced `Lotus::Utils::Callbacks::Chain#prepend` and `#append`
+- [Alfonso Uceda Pompa] Aliased `Hanami::Utils::Attributes#get` with `#[]`
+- [Simone Carletti] Introduced `Hanami::Utils::Callbacks::Chain#prepend` and `#append`
 
 ### Deprecated
-- [Luca Guidi] Deprecated `Lotus::Utils::Callbacks::Chain#add` in favor of `#append`
+- [Luca Guidi] Deprecated `Hanami::Utils::Callbacks::Chain#add` in favor of `#append`
 
 ## v0.3.3 - 2015-01-08
 ### Fixed
@@ -106,37 +106,37 @@ Ruby core extentions and class utilities for Lotus
 
 ## v0.3.0 - 2014-10-23
 ### Added
-- [Celso Fernandes] Add BigDecimal coercion to Lotus::Utils::Kernel
+- [Celso Fernandes] Add BigDecimal coercion to Hanami::Utils::Kernel
 - [Luca Guidi] Define `Boolean` constant, if missing
-- [Luca Guidi] Use composition over inheritance for `Lotus::Utils::PathPrefix`
-- [Luca Guidi] Use composition over inheritance for `Lotus::Utils::Hash`
-- [Luca Guidi] Use composition over inheritance for `Lotus::Utils::String`
+- [Luca Guidi] Use composition over inheritance for `Hanami::Utils::PathPrefix`
+- [Luca Guidi] Use composition over inheritance for `Hanami::Utils::Hash`
+- [Luca Guidi] Use composition over inheritance for `Hanami::Utils::String`
 
 ### Fixed
 - [Luca Guidi] Improved error message for `Utils::Class.load!`
 - [Tom Kadwill] Improved error `NameError` message by passing in the whole constant name to `Utils::Class.load!`
 - [Luca Guidi] `Utils::Hash#to_h` return instances of `::Hash` in case of nested symbolized data structure
 - [Luca Guidi] Raise `TypeError` if `nil` is passed to `PathPrefix#relative_join`
-- [Peter Suschlik] Define `Lotus::Utils::Hash#respond_to_missing?`
-- [Peter Suschlik] Define `Lotus::Utils::String#responds_to_missing?`
+- [Peter Suschlik] Define `Hanami::Utils::Hash#respond_to_missing?`
+- [Peter Suschlik] Define `Hanami::Utils::String#responds_to_missing?`
 - [Luca Guidi] Ensure `Utils::Hash#inspect` output to be the same of `::Hash#inspect`
 
 ## v0.2.0 - 2014-06-23
 ### Added
-- [Luca Guidi] Implemented `Lotus::Utils::Kernel.Symbol`
+- [Luca Guidi] Implemented `Hanami::Utils::Kernel.Symbol`
 - [Luca Guidi] Made `Kernel.Pathname` to raise an error when `nil` is passed as argument
-- [Luca Guidi] Implemented `Lotus::Utils::LoadPaths#freeze` in order to prevent modification after the object has been frozen
-- [Luca Guidi] Implemented Lotus::Utils::LoadPaths#push, also aliased as #<<
-- [Luca Guidi] Use composition over inheritance for `Lotus::Utils::LoadPaths`
-- [Luca Guidi] Introduced `Lotus::Utils::LoadPaths`
-- [Luca Guidi] Introduced `Lotus::Utils::String#namespace`, in order to return the top level Ruby namespace for the given string
-- [Luca Guidi] Implemented `Lotus::Utils::Kernel.Pathname`
+- [Luca Guidi] Implemented `Hanami::Utils::LoadPaths#freeze` in order to prevent modification after the object has been frozen
+- [Luca Guidi] Implemented Hanami::Utils::LoadPaths#push, also aliased as #<<
+- [Luca Guidi] Use composition over inheritance for `Hanami::Utils::LoadPaths`
+- [Luca Guidi] Introduced `Hanami::Utils::LoadPaths`
+- [Luca Guidi] Introduced `Hanami::Utils::String#namespace`, in order to return the top level Ruby namespace for the given string
+- [Luca Guidi] Implemented `Hanami::Utils::Kernel.Pathname`
 
 ### Fixed
-- [Luca Guidi] Implemented `Lotus::Utils::LoadPaths#initialize_copy` in order to safely `#dup` and `#clone`
+- [Luca Guidi] Implemented `Hanami::Utils::LoadPaths#initialize_copy` in order to safely `#dup` and `#clone`
 
 ### Changed
-- [Luca Guidi] Implemented `Lotus::Utils::Callbacks::Chain#freeze` in order to prevent modification after the object has been frozen
+- [Luca Guidi] Implemented `Hanami::Utils::Callbacks::Chain#freeze` in order to prevent modification after the object has been frozen
 - [Luca Guidi] All the `Utils::Kernel` methods will raise `TypeError` in case of failed coercion.
 - [Luca Guidi] Made `Kernel.Time` to raise an error when `nil` is passed as argument
 - [Luca Guidi] Made `Kernel.DateTime` to raise an error when `nil` is passed as argument
@@ -148,28 +148,28 @@ Ruby core extentions and class utilities for Lotus
 - [Luca Guidi] Made `Kernel.Hash` to return an empty `Hash` when `nil` is passed as argument
 - [Luca Guidi] Made `Kernel.Set` to return an empty `Set` when `nil` is passed as argument
 - [Luca Guidi] Made `Kernel.Array` to return an empty `Array` when `nil` is passed as argument
-- [Luca Guidi] Use composition over inheritance for `Lotus::Utils::Callbacks::Chain`
+- [Luca Guidi] Use composition over inheritance for `Hanami::Utils::Callbacks::Chain`
 
 ## v0.1.1 - 2014-04-23
 ### Added
-- [Luca Guidi] Implemented `Lotus::Utils::Kernel.Time`
-- [Luca Guidi] Implemented `Lotus::Utils::Kernel.DateTime`
-- [Luca Guidi] Implemented `Lotus::Utils::Kernel.Date`
-- [Luca Guidi] Implemented `Lotus::Utils::Kernel.Float`
-- [Luca Guidi] Implemented `Lotus::Utils::Kernel.Boolean`
-- [Luca Guidi] Implemented `Lotus::Utils::Kernel.Hash`
-- [Luca Guidi] Implemented `Lotus::Utils::Kernel.Set`
-- [Luca Guidi] Implemented `Lotus::Utils::Kernel.String`
-- [Luca Guidi] Implemented `Lotus::Utils::Kernel.Integer`
-- [Luca Guidi] Implemented `Lotus::Utils::Kernel.Array`
+- [Luca Guidi] Implemented `Hanami::Utils::Kernel.Time`
+- [Luca Guidi] Implemented `Hanami::Utils::Kernel.DateTime`
+- [Luca Guidi] Implemented `Hanami::Utils::Kernel.Date`
+- [Luca Guidi] Implemented `Hanami::Utils::Kernel.Float`
+- [Luca Guidi] Implemented `Hanami::Utils::Kernel.Boolean`
+- [Luca Guidi] Implemented `Hanami::Utils::Kernel.Hash`
+- [Luca Guidi] Implemented `Hanami::Utils::Kernel.Set`
+- [Luca Guidi] Implemented `Hanami::Utils::Kernel.String`
+- [Luca Guidi] Implemented `Hanami::Utils::Kernel.Integer`
+- [Luca Guidi] Implemented `Hanami::Utils::Kernel.Array`
 
 ### Fixed
 - [Christopher Keele] Add missing stdlib `Set` require to `Utils::ClassAttribute`
 
 ## v0.1.0 - 2014-01-23
 ### Added
-- [Luca Guidi] Introduced `Lotus::Utils::String#demodulize`
-- [Luca Guidi] Introduced `Lotus::Utils::IO.silence_warnings` 
+- [Luca Guidi] Introduced `Hanami::Utils::String#demodulize`
+- [Luca Guidi] Introduced `Hanami::Utils::IO.silence_warnings` 
 - [Luca Guidi] Introduced class loading mechanism from a string: `Utils::Class.load!`
 - [Luca Guidi] Introduced callbacks support for classes
 - [Luca Guidi] Introduced inheritable class level attributes
