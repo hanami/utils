@@ -1,6 +1,10 @@
 # Lotus::Utils
 Ruby core extentions and class utilities for Lotus
 
+## v0.6.1 - 2016-01-19
+### Fixed
+- [Anton Davydov] Ensure `Lotus::Utils::String#classify` to work properly with dashes (eg. `"app-store" => "App::Store"`)
+
 ## v0.6.0 - 2016-01-12
 ### Added
 - [Luca Guidi] Official support for Ruby 2.3
