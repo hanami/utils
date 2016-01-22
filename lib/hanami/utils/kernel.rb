@@ -197,28 +197,14 @@ module Hanami
       #
       #   input = BasicObject.new
       #   Hanami::Utils::Kernel.Hash(input) # => TypeError
-      if RUBY_VERSION >= '2.1'
-        def self.Hash(arg)
-          if arg.respond_to?(:to_h)
-            arg.to_h
-          else
-            super(arg)
-          end
-        rescue NoMethodError
-          raise TypeError.new "can't convert #{inspect_type_error(arg)}into Hash"
+      def self.Hash(arg)
+        if arg.respond_to?(:to_h)
+          arg.to_h
+        else
+          super(arg)
         end
-      else
-        def self.Hash(arg)
-          case arg
-          when ::Hash                         then arg
-          when ::Array, ::Set                 then ::Hash[*self.Array(arg)]
-          when ->(a) { a.respond_to?(:to_h) } then arg.to_h
-          else
-            super(arg)
-          end
-        rescue ArgumentError, NoMethodError
-          raise TypeError.new "can't convert #{inspect_type_error(arg)}into Hash"
-        end
+      rescue NoMethodError
+        raise TypeError.new "can't convert #{inspect_type_error(arg)}into Hash"
       end
 
       # Coerces the argument to be an Integer.
@@ -648,26 +634,11 @@ module Hanami
       #   # Missing #to_s or #to_str
       #   input = BaseObject.new
       #   Hanami::Utils::Kernel.String(input) # => TypeError
-      if Utils.rubinius?
-        def self.String(arg)
-          case arg
-          when ->(a) { a.respond_to?(:to_str) }
-            arg.to_str
-          when ->(a) { a.respond_to?(:to_s) }
-            arg.to_s
-          else
-            super(arg)
-          end
-        rescue NoMethodError
-          raise TypeError.new "can't convert #{inspect_type_error(arg)}into String"
-        end
-      else
-        def self.String(arg)
-          arg = arg.to_str if arg.respond_to?(:to_str)
-          super(arg)
-        rescue NoMethodError
-          raise TypeError.new "can't convert #{inspect_type_error(arg)}into String"
-        end
+      def self.String(arg)
+        arg = arg.to_str if arg.respond_to?(:to_str)
+        super(arg)
+      rescue NoMethodError
+        raise TypeError.new "can't convert #{inspect_type_error(arg)}into String"
       end
 
       # Coerces the argument to be a Date.

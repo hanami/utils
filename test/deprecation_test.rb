@@ -30,9 +30,6 @@ describe Hanami::Utils::Deprecation do
     stack = if Hanami::Utils.jruby?
       $0 == __FILE__ ? "#{ __FILE__ }:27:in `(root)'" :
         "#{ __FILE__ }:27:in `block in test_0001_prints a deprecation warning for direct call'"
-    elsif Hanami::Utils.rubinius?
-      $0 == __FILE__ ? "#{ ::File.expand_path(__FILE__) }:27:in `__script__'" :
-        "#{ __FILE__ }:27:in `__script__'"
     else
       $0 == __FILE__ ? "#{ __FILE__ }:27:in `block (3 levels) in <main>'" :
         "#{ __FILE__ }:27:in `block (3 levels) in <top (required)>'"

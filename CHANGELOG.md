@@ -1,6 +1,11 @@
 # Hanami::Utils
 Ruby core extentions and class utilities for Hanami
 
+## v0.7.0 - (unreleased)
+### Changed
+- [Luca Guidi] Drop support for Rubinius
+- [Luca Guidi] Drop support MRI 2.0, 2.1
+
 ## v0.6.1 - 2016-01-19
 ### Fixed
 - [Anton Davydov] Ensure `Hanami::Utils::String#classify` to work properly with dashes (eg. `"app-store" => "App::Store"`)
