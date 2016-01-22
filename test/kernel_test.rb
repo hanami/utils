@@ -403,13 +403,11 @@ describe Hanami::Utils::Kernel do
         end
       end
 
-      if RUBY_VERSION >= '2.1'
-        describe 'when an array with two elements is given' do
-          let(:input) { [:a, 1] }
+      describe 'when an array with two elements is given' do
+        let(:input) { [:a, 1] }
 
-          it 'raises error' do
-            -> { Hanami::Utils::Kernel.Hash(input) }.must_raise(TypeError)
-          end
+        it 'raises error' do
+          -> { Hanami::Utils::Kernel.Hash(input) }.must_raise(TypeError)
         end
       end
 
@@ -421,13 +419,11 @@ describe Hanami::Utils::Kernel do
         end
       end
 
-      if RUBY_VERSION >= '2.1'
-        describe 'when a set of two elements is given' do
-          let(:input) { Set.new([:a, 1]) }
+      describe 'when a set of two elements is given' do
+        let(:input) { Set.new([:a, 1]) }
 
-          it 'raises error' do
-            -> { Hanami::Utils::Kernel.Hash(input) }.must_raise(TypeError)
-          end
+        it 'raises error' do
+          -> { Hanami::Utils::Kernel.Hash(input) }.must_raise(TypeError)
         end
       end
     end
