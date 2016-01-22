@@ -1,6 +1,6 @@
-require 'lotus/utils/duplicable'
+require 'hanami/utils/duplicable'
 
-module Lotus
+module Hanami
   module Utils
     # Hash on steroids
     # @since 0.1.0
@@ -8,8 +8,8 @@ module Lotus
       # @since 0.6.0
       # @api private
       #
-      # @see Lotus::Utils::Hash#deep_dup
-      # @see Lotus::Utils::Duplicable
+      # @see Hanami::Utils::Hash#deep_dup
+      # @see Hanami::Utils::Duplicable
       DUPLICATE_LOGIC = Proc.new do |value|
         case value
         when Hash
@@ -24,22 +24,22 @@ module Lotus
       # @param hash [#to_h] the value we want to use to initialize this instance
       # @param blk [Proc] define the default value
       #
-      # @return [Lotus::Utils::Hash] self
+      # @return [Hanami::Utils::Hash] self
       #
       # @since 0.1.0
       #
       # @see http://www.ruby-doc.org/core/Hash.html#method-c-5B-5D
       #
       # @example Passing a Hash
-      #   require 'lotus/utils/hash'
+      #   require 'hanami/utils/hash'
       #
-      #   hash = Lotus::Utils::Hash.new('l' => 23)
+      #   hash = Hanami::Utils::Hash.new('l' => 23)
       #   hash['l'] # => 23
       #
       # @example Passing a block for default
-      #   require 'lotus/utils/hash'
+      #   require 'hanami/utils/hash'
       #
-      #   hash = Lotus::Utils::Hash.new {|h,k| h[k] = [] }
+      #   hash = Hanami::Utils::Hash.new {|h,k| h[k] = [] }
       #   hash['foo'].push 'bar'
       #
       #   hash.to_h # => { 'foo' => ['bar'] }
@@ -55,9 +55,9 @@ module Lotus
       # @since 0.1.0
       #
       # @example
-      #   require 'lotus/utils/hash'
+      #   require 'hanami/utils/hash'
       #
-      #   hash = Lotus::Utils::Hash.new 'a' => 23, 'b' => { 'c' => ['x','y','z'] }
+      #   hash = Hanami::Utils::Hash.new 'a' => 23, 'b' => { 'c' => ['x','y','z'] }
       #   hash.symbolize!
       #
       #   hash.keys    # => [:a, :b]
@@ -80,9 +80,9 @@ module Lotus
       # @since 0.3.2
       #
       # @example
-      #   require 'lotus/utils/hash'
+      #   require 'hanami/utils/hash'
       #
-      #   hash = Lotus::Utils::Hash.new a: 23, b: { c: ['x','y','z'] }
+      #   hash = Hanami::Utils::Hash.new a: 23, b: { c: ['x','y','z'] }
       #   hash.stringify!
       #
       #   hash.keys    # => [:a, :b]
@@ -98,16 +98,16 @@ module Lotus
         self
       end
 
-      # Return a deep copy of the current Lotus::Utils::Hash
+      # Return a deep copy of the current Hanami::Utils::Hash
       #
       # @return [Hash] a deep duplicated self
       #
       # @since 0.3.1
       #
       # @example
-      #   require 'lotus/utils/hash'
+      #   require 'hanami/utils/hash'
       #
-      #   hash = Lotus::Utils::Hash.new(
+      #   hash = Hanami::Utils::Hash.new(
       #     'nil'        => nil,
       #     'false'      => false,
       #     'true'       => true,
@@ -120,13 +120,13 @@ module Lotus
       #     'rational'   => Rational(0.3),
       #     'string'     => 'foo bar',
       #     'hash'       => { a: 1, b: 'two', c: :three },
-      #     'u_hash'     => Lotus::Utils::Hash.new({ a: 1, b: 'two', c: :three })
+      #     'u_hash'     => Hanami::Utils::Hash.new({ a: 1, b: 'two', c: :three })
       #   )
       #
       #   duped = hash.deep_dup
       #
-      #   hash.class  # => Lotus::Utils::Hash
-      #   duped.class # => Lotus::Utils::Hash
+      #   hash.class  # => Hanami::Utils::Hash
+      #   duped.class # => Hanami::Utils::Hash
       #
       #   hash.object_id  # => 70147385937100
       #   duped.object_id # => 70147385950620
@@ -157,8 +157,8 @@ module Lotus
       #   duped['hash'][:b] # => "TWO"
       #   hash['hash'][:b]  # => "two"
       #
-      #   # it deeply duplicates Lotus::Utils::Hash, by preserving the class
-      #   duped['u_hash'].class # => Lotus::Utils::Hash
+      #   # it deeply duplicates Hanami::Utils::Hash, by preserving the class
+      #   duped['u_hash'].class # => Hanami::Utils::Hash
       def deep_dup
         Hash.new.tap do |result|
           @hash.each {|k, v| result[k] = Duplicable.dup(v, &DUPLICATE_LOGIC) }

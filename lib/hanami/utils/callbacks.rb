@@ -1,4 +1,4 @@
-module Lotus
+module Hanami
   module Utils
     # Before and After callbacks
     #
@@ -12,7 +12,7 @@ module Lotus
       class Chain
         # Return a new chain
         #
-        # @return [Lotus::Utils::Callbacks::Chain]
+        # @return [Hanami::Utils::Callbacks::Chain]
         #
         # @since 0.2.0
         def initialize
@@ -30,16 +30,16 @@ module Lotus
         #
         # @see #prepend
         # @see #run
-        # @see Lotus::Utils::Callbacks::Callback
-        # @see Lotus::Utils::Callbacks::MethodCallback
-        # @see Lotus::Utils::Callbacks::Chain#freeze
+        # @see Hanami::Utils::Callbacks::Callback
+        # @see Hanami::Utils::Callbacks::MethodCallback
+        # @see Hanami::Utils::Callbacks::Chain#freeze
         #
         # @since 0.3.4
         #
         # @example
-        #   require 'lotus/utils/callbacks'
+        #   require 'hanami/utils/callbacks'
         #
-        #   chain = Lotus::Utils::Callbacks::Chain.new
+        #   chain = Hanami::Utils::Callbacks::Chain.new
         #
         #   # Append a Proc to be used as a callback, it will be wrapped by `Callback`
         #   # The optional argument(s) correspond to the one passed when invoked the chain with `run`.
@@ -69,16 +69,16 @@ module Lotus
         #
         # @see #append
         # @see #run
-        # @see Lotus::Utils::Callbacks::Callback
-        # @see Lotus::Utils::Callbacks::MethodCallback
-        # @see Lotus::Utils::Callbacks::Chain#freeze
+        # @see Hanami::Utils::Callbacks::Callback
+        # @see Hanami::Utils::Callbacks::MethodCallback
+        # @see Hanami::Utils::Callbacks::Chain#freeze
         #
         # @since 0.3.4
         #
         # @example
-        #   require 'lotus/utils/callbacks'
+        #   require 'hanami/utils/callbacks'
         #
-        #   chain = Lotus::Utils::Callbacks::Chain.new
+        #   chain = Hanami::Utils::Callbacks::Chain.new
         #
         #   # Add a Proc to be used as a callback, it will be wrapped by `Callback`
         #   # The optional argument(s) correspond to the one passed when invoked the chain with `run`.
@@ -106,7 +106,7 @@ module Lotus
         # @since 0.1.0
         #
         # @example
-        #   require 'lotus/utils/callbacks'
+        #   require 'hanami/utils/callbacks'
         #
         #   class Action
         #     private
@@ -120,7 +120,7 @@ module Lotus
         #   action = Action.new
         #   params = Hash[id: 23]
         #
-        #   chain = Lotus::Utils::Callbacks::Chain.new
+        #   chain = Hanami::Utils::Callbacks::Chain.new
         #   chain.append :authenticate!, :set_article
         #
         #   chain.run(action, params)
@@ -129,7 +129,7 @@ module Lotus
         #
         #
         #
-        #   chain = Lotus::Utils::Callbacks::Chain.new
+        #   chain = Hanami::Utils::Callbacks::Chain.new
         #
         #   chain.append do
         #     # some authentication logic
@@ -155,9 +155,9 @@ module Lotus
         # @see http://ruby-doc.org/core/Object.html#method-i-freeze
         #
         # @example
-        #   require 'lotus/utils/callbacks'
+        #   require 'hanami/utils/callbacks'
         #
-        #   chain = Lotus::Utils::Callbacks::Chain.new
+        #   chain = Hanami::Utils::Callbacks::Chain.new
         #   chain.freeze
         #
         #   chain.frozen?  # => true
@@ -192,16 +192,16 @@ module Lotus
         # @since 0.1.0
         #
         # @example
-        #   require 'lotus/utils/callbacks'
+        #   require 'hanami/utils/callbacks'
         #
         #   callable = Proc.new{} # it responds to #call
         #   method   = :upcase    # it doesn't responds to #call
         #
-        #   Lotus::Utils::Callbacks::Factory.fabricate(callable).class
-        #     # => Lotus::Utils::Callbacks::Callback
+        #   Hanami::Utils::Callbacks::Factory.fabricate(callable).class
+        #     # => Hanami::Utils::Callbacks::Callback
         #
-        #   Lotus::Utils::Callbacks::Factory.fabricate(method).class
-        #     # => Lotus::Utils::Callbacks::MethodCallback
+        #   Hanami::Utils::Callbacks::Factory.fabricate(method).class
+        #     # => Hanami::Utils::Callbacks::MethodCallback
         def self.fabricate(callback)
           if callback.respond_to?(:call)
             Callback.new(callback)
@@ -240,7 +240,7 @@ module Lotus
         #
         # @since 0.1.0
         #
-        # @see Lotus::Utils::Callbacks::Chain#run
+        # @see Hanami::Utils::Callbacks::Chain#run
         def call(context, *args)
           context.instance_exec(*args, &callback)
         end
@@ -262,7 +262,7 @@ module Lotus
         #
         # @since 0.1.0
         #
-        # @see Lotus::Utils::Callbacks::Chain#run
+        # @see Hanami::Utils::Callbacks::Chain#run
         def call(context, *args)
           method = context.method(callback)
 

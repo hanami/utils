@@ -1,24 +1,24 @@
 require 'test_helper'
 require 'bigdecimal'
-require 'lotus/utils/hash'
+require 'hanami/utils/hash'
 
-describe Lotus::Utils::Hash do
+describe Hanami::Utils::Hash do
   describe '#initialize' do
     it 'holds values passed to the constructor' do
-      hash = Lotus::Utils::Hash.new('foo' => 'bar')
+      hash = Hanami::Utils::Hash.new('foo' => 'bar')
       hash['foo'].must_equal('bar')
     end
 
     it 'assigns default via block' do
-      hash = Lotus::Utils::Hash.new {|h,k| h[k] = []}
+      hash = Hanami::Utils::Hash.new {|h,k| h[k] = []}
       hash['foo'].push 'bar'
 
       hash.must_equal({'foo' => ['bar']})
     end
 
-    it 'accepts a Lotus::Utils::Hash' do
-      arg  = Lotus::Utils::Hash.new('foo' => 'bar')
-      hash = Lotus::Utils::Hash.new(arg)
+    it 'accepts a Hanami::Utils::Hash' do
+      arg  = Hanami::Utils::Hash.new('foo' => 'bar')
+      hash = Hanami::Utils::Hash.new(arg)
 
       hash.to_h.must_be_kind_of(::Hash)
     end
@@ -26,7 +26,7 @@ describe Lotus::Utils::Hash do
 
   describe '#symbolize!' do
     it 'symbolize keys' do
-      hash = Lotus::Utils::Hash.new('fub' => 'baz')
+      hash = Hanami::Utils::Hash.new('fub' => 'baz')
       hash.symbolize!
 
       hash['fub'].must_be_nil
@@ -34,17 +34,17 @@ describe Lotus::Utils::Hash do
     end
 
     it 'symbolize nested hashes' do
-      hash = Lotus::Utils::Hash.new('nested' => {'key' => 'value'})
+      hash = Hanami::Utils::Hash.new('nested' => {'key' => 'value'})
       hash.symbolize!
 
-      hash[:nested].must_be_kind_of Lotus::Utils::Hash
+      hash[:nested].must_be_kind_of Hanami::Utils::Hash
       hash[:nested][:key].must_equal('value')
     end
   end
 
   describe '#stringify!' do
     it 'covert keys to strings' do
-      hash = Lotus::Utils::Hash.new(fub: 'baz')
+      hash = Hanami::Utils::Hash.new(fub: 'baz')
       hash.stringify!
 
       hash[:fub].must_be_nil
@@ -52,22 +52,22 @@ describe Lotus::Utils::Hash do
     end
 
     it 'stringifies nested hashes' do
-      hash = Lotus::Utils::Hash.new(nested: {key: 'value'})
+      hash = Hanami::Utils::Hash.new(nested: {key: 'value'})
       hash.stringify!
 
-      hash['nested'].must_be_kind_of Lotus::Utils::Hash
+      hash['nested'].must_be_kind_of Hanami::Utils::Hash
       hash['nested']['key'].must_equal('value')
     end
   end
 
   describe '#deep_dup' do
     it 'returns an instance of Utils::Hash' do
-      duped = Lotus::Utils::Hash.new('foo' => 'bar').deep_dup
-      duped.must_be_kind_of(Lotus::Utils::Hash)
+      duped = Hanami::Utils::Hash.new('foo' => 'bar').deep_dup
+      duped.must_be_kind_of(Hanami::Utils::Hash)
     end
 
     it 'returns a hash with duplicated values' do
-      hash  = Lotus::Utils::Hash.new('foo' => 'bar', 'baz' => 'x')
+      hash  = Hanami::Utils::Hash.new('foo' => 'bar', 'baz' => 'x')
       duped = hash.deep_dup
 
       duped['foo'] = nil
@@ -91,7 +91,7 @@ describe Lotus::Utils::Hash do
         'rational'   => Rational(0.3)
       }
 
-      hash  = Lotus::Utils::Hash.new(original)
+      hash  = Hanami::Utils::Hash.new(original)
       duped = hash.deep_dup
 
       duped.must_equal(original)
@@ -99,7 +99,7 @@ describe Lotus::Utils::Hash do
     end
 
     it 'returns a hash with nested duplicated values' do
-      hash  = Lotus::Utils::Hash.new('foo' => {'bar' => 'baz'}, 'x' => Lotus::Utils::Hash.new('y' => 'z'))
+      hash  = Hanami::Utils::Hash.new('foo' => {'bar' => 'baz'}, 'x' => Hanami::Utils::Hash.new('y' => 'z'))
       duped = hash.deep_dup
 
       duped['foo']['bar'].reverse!
@@ -110,38 +110,38 @@ describe Lotus::Utils::Hash do
     end
 
     it 'preserves original class' do
-      duped = Lotus::Utils::Hash.new('foo' => {}, 'x' => Lotus::Utils::Hash.new).deep_dup
+      duped = Hanami::Utils::Hash.new('foo' => {}, 'x' => Hanami::Utils::Hash.new).deep_dup
 
       duped['foo'].must_be_kind_of(::Hash)
-      duped['x'].must_be_kind_of(Lotus::Utils::Hash)
+      duped['x'].must_be_kind_of(Hanami::Utils::Hash)
     end
   end
 
   describe 'hash interface' do
-    it 'returns a new Lotus::Utils::Hash for methods which return a ::Hash' do
-      hash   = Lotus::Utils::Hash.new({'a' => 1})
+    it 'returns a new Hanami::Utils::Hash for methods which return a ::Hash' do
+      hash   = Hanami::Utils::Hash.new({'a' => 1})
       result = hash.clear
 
       assert hash.empty?
-      result.must_be_kind_of(Lotus::Utils::Hash)
+      result.must_be_kind_of(Hanami::Utils::Hash)
     end
 
     it 'returns a value that is compliant with ::Hash return value' do
-      hash   = Lotus::Utils::Hash.new({'a' => 1})
+      hash   = Hanami::Utils::Hash.new({'a' => 1})
       result = hash.assoc('a')
 
       result.must_equal ['a', 1]
     end
 
     it 'responds to whatever ::Hash responds to' do
-      hash   = Lotus::Utils::Hash.new({'a' => 1})
+      hash   = Hanami::Utils::Hash.new({'a' => 1})
 
       hash.must_respond_to :rehash
       hash.wont_respond_to :unknown_method
     end
 
     it 'accepts blocks for methods' do
-      hash   = Lotus::Utils::Hash.new({'a' => 1})
+      hash   = Hanami::Utils::Hash.new({'a' => 1})
       result = hash.delete_if {|k, _| k == 'a' }
 
       assert result.empty?
@@ -149,7 +149,7 @@ describe Lotus::Utils::Hash do
 
     describe '#to_h' do
       it 'returns a ::Hash' do
-        actual = Lotus::Utils::Hash.new({'a' => 1}).to_h
+        actual = Hanami::Utils::Hash.new({'a' => 1}).to_h
         actual.must_equal({'a' => 1})
       end
 
@@ -163,7 +163,7 @@ describe Lotus::Utils::Hash do
           }
         }
 
-        utils_hash = Lotus::Utils::Hash.new(hash)
+        utils_hash = Hanami::Utils::Hash.new(hash)
         utils_hash.wont_be_kind_of(::Hash)
 
         actual = utils_hash.to_h
@@ -185,7 +185,7 @@ describe Lotus::Utils::Hash do
           }
         }
 
-        utils_hash = Lotus::Utils::Hash.new(hash).symbolize!
+        utils_hash = Hanami::Utils::Hash.new(hash).symbolize!
         utils_hash.wont_be_kind_of(::Hash)
 
         actual = utils_hash.to_h
@@ -198,7 +198,7 @@ describe Lotus::Utils::Hash do
       end
 
       it 'prevents information escape' do
-        actual = Lotus::Utils::Hash.new({'a' => 1})
+        actual = Hanami::Utils::Hash.new({'a' => 1})
         hash   = actual.to_h
         hash.merge!('b' => 2)
 
@@ -207,7 +207,7 @@ describe Lotus::Utils::Hash do
 
       it 'prevents information escape for nested hash'
       # it 'prevents information escape for nested hash' do
-      #   actual  = Lotus::Utils::Hash.new({'a' => {'b' => 2}})
+      #   actual  = Hanami::Utils::Hash.new({'a' => {'b' => 2}})
       #   hash    = actual.to_h
       #   subhash = hash['a']
       #   subhash.merge!('c' => 3)
@@ -218,7 +218,7 @@ describe Lotus::Utils::Hash do
 
     describe '#to_hash' do
       it 'returns a ::Hash' do
-        actual = Lotus::Utils::Hash.new({'a' => 1}).to_hash
+        actual = Hanami::Utils::Hash.new({'a' => 1}).to_hash
         actual.must_equal({'a' => 1})
       end
 
@@ -232,7 +232,7 @@ describe Lotus::Utils::Hash do
           }
         }
 
-        utils_hash = Lotus::Utils::Hash.new(hash)
+        utils_hash = Hanami::Utils::Hash.new(hash)
         utils_hash.wont_be_kind_of(::Hash)
 
         actual = utils_hash.to_h
@@ -254,7 +254,7 @@ describe Lotus::Utils::Hash do
           }
         }
 
-        utils_hash = Lotus::Utils::Hash.new(hash).symbolize!
+        utils_hash = Hanami::Utils::Hash.new(hash).symbolize!
         utils_hash.wont_be_kind_of(::Hash)
 
         actual = utils_hash.to_h
@@ -267,7 +267,7 @@ describe Lotus::Utils::Hash do
       end
 
       it 'prevents information escape' do
-        actual = Lotus::Utils::Hash.new({'a' => 1})
+        actual = Hanami::Utils::Hash.new({'a' => 1})
         hash   = actual.to_hash
         hash.merge!('b' => 2)
 
@@ -277,12 +277,12 @@ describe Lotus::Utils::Hash do
 
     describe '#to_a' do
       it 'returns an ::Array' do
-        actual = Lotus::Utils::Hash.new({'a' => 1}).to_a
+        actual = Hanami::Utils::Hash.new({'a' => 1}).to_a
         actual.must_equal([['a', 1]])
       end
 
       it 'prevents information escape' do
-        actual = Lotus::Utils::Hash.new({'a' => 1})
+        actual = Hanami::Utils::Hash.new({'a' => 1})
         array  = actual.to_a
         array.push(['b', 2])
 
@@ -292,54 +292,54 @@ describe Lotus::Utils::Hash do
 
     describe 'equality' do
       it 'has a working equality' do
-        hash  = Lotus::Utils::Hash.new({'a' => 1})
-        other = Lotus::Utils::Hash.new({'a' => 1})
+        hash  = Hanami::Utils::Hash.new({'a' => 1})
+        other = Hanami::Utils::Hash.new({'a' => 1})
 
         assert hash == other
       end
 
       it 'has a working equality with raw hashes' do
-        hash = Lotus::Utils::Hash.new({'a' => 1})
+        hash = Hanami::Utils::Hash.new({'a' => 1})
         assert hash == {'a' => 1}
       end
     end
 
     describe 'case equality' do
       it 'has a working case equality' do
-        hash  = Lotus::Utils::Hash.new({'a' => 1})
-        other = Lotus::Utils::Hash.new({'a' => 1})
+        hash  = Hanami::Utils::Hash.new({'a' => 1})
+        other = Hanami::Utils::Hash.new({'a' => 1})
 
         assert hash === other
       end
 
       it 'has a working case equality with raw hashes' do
-        hash = Lotus::Utils::Hash.new({'a' => 1})
+        hash = Hanami::Utils::Hash.new({'a' => 1})
         assert hash === {'a' => 1}
       end
     end
 
     describe 'value equality' do
       it 'has a working value equality' do
-        hash  = Lotus::Utils::Hash.new({'a' => 1})
-        other = Lotus::Utils::Hash.new({'a' => 1})
+        hash  = Hanami::Utils::Hash.new({'a' => 1})
+        other = Hanami::Utils::Hash.new({'a' => 1})
 
         assert hash.eql?(other)
       end
 
       it 'has a working value equality with raw hashes' do
-        hash = Lotus::Utils::Hash.new({'a' => 1})
+        hash = Hanami::Utils::Hash.new({'a' => 1})
         assert hash.eql?({'a' => 1})
       end
     end
 
     describe 'identity equality' do
       it 'has a working identity equality' do
-        hash  = Lotus::Utils::Hash.new({'a' => 1})
+        hash  = Hanami::Utils::Hash.new({'a' => 1})
         assert hash.equal?(hash)
       end
 
       it 'has a working identity equality with raw hashes' do
-        hash  = Lotus::Utils::Hash.new({'a' => 1})
+        hash  = Hanami::Utils::Hash.new({'a' => 1})
         assert !hash.equal?({'a' => 1})
       end
     end
@@ -347,7 +347,7 @@ describe Lotus::Utils::Hash do
     describe '#hash' do
       it 'returns the same hash result of ::Hash' do
         expected = {'l' => 23}.hash
-        actual   = Lotus::Utils::Hash.new({'l' => 23}).hash
+        actual   = Hanami::Utils::Hash.new({'l' => 23}).hash
 
         actual.must_equal expected
       end
@@ -356,7 +356,7 @@ describe Lotus::Utils::Hash do
     describe '#inspect' do
       it 'returns the same output of ::Hash' do
         expected = {'l' => 23, l: 23}.inspect
-        actual   = Lotus::Utils::Hash.new({'l' => 23, l: 23}).inspect
+        actual   = Hanami::Utils::Hash.new({'l' => 23, l: 23}).inspect
 
         actual.must_equal expected
       end
@@ -365,16 +365,16 @@ describe Lotus::Utils::Hash do
     describe 'unknown method' do
       it 'raises error' do
         begin
-          Lotus::Utils::Hash.new('l' => 23).party!
+          Hanami::Utils::Hash.new('l' => 23).party!
         rescue NoMethodError => e
-          e.message.must_equal %(undefined method `party!' for {\"l\"=>23}:Lotus::Utils::Hash)
+          e.message.must_equal %(undefined method `party!' for {\"l\"=>23}:Hanami::Utils::Hash)
         end
       end
 
-      # See: https://github.com/lotus/utils/issues/48
+      # See: https://github.com/hanami/utils/issues/48
       it 'returns the correct object when a NoMethodError is raised' do
-        hash = Lotus::Utils::Hash.new({'a' => 1})
-        exception_message = if Lotus::Utils.rubinius?
+        hash = Hanami::Utils::Hash.new({'a' => 1})
+        exception_message = if Hanami::Utils.rubinius?
           "undefined method `foo' on 1:Fixnum."
         else
           "undefined method `foo' for 1:Fixnum"

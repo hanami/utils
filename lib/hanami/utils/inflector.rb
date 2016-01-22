@@ -1,6 +1,6 @@
-require 'lotus/utils/class_attribute'
+require 'hanami/utils/class_attribute'
 
-module Lotus
+module Hanami
   module Utils
     # String inflector
     #
@@ -270,13 +270,13 @@ module Lotus
       #
       # @since 0.6.0
       #
-      # @see Lotus::Utils::Inflector.exception
-      # @see Lotus::Utils::Inflector.uncountable
+      # @see Hanami::Utils::Inflector.exception
+      # @see Hanami::Utils::Inflector.uncountable
       #
       # @example
-      #   require 'lotus/utils/inflector'
+      #   require 'hanami/utils/inflector'
       #
-      #   Lotus::Utils::Inflector.inflections do
+      #   Hanami::Utils::Inflector.inflections do
       #     exception   'analysis', 'analyses'
       #     exception   'alga',     'algae'
       #     uncountable 'music', 'butter'
@@ -292,13 +292,13 @@ module Lotus
       #
       # @since 0.6.0
       #
-      # @see Lotus::Utils::Inflector.inflections
-      # @see Lotus::Utils::Inflector.uncountable
+      # @see Hanami::Utils::Inflector.inflections
+      # @see Hanami::Utils::Inflector.uncountable
       #
       # @example
-      #   require 'lotus/utils/inflector'
+      #   require 'hanami/utils/inflector'
       #
-      #   Lotus::Utils::Inflector.inflections do
+      #   Hanami::Utils::Inflector.inflections do
       #     exception 'alga', 'algae'
       #   end
       def self.exception(singular, plural)
@@ -312,13 +312,13 @@ module Lotus
       #
       # @since 0.6.0
       #
-      # @see Lotus::Utils::Inflector.inflections
-      # @see Lotus::Utils::Inflector.exception
+      # @see Hanami::Utils::Inflector.inflections
+      # @see Hanami::Utils::Inflector.exception
       #
       # @example
-      #   require 'lotus/utils/inflector'
+      #   require 'hanami/utils/inflector'
       #
-      #   Lotus::Utils::Inflector.inflections do
+      #   Hanami::Utils::Inflector.inflections do
       #     uncountable 'music', 'art'
       #   end
       def self.uncountable(*words)

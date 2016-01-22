@@ -1,6 +1,6 @@
-require 'lotus/utils/string'
+require 'hanami/utils/string'
 
-module Lotus
+module Hanami
   module Utils
     # Class utilities
     # @since 0.1.0
@@ -16,7 +16,7 @@ module Lotus
       # @since 0.1.0
       #
       # @example
-      #   require 'lotus/utils/class'
+      #   require 'hanami/utils/class'
       #
       #   module App
       #     module Service
@@ -29,14 +29,14 @@ module Lotus
       #   end
       #
       #   # basic usage
-      #   Lotus::Utils::Class.load!('App::Service') # => App::Service
-      #   Lotus::Utils::Class.load!(App::Service)   # => App::Service
+      #   Hanami::Utils::Class.load!('App::Service') # => App::Service
+      #   Hanami::Utils::Class.load!(App::Service)   # => App::Service
       #
       #   # with explicit namespace
-      #   Lotus::Utils::Class.load!('Service', App) # => App::Service
+      #   Hanami::Utils::Class.load!('Service', App) # => App::Service
       #
       #   # with missing constant
-      #   Lotus::Utils::Class.load!('Unknown') # => raises NameError
+      #   Hanami::Utils::Class.load!('Unknown') # => raises NameError
       def self.load!(name, namespace = Object)
         namespace.const_get(name.to_s)
       end
@@ -51,10 +51,10 @@ module Lotus
       #
       # @since 0.3.1
       #
-      # @see Lotus::Utils::String#tokenize
+      # @see Hanami::Utils::String#tokenize
       #
       # @example
-      #   require 'lotus/utils/class'
+      #   require 'hanami/utils/class'
       #
       #   module App
       #     module Service
@@ -67,17 +67,17 @@ module Lotus
       #   end
       #
       #   # basic usage
-      #   Lotus::Utils::Class.load_from_pattern!('App::Service') # => App::Service
+      #   Hanami::Utils::Class.load_from_pattern!('App::Service') # => App::Service
       #
       #   # with explicit namespace
-      #   Lotus::Utils::Class.load_from_pattern!('Service', App) # => App::Service
+      #   Hanami::Utils::Class.load_from_pattern!('Service', App) # => App::Service
       #
       #   # with pattern
-      #   Lotus::Utils::Class.load_from_pattern!('App::Service(::Endpoint|Endpoint)') # => App::Service::Endpoint
-      #   Lotus::Utils::Class.load_from_pattern!('App::Service(Endpoint|::Endpoint)') # => App::ServiceEndpoint
+      #   Hanami::Utils::Class.load_from_pattern!('App::Service(::Endpoint|Endpoint)') # => App::Service::Endpoint
+      #   Hanami::Utils::Class.load_from_pattern!('App::Service(Endpoint|::Endpoint)') # => App::ServiceEndpoint
       #
       #   # with missing constant
-      #   Lotus::Utils::Class.load_from_pattern!('Unknown') # => raises NameError
+      #   Hanami::Utils::Class.load_from_pattern!('Unknown') # => raises NameError
       def self.load_from_pattern!(pattern, namespace = Object)
         String.new(pattern).tokenize do |token|
           begin

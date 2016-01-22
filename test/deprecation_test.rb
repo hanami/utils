@@ -1,9 +1,9 @@
 require 'test_helper'
-require 'lotus/utils/deprecation'
+require 'hanami/utils/deprecation'
 
 class DeprecationTest
   def old_method
-    Lotus::Utils::Deprecation.new('old_method is deprecated, please use new_method')
+    Hanami::Utils::Deprecation.new('old_method is deprecated, please use new_method')
     new_method
   end
 
@@ -21,16 +21,16 @@ class DeprecationWrapperTest
   end
 end
 
-describe Lotus::Utils::Deprecation do
+describe Hanami::Utils::Deprecation do
   it 'prints a deprecation warning for direct call' do
     _, err = capture_io do
       DeprecationTest.new.old_method
     end
 
-    stack = if Lotus::Utils.jruby?
+    stack = if Hanami::Utils.jruby?
       $0 == __FILE__ ? "#{ __FILE__ }:27:in `(root)'" :
         "#{ __FILE__ }:27:in `block in test_0001_prints a deprecation warning for direct call'"
-    elsif Lotus::Utils.rubinius?
+    elsif Hanami::Utils.rubinius?
       $0 == __FILE__ ? "#{ ::File.expand_path(__FILE__) }:27:in `__script__'" :
         "#{ __FILE__ }:27:in `__script__'"
     else

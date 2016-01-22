@@ -1,7 +1,7 @@
 require 'test_helper'
 
-describe Lotus::Utils::VERSION do
+describe Hanami::Utils::VERSION do
   it 'exposes version' do
-    Lotus::Utils::VERSION.must_equal '0.6.1'
+    Hanami::Utils::VERSION.must_equal '0.7.0'
   end
 end

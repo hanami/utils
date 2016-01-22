@@ -1,12 +1,12 @@
 require 'set'
-require 'lotus/utils/duplicable'
+require 'hanami/utils/duplicable'
 
-module Lotus
+module Hanami
   module Utils
     # Inheritable class level variable accessors.
     # @since 0.1.0
     #
-    # @see Lotus::Utils::ClassAttribute::ClassMethods
+    # @see Hanami::Utils::ClassAttribute::ClassMethods
     module ClassAttribute
       def self.included(base)
         base.extend ClassMethods
@@ -26,10 +26,10 @@ module Lotus
         # @since 0.1.0
         #
         # @example
-        #   require 'lotus/utils/class_attribute'
+        #   require 'hanami/utils/class_attribute'
         #
         #   class Vehicle
-        #     include Lotus::Utils::ClassAttribute
+        #     include Hanami::Utils::ClassAttribute
         #     class_attribute :engines, :wheels
         #
         #     self.engines = 0

@@ -1,4 +1,4 @@
-module Lotus
+module Hanami
   module Utils
     # BasicObject
     #

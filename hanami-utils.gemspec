@@ -1,19 +1,19 @@
 # coding: utf-8
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'lotus/utils/version'
+require 'hanami/utils/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = 'lotus-utils'
-  spec.version       = Lotus::Utils::VERSION
+  spec.name          = 'hanami-utils'
+  spec.version       = Hanami::Utils::VERSION
   spec.authors       = ['Luca Guidi', 'Trung Lê', 'Alfonso Uceda']
   spec.email         = ['me@lucaguidi.com', 'trung.le@ruby-journal.com', 'uceda73@gmail.com']
-  spec.description   = %q{Lotus utilities}
-  spec.summary       = %q{Ruby core extentions and Lotus utilities}
-  spec.homepage      = 'http://lotusrb.org'
+  spec.description   = %q{Hanami utilities}
+  spec.summary       = %q{Ruby core extentions and Hanami utilities}
+  spec.homepage      = 'http://hanamirb.org'
   spec.license       = 'MIT'
 
-  spec.files         = `git ls-files -- lib/* CHANGELOG.md LICENSE.md README.md lotus-utils.gemspec`.split($/)
+  spec.files         = `git ls-files -- lib/* CHANGELOG.md LICENSE.md README.md hanami-utils.gemspec`.split($/)
   spec.executables   = spec.files.grep(%r{^bin/}) { |f| File.basename(f) }
   spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
   spec.require_paths = ['lib']

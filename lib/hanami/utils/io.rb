@@ -1,4 +1,4 @@
-module Lotus
+module Hanami
   module Utils
     # IO utils
     #
@@ -16,13 +16,13 @@ module Lotus
       # @since 0.1.0
       #
       # @example
-      #   require 'lotus/utils/io'
+      #   require 'hanami/utils/io'
       #
       #   class Test
       #     TEST_VALUE = 'initial'
       #   end
       #
-      #   Lotus::Utils::IO.silence_warnings do
+      #   Hanami::Utils::IO.silence_warnings do
       #     Test::TEST_VALUE = 'redefined'
       #   end
       def self.silence_warnings

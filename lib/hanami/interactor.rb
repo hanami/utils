@@ -1,9 +1,9 @@
-require 'lotus/utils/basic_object'
-require 'lotus/utils/class_attribute'
-require 'lotus/utils/hash'
+require 'hanami/utils/basic_object'
+require 'hanami/utils/class_attribute'
+require 'hanami/utils/hash'
 
-module Lotus
-  # Lotus Interactor
+module Hanami
+  # Hanami Interactor
   #
   # @since 0.3.5
   module Interactor
@@ -16,14 +16,14 @@ module Lotus
       # @since 0.3.5
       # @api private
       #
-      # @see Lotus::Interactor::Result#respond_to_missing?
+      # @see Hanami::Interactor::Result#respond_to_missing?
       METHODS = {initialize: true, success?: true, fail!: true, prepare!: true, errors: true, error: true}.freeze
 
       # Initialize a new result
       #
       # @param payload [Hash] a payload to carry on
       #
-      # @return [Lotus::Interactor::Result]
+      # @return [Hanami::Interactor::Result]
       #
       # @since 0.3.5
       # @api private
@@ -55,10 +55,10 @@ module Lotus
       #
       # @since 0.3.5
       #
-      # @see Lotus::Interactor::Result#error
-      # @see Lotus::Interactor#call
-      # @see Lotus::Interactor#error
-      # @see Lotus::Interactor#error!
+      # @see Hanami::Interactor::Result#error
+      # @see Hanami::Interactor#call
+      # @see Hanami::Interactor#error
+      # @see Hanami::Interactor#error!
       def errors
         @errors.dup
       end
@@ -77,10 +77,10 @@ module Lotus
       #
       # @since 0.3.5
       #
-      # @see Lotus::Interactor::Result#errors
-      # @see Lotus::Interactor#call
-      # @see Lotus::Interactor#error
-      # @see Lotus::Interactor#error!
+      # @see Hanami::Interactor::Result#errors
+      # @see Hanami::Interactor#call
+      # @see Hanami::Interactor#error
+      # @see Hanami::Interactor#error!
       def error
         errors.first
       end
@@ -147,15 +147,15 @@ module Lotus
       #
       # @param args [Array<Object>] arbitrary number of arguments
       #
-      # @return [Lotus::Interactor] the interactor
+      # @return [Hanami::Interactor] the interactor
       #
       # @since 0.3.5
       #
       # @example Override #initialize
-      #   require 'lotus/interactor'
+      #   require 'hanami/interactor'
       #
       #   class UpdateProfile
-      #     include Lotus::Interactor
+      #     include Hanami::Interactor
       #
       #     def initialize(user, params)
       #       @user   = user
@@ -169,7 +169,7 @@ module Lotus
       def initialize(*args)
         super
       ensure
-        @__result = ::Lotus::Interactor::Result.new
+        @__result = ::Hanami::Interactor::Result.new
       end
 
       # Triggers the operation and return a result.
@@ -178,15 +178,15 @@ module Lotus
       #
       # ATTENTION: This must be implemented by the including class.
       #
-      # @return [Lotus::Interactor::Result] the result of the operation
+      # @return [Hanami::Interactor::Result] the result of the operation
       #
       # @raise [NoMethodError] if this isn't implemented by the including class.
       #
       # @example Expose instance variables in result payload
-      #   require 'lotus/interactor'
+      #   require 'hanami/interactor'
       #
       #   class Signup
-      #     include Lotus::Interactor
+      #     include Hanami::Interactor
       #     expose :user, :params
       #
       #     def initialize(params)
@@ -208,10 +208,10 @@ module Lotus
       #   result.foo    # => raises NoMethodError
       #
       # @example Failed precondition
-      #   require 'lotus/interactor'
+      #   require 'hanami/interactor'
       #
       #   class Signup
-      #     include Lotus::Interactor
+      #     include Hanami::Interactor
       #     expose :user
       #
       #     def initialize(params)
@@ -236,10 +236,10 @@ module Lotus
       #   result.user   # => #<User:0x007fa311105778 @id=nil @name="Luca">
       #
       # @example Bad usage
-      #   require 'lotus/interactor'
+      #   require 'hanami/interactor'
       #
       #   class Signup
-      #     include Lotus::Interactor
+      #     include Hanami::Interactor
       #
       #     # Method #call is not defined
       #   end
@@ -268,10 +268,10 @@ module Lotus
     # @since 0.3.5
     #
     # @example
-    #   require 'lotus/interactor'
+    #   require 'hanami/interactor'
     #
     #   class CreateEmailTest
-    #     include Lotus::Interactor
+    #     include Hanami::Interactor
     #
     #     def initialize(params)
     #       @params     = params
@@ -313,13 +313,13 @@ module Lotus
     #
     # @since 0.3.5
     #
-    # @see Lotus::Interactor#error!
+    # @see Hanami::Interactor#error!
     #
     # @example
-    #   require 'lotus/interactor'
+    #   require 'hanami/interactor'
     #
     #   class CreateRecord
-    #     include Lotus::Interactor
+    #     include Hanami::Interactor
     #     expose :logger
     #
     #     def initialize
@@ -366,13 +366,13 @@ module Lotus
     #
     # @since 0.3.5
     #
-    # @see Lotus::Interactor#error
+    # @see Hanami::Interactor#error
     #
     # @example
-    #   require 'lotus/interactor'
+    #   require 'hanami/interactor'
     #
     #   class CreateRecord
-    #     include Lotus::Interactor
+    #     include Hanami::Interactor
     #     expose :logger
     #
     #     def initialize
@@ -466,12 +466,12 @@ module Lotus
     #
     # @since 0.5.0
     #
-    # @see Lotus::Interactor::Result
+    # @see Hanami::Interactor::Result
     #
     # @example Expose instance variable
     #
     #   class Signup
-    #     include Lotus::Interactor
+    #     include Hanami::Interactor
     #     expose :user
     #
     #     def initialize(params)
