@@ -22,7 +22,7 @@ Ruby core extentions and class utilities for [Hanami](http://hanamirb.org)
 
 ## Rubies
 
-__Hanami::Utils__ supports Ruby (MRI) 2+, JRuby 9k+ & Rubinius 2.3+
+__Hanami::Utils__ supports Ruby (MRI) 2.2+, JRuby 9k+
 
 ## Installation
 
@@ -131,4 +131,5 @@ __Hanami::Utils__ uses [Semantic Versioning 2.0.0](http://semver.org)
 ## Copyright
 
 Copyright © 2014-2016 Luca Guidi – Released under MIT License
+
 This project was formerly known as Lotus (`lotus-utils`).
