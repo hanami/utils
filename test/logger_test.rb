@@ -13,7 +13,7 @@ describe Hanami::Logger do
     TestLogger.new.info?.must_equal true
   end
 
-  it 'always use STDOUT' do
+  it 'use STDOUT' do
     output =
       stub_stdout_constant do
         class TestLogger < Hanami::Logger; end
@@ -22,6 +22,46 @@ describe Hanami::Logger do
       end
 
     output.must_match(/foo/)
+  end
+
+  it 'use file name' do
+    output =
+      stub_stdout_constant do
+        class TestLogger < Hanami::Logger; end
+        logger = TestLogger.new
+        logger.info('foo')
+      end
+
+    output.must_match(/foo/)
+  end
+
+  let(:log_path) { "#{Dir.pwd}/test/fixtures/logfile.log" }
+
+  it 'use file name' do
+    class TestLogger < Hanami::Logger; end
+
+    logger = TestLogger.new(log_device: log_path)
+    logger.info('in file')
+    logger.close
+
+    contents = File.read(log_path)
+    contents.must_match(/in file/)
+
+    File.truncate(log_path, 0)
+  end
+
+  it 'use open file' do
+    class TestLogger < Hanami::Logger; end
+
+    log_file = File.new(log_path, 'w+')
+    logger = TestLogger.new(log_device: log_file)
+    logger.info('in file')
+    logger.close
+
+    contents = File.read(log_path)
+    contents.must_match(/in file/)
+
+    File.truncate(log_path, 0)
   end
 
   it 'has application_name when log' do
