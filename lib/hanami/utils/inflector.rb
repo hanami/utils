@@ -222,6 +222,9 @@ module Hanami
         'series'       => 'series',
         'sheep'        => 'sheep',
         'species'      => 'species',
+        # regressions
+        # https://github.com/hanami/utils/issues/106
+        'album'        => 'albums',
       })
 
       # Irregular rules for singulars
