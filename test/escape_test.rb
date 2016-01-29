@@ -339,6 +339,28 @@ describe Hanami::Utils::Escape do
           result.must_equal 'http://x.xx/@'
         end
       end
+
+      describe 'encodes non-String objects that respond to `.to_s`' do
+        TEST_ENCODINGS.each do |encoding|
+          describe "#{ encoding }" do
+
+            it "escapes a Date" do
+              result = mod.html(Date.new(2016,01,27))
+              result.must_equal "2016-01-27"
+            end
+
+            it "escapes a Time" do
+              result = mod.html(Time.new(2016,01,27, 12, 0, 0, 0))
+              result.must_equal "2016-01-27 12:00:00 +0000"
+            end
+
+            it "escapes a DateTime" do
+              result = mod.html(DateTime.new(2016,01,27, 12, 0, 0, 0))
+              result.must_equal "2016-01-27T12:00:00+00:00"
+            end
+          end
+        end
+      end
     end
   end
 end

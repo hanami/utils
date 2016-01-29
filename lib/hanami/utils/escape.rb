@@ -529,7 +529,7 @@ module Hanami
       # @api private
       def self.encode(input)
         return '' if input.nil?
-        input.encode(Encoding::UTF_8)
+        input.to_s.encode(Encoding::UTF_8)
       rescue Encoding::UndefinedConversionError
         input.dup.force_encoding(Encoding::UTF_8)
       end
