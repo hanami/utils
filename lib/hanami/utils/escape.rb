@@ -423,7 +423,7 @@ module Hanami
 
         result = SafeString.new
 
-        input.chars do |chr|
+        input.each_char do |chr|
           result << HTML_CHARS.fetch(chr, chr)
         end
 
@@ -456,7 +456,7 @@ module Hanami
 
         result = SafeString.new
 
-        input.chars do |chr|
+        input.each_char do |chr|
           result << encode_char(chr, HTML_ATTRIBUTE_SAFE_CHARS)
         end
 
