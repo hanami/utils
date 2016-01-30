@@ -45,9 +45,19 @@ describe Hanami::Logger do
     end
 
     let(:log_path) { "#{Dir.pwd}/tmp/logfile.log" }
+    let(:relative_log_path) { "tmp/logfile.log" }
 
-    it 'accepts file name' do
+    it 'accepts absolute file name' do
       logger = Hanami::Logger.new(log_device: log_path)
+      logger.info('in file')
+      logger.close
+
+      contents = File.read(log_path)
+      contents.must_match(/in file/)
+    end
+
+    it 'accepts relative file name' do
+      logger = Hanami::Logger.new(log_device: relative_log_path)
       logger.info('in file')
       logger.close
 
