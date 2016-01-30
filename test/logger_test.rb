@@ -64,6 +64,15 @@ describe Hanami::Logger do
       contents = File.read(log_path)
       contents.must_match(/in file/)
     end
+
+    it 'creates log file with right permission' do
+      logger = Hanami::Logger.new(log_device: log_path)
+      logger.info('in file')
+      logger.close
+
+      file_permission = sprintf("%o", File.world_readable?(log_path))
+      file_permission.must_equal('644')
+    end
   end
 
   it 'has application_name when log' do
