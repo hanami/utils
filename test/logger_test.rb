@@ -37,6 +37,7 @@ describe Hanami::Logger do
 
   describe 'when IO is file' do
     before do
+      Dir.mkdir('tmp') unless Dir.exist?('tmp')
       FileUtils.touch(log_path) unless File.exist?(log_path)
     end
 
@@ -50,7 +51,6 @@ describe Hanami::Logger do
     it 'accepts absolute file name' do
       logger = Hanami::Logger.new(log_device: log_path)
       logger.info('in file')
-      logger.close
 
       contents = File.read(log_path)
       contents.must_match(/in file/)
@@ -59,7 +59,6 @@ describe Hanami::Logger do
     it 'accepts relative file name' do
       logger = Hanami::Logger.new(log_device: relative_log_path)
       logger.info('in file')
-      logger.close
 
       contents = File.read(log_path)
       contents.must_match(/in file/)
@@ -78,11 +77,17 @@ describe Hanami::Logger do
     it 'creates log file with right permission' do
       logger = Hanami::Logger.new(log_device: log_path)
       logger.info('in file')
-      logger.close
 
       file_permission = sprintf("%o", File.world_readable?(log_path))
-      file_permission.must_equal('644')
+      file_permission.must_match(/6\d4/)
     end
+  end
+
+  it 'not close STDOUT output for other code' do
+    logger = Hanami::Logger.new
+    logger.close
+
+    assert_output('in STDOUT') { print 'in STDOUT' }
   end
 
   it 'has application_name when log' do

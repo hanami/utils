@@ -119,6 +119,7 @@ module Hanami
     def initialize(application_name = nil, log_device: STDOUT)
       super(log_device)
 
+      @log_device       = log_device
       @application_name = application_name
       @formatter        = Hanami::Logger::Formatter.new.tap { |f| f.application_name = self.application_name }
     end
@@ -130,6 +131,13 @@ module Hanami
     # @since 0.5.0
     def application_name
       @application_name || _application_name_from_namespace || _default_application_name
+    end
+
+    # Close the logging device if this device isn't an STDOUT
+    #
+    # @since x.x.x
+    def close
+      super if @log_device != STDOUT
     end
 
     private
