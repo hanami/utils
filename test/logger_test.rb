@@ -35,33 +35,35 @@ describe Hanami::Logger do
     output.must_match(/foo/)
   end
 
-  let(:log_path) { "#{Dir.pwd}/test/fixtures/logfile.log" }
+  describe 'when IO is file' do
+    before do
+      FileUtils.touch(log_path) unless File.exist?(log_path)
+    end
 
-  it 'use file name' do
-    class TestLogger < Hanami::Logger; end
+    after do
+      File.delete(log_path)
+    end
 
-    logger = TestLogger.new(log_device: log_path)
-    logger.info('in file')
-    logger.close
+    let(:log_path) { "#{Dir.pwd}/tmp/logfile.log" }
 
-    contents = File.read(log_path)
-    contents.must_match(/in file/)
+    it 'accepts file name' do
+      logger = Hanami::Logger.new(log_device: log_path)
+      logger.info('in file')
+      logger.close
 
-    File.truncate(log_path, 0)
-  end
+      contents = File.read(log_path)
+      contents.must_match(/in file/)
+    end
 
-  it 'use open file' do
-    class TestLogger < Hanami::Logger; end
+    it 'accepts open file' do
+      log_file = File.new(log_path, 'w+')
+      logger = Hanami::Logger.new(log_device: log_file)
+      logger.info('in file')
+      logger.close
 
-    log_file = File.new(log_path, 'w+')
-    logger = TestLogger.new(log_device: log_file)
-    logger.info('in file')
-    logger.close
-
-    contents = File.read(log_path)
-    contents.must_match(/in file/)
-
-    File.truncate(log_path, 0)
+      contents = File.read(log_path)
+      contents.must_match(/in file/)
+    end
   end
 
   it 'has application_name when log' do
