@@ -40,6 +40,15 @@ describe Hanami::Utils::Hash do
       hash[:nested].must_be_kind_of Hanami::Utils::Hash
       hash[:nested][:key].must_equal('value')
     end
+
+    it 'symbolize nested Hanami::Utils::Hashes' do
+      nested = Hanami::Utils::Hash.new('key' => 'value')
+      hash = Hanami::Utils::Hash.new('nested' => nested)
+      hash.symbolize!
+
+      hash[:nested].must_be_kind_of Hanami::Utils::Hash
+      hash[:nested][:key].must_equal('value')
+    end
   end
 
   describe '#stringify!' do
@@ -53,6 +62,15 @@ describe Hanami::Utils::Hash do
 
     it 'stringifies nested hashes' do
       hash = Hanami::Utils::Hash.new(nested: {key: 'value'})
+      hash.stringify!
+
+      hash['nested'].must_be_kind_of Hanami::Utils::Hash
+      hash['nested']['key'].must_equal('value')
+    end
+
+    it 'stringifies nested Hanami::Utils::Hashes' do
+      nested = Hanami::Utils::Hash.new(key: 'value')
+      hash = Hanami::Utils::Hash.new(nested: nested)
       hash.stringify!
 
       hash['nested'].must_be_kind_of Hanami::Utils::Hash
