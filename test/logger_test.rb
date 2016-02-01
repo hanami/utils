@@ -64,9 +64,39 @@ describe Hanami::Logger do
       contents.must_match(/in file/)
     end
 
+    it 'accepts absolute path name' do
+      pathname = Pathname.new(log_path)
+      logger = Hanami::Logger.new(log_device: pathname)
+      logger.info('in file')
+
+      contents = File.read(log_path)
+      contents.must_match(/in file/)
+    end
+
+    it 'accepts relative file name' do
+      pathname = Pathname.new(relative_log_path)
+      logger = Hanami::Logger.new(log_device: pathname)
+      logger.info('in file')
+
+      contents = File.read(log_path)
+      contents.must_match(/in file/)
+    end
+
     it 'accepts open file' do
       log_file = File.new(log_path, 'w+')
       logger = Hanami::Logger.new(log_device: log_file)
+      logger.info('in file')
+      logger.close
+
+      contents = File.read(log_path)
+      contents.must_match(/in file/)
+    end
+
+    it 'accepts IO instance' do
+      fd = IO.sysopen(log_path, 'w')
+      io = IO.new(fd, 'w')
+
+      logger = Hanami::Logger.new(log_device: io)
       logger.info('in file')
       logger.close
 
