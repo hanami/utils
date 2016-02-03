@@ -137,7 +137,7 @@ module Hanami
     #
     # @since x.x.x
     def close
-      super if @log_device != STDOUT
+      super unless [STDOUT, $stdout].include?(@log_device)
     end
 
     private

@@ -120,6 +120,13 @@ describe Hanami::Logger do
     assert_output('in STDOUT') { print 'in STDOUT' }
   end
 
+  it 'not close $stdout output for other code' do
+    logger = Hanami::Logger.new(log_device: $stdout)
+    logger.close
+
+    assert_output('in $stdout') { print 'in $stdout' }
+  end
+
   it 'has application_name when log' do
     output =
       stub_stdout_constant do
