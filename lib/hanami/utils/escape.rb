@@ -423,7 +423,7 @@ module Hanami
 
         result = SafeString.new
 
-        input.chars do |chr|
+        input.each_char do |chr|
           result << HTML_CHARS.fetch(chr, chr)
         end
 
@@ -456,7 +456,7 @@ module Hanami
 
         result = SafeString.new
 
-        input.chars do |chr|
+        input.each_char do |chr|
           result << encode_char(chr, HTML_ATTRIBUTE_SAFE_CHARS)
         end
 
@@ -529,7 +529,7 @@ module Hanami
       # @api private
       def self.encode(input)
         return '' if input.nil?
-        input.encode(Encoding::UTF_8)
+        input.to_s.encode(Encoding::UTF_8)
       rescue Encoding::UndefinedConversionError
         input.dup.force_encoding(Encoding::UTF_8)
       end

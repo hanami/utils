@@ -1,6 +1,11 @@
 # Hanami::Utils
 Ruby core extentions and class utilities for Hanami
 
+## v0.7.1 - 2016-02-05
+### Fixed
+- [y-yagi] `Hanami::Utils::Escape`: fixed Ruby warning for `String#chars` with a block, which is deprecated. Using `String#each_char` now.
+- [Sean Collins] Allow non string objects to be escaped by `Hanami::Utils::Escape`.
+
 ## v0.7.0 - 2016-01-22
 ### Changed
 - [Luca Guidi] Renamed the project
