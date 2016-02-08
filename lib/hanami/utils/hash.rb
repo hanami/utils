@@ -65,7 +65,7 @@ module Hanami
       def symbolize!
         keys.each do |k|
           v = delete(k)
-          v = Hash.new(v).symbolize! if v.is_a?(::Hash)
+          v = Hash.new(v).symbolize! if v.is_a?(::Hash) || v.is_a?(::Hanami::Utils::Hash)
 
           self[k.to_sym] = v
         end
@@ -90,7 +90,7 @@ module Hanami
       def stringify!
         keys.each do |k|
           v = delete(k)
-          v = Hash.new(v).stringify! if v.is_a?(::Hash)
+          v = Hash.new(v).stringify! if v.is_a?(::Hash) || v.is_a?(::Hanami::Utils::Hash)
 
           self[k.to_s] = v
         end
