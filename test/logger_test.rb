@@ -58,7 +58,11 @@ describe Hanami::Logger do
                 contents = File.read(device)
                 contents.must_match(/newline/)
 
-                assert_permissions(device)
+                if macosx?
+                  assert_permissions(device)
+                else
+                  assert_permissions(device, "100664")
+                end
               end
             end
 
