@@ -13,7 +13,7 @@ describe Hanami::Logger do
     TestLogger.new.info?.must_equal true
   end
 
-  it 'always use STDOUT' do
+  it 'use STDOUT' do
     output =
       stub_stdout_constant do
         class TestLogger < Hanami::Logger; end
@@ -22,6 +22,109 @@ describe Hanami::Logger do
       end
 
     output.must_match(/foo/)
+  end
+
+  it 'use file name' do
+    output =
+      stub_stdout_constant do
+        class TestLogger < Hanami::Logger; end
+        logger = TestLogger.new
+        logger.info('foo')
+      end
+
+    output.must_match(/foo/)
+  end
+
+  describe 'when IO is file' do
+    before do
+      Dir.mkdir('tmp') unless Dir.exist?('tmp')
+      FileUtils.touch(log_path) unless File.exist?(log_path)
+    end
+
+    after do
+      File.delete(log_path)
+    end
+
+    let(:log_path) { "#{Dir.pwd}/tmp/logfile.log" }
+    let(:relative_log_path) { "tmp/logfile.log" }
+
+    it 'accepts absolute file name' do
+      logger = Hanami::Logger.new(log_device: log_path)
+      logger.info('in file')
+
+      contents = File.read(log_path)
+      contents.must_match(/in file/)
+    end
+
+    it 'accepts relative file name' do
+      logger = Hanami::Logger.new(log_device: relative_log_path)
+      logger.info('in file')
+
+      contents = File.read(log_path)
+      contents.must_match(/in file/)
+    end
+
+    it 'accepts absolute path name' do
+      pathname = Pathname.new(log_path)
+      logger = Hanami::Logger.new(log_device: pathname)
+      logger.info('in file')
+
+      contents = File.read(log_path)
+      contents.must_match(/in file/)
+    end
+
+    it 'accepts relative file name' do
+      pathname = Pathname.new(relative_log_path)
+      logger = Hanami::Logger.new(log_device: pathname)
+      logger.info('in file')
+
+      contents = File.read(log_path)
+      contents.must_match(/in file/)
+    end
+
+    it 'accepts open file' do
+      log_file = File.new(log_path, 'w+')
+      logger = Hanami::Logger.new(log_device: log_file)
+      logger.info('in file')
+      logger.close
+
+      contents = File.read(log_path)
+      contents.must_match(/in file/)
+    end
+
+    it 'accepts IO instance' do
+      fd = IO.sysopen(log_path, 'w')
+      io = IO.new(fd, 'w')
+
+      logger = Hanami::Logger.new(log_device: io)
+      logger.info('in file')
+      logger.close
+
+      contents = File.read(log_path)
+      contents.must_match(/in file/)
+    end
+
+    it 'creates log file with right permission' do
+      logger = Hanami::Logger.new(log_device: log_path)
+      logger.info('in file')
+
+      file_permission = sprintf("%o", File.world_readable?(log_path))
+      file_permission.must_match(/6\d4/)
+    end
+  end
+
+  it 'not close STDOUT output for other code' do
+    logger = Hanami::Logger.new
+    logger.close
+
+    assert_output('in STDOUT') { print 'in STDOUT' }
+  end
+
+  it 'not close $stdout output for other code' do
+    logger = Hanami::Logger.new(log_device: $stdout)
+    logger.close
+
+    assert_output('in $stdout') { print 'in $stdout' }
   end
 
   it 'has application_name when log' do
