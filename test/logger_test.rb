@@ -1,5 +1,6 @@
 require 'test_helper'
 require 'hanami/logger'
+require 'rbconfig'
 
 describe Hanami::Logger do
 
@@ -81,8 +82,11 @@ describe Hanami::Logger do
                 logger = Hanami::Logger.new(device: device)
                 logger.info('appended')
 
-                # assert_permissions(device, "100#{ permissions.to_s(8) }")
-                assert_permissions(device)
+                if macosx?
+                  assert_permissions(device)
+                else
+                  assert_permissions(device, "100#{ permissions.to_s(8) }")
+                end
               end
             end
           end
@@ -92,10 +96,6 @@ describe Hanami::Logger do
         describe 'when file' do
           let(:device) { File.new(Pathname.new('tmp').join('logfile.log'), 'w+', permissions) }
           let(:permissions) { 0644 }
-
-          after do
-            device.close
-          end
 
           describe 'and brand new' do
             before do
@@ -245,6 +245,10 @@ describe Hanami::Logger do
   end
 
   private
+
+  def macosx?
+    RbConfig::CONFIG['host_os'].match(/darwin|mac os/)
+  end
 
   def assert_permissions(file, permissions = '100644')
     stat = ::File::Stat.new(file)
