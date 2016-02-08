@@ -54,7 +54,7 @@ module Hanami
   #   # => I, [2015-01-10T21:55:12.727259 #80487]  INFO -- [Bookshelf] : Hello
   #
   # @example Standalone usage
-  #   require 'hanami'
+  #   require 'hanami/logger'
   #
   #   Hanami::Logger.info('Hello')
   #   # => I, [2015-01-10T21:55:12.727259 #80487]  INFO -- [Hanami] : Hello
@@ -63,7 +63,7 @@ module Hanami
   #   # => I, [2015-01-10T21:55:12.727259 #80487]  INFO -- [Hanami] : Hello
   #
   # @example Custom tagging
-  #   require 'hanami'
+  #   require 'hanami/logger'
   #
   #   Hanami::Logger.new('FOO').info('Hello')
   #   # => I, [2015-01-10T21:55:12.727259 #80487]  INFO -- [FOO] : Hello
@@ -71,7 +71,7 @@ module Hanami
   # @example Write to file
   #   require 'hanami'
   #
-  #   Hanami::Logger.new(log_device: 'logfile.log').info('Hello')
+  #   Hanami::Logger.new(device: 'logfile.log').info('Hello')
   #   # in logfile.log
   #   # => I, [2015-01-10T21:55:12.727259 #80487]  INFO -- [FOO] : Hello
   class Logger < ::Logger
@@ -112,14 +112,14 @@ module Hanami
     # @param application_name [String] an optional application name used for
     #   tagging purposes
     #
-    # @param log_device [String, IO] an optional log device. This is a filename
+    # @param device [String, IO, StringIO, Pathanem] an optional log device. This is a filename
     # (String) or IO object (typically STDOUT, STDERR, or an open file).
     #
     # @since 0.5.0
-    def initialize(application_name = nil, log_device: STDOUT)
-      super(log_device)
+    def initialize(application_name = nil, device: STDOUT)
+      super(device)
 
-      @log_device       = log_device
+      @device           = device
       @application_name = application_name
       @formatter        = Hanami::Logger::Formatter.new.tap { |f| f.application_name = self.application_name }
     end
@@ -137,7 +137,7 @@ module Hanami
     #
     # @since x.x.x
     def close
-      super unless [STDOUT, $stdout].include?(@log_device)
+      super unless [STDOUT, $stdout].include?(@device)
     end
 
     private
