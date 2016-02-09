@@ -63,6 +63,10 @@ Set of attributes with indifferent access. [[API doc](http://www.rubydoc.info/ge
 
 Enhanced version of Ruby's `BasicObject`. [[API doc](http://www.rubydoc.info/gems/hanami-utils/Hanami/Utils/BasicObject)]
 
+### Hanami::Utils::Blank
+
+Checks for blank. [[API doc](http://www.rubydoc.info/gems/hanami-utils/Hanami/Utils/Blank)]
+
 ### Hanami::Utils::Callbacks
 
 Callbacks to decorate methods with `before` and `after` logic. It supports polymorphic callbacks (methods and procs). [[API doc](http://www.rubydoc.info/gems/hanami-utils/Hanami/Utils/Callbacks)]
