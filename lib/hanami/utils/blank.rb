@@ -5,6 +5,12 @@ module Hanami
     # Checks for blank
     # @since x.x.x
     class Blank
+      # Matcher for blank strings
+      #
+      # @since x.x.x
+      # @api private
+      STRING_MATCHER = /\A[[:space:]]*\z/.freeze
+
       # Checks object is blank
       #
       # @example Basic Usage
@@ -25,7 +31,7 @@ module Hanami
       def self.blank?(object)
         case object
         when String, ::String
-          Inflector::BLANK_STRING_MATCHER === object
+          STRING_MATCHER === object
         when Hash, ::Hash, ::Array
           object.empty?
         when TrueClass, Numeric
