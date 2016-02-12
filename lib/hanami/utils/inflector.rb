@@ -1,4 +1,5 @@
 require 'hanami/utils/class_attribute'
+require 'hanami/utils/blank'
 
 module Hanami
   module Utils
@@ -39,12 +40,6 @@ module Hanami
           string[0] + result[1..-1]
         end
       end
-
-      # Matcher for blank strings
-      #
-      # @since 0.4.1
-      # @api private
-      BLANK_STRING_MATCHER = /\A[[:space:]]*\z/.freeze
 
       # @since 0.4.1
       # @api private
@@ -339,7 +334,7 @@ module Hanami
       # @api private
       # @since 0.4.1
       def self.pluralize(string)
-        return string if string.nil? || string.match(BLANK_STRING_MATCHER)
+        return string if string.nil? || string.match(Utils::Blank::STRING_MATCHER)
 
         case string
         when plurals
@@ -390,7 +385,7 @@ module Hanami
       # @api private
       # @since 0.4.1
       def self.singularize(string)
-        return string if string.nil? || string.match(BLANK_STRING_MATCHER)
+        return string if string.nil? || string.match(Utils::Blank::STRING_MATCHER)
 
         case string
         when singulars
