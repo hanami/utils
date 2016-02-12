@@ -25,14 +25,6 @@ module Hanami
       # @see Hanami::Utils::Kernel.Integer
       NUMERIC_MATCHER = /\A([\d\/\.\+iE]+|NaN|Infinity)\z/.freeze
 
-      # Default precision for bigdecimal with rational number
-      #
-      # @since x.x.x
-      # @api private
-      #
-      # @see Hanami::Utils::Kernel.BigDecimal
-      BIGDECIMAL_DEFAULT_PRECISION = 1
-
       # Coerces the argument to be an Array.
       #
       # It's similar to Ruby's Kernel.Array, but it applies further
@@ -413,12 +405,12 @@ module Hanami
       #   # Missing #respond_to?
       #   input = BasicObject.new
       #   Hanami::Utils::Kernel.BigDecimal(input) # => TypeError
-      def self.BigDecimal(arg, precision: BIGDECIMAL_DEFAULT_PRECISION)
+      def self.BigDecimal(arg)
         case arg
-        when ->(a) { a.respond_to?(:to_d) && a.class == Rational } then arg.to_d(precision)
-        when ->(a) { a.respond_to?(:to_d) } then arg.to_d
-        when Float, Complex, Rational
+        when Numeric
           BigDecimal(arg.to_s)
+        when ->(a) { a.respond_to?(:to_d) }
+          arg.to_d
         else
           BigDecimal.new(arg)
         end

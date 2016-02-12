@@ -22,7 +22,7 @@ Ruby core extentions and class utilities for [Hanami](http://hanamirb.org)
 
 ## Rubies
 
-__Hanami::Utils__ supports Ruby (MRI) 2.2+, JRuby 9k+
+__Hanami::Utils__ supports Ruby (MRI) 2.2+, JRuby 9.0.5.0+
 
 ## Installation
 

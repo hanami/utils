@@ -812,16 +812,10 @@ describe Hanami::Utils::Kernel do
       end
 
       describe 'when a rational number is given' do
-        let(:input)     { Rational(0.3) }
-        let(:precision) { 1 }
+        let(:input) { Rational(0.3) }
 
         it 'returns an BigDecimal' do
-          if Hanami::Utils.jruby?
-            @result = Hanami::Utils::Kernel.BigDecimal(input, precision: precision)
-            @result.must_equal BigDecimal.new(input, precision)
-          else
-            @result.must_equal BigDecimal.new(input.to_s)
-          end
+          @result.must_equal BigDecimal.new(input.to_s)
         end
       end
 
