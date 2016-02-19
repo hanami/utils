@@ -334,6 +334,7 @@ module Hanami
       # Coerces the argument to be a BigDecimal.
       #
       # @param arg [Object] the argument
+      # @param precision [Keyword] precision for Rational objects (Only JRuby).
       #
       # @return [BigDecimal] the result of the coercion
       #
@@ -406,13 +407,12 @@ module Hanami
       #   Hanami::Utils::Kernel.BigDecimal(input) # => TypeError
       def self.BigDecimal(arg)
         case arg
-        when ->(a) { a.respond_to?(:to_d) } then arg.to_d
-        when Float, Complex, Rational
+        when Numeric
           BigDecimal(arg.to_s)
-        when ->(a) { a.to_s.match(NUMERIC_MATCHER) }
-          BigDecimal.new(arg)
+        when ->(a) { a.respond_to?(:to_d) }
+          arg.to_d
         else
-          raise TypeError.new "can't convert #{inspect_type_error(arg)}into BigDecimal"
+          BigDecimal.new(arg)
         end
       rescue NoMethodError
         raise TypeError.new "can't convert #{inspect_type_error(arg)}into BigDecimal"

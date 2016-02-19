@@ -22,7 +22,7 @@ Ruby core extentions and class utilities for [Hanami](http://hanamirb.org)
 
 ## Rubies
 
-__Hanami::Utils__ supports Ruby (MRI) 2.2+, JRuby 9k+
+__Hanami::Utils__ supports Ruby (MRI) 2.2+, JRuby 9.0.5.0+
 
 ## Installation
 
@@ -62,6 +62,10 @@ Set of attributes with indifferent access. [[API doc](http://www.rubydoc.info/ge
 ### Hanami::Utils::BasicObject
 
 Enhanced version of Ruby's `BasicObject`. [[API doc](http://www.rubydoc.info/gems/hanami-utils/Hanami/Utils/BasicObject)]
+
+### Hanami::Utils::Blank
+
+Checks for blank. [[API doc](http://www.rubydoc.info/gems/hanami-utils/Hanami/Utils/Blank)]
 
 ### Hanami::Utils::Callbacks
 

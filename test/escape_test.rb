@@ -350,8 +350,9 @@ describe Hanami::Utils::Escape do
             end
 
             it "escapes a Time" do
+              time_string = Hanami::Utils.jruby? ? "2016-01-27 12:00:00 UTC" : "2016-01-27 12:00:00 +0000"
               result = mod.html(Time.new(2016,01,27, 12, 0, 0, 0))
-              result.must_equal "2016-01-27 12:00:00 +0000"
+              result.must_equal time_string
             end
 
             it "escapes a DateTime" do

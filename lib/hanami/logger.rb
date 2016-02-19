@@ -5,7 +5,7 @@ module Hanami
   # Hanami logger
   #
   # Implement with the same interface of Ruby std lib `Logger`.
-  # It uses `STDOUT` as output device.
+  # It uses `STDOUT`, `STDERR`, file name or open file as output device.
   #
   #
   #
@@ -54,7 +54,7 @@ module Hanami
   #   # => I, [2015-01-10T21:55:12.727259 #80487]  INFO -- [Bookshelf] : Hello
   #
   # @example Standalone usage
-  #   require 'hanami'
+  #   require 'hanami/logger'
   #
   #   Hanami::Logger.info('Hello')
   #   # => I, [2015-01-10T21:55:12.727259 #80487]  INFO -- [Hanami] : Hello
@@ -63,9 +63,16 @@ module Hanami
   #   # => I, [2015-01-10T21:55:12.727259 #80487]  INFO -- [Hanami] : Hello
   #
   # @example Custom tagging
-  #   require 'hanami'
+  #   require 'hanami/logger'
   #
   #   Hanami::Logger.new('FOO').info('Hello')
+  #   # => I, [2015-01-10T21:55:12.727259 #80487]  INFO -- [FOO] : Hello
+  #
+  # @example Write to file
+  #   require 'hanami'
+  #
+  #   Hanami::Logger.new(device: 'logfile.log').info('Hello')
+  #   # in logfile.log
   #   # => I, [2015-01-10T21:55:12.727259 #80487]  INFO -- [FOO] : Hello
   class Logger < ::Logger
     # Hanami::Logger default formatter
@@ -105,10 +112,14 @@ module Hanami
     # @param application_name [String] an optional application name used for
     #   tagging purposes
     #
+    # @param device [String, IO, StringIO, Pathanem] an optional log device. This is a filename
+    # (String) or IO object (typically STDOUT, STDERR, or an open file).
+    #
     # @since 0.5.0
-    def initialize(application_name = nil)
-      super(STDOUT)
+    def initialize(application_name = nil, device: STDOUT)
+      super(device)
 
+      @device           = device
       @application_name = application_name
       @formatter        = Hanami::Logger::Formatter.new.tap { |f| f.application_name = self.application_name }
     end
@@ -120,6 +131,13 @@ module Hanami
     # @since 0.5.0
     def application_name
       @application_name || _application_name_from_namespace || _default_application_name
+    end
+
+    # Close the logging device if this device isn't an STDOUT
+    #
+    # @since x.x.x
+    def close
+      super unless [STDOUT, $stdout].include?(@device)
     end
 
     private
