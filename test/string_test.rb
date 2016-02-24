@@ -83,6 +83,10 @@ describe Hanami::Utils::String do
       Hanami::Utils::String.new(:'hanami/router').classify.must_equal('Hanami::Router')
       Hanami::Utils::String.new(:'hanami::router').classify.must_equal('Hanami::Router')
     end
+
+    it 'does not remove capital letter in string' do
+      Hanami::Utils::String.new("AwesomeProject").classify.must_equal("AwesomeProject")
+    end
   end
 
   describe '#underscore' do

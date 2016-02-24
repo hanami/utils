@@ -141,7 +141,7 @@ module Hanami
       #   string = Hanami::Utils::String.new 'hanami_utils'
       #   string.classify # => 'HanamiUtils'
       def classify
-        words = split(CLASSIFY_WORD_SEPARATOR).map!(&:capitalize)
+        words = underscore.split(CLASSIFY_WORD_SEPARATOR).map!(&:capitalize)
         delimiters = scan(CLASSIFY_WORD_SEPARATOR)
 
         delimiters.map! do |delimiter|
