@@ -26,6 +26,48 @@ describe Hanami::Logger do
       output.must_match(/foo/)
     end
 
+    describe 'custom level option' do
+      it 'takes a integer' do
+        logger = Hanami::Logger.new(level: 3)
+        logger.level.must_equal Hanami::Logger::ERROR
+      end
+
+      it 'takes a integer more than 5' do
+        logger = Hanami::Logger.new(level: 99)
+        logger.level.must_equal Hanami::Logger::DEBUG
+      end
+
+      it 'takes a symbol' do
+        logger = Hanami::Logger.new(level: :error)
+        logger.level.must_equal Hanami::Logger::ERROR
+      end
+
+      it 'takes a string' do
+        logger = Hanami::Logger.new(level: 'error')
+        logger.level.must_equal Hanami::Logger::ERROR
+      end
+
+      it 'takes a string with strange value' do
+        logger = Hanami::Logger.new(level: 'strange')
+        logger.level.must_equal Hanami::Logger::DEBUG
+      end
+
+      it 'takes a uppercased string' do
+        logger = Hanami::Logger.new(level: 'ERROR')
+        logger.level.must_equal Hanami::Logger::ERROR
+      end
+
+      it 'takes a constant' do
+        logger = Hanami::Logger.new(level: Hanami::Logger::ERROR)
+        logger.level.must_equal Hanami::Logger::ERROR
+      end
+
+      it 'contains debug level by default' do
+        logger = Hanami::Logger.new
+        logger.level.must_equal ::Logger::DEBUG
+      end
+    end
+
     describe 'custom device' do
       describe 'file system' do
         before do
