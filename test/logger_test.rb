@@ -237,7 +237,56 @@ describe Hanami::Logger do
       end
     end
 
+    describe '#level=' do
+      it 'takes a integer' do
+        logger = Hanami::Logger.new
+        logger.level = 3
 
+        logger.level.must_equal Hanami::Logger::ERROR
+      end
+
+      it 'takes a integer more than 5' do
+        logger = Hanami::Logger.new
+        logger.level = 99
+
+        logger.level.must_equal Hanami::Logger::DEBUG
+      end
+
+      it 'takes a symbol' do
+        logger = Hanami::Logger.new
+        logger.level = :error
+
+        logger.level.must_equal Hanami::Logger::ERROR
+      end
+
+      it 'takes a string' do
+        logger = Hanami::Logger.new
+        logger.level = 'error'
+
+        logger.level.must_equal Hanami::Logger::ERROR
+      end
+
+      it 'takes a string with strange value' do
+        logger = Hanami::Logger.new
+        logger.level = 'strange'
+
+        logger.level.must_equal Hanami::Logger::DEBUG
+      end
+
+      it 'takes a uppercased string' do
+        logger = Hanami::Logger.new
+        logger.level = 'ERROR'
+
+        logger.level.must_equal Hanami::Logger::ERROR
+      end
+
+      it 'takes a constant' do
+        logger = Hanami::Logger.new
+        logger.level = Hanami::Logger::ERROR
+
+        logger.level.must_equal Hanami::Logger::ERROR
+      end
+    end
 
     it 'has application_name when log' do
       output =
