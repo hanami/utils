@@ -103,6 +103,17 @@ module Hanami
     # @api private
     DEFAULT_APPLICATION_NAME = 'Hanami'.freeze
 
+    # @since x.x.x
+    # @api private
+    LEVEL_HASH = {
+      warn:    Hanami::Logger::WARN,
+      info:    Hanami::Logger::INFO,
+      fatal:   Hanami::Logger::FATAL,
+      error:   Hanami::Logger::ERROR,
+      debug:   Hanami::Logger::DEBUG,
+      unknown: Hanami::Logger::UNKNOWN
+    }.freeze
+
     # @since 0.5.0
     # @api private
     attr_writer :application_name
@@ -116,9 +127,10 @@ module Hanami
     # (String) or IO object (typically STDOUT, STDERR, or an open file).
     #
     # @since 0.5.0
-    def initialize(application_name = nil, device: STDOUT)
+    def initialize(application_name = nil, device: STDOUT, level: DEBUG)
       super(device)
 
+      @level            = convert_level(level)
       @device           = device
       @application_name = application_name
       @formatter        = Hanami::Logger::Formatter.new.tap { |f| f.application_name = self.application_name }
@@ -154,6 +166,11 @@ module Hanami
     # @api private
     def _default_application_name
       DEFAULT_APPLICATION_NAME
+    end
+
+    def convert_level(level)
+      level = level.to_sym.downcase if level.is_a?(String)
+      (DEBUG..UNKNOWN).include?(level) ? level : LEVEL_HASH.fetch(level, DEBUG)
     end
   end
 end
