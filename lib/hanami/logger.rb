@@ -20,12 +20,12 @@ module Hanami
   #
   # The available severity levels are the same of `Logger`:
   #
-  #   * debug
-  #   * error
-  #   * fatal
-  #   * info
-  #   * unknown
-  #   * warn
+  #   * DEBUG
+  #   * INFO
+  #   * WARN
+  #   * ERROR
+  #   * FATAL
+  #   * UNKNOWN
   #
   # Those levels are available both as class and instance methods.
   #
@@ -106,11 +106,11 @@ module Hanami
     # @since x.x.x
     # @api private
     LEVELS = Hash[
-      'warn'    => WARN,
-      'info'    => INFO,
-      'fatal'   => FATAL,
-      'error'   => ERROR,
       'debug'   => DEBUG,
+      'info'    => INFO,
+      'warn'    => WARN,
+      'error'   => ERROR,
+      'fatal'   => FATAL,
       'unknown' => UNKNOWN
     ].freeze
 
