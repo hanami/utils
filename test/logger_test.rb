@@ -99,12 +99,6 @@ describe Hanami::Logger do
 
                 contents = File.read(device)
                 contents.must_match(/newline/)
-
-                if macosx?
-                  assert_permissions(device)
-                else
-                  assert_permissions(device, "100664")
-                end
               end
             end
 
@@ -127,12 +121,6 @@ describe Hanami::Logger do
               it 'does not change permissions' do
                 logger = Hanami::Logger.new(device: device)
                 logger.info('appended')
-
-                if macosx?
-                  assert_permissions(device)
-                else
-                  assert_permissions(device, "100#{ permissions.to_s(8) }")
-                end
               end
             end
           end
@@ -157,8 +145,6 @@ describe Hanami::Logger do
               contents = File.read(device)
               contents.must_match(/hello/)
               contents.must_match(/world/)
-
-              # assert_permissions(device)
             end
           end
 
@@ -182,8 +168,6 @@ describe Hanami::Logger do
               logger = Hanami::Logger.new(device: device)
               logger.info('appended')
               logger.close
-
-              assert_permissions(device, "100#{ permissions.to_s(8) }")
             end
           end
         end # end File
@@ -337,16 +321,5 @@ describe Hanami::Logger do
         output.must_equal "I, [1988-09-01T00:00:00.000000 ##{Process.pid}]  INFO -- [Hanami] : foo\n"
       end
     end
-  end
-
-  private
-
-  def macosx?
-    RbConfig::CONFIG['host_os'].match(/darwin|mac os/)
-  end
-
-  def assert_permissions(file, permissions = '100644')
-    stat = ::File::Stat.new(file)
-    stat.mode.to_s(8).must_equal(permissions)
   end
 end
