@@ -68,10 +68,10 @@ describe Hanami::Logger do
       end
     end
 
-    describe 'custom device' do
+    describe 'custom stream' do
       describe 'file system' do
         before do
-          Pathname.new(device).dirname.mkpath
+          Pathname.new(stream).dirname.mkpath
         end
 
         Hash[
@@ -82,44 +82,44 @@ describe Hanami::Logger do
         ].each do |dev, desc|
 
           describe "when #{ desc }" do
-            let(:device) { dev }
+            let(:stream) { dev }
 
             after do
-              File.delete(device)
+              File.delete(stream)
             end
 
             describe 'and it does not exist' do
               before do
-                File.delete(device) if File.exist?(device)
+                File.delete(stream) if File.exist?(stream)
               end
 
               it 'writes to file' do
-                logger = Hanami::Logger.new(device: device)
+                logger = Hanami::Logger.new(stream: stream)
                 logger.info('newline')
 
-                contents = File.read(device)
+                contents = File.read(stream)
                 contents.must_match(/newline/)
               end
             end
 
             describe 'and it already exists' do
               before do
-                File.open(device, File::WRONLY|File::TRUNC|File::CREAT, permissions) {|f| f.write('existing') }
+                File.open(stream, File::WRONLY|File::TRUNC|File::CREAT, permissions) {|f| f.write('existing') }
               end
 
               let(:permissions) { 0664 }
 
               it 'appends to file' do
-                logger = Hanami::Logger.new(device: device)
+                logger = Hanami::Logger.new(stream: stream)
                 logger.info('appended')
 
-                contents = File.read(device)
+                contents = File.read(stream)
                 contents.must_match(/existing/)
                 contents.must_match(/appended/)
               end
 
               it 'does not change permissions' do
-                logger = Hanami::Logger.new(device: device)
+                logger = Hanami::Logger.new(stream: stream)
                 logger.info('appended')
               end
             end
@@ -128,21 +128,21 @@ describe Hanami::Logger do
         end # end loop
 
         describe 'when file' do
-          let(:device) { File.new(Pathname.new('tmp').join('logfile.log'), 'w+', permissions) }
+          let(:stream) { File.new(Pathname.new('tmp').join('logfile.log'), 'w+', permissions) }
           let(:permissions) { 0644 }
 
           describe 'and brand new' do
             before do
-              device.write('hello')
+              stream.write('hello')
             end
 
             it 'appends to file' do
-              logger = Hanami::Logger.new(device: device)
+              logger = Hanami::Logger.new(stream: stream)
               logger.info('world')
 
               logger.close
 
-              contents = File.read(device)
+              contents = File.read(stream)
               contents.must_match(/hello/)
               contents.must_match(/world/)
             end
@@ -150,22 +150,22 @@ describe Hanami::Logger do
 
           describe 'and already written' do
             before do
-              device.write('hello')
+              stream.write('hello')
             end
 
             it 'appends to file' do
-              logger = Hanami::Logger.new(device: device)
+              logger = Hanami::Logger.new(stream: stream)
               logger.info('world')
 
               logger.close
 
-              contents = File.read(device)
+              contents = File.read(stream)
               contents.must_match(/hello/)
               contents.must_match(/world/)
             end
 
             it 'does not change permissions' do
-              logger = Hanami::Logger.new(device: device)
+              logger = Hanami::Logger.new(stream: stream)
               logger.info('appended')
               logger.close
             end
@@ -173,17 +173,17 @@ describe Hanami::Logger do
         end # end File
 
         describe 'when IO' do
-          let(:device) { Pathname.new('tmp').join('logfile.log').to_s }
+          let(:stream) { Pathname.new('tmp').join('logfile.log').to_s }
 
           it 'appends' do
-            fd = IO.sysopen(device, 'w')
+            fd = IO.sysopen(stream, 'w')
             io = IO.new(fd, 'w')
 
-            logger = Hanami::Logger.new(device: io)
+            logger = Hanami::Logger.new(stream: io)
             logger.info('in file')
             logger.close
 
-            contents = File.read(device)
+            contents = File.read(stream)
             contents.must_match(/in file/)
           end
         end # end IO
@@ -191,14 +191,14 @@ describe Hanami::Logger do
       end # end FileSystem
 
       describe 'when StringIO' do
-        let(:device) { StringIO.new }
+        let(:stream) { StringIO.new }
 
         it 'appends' do
-          logger = Hanami::Logger.new(device: device)
+          logger = Hanami::Logger.new(stream: stream)
           logger.info('in file')
 
-          device.rewind
-          device.read.must_match(/in file/)
+          stream.rewind
+          stream.read.must_match(/in file/)
         end
       end # end StringIO
 
@@ -207,14 +207,14 @@ describe Hanami::Logger do
 
     describe "#close" do
       it 'does not close STDOUT output for other code' do
-        logger = Hanami::Logger.new(device: STDOUT)
+        logger = Hanami::Logger.new(stream: STDOUT)
         logger.close
 
         assert_output('in STDOUT') { print 'in STDOUT' }
       end
 
       it 'does not close $stdout output for other code' do
-        logger = Hanami::Logger.new(device: $stdout)
+        logger = Hanami::Logger.new(stream: $stdout)
         logger.close
 
         assert_output('in $stdout') { print 'in $stdout' }
