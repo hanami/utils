@@ -5,7 +5,7 @@ module Hanami
   # Hanami logger
   #
   # Implement with the same interface of Ruby std lib `Logger`.
-  # It uses `STDOUT`, `STDERR`, file name or open file as output device.
+  # It uses `STDOUT`, `STDERR`, file name or open file as output stream.
   #
   #
   #
@@ -71,7 +71,7 @@ module Hanami
   # @example Write to file
   #   require 'hanami'
   #
-  #   Hanami::Logger.new(device: 'logfile.log').info('Hello')
+  #   Hanami::Logger.new(stream: 'logfile.log').info('Hello')
   #   # in logfile.log
   #   # => I, [2015-01-10T21:55:12.727259 #80487]  INFO -- [FOO] : Hello
   class Logger < ::Logger
@@ -123,15 +123,15 @@ module Hanami
     # @param application_name [String] an optional application name used for
     #   tagging purposes
     #
-    # @param device [String, IO, StringIO, Pathanem] an optional log device. This is a filename
+    # @param stream [String, IO, StringIO, Pathanem] an optional log stream. This is a filename
     # (String) or IO object (typically STDOUT, STDERR, or an open file).
     #
     # @since 0.5.0
-    def initialize(application_name = nil, device: STDOUT, level: DEBUG)
-      super(device)
+    def initialize(application_name = nil, stream: STDOUT, level: DEBUG)
+      super(stream)
 
       @level            = _level(level)
-      @device           = device
+      @stream           = stream
       @application_name = application_name
       @formatter        = Hanami::Logger::Formatter.new.tap { |f| f.application_name = self.application_name }
     end
@@ -151,11 +151,11 @@ module Hanami
       super _level(value)
     end
 
-    # Close the logging device if this device isn't an STDOUT
+    # Close the logging stream if this stream isn't an STDOUT
     #
     # @since x.x.x
     def close
-      super unless [STDOUT, $stdout].include?(@device)
+      super unless [STDOUT, $stdout].include?(@stream)
     end
 
     private
