@@ -298,14 +298,47 @@ describe Hanami::Logger do
       output.must_match(/bar/)
     end
 
-    it 'has format "#{Severity}, [%Y-%m-%dT%H:%M:%S.%6N #{Pid}] #{Severity} -- [#{application_name}] : #{message}\n"' do
+    it 'has JSON format for string messages' do
       stub_time_now do
         output =
           stub_stdout_constant do
             class TestLogger < Hanami::Logger;end
             TestLogger.new.info('foo')
           end
-        output.must_equal "I, [1988-09-01T00:00:00.000000 ##{Process.pid}]  INFO -- [Hanami] : foo\n"
+        output.must_equal "{\"application_name\":\"Hanami\",\"severity\":\"INFO\",\"time\":\"1988-09-01 00:00:00 UTC\",\"progname\":null,\"message\":\"foo\"}"
+      end
+    end
+
+    it 'has JSON format for error messages' do
+      stub_time_now do
+        output =
+          stub_stdout_constant do
+            class TestLogger < Hanami::Logger;end
+            TestLogger.new.error(Exception.new('foo'))
+          end
+        output.must_equal "{\"application_name\":\"Hanami\",\"severity\":\"ERROR\",\"time\":\"1988-09-01 00:00:00 UTC\",\"progname\":null,\"message\":\"foo\",\"backtrace\":[],\"error_class\":\"Exception\"}"
+      end
+    end
+
+    it 'has JSON format for hash messages' do
+      stub_time_now do
+        output =
+          stub_stdout_constant do
+            class TestLogger < Hanami::Logger;end
+            TestLogger.new.info(foo: :bar)
+          end
+        output.must_equal "{\"application_name\":\"Hanami\",\"severity\":\"INFO\",\"time\":\"1988-09-01 00:00:00 UTC\",\"progname\":null,\"foo\":\"bar\"}"
+      end
+    end
+
+    it 'has JSON format for not string messages' do
+      stub_time_now do
+        output =
+          stub_stdout_constant do
+            class TestLogger < Hanami::Logger;end
+            TestLogger.new.info(['foo'])
+          end
+        output.must_equal "{\"application_name\":\"Hanami\",\"severity\":\"INFO\",\"time\":\"1988-09-01 00:00:00 UTC\",\"progname\":null,\"message\":[\"foo\"]}"
       end
     end
   end
