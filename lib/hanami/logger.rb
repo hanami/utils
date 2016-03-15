@@ -93,10 +93,9 @@ module Hanami
       # @see http://www.ruby-doc.org/stdlib/libdoc/logger/rdoc/Logger/Formatter.html#method-i-call
       def call(severity, time, progname, msg)
         hash = {
-          application_name: @application_name,
+          app: @application_name,
           severity: severity,
           time: time.utc,
-          progname: progname
         }.merge!(_message_hash(msg))
 
         JSON.generate(hash)
@@ -114,7 +113,7 @@ module Hanami
           {
             message: message.message,
             backtrace: message.backtrace || [],
-            error_class: message.class
+            error: message.class
           }
         else
           { message: message }

@@ -305,7 +305,7 @@ describe Hanami::Logger do
             class TestLogger < Hanami::Logger;end
             TestLogger.new.info('foo')
           end
-        output.must_equal "{\"application_name\":\"Hanami\",\"severity\":\"INFO\",\"time\":\"1988-09-01 00:00:00 UTC\",\"progname\":null,\"message\":\"foo\"}"
+        output.must_equal "{\"app\":\"Hanami\",\"severity\":\"INFO\",\"time\":\"1988-09-01 00:00:00 UTC\",\"message\":\"foo\"}"
       end
     end
 
@@ -316,7 +316,7 @@ describe Hanami::Logger do
             class TestLogger < Hanami::Logger;end
             TestLogger.new.error(Exception.new('foo'))
           end
-        output.must_equal "{\"application_name\":\"Hanami\",\"severity\":\"ERROR\",\"time\":\"1988-09-01 00:00:00 UTC\",\"progname\":null,\"message\":\"foo\",\"backtrace\":[],\"error_class\":\"Exception\"}"
+        output.must_equal "{\"app\":\"Hanami\",\"severity\":\"ERROR\",\"time\":\"1988-09-01 00:00:00 UTC\",\"message\":\"foo\",\"backtrace\":[],\"error\":\"Exception\"}"
       end
     end
 
@@ -327,7 +327,7 @@ describe Hanami::Logger do
             class TestLogger < Hanami::Logger;end
             TestLogger.new.info(foo: :bar)
           end
-        output.must_equal "{\"application_name\":\"Hanami\",\"severity\":\"INFO\",\"time\":\"1988-09-01 00:00:00 UTC\",\"progname\":null,\"foo\":\"bar\"}"
+        output.must_equal "{\"app\":\"Hanami\",\"severity\":\"INFO\",\"time\":\"1988-09-01 00:00:00 UTC\",\"foo\":\"bar\"}"
       end
     end
 
@@ -338,7 +338,7 @@ describe Hanami::Logger do
             class TestLogger < Hanami::Logger;end
             TestLogger.new.info(['foo'])
           end
-        output.must_equal "{\"application_name\":\"Hanami\",\"severity\":\"INFO\",\"time\":\"1988-09-01 00:00:00 UTC\",\"progname\":null,\"message\":[\"foo\"]}"
+        output.must_equal "{\"app\":\"Hanami\",\"severity\":\"INFO\",\"time\":\"1988-09-01 00:00:00 UTC\",\"message\":[\"foo\"]}"
       end
     end
   end
