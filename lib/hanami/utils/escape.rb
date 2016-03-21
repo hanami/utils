@@ -12,6 +12,14 @@ module Hanami
     # @see https://www.owasp.org/index.php/ESAPI
     # @see https://github.com/ESAPI/esapi-java-legacy
     module Escape
+      # Parser instance for parce urls
+      #
+      # @since x.x.x
+      # @api private
+      #
+      # @see http://ruby-doc.org/stdlib-2.3.0/libdoc/uri/rdoc/URI/RFC2396_Parser.html
+      PARSER = URI::Parser.new(ESCAPED: "(?:%[a-fA-F0-9]{2}|%u[a-fA-F0-9]{4})")
+
       # Hex base for base 10 integer conversion
       #
       # @since 0.4.0
@@ -511,10 +519,9 @@ module Hanami
         return input if input.is_a?(SafeString)
 
         SafeString.new(
-          URI.extract(
-            URI.decode(input),
-            schemes
-          ).first.to_s
+          PARSER
+            .extract(PARSER.unescape(input), schemes)
+            .first.to_s
         )
       end
 
