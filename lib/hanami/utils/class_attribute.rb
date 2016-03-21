@@ -64,7 +64,7 @@ module Hanami
         #   SmallAirplane.wheels  # => 8
         def class_attribute(*attributes)
           singleton_class.class_eval do
-            attr_accessor *attributes
+            attr_accessor(*attributes)
           end
 
           class_attributes.merge(attributes)
