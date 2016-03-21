@@ -1,5 +1,3 @@
-require 'hanami/utils/inflector'
-
 module Hanami
   module Utils
     # Checks for blank
