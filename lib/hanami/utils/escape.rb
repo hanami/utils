@@ -511,8 +511,8 @@ module Hanami
         return input if input.is_a?(SafeString)
 
         SafeString.new(
-          URI.extract(
-            URI.decode(input),
+          URI::Parser.new.extract(
+            URI.decode_www_form_component(input),
             schemes
           ).first.to_s
         )
