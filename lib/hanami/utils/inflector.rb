@@ -139,6 +139,14 @@ module Hanami
 
       # @since 0.4.1
       # @api private
+      RSE = 'rse'.freeze
+
+      # @since 0.4.1
+      # @api private
+      RSES = 'rses'.freeze
+
+      # @since 0.4.1
+      # @api private
       S    = 's'.freeze
 
       # @since 0.4.1
@@ -259,7 +267,6 @@ module Hanami
         'police'      => 'police',
         # fallback
         'hives'       => 'hive',
-        'horses'      => 'horse',
       })
 
       # Block for custom inflection rules.
@@ -402,6 +409,8 @@ module Hanami
           $1 + IS
         when /\A(.*)#{US}\z/
           $1 + I
+        when /\A(.*)#{RSES}\z/
+          $1 + RSE
         when /\A(.*)#{SES}\z/
           $1 + S
         when /\A(.*)#{OUSE}\z/
