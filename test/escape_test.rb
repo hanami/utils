@@ -341,8 +341,8 @@ describe Hanami::Utils::Escape do
       end
 
       describe 'encodes non-String objects that respond to `.to_s`' do
-        TEST_ENCODINGS.each do |encoding|
-          describe "#{ encoding }" do
+        TEST_ENCODINGS.each do |enc|
+          describe "#{ enc }" do
 
             it "escapes a Date" do
               result = mod.html(Date.new(2016,01,27))
