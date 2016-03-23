@@ -128,46 +128,33 @@ describe Hanami::Logger do
         end # end loop
 
         describe 'when file' do
-          let(:stream) { File.new(Pathname.new('tmp').join('logfile.log'), 'w+', permissions) }
+          let(:stream)      { Pathname.new('tmp').join('logfile.log') }
+          let(:log_file)    { File.new(stream, 'w+', permissions) }
           let(:permissions) { 0644 }
 
-          describe 'and brand new' do
-            before do
-              stream.write('hello')
-            end
-
-            it 'appends to file' do
-              logger = Hanami::Logger.new(stream: stream)
-              logger.info('world')
-
-              logger.close
-
-              contents = File.read(stream)
-              contents.must_match(/hello/)
-              contents.must_match(/world/)
-            end
+          before(:each) do
+            log_file.write('hello')
           end
 
           describe 'and already written' do
-            before do
-              stream.write('hello')
-            end
-
             it 'appends to file' do
-              logger = Hanami::Logger.new(stream: stream)
+              logger = Hanami::Logger.new(stream: log_file)
               logger.info('world')
 
               logger.close
 
-              contents = File.read(stream)
+              contents = File.read(log_file)
               contents.must_match(/hello/)
               contents.must_match(/world/)
             end
 
             it 'does not change permissions' do
-              logger = Hanami::Logger.new(stream: stream)
+              logger = Hanami::Logger.new(stream: log_file)
               logger.info('appended')
               logger.close
+
+              stat = File.stat(log_file)
+              stat.mode.to_s(8).must_equal('100644')
             end
           end
         end # end File
