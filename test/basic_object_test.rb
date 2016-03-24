@@ -12,7 +12,7 @@ describe Hanami::Utils::BasicObject do
       }.must_raise(NotImplementedError)
     end
 
-    it 'must return true if respond_to? method was implemented' do
+    it 'returns true given respond_to? method was implemented' do
       TestCase = Class.new(TestClass) do
         def respond_to?(method_name, include_all = false)
           true
