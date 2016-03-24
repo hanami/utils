@@ -273,6 +273,29 @@ describe Hanami::Utils::String do
     end
   end
 
+  describe '#singularize' do
+    before do
+      @singular, @plural = *TEST_SINGULARS.to_a.sample
+    end
+
+    it 'returns a Hanami::Utils::String instance' do
+      result = Hanami::Utils::String.new(@plural).singularize
+      result.must_be_kind_of(Hanami::Utils::String)
+    end
+
+    it 'singularizes string' do
+      result = Hanami::Utils::String.new(@plural).singularize
+      result.must_equal(@singular)
+    end
+
+    it "doesn't modify the original string" do
+      string = Hanami::Utils::String.new(@plural)
+
+      string.singularize.must_equal(@singular)
+      string.must_equal(@plural)
+    end
+  end
+
   describe "#rsub" do
     it 'returns a Hanami::Utils::String instance' do
       result = Hanami::Utils::String.new('authors/books/index').rsub(//, '')
