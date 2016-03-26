@@ -8,7 +8,7 @@ describe Hanami::Utils::String do
       Hanami::Utils::String.new('hanami').titleize.must_be_kind_of(Hanami::Utils::String)
     end
 
-    it "doesn't mutate self" do
+    it 'does not mutate self' do
       string = Hanami::Utils::String.new('hanami')
       string.titleize
       string.must_equal 'hanami'
@@ -85,7 +85,7 @@ describe Hanami::Utils::String do
     end
 
     it 'does not remove capital letter in string' do
-      Hanami::Utils::String.new("AwesomeProject").classify.must_equal("AwesomeProject")
+      Hanami::Utils::String.new('AwesomeProject').classify.must_equal('AwesomeProject')
     end
   end
 
@@ -94,7 +94,7 @@ describe Hanami::Utils::String do
       Hanami::Utils::String.new('Hanami').underscore.must_be_kind_of(Hanami::Utils::String)
     end
 
-    it "doesn't mutate self" do
+    it 'does not mutate itself' do
       string = Hanami::Utils::String.new('Hanami')
       string.underscore
       string.must_equal 'Hanami'
@@ -146,7 +146,7 @@ describe Hanami::Utils::String do
       Hanami::Utils::String.new('Hanami').dasherize.must_be_kind_of(Hanami::Utils::String)
     end
 
-    it "doesn't mutate self" do
+    it 'does not mutate itself' do
       string = Hanami::Utils::String.new('Hanami')
       string.dasherize
       string.must_equal 'Hanami'
@@ -235,7 +235,7 @@ describe Hanami::Utils::String do
       @logger.must_equal(['Hanami::Utils', 'Hanami::App'])
     end
 
-    it "guarantees the block to be called even when the token conditions aren't met" do
+    it 'guarantees the block to be called even when the token conditions are not met' do
       string = Hanami::Utils::String.new('Hanami')
       string.tokenize do |token|
         @logger.push token
@@ -250,7 +250,7 @@ describe Hanami::Utils::String do
     end
   end
 
-  describe "#pluralize" do
+  describe '#pluralize' do
     before do
       @singular, @plural = *TEST_PLURALS.to_a.sample
     end
@@ -265,7 +265,7 @@ describe Hanami::Utils::String do
       result.must_equal(@plural)
     end
 
-    it "doesn't modify the original string" do
+    it 'does not modify the original string' do
       string = Hanami::Utils::String.new(@singular)
 
       string.pluralize.must_equal(@plural)
@@ -288,7 +288,7 @@ describe Hanami::Utils::String do
       result.must_equal(@singular)
     end
 
-    it "doesn't modify the original string" do
+    it 'does not modify the original string' do
       string = Hanami::Utils::String.new(@plural)
 
       string.singularize.must_equal(@singular)
@@ -296,13 +296,13 @@ describe Hanami::Utils::String do
     end
   end
 
-  describe "#rsub" do
+  describe '#rsub' do
     it 'returns a Hanami::Utils::String instance' do
       result = Hanami::Utils::String.new('authors/books/index').rsub(//, '')
       result.must_be_kind_of(Hanami::Utils::String)
     end
 
-    it "doesn't mutate original string" do
+    it 'does not mutate original string' do
       string = Hanami::Utils::String.new('authors/books/index')
       string.rsub(/\//, '#')
 
@@ -335,7 +335,7 @@ describe Hanami::Utils::String do
   describe 'string interface' do
     it 'responds to ::String methods and returns a new Hanami::Utils::String' do
       string = Hanami::Utils::String.new("Hanami\n").chomp
-      string.must_equal      'Hanami'
+      string.must_equal('Hanami')
       string.must_be_kind_of Hanami::Utils::String
     end
 
