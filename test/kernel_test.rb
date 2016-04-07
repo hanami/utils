@@ -2506,4 +2506,52 @@ describe Hanami::Utils::Kernel do
       end
     end
   end
+
+  describe '.numeric?' do
+    describe 'successful operations' do
+      before do
+        @result = Hanami::Utils::Kernel.numeric?(input)
+      end
+
+      describe 'when a numeric in symbol is given' do
+        let(:input) { :'123' }
+
+        it 'returns a true' do
+          @result.wont_equal nil
+        end
+      end
+
+      describe 'when a symbol is given' do
+        let(:input) { :hello }
+
+        it 'returns false' do
+          @result.must_equal nil
+        end
+      end
+
+      describe 'when a numeric in string is given' do
+        let(:input) { '123' }
+
+        it 'returns a symbol' do
+          @result.wont_equal nil
+        end
+      end
+
+      describe 'when a string is given' do
+        let(:input) { 'hello' }
+
+        it 'returns a symbol' do
+          @result.must_equal nil
+        end
+      end
+
+      describe 'when a numeric is given' do
+        let(:input) { 123 }
+
+        it 'returns a symbol' do
+          @result.wont_equal nil
+        end
+      end
+    end
+  end
 end
