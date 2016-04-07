@@ -319,7 +319,7 @@ module Hanami
       rescue ArgumentError, TypeError, NoMethodError
         begin
           case arg
-          when NilClass, ->(a) { a.respond_to?(:to_i) && a.to_s.match(NUMERIC_MATCHER) }
+          when NilClass, ->(a) { a.respond_to?(:to_i) && numeric?(a) }
             arg.to_i
           else
             raise TypeError.new "can't convert #{inspect_type_error(arg)}into Integer"
@@ -535,7 +535,7 @@ module Hanami
       rescue ArgumentError, TypeError
         begin
           case arg
-          when NilClass, ->(a) { a.respond_to?(:to_f) && a.to_s.match(NUMERIC_MATCHER) }
+          when NilClass, ->(a) { a.respond_to?(:to_f) && numeric?(a) }
             arg.to_f
           else
             raise TypeError.new "can't convert #{inspect_type_error(arg)}into Float"
@@ -999,6 +999,18 @@ module Hanami
         end
       rescue NoMethodError
         raise TypeError.new "can't convert #{inspect_type_error(arg)}into Symbol"
+      end
+
+      # Check if the given argument is a string representation of a number
+      #
+      # @param arg [Object] the input
+      #
+      # @return [TrueClass,FalseClass]
+      #
+      # @since x.x.x
+      # @api private
+      def self.numeric?(arg)
+        arg.to_s.match(NUMERIC_MATCHER)
       end
 
       # Returns the most useful type error possible
