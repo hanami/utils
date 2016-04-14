@@ -4,6 +4,7 @@ require 'time'
 require 'pathname'
 require 'bigdecimal'
 require 'hanami/utils'
+require 'hanami/utils/string'
 
 # Define top level constant Boolean, so it can be easily used by other libraries
 # in coercions DSLs
@@ -24,6 +25,14 @@ module Hanami
       #
       # @see Hanami::Utils::Kernel.Integer
       NUMERIC_MATCHER = /\A([\d\/\.\+iE]+|NaN|Infinity)\z/.freeze
+
+      # @since x.x.x
+      # @api private
+      BOOLEAN_FALSE_STRING = '0'.freeze
+
+      # @since x.x.x
+      # @api private
+      BOOLEAN_TRUE_INTEGER = 1
 
       # Coerces the argument to be an Array.
       #
@@ -881,9 +890,12 @@ module Hanami
       #   Hanami::Utils::Kernel.Boolean(input) # => TypeError
       def self.Boolean(arg)
         case arg
-        when Numeric     then arg > 0 && arg <= 1
-        when String, '0' then Boolean(arg.to_i)
-        when ->(a) { a.respond_to?(:to_bool) } then arg.to_bool
+        when Numeric
+          arg.to_i == BOOLEAN_TRUE_INTEGER
+        when ::String, Utils::String, BOOLEAN_FALSE_STRING
+          Boolean(arg.to_i)
+        when ->(a) { a.respond_to?(:to_bool) }
+          arg.to_bool
         else
           !!arg
         end
