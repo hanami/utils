@@ -1010,7 +1010,7 @@ module Hanami
       # @since x.x.x
       # @api private
       def self.numeric?(arg)
-        arg.to_s.match(NUMERIC_MATCHER)
+        !!arg.to_s.match(NUMERIC_MATCHER)
       end
 
       # Returns the most useful type error possible

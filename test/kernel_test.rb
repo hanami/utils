@@ -2517,7 +2517,7 @@ describe Hanami::Utils::Kernel do
         let(:input) { :'123' }
 
         it 'returns a true' do
-          @result.wont_equal nil
+          @result.must_equal true
         end
       end
 
@@ -2525,7 +2525,7 @@ describe Hanami::Utils::Kernel do
         let(:input) { :hello }
 
         it 'returns false' do
-          @result.must_equal nil
+          @result.must_equal false
         end
       end
 
@@ -2533,7 +2533,7 @@ describe Hanami::Utils::Kernel do
         let(:input) { '123' }
 
         it 'returns a symbol' do
-          @result.wont_equal nil
+          @result.must_equal true
         end
       end
 
@@ -2541,7 +2541,7 @@ describe Hanami::Utils::Kernel do
         let(:input) { 'hello' }
 
         it 'returns a symbol' do
-          @result.must_equal nil
+          @result.must_equal false
         end
       end
 
@@ -2549,7 +2549,7 @@ describe Hanami::Utils::Kernel do
         let(:input) { 123 }
 
         it 'returns a symbol' do
-          @result.wont_equal nil
+          @result.must_equal true
         end
       end
     end
