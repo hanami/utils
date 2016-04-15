@@ -228,6 +228,7 @@ module Hanami
         # regressions
         # https://github.com/hanami/utils/issues/106
         'album'        => 'albums',
+        'price'        => 'prices',
       })
 
       # Irregular rules for singulars
@@ -267,6 +268,7 @@ module Hanami
         'police'      => 'police',
         # fallback
         'hives'       => 'hive',
+        'prices'      => 'price',
       })
 
       # Block for custom inflection rules.
