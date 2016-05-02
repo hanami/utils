@@ -66,7 +66,16 @@ module Hanami
       #   attributes[:unknown]      # => nil
       #   attributes['unknown']     # => nil
       def get(attribute)
-        @attributes[attribute.to_s]
+        value = @attributes
+
+        keys = attribute.to_s.split('.')
+        keys.each do |key|
+          break unless value
+
+          value = value[key]
+        end
+
+        value.kind_of?(Hash) ? self.class.new(value) : value
       end
 
       # @since 0.3.4

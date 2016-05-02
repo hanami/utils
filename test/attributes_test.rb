@@ -51,6 +51,19 @@ describe Hanami::Utils::Attributes do
       attributes.get('23').must_equal 'foo'
     end
 
+    it 'allows deep indifferent access' do
+      attributes = Hanami::Utils::Attributes.new(foo: {baz: 'bar'})
+      attributes.get(:foo).get(:baz).must_equal 'bar'
+      attributes.get(:foo).get('baz').must_equal 'bar'
+      attributes.get('foo').get(:baz).must_equal 'bar'
+      attributes.get('foo').get('baz').must_equal 'bar'
+    end
+
+    it 'allows deep access via nested key string' do
+      attributes = Hanami::Utils::Attributes.new(foo: {baz: 'bar'})
+      attributes.get('foo.baz').must_equal 'bar'
+    end
+
     it 'correctly handles Ruby falsey' do
       attributes = Hanami::Utils::Attributes.new('foo' => false)
       attributes.get(:foo).must_equal  false
@@ -90,6 +103,19 @@ describe Hanami::Utils::Attributes do
       attributes = Hanami::Utils::Attributes.new( 23 => 'foo')
       attributes[23].must_equal   'foo'
       attributes['23'].must_equal 'foo'
+    end
+
+    it 'allows deep indifferent access' do
+      attributes = Hanami::Utils::Attributes.new(foo: {baz: 'bar'})
+      attributes[:foo][:baz].must_equal 'bar'
+      attributes[:foo]['baz'].must_equal 'bar'
+      attributes['foo'][:baz].must_equal 'bar'
+      attributes['foo']['baz'].must_equal 'bar'
+    end
+
+    it 'allows deep access via nested key string' do
+      attributes = Hanami::Utils::Attributes.new(foo: {baz: 'bar'})
+      attributes['foo.baz'].must_equal 'bar'
     end
 
     it 'correctly handles Ruby falsey' do
