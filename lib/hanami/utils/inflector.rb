@@ -204,7 +204,9 @@ module Hanami
         'foot'         => 'feet',
         'genus'        => 'genera',
         'goose'        => 'geese',
+        'louse'        => 'lice',
         'man'          => 'men',
+        'mouse'        => 'mice',
         'ox'           => 'oxen',
         'person'       => 'people',
         'quiz'         => 'quizzes',
@@ -225,6 +227,7 @@ module Hanami
         'series'       => 'series',
         'sheep'        => 'sheep',
         'species'      => 'species',
+        'police'       => 'police',
         # regressions
         # https://github.com/hanami/utils/issues/106
         'album'        => 'albums',
@@ -243,7 +246,9 @@ module Hanami
         'feet'    => 'foot',
         'genera'  => 'genus',
         'geese'   => 'goose',
+        'lice'    => 'louse',
         'men'     => 'man',
+        'mice'    => 'mouse',
         'oxen'    => 'ox',
         'people'  => 'person',
         'quizzes' => 'quiz',
@@ -360,8 +365,6 @@ module Hanami
           string + TA
         when /\A(.*)(um|#{ A })\z/
           $1 + A
-        when /\A(.*)(ouse|#{ ICE })\z/
-          $1 + ICE
         when /\A(buffal|domin|ech|embarg|her|mosquit|potat|tomat)#{ O }\z/i
           $1 + OES
         when /\A(.*)(en|#{ INA })\z/
@@ -401,8 +404,6 @@ module Hanami
           string.sub(CHES, CH)
         when /\A.*[^aeiou]#{IES}\z/
           string.sub(IES, Y)
-        when /\A(.*)#{ICE}\z/
-          $1 + OUSE
         when /\A.*#{EAUX}\z/
           string.chop
         when /\A(.*)#{IDES}\z/
@@ -413,8 +414,6 @@ module Hanami
           $1 + RSE
         when /\A(.*)#{SES}\z/
           $1 + S
-        when /\A(.*)#{OUSE}\z/
-          $1 + ICE
         when /\A(.*)#{MATA}\z/
           $1 + MA
         when /\A(.*)#{OES}\z/
