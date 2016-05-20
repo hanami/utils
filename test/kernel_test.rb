@@ -878,6 +878,24 @@ describe Hanami::Utils::Kernel do
       end
     end
 
+    # Bug: https://github.com/hanami/utils/issues/140
+    describe 'when a negative bigdecimal is given' do
+      let(:input) { BigDecimal.new('-12.0001') }
+
+      it 'returns a BigDecimal' do
+        Hanami::Utils::Kernel.BigDecimal(input).must_equal BigDecimal.new('-12.0001')
+      end
+    end
+
+    # Bug: https://github.com/hanami/utils/issues/140
+    describe 'when the big decimal is less than 1 with high precision' do
+      let(:input) { BigDecimal.new('0.0001') }
+
+      it 'returns a BigDecimal' do
+        Hanami::Utils::Kernel.BigDecimal(input).must_equal BigDecimal.new('0.0001')
+      end
+    end
+
     describe 'failure operations' do
       describe 'when nil is given' do
         let(:input) { nil }
