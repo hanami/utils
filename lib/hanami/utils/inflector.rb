@@ -346,7 +346,7 @@ module Hanami
       # @api private
       # @since 0.4.1
       def self.pluralize(string)
-        return string if string.nil? || string.match(Utils::Blank::STRING_MATCHER)
+        return string if string.nil? || string =~ Utils::Blank::STRING_MATCHER
 
         case string
         when plurals
@@ -395,7 +395,7 @@ module Hanami
       # @api private
       # @since 0.4.1
       def self.singularize(string)
-        return string if string.nil? || string.match(Utils::Blank::STRING_MATCHER)
+        return string if string.nil? || string =~ Utils::Blank::STRING_MATCHER
 
         case string
         when singulars
