@@ -4,6 +4,7 @@ require 'time'
 require 'pathname'
 require 'bigdecimal'
 require 'hanami/utils'
+require 'hanami/utils/string'
 
 # Define top level constant Boolean, so it can be easily used by other libraries
 # in coercions DSLs
@@ -24,6 +25,14 @@ module Hanami
       #
       # @see Hanami::Utils::Kernel.Integer
       NUMERIC_MATCHER = /\A([\d\/\.\+iE]+|NaN|Infinity)\z/.freeze
+
+      # @since x.x.x
+      # @api private
+      BOOLEAN_FALSE_STRING = '0'.freeze
+
+      # @since x.x.x
+      # @api private
+      BOOLEAN_TRUE_INTEGER = 1
 
       # Coerces the argument to be an Array.
       #
@@ -319,7 +328,7 @@ module Hanami
       rescue ArgumentError, TypeError, NoMethodError
         begin
           case arg
-          when NilClass, ->(a) { a.respond_to?(:to_i) && a.to_s.match(NUMERIC_MATCHER) }
+          when NilClass, ->(a) { a.respond_to?(:to_i) && numeric?(a) }
             arg.to_i
           else
             raise TypeError.new "can't convert #{inspect_type_error(arg)}into Integer"
@@ -334,6 +343,7 @@ module Hanami
       # Coerces the argument to be a BigDecimal.
       #
       # @param arg [Object] the argument
+      # @param precision [Keyword] precision for Rational objects (Only JRuby).
       #
       # @return [BigDecimal] the result of the coercion
       #
@@ -406,13 +416,12 @@ module Hanami
       #   Hanami::Utils::Kernel.BigDecimal(input) # => TypeError
       def self.BigDecimal(arg)
         case arg
-        when ->(a) { a.respond_to?(:to_d) } then arg.to_d
-        when Float, Complex, Rational
+        when Numeric
           BigDecimal(arg.to_s)
-        when ->(a) { a.to_s.match(NUMERIC_MATCHER) }
-          BigDecimal.new(arg)
+        when ->(a) { a.respond_to?(:to_d) }
+          arg.to_d
         else
-          raise TypeError.new "can't convert #{inspect_type_error(arg)}into BigDecimal"
+          BigDecimal.new(arg)
         end
       rescue NoMethodError
         raise TypeError.new "can't convert #{inspect_type_error(arg)}into BigDecimal"
@@ -535,7 +544,7 @@ module Hanami
       rescue ArgumentError, TypeError
         begin
           case arg
-          when NilClass, ->(a) { a.respond_to?(:to_f) && a.to_s.match(NUMERIC_MATCHER) }
+          when NilClass, ->(a) { a.respond_to?(:to_f) && numeric?(a) }
             arg.to_f
           else
             raise TypeError.new "can't convert #{inspect_type_error(arg)}into Float"
@@ -881,9 +890,12 @@ module Hanami
       #   Hanami::Utils::Kernel.Boolean(input) # => TypeError
       def self.Boolean(arg)
         case arg
-        when Numeric     then arg > 0 && arg <= 1
-        when String, '0' then Boolean(arg.to_i)
-        when ->(a) { a.respond_to?(:to_bool) } then arg.to_bool
+        when Numeric
+          arg.to_i == BOOLEAN_TRUE_INTEGER
+        when ::String, Utils::String, BOOLEAN_FALSE_STRING
+          Boolean(arg.to_i)
+        when ->(a) { a.respond_to?(:to_bool) }
+          arg.to_bool
         else
           !!arg
         end
@@ -999,6 +1011,18 @@ module Hanami
         end
       rescue NoMethodError
         raise TypeError.new "can't convert #{inspect_type_error(arg)}into Symbol"
+      end
+
+      # Check if the given argument is a string representation of a number
+      #
+      # @param arg [Object] the input
+      #
+      # @return [TrueClass,FalseClass]
+      #
+      # @since x.x.x
+      # @api private
+      def self.numeric?(arg)
+        !(arg.to_s =~ NUMERIC_MATCHER).nil?
       end
 
       # Returns the most useful type error possible

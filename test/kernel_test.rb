@@ -862,6 +862,40 @@ describe Hanami::Utils::Kernel do
       end
     end
 
+    describe 'when a string without numbers is given' do
+      let(:input) { 'home' }
+
+      it 'returns an BigDecimal' do
+        Hanami::Utils::Kernel.BigDecimal(input).must_equal BigDecimal.new(0)
+      end
+    end
+
+    describe 'when a string which starts with a big decimal is given' do
+      let(:input) { '23.0 street' }
+
+      it 'returns an BigDecimal' do
+        Hanami::Utils::Kernel.BigDecimal(input).must_equal BigDecimal.new(23)
+      end
+    end
+
+    # Bug: https://github.com/hanami/utils/issues/140
+    describe 'when a negative bigdecimal is given' do
+      let(:input) { BigDecimal.new('-12.0001') }
+
+      it 'returns a BigDecimal' do
+        Hanami::Utils::Kernel.BigDecimal(input).must_equal BigDecimal.new('-12.0001')
+      end
+    end
+
+    # Bug: https://github.com/hanami/utils/issues/140
+    describe 'when the big decimal is less than 1 with high precision' do
+      let(:input) { BigDecimal.new('0.0001') }
+
+      it 'returns a BigDecimal' do
+        Hanami::Utils::Kernel.BigDecimal(input).must_equal BigDecimal.new('0.0001')
+      end
+    end
+
     describe 'failure operations' do
       describe 'when nil is given' do
         let(:input) { nil }
@@ -908,24 +942,6 @@ describe Hanami::Utils::Kernel do
 
         it 'raises error' do
           -> { Hanami::Utils::Kernel.BigDecimal(input) }.must_raise(TypeError)
-        end
-      end
-
-      describe 'when a string without numbers is given' do
-        let(:input) { 'home' }
-
-        it 'raises error' do
-          exception = -> { Hanami::Utils::Kernel.BigDecimal(input) }.must_raise(TypeError)
-          exception.message.must_equal "can't convert #{input.inspect} into BigDecimal"
-        end
-      end
-
-      describe 'when a string which starts with a big decimal is given' do
-        let(:input) { '23.0 street' }
-
-        it 'raises error' do
-          exception = -> { Hanami::Utils::Kernel.BigDecimal(input) }.must_raise(TypeError)
-          exception.message.must_equal "can't convert #{input.inspect} into BigDecimal"
         end
       end
 
@@ -1587,7 +1603,7 @@ describe Hanami::Utils::Kernel do
         end
       end
 
-      describe 'when "0" is given' do
+      describe 'when "0" is given (String)' do
         let(:input) { "0" }
 
         it 'returns false' do
@@ -1595,11 +1611,43 @@ describe Hanami::Utils::Kernel do
         end
       end
 
-      describe 'when "1" is given' do
+      describe 'when "1" is given (String)' do
         let(:input) { "1" }
 
         it 'returns true' do
           @result.must_equal true
+        end
+      end
+
+      describe 'when "foo" is given (String)' do
+        let(:input) { "foo" }
+
+        it 'returns false' do
+          @result.must_equal false
+        end
+      end
+
+      describe 'when "0" is given (Hanami::Utils::String)' do
+        let(:input) { Hanami::Utils::String.new("0") }
+
+        it 'returns false' do
+          @result.must_equal false
+        end
+      end
+
+      describe 'when "1" is given (Hanami::Utils::String)' do
+        let(:input) { Hanami::Utils::String.new("1") }
+
+        it 'returns true' do
+          @result.must_equal true
+        end
+      end
+
+      describe 'when "foo" is given (Hanami::Utils::String)' do
+        let(:input) { Hanami::Utils::String.new("foo") }
+
+        it 'returns false' do
+          @result.must_equal false
         end
       end
 
@@ -2504,6 +2552,54 @@ describe Hanami::Utils::Kernel do
           rescue => e
             e.message.must_equal "can't convert into Symbol"
           end
+        end
+      end
+    end
+  end
+
+  describe '.numeric?' do
+    describe 'successful operations' do
+      before do
+        @result = Hanami::Utils::Kernel.numeric?(input)
+      end
+
+      describe 'when a numeric in symbol is given' do
+        let(:input) { :'123' }
+
+        it 'returns a true' do
+          @result.must_equal true
+        end
+      end
+
+      describe 'when a symbol is given' do
+        let(:input) { :hello }
+
+        it 'returns false' do
+          @result.must_equal false
+        end
+      end
+
+      describe 'when a numeric in string is given' do
+        let(:input) { '123' }
+
+        it 'returns a symbol' do
+          @result.must_equal true
+        end
+      end
+
+      describe 'when a string is given' do
+        let(:input) { 'hello' }
+
+        it 'returns a symbol' do
+          @result.must_equal false
+        end
+      end
+
+      describe 'when a numeric is given' do
+        let(:input) { 123 }
+
+        it 'returns a symbol' do
+          @result.must_equal true
         end
       end
     end
