@@ -544,6 +544,8 @@ TEST_PLURALS = {
   "hive"         => "hives",
   # https://github.com/hanami/utils/issues/106
   "album"        => "albums",
+  # https://github.com/hanami/router/issues/103
+  "price"        => "prices",
 }.freeze
 
 TEST_SINGULARS = {
@@ -605,6 +607,8 @@ TEST_SINGULARS = {
   "kiss"       => "kisses",
   # https://github.com/hanami/utils/issues/106
   "album"      => "albums",
+  # https://github.com/hanami/router/issues/103
+  "price"      => "prices",
 }.merge(TEST_PLURALS)
 
 require 'hanami/utils/inflector'
