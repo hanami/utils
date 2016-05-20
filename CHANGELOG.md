@@ -1,6 +1,10 @@
 # Hanami::Utils
 Ruby core extentions and class utilities for Hanami
 
+## v0.7.2 - 2016-05-20
+### Fixed
+- [Luca Guidi] Make `Hanami::Utils::Kernel.BigDecimal` to convert negative `BigDecimal` or `BigDecimal` with negative exponent.
+
 ## v0.7.1 - 2016-02-05
 ### Fixed
 - [Yuuji Yaginuma] `Hanami::Utils::Escape`: fixed Ruby warning for `String#chars` with a block, which is deprecated. Using `String#each_char` now.
