@@ -98,6 +98,10 @@ module Hanami
     #
     # @see http://www.ruby-doc.org/stdlib/libdoc/logger/rdoc/Logger/Formatter.html
     class Formatter < ::Logger::Formatter
+      # @since x.x.x
+      # @api private
+      SEPARATOR = ' '.freeze
+
       # @since 0.5.0
       # @api private
       attr_writer :application_name
@@ -107,13 +111,12 @@ module Hanami
       #
       # @see http://www.ruby-doc.org/stdlib/libdoc/logger/rdoc/Logger/Formatter.html#method-i-call
       def call(severity, time, progname, msg)
-        hash = {
-          app: @application_name,
+        _format({
+          app:      @application_name,
           severity: severity,
-          time: time.utc,
-        }.merge!(_message_hash(msg))
-
-        _format(hash)
+          time:     time.utc
+        }.merge(
+          _message_hash(msg)))
       end
 
       private
@@ -125,20 +128,20 @@ module Hanami
         when Hash
           message
         when Exception
-          {
-            message: message.message,
+          Hash[
+            message:   message.message,
             backtrace: message.backtrace || [],
-            error: message.class
-          }
+            error:     message.class
+          ]
         else
-          { message: message }
+          Hash[message: message]
         end
       end
 
       # @since x.x.x
       # @api private
       def _format(hash)
-        hash.map { |k,v| "#{ k }=#{ v }" }.join(' ')
+        hash.map { |k, v| "#{k}=#{v}" }.join(SEPARATOR)
       end
     end
 
