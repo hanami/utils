@@ -459,7 +459,7 @@ module Hanami
       end
     end
 
-    # Expose local instance variables into the returing value of <tt>#call</tt>
+    # Expose local instance variables into the returning value of <tt>#call</tt>
     #
     # @param instance_variable_names [Symbol,Array<Symbol>] one or more instance
     #   variable names
