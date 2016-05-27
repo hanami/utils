@@ -298,13 +298,13 @@ describe Hanami::Logger do
       output.must_match(/bar/)
     end
 
-    describe 'when env is production' do
+    describe 'with JSON formatter' do
       it 'has JSON format for string messages' do
         stub_time_now do
           output =
             stub_stdout_constant do
               class TestLogger < Hanami::Logger;end
-              TestLogger.new(env: 'production').info('foo')
+              TestLogger.new(formatter: Hanami::Logger::JSONFormatter.new).info('foo')
             end
           output.must_equal "{\"app\":\"Hanami\",\"severity\":\"INFO\",\"time\":\"1988-09-01 00:00:00 UTC\",\"message\":\"foo\"}"
         end
@@ -315,7 +315,7 @@ describe Hanami::Logger do
           output =
             stub_stdout_constant do
               class TestLogger < Hanami::Logger;end
-              TestLogger.new(env: 'production').error(Exception.new('foo'))
+              TestLogger.new(formatter: Hanami::Logger::JSONFormatter.new).error(Exception.new('foo'))
             end
           output.must_equal "{\"app\":\"Hanami\",\"severity\":\"ERROR\",\"time\":\"1988-09-01 00:00:00 UTC\",\"message\":\"foo\",\"backtrace\":[],\"error\":\"Exception\"}"
         end
@@ -326,7 +326,7 @@ describe Hanami::Logger do
           output =
             stub_stdout_constant do
               class TestLogger < Hanami::Logger;end
-              TestLogger.new(env: 'production').info(foo: :bar)
+              TestLogger.new(formatter: Hanami::Logger::JSONFormatter.new).info(foo: :bar)
             end
           output.must_equal "{\"app\":\"Hanami\",\"severity\":\"INFO\",\"time\":\"1988-09-01 00:00:00 UTC\",\"foo\":\"bar\"}"
         end
@@ -337,20 +337,20 @@ describe Hanami::Logger do
           output =
             stub_stdout_constant do
               class TestLogger < Hanami::Logger;end
-              TestLogger.new(env: 'production').info(['foo'])
+              TestLogger.new(formatter: Hanami::Logger::JSONFormatter.new).info(['foo'])
             end
           output.must_equal "{\"app\":\"Hanami\",\"severity\":\"INFO\",\"time\":\"1988-09-01 00:00:00 UTC\",\"message\":[\"foo\"]}"
         end
       end
     end
 
-    describe 'when env is not production' do
+    describe 'with default formatter' do
       it 'has key=value format for string messages' do
         stub_time_now do
           output =
             stub_stdout_constant do
               class TestLogger < Hanami::Logger;end
-              TestLogger.new(env: 'test').info('foo')
+              TestLogger.new.info('foo')
             end
           output.must_equal "app=Hanami severity=INFO time=1988-09-01 00:00:00 UTC message=foo"
         end
@@ -361,7 +361,7 @@ describe Hanami::Logger do
           output =
             stub_stdout_constant do
               class TestLogger < Hanami::Logger;end
-              TestLogger.new(env: 'development').error(Exception.new('foo'))
+              TestLogger.new.error(Exception.new('foo'))
             end
           output.must_equal "app=Hanami severity=ERROR time=1988-09-01 00:00:00 UTC message=foo backtrace=[] error=Exception"
         end
@@ -372,7 +372,7 @@ describe Hanami::Logger do
           output =
             stub_stdout_constant do
               class TestLogger < Hanami::Logger;end
-              TestLogger.new(env: 'test').info(foo: :bar)
+              TestLogger.new.info(foo: :bar)
             end
           output.must_equal "app=Hanami severity=INFO time=1988-09-01 00:00:00 UTC foo=bar"
         end
@@ -383,7 +383,7 @@ describe Hanami::Logger do
           output =
             stub_stdout_constant do
               class TestLogger < Hanami::Logger;end
-              TestLogger.new(env: 'development').info(['foo'])
+              TestLogger.new.info(['foo'])
             end
           output.must_equal "app=Hanami severity=INFO time=1988-09-01 00:00:00 UTC message=[\"foo\"]"
         end

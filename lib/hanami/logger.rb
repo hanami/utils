@@ -76,7 +76,8 @@ module Hanami
   #   # in logfile.log
   #   # => I, [2015-01-10T21:55:12.727259 #80487]  INFO -- [FOO] : Hello
   class Logger < ::Logger
-    # Hanami::Logger default formatter
+    # Hanami::Logger default formatter.
+    # This formatter returns string in key=value format.
     #
     # @since 0.5.0
     # @api private
@@ -86,7 +87,6 @@ module Hanami
       # @since 0.5.0
       # @api private
       attr_writer :application_name
-      attr_writer :environment
 
       # @since 0.5.0
       # @api private
@@ -124,11 +124,22 @@ module Hanami
       # @since x.x.x
       # @api private
       def _format(hash)
-        if @environment.to_sym == :production
-          JSON.generate(hash)
-        else
-          hash.map { |k,v| "#{ k }=#{ v }" }.join(' ')
-        end
+        hash.map { |k,v| "#{ k }=#{ v }" }.join(' ')
+      end
+    end
+
+    # Hanami::Logger JSON formatter.
+    # This formatter returns string in JSON format.
+    #
+    # @since 0.5.0
+    # @api private
+    class JSONFormatter < Formatter
+      private
+
+      # @since x.x.x
+      # @api private
+      def _format(hash)
+        JSON.generate(hash)
       end
     end
 
@@ -138,12 +149,6 @@ module Hanami
     # @since 0.5.0
     # @api private
     DEFAULT_APPLICATION_NAME = 'Hanami'.freeze
-
-    # Default environment.
-    #
-    # @since x.x.x
-    # @api private
-    DEFAULT_ENV = 'development'.freeze
 
     # @since x.x.x
     # @api private
@@ -169,16 +174,13 @@ module Hanami
     # (String) or IO object (typically STDOUT, STDERR, or an open file).
     #
     # @since 0.5.0
-    def initialize(application_name = nil, stream: STDOUT, level: DEBUG, env: DEFAULT_ENV)
+    def initialize(application_name = nil, stream: STDOUT, level: DEBUG, formatter: Formatter.new)
       super(stream)
 
       @level            = _level(level)
       @stream           = stream
       @application_name = application_name
-      @formatter        = Hanami::Logger::Formatter.new.tap do |f|
-        f.environment      = env
-        f.application_name = self.application_name
-      end
+      @formatter        = formatter.tap { |f| f.application_name = self.application_name }
     end
 
     # Returns the current application name, this is used for tagging purposes
