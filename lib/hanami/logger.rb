@@ -86,6 +86,7 @@ module Hanami
       # @since 0.5.0
       # @api private
       attr_writer :application_name
+      attr_writer :environment
 
       # @since 0.5.0
       # @api private
@@ -98,7 +99,7 @@ module Hanami
           time: time.utc,
         }.merge!(_message_hash(msg))
 
-        JSON.generate(hash)
+        _format(hash)
       end
 
       private
@@ -119,6 +120,16 @@ module Hanami
           { message: message }
         end
       end
+
+      # @since x.x.x
+      # @api private
+      def _format(hash)
+        if @environment.to_sym == :production
+          JSON.generate(hash)
+        else
+          hash.map { |k,v| "#{ k }=#{ v }" }.join(' ')
+        end
+      end
     end
 
     # Default application name.
@@ -127,6 +138,12 @@ module Hanami
     # @since 0.5.0
     # @api private
     DEFAULT_APPLICATION_NAME = 'Hanami'.freeze
+
+    # Default environment.
+    #
+    # @since x.x.x
+    # @api private
+    DEFAULT_ENV = 'development'.freeze
 
     # @since x.x.x
     # @api private
@@ -152,13 +169,16 @@ module Hanami
     # (String) or IO object (typically STDOUT, STDERR, or an open file).
     #
     # @since 0.5.0
-    def initialize(application_name = nil, stream: STDOUT, level: DEBUG)
+    def initialize(application_name = nil, stream: STDOUT, level: DEBUG, env: DEFAULT_ENV)
       super(stream)
 
       @level            = _level(level)
       @stream           = stream
       @application_name = application_name
-      @formatter        = Hanami::Logger::Formatter.new.tap { |f| f.application_name = self.application_name }
+      @formatter        = Hanami::Logger::Formatter.new.tap do |f|
+        f.environment      = env
+        f.application_name = self.application_name
+      end
     end
 
     # Returns the current application name, this is used for tagging purposes
