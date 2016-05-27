@@ -9,14 +9,12 @@ module Hanami
   # It uses `STDOUT`, `STDERR`, file name or open file as output stream.
   #
   #
-  #
   # When a Hanami application is initialized, it creates a logger for that specific application.
   # For instance for a `Bookshelf::Application` a `Bookshelf::Logger` will be available.
   #
   # This is useful for auto-tagging the output. Eg (`[Booshelf]`).
   #
   # When used stand alone (eg. `Hanami::Logger.info`), it tags lines with `[Shared]`.
-  #
   #
   #
   # The available severity levels are the same of `Logger`:
@@ -29,6 +27,21 @@ module Hanami
   #   * UNKNOWN
   #
   # Those levels are available both as class and instance methods.
+  #
+  # Also Hanami::Logger support different formatters. Now awailable only two:
+  #
+  #   * Formatter (default)
+  #   * JSONFormatter
+  #
+  # And if you want to use custom formatter you need create new class inherited from
+  # `Formatter` class and define `_format` private method like this:
+  #
+  #   class CustomFormatter < Formatter
+  #     private
+  #     def _format(hash)
+  #       # ...
+  #     end
+  #   end
   #
   # @since 0.5.0
   #
@@ -48,33 +61,34 @@ module Hanami
   #   # or
   #   Bookshelf::Application.new
   #
-  #   Bookshelf::Logger.info('Hello')
-  #   # => I, [2015-01-10T21:55:12.727259 #80487]  INFO -- [Bookshelf] : Hello
-  #
   #   Bookshelf::Logger.new.info('Hello')
-  #   # => I, [2015-01-10T21:55:12.727259 #80487]  INFO -- [Bookshelf] : Hello
+  #   # => app=Bookshelf severity=INFO time=1988-09-01 00:00:00 UTC message=Hello
   #
   # @example Standalone usage
   #   require 'hanami/logger'
   #
-  #   Hanami::Logger.info('Hello')
-  #   # => I, [2015-01-10T21:55:12.727259 #80487]  INFO -- [Hanami] : Hello
-  #
   #   Hanami::Logger.new.info('Hello')
-  #   # => I, [2015-01-10T21:55:12.727259 #80487]  INFO -- [Hanami] : Hello
+  #   # => app=Hanami severity=INFO time=2016-05-27 10:14:42 UTC message=Hello
   #
   # @example Custom tagging
   #   require 'hanami/logger'
   #
   #   Hanami::Logger.new('FOO').info('Hello')
-  #   # => I, [2015-01-10T21:55:12.727259 #80487]  INFO -- [FOO] : Hello
+  #   # => app=FOO severity=INFO time=2016-05-27 10:14:42 UTC message=Hello
   #
   # @example Write to file
   #   require 'hanami'
   #
   #   Hanami::Logger.new(stream: 'logfile.log').info('Hello')
   #   # in logfile.log
-  #   # => I, [2015-01-10T21:55:12.727259 #80487]  INFO -- [FOO] : Hello
+  #   # => app=FOO severity=INFO time=2016-05-27 10:14:42 UTC message=Hello
+  #
+  # @example Use JSON formatter
+  #   require 'hanami'
+  #
+  #   Hanami::Logger.new(formatter: Hanami::Logger::JSONFormatter).info('Hello')
+  #   # => "{\"app\":\"Hanami\",\"severity\":\"INFO\",\"time\":\"1988-09-01 00:00:00 UTC\",\"message\":\"Hello\"}"
+
   class Logger < ::Logger
     # Hanami::Logger default formatter.
     # This formatter returns string in key=value format.
