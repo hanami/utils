@@ -1,10 +1,9 @@
-# begin
-#   require 'multi_json'
-# rescue LoadError
-#   require 'json'
-# end
-
+begin
+  require 'multi_json'
+rescue LoadError
   require 'json'
+end
+
 module Hanami
   module Utils
     # JSON wrapper
