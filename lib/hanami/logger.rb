@@ -1,6 +1,7 @@
 require 'json'
 require 'logger'
 require 'hanami/utils/string'
+require 'hanami/utils/json'
 
 module Hanami
   # Hanami logger
@@ -156,7 +157,7 @@ module Hanami
       # @since x.x.x
       # @api private
       def _format(hash)
-        JSON.generate(hash)
+        Hanami::Utils::Json.dump(hash)
       end
     end
 
