@@ -6,4 +6,6 @@ unless ENV['TRAVIS']
   gem 'yard',   require: false
 end
 
+gem 'multi_json', '~> 1.0', require: false
+
 gem 'coveralls', require: false
