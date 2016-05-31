@@ -105,7 +105,7 @@ module Hanami
 
       # @since x.x.x
       # @api private
-      NEW_LINE = "\n".freeze
+      NEW_LINE = $/
 
       # @since 0.5.0
       # @api private
