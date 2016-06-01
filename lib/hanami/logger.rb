@@ -146,7 +146,7 @@ module Hanami
       # @since x.x.x
       # @api private
       def _format(hash)
-        hash.map { |k, v| "#{k}=#{v}" unless v.nil? }.join(SEPARATOR) + NEW_LINE
+        hash.map { |k, v| "#{k}=#{v}" }.join(SEPARATOR) + NEW_LINE
       end
     end
 
