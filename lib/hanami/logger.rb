@@ -103,6 +103,10 @@ module Hanami
       # @api private
       SEPARATOR = ' '.freeze
 
+      # @since x.x.x
+      # @api private
+      NEW_LINE = $/
+
       # @since 0.5.0
       # @api private
       attr_writer :application_name
@@ -142,7 +146,7 @@ module Hanami
       # @since x.x.x
       # @api private
       def _format(hash)
-        hash.map { |k, v| "#{k}=#{v}" }.join(SEPARATOR)
+        hash.map { |k, v| "#{k}=#{v}" }.join(SEPARATOR) + NEW_LINE
       end
     end
 
