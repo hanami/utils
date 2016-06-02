@@ -63,12 +63,7 @@ module Hanami
       #   hash.keys    # => [:a, :b]
       #   hash.inspect # => {:a=>23, :b=>{:c=>["x", "y", "z"]}}
       def symbolize!
-        keys.each do |k|
-          v = delete(k)
-          v = self.class.new(v).symbolize! if v.is_a?(::Hash) || v.is_a?(self.class)
-
-          self[k.to_sym] = v
-        end
+        @hash = convert_hash_keys_using(@hash, :to_sym)
 
         self
       end
@@ -88,12 +83,7 @@ module Hanami
       #   hash.keys    # => [:a, :b]
       #   hash.inspect # => {"a"=>23, "b"=>{"c"=>["x", "y", "z"]}}
       def stringify!
-        keys.each do |k|
-          v = delete(k)
-          v = self.class.new(v).stringify! if v.is_a?(::Hash) || v.is_a?(self.class)
-
-          self[k.to_s] = v
-        end
+        @hash = convert_hash_keys_using(@hash, :to_s)
 
         self
       end
@@ -293,6 +283,23 @@ module Hanami
       # @since 0.3.0
       def respond_to_missing?(m, include_private=false)
         @hash.respond_to?(m, include_private)
+      end
+
+      private
+
+      # Shared logic for stringify! and symbolize!
+      #
+      # @api private
+      # @since x.x.x
+      def convert_hash_keys_using(hash, method)
+        hash.keys.each do |key|
+          value = hash.delete(key)
+          value = convert_hash_keys_using(self.class.new(value), method) if value.is_a?(::Hash) || value.is_a?(self.class)
+
+          hash[key.send(method)] = value
+        end
+
+        hash
       end
     end
   end
