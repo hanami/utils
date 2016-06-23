@@ -1,7 +1,9 @@
+require 'set'
 require 'json'
 require 'logger'
 require 'hanami/utils/string'
 require 'hanami/utils/json'
+require 'hanami/utils/class_attribute'
 
 module Hanami
   # Hanami logger
@@ -107,6 +109,31 @@ module Hanami
       # @api private
       NEW_LINE = $/
 
+      include Utils::ClassAttribute
+
+      class_attribute :subclasses
+      self.subclasses = Set.new
+
+      def self.fabricate(formatter, application_name)
+        case formatter
+        when Symbol
+          (subclasses.find { |s| s.eligible?(formatter) } || self).new
+        when nil
+          new
+        else
+          formatter
+        end.tap { |f| f.application_name = application_name }
+      end
+
+      def self.inherited(subclass)
+        super
+        subclasses << subclass
+      end
+
+      def self.eligible?(name)
+        name == :default
+      end
+
       # @since 0.5.0
       # @api private
       attr_writer :application_name
@@ -156,6 +183,10 @@ module Hanami
     # @since 0.5.0
     # @api private
     class JSONFormatter < Formatter
+      def self.eligible?(name)
+        name == :json
+      end
+
       private
 
       # @since x.x.x
@@ -196,13 +227,13 @@ module Hanami
     # (String) or IO object (typically STDOUT, STDERR, or an open file).
     #
     # @since 0.5.0
-    def initialize(application_name = nil, stream: STDOUT, level: DEBUG, formatter: Formatter.new)
+    def initialize(application_name = nil, stream: STDOUT, level: DEBUG, formatter: nil)
       super(stream)
 
       @level            = _level(level)
       @stream           = stream
       @application_name = application_name
-      @formatter        = formatter.tap { |f| f.application_name = self.application_name }
+      @formatter        = Formatter.fabricate(formatter, self.application_name)
     end
 
     # Returns the current application name, this is used for tagging purposes

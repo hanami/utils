@@ -298,7 +298,31 @@ describe Hanami::Logger do
       output.must_match(/bar/)
     end
 
+    describe 'with nil formatter' do
+      it 'falls back to Formatter' do
+        stub_time_now do
+          output =
+            stub_stdout_constant do
+              class TestLogger < Hanami::Logger;end
+              TestLogger.new(formatter: nil).info('foo')
+            end
+          output.must_equal "app=Hanami severity=INFO time=1988-09-01 00:00:00 UTC message=foo\n"
+        end
+      end
+    end
+
     describe 'with JSON formatter' do
+      it 'when passed as a symbol, it has JSON format for string messages' do
+        stub_time_now do
+          output =
+            stub_stdout_constant do
+              class TestLogger < Hanami::Logger;end
+              TestLogger.new(formatter: :json).info('foo')
+            end
+          output.must_equal "{\"app\":\"Hanami\",\"severity\":\"INFO\",\"time\":\"1988-09-01 00:00:00 UTC\",\"message\":\"foo\"}"
+        end
+      end
+
       it 'has JSON format for string messages' do
         stub_time_now do
           output =
@@ -345,6 +369,17 @@ describe Hanami::Logger do
     end
 
     describe 'with default formatter' do
+      it 'when passed as a symbol, it has key=value format for string messages' do
+        stub_time_now do
+          output =
+            stub_stdout_constant do
+              class TestLogger < Hanami::Logger;end
+              TestLogger.new(formatter: :default).info('foo')
+            end
+          output.must_equal "app=Hanami severity=INFO time=1988-09-01 00:00:00 UTC message=foo\n"
+        end
+      end
+
       it 'has key=value format for string messages' do
         stub_time_now do
           output =
