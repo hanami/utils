@@ -37,6 +37,24 @@ describe Hanami::Utils::Class do
     end
   end
 
+  describe '.load' do
+    it 'loads the class from the given static string' do
+      Hanami::Utils::Class.load('App::Layer::Step').must_equal(App::Layer::Step)
+    end
+
+    it 'loads the class from the given static string and namespace' do
+      Hanami::Utils::Class.load('Step', App::Layer).must_equal(App::Layer::Step)
+    end
+
+    it 'loads the class from the given class name' do
+      Hanami::Utils::Class.load(App::Layer::Step).must_equal(App::Layer::Step)
+    end
+
+    it 'returns nil in case of missing class' do
+      Hanami::Utils::Class.load('Missing').must_equal(nil)
+    end
+  end
+
   describe '.load_from_pattern!' do
     it 'loads the class from the given static string' do
       Hanami::Utils::Class.load_from_pattern!('App::Layer::Step').must_equal(App::Layer::Step)

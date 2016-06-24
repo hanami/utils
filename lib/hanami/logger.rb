@@ -31,7 +31,7 @@ module Hanami
   #
   # Those levels are available both as class and instance methods.
   #
-  # Also Hanami::Logger support different formatters. Now awailable only two:
+  # Also Hanami::Logger support different formatters. Now available only two:
   #
   #   * Formatter (default)
   #   * JSONFormatter
