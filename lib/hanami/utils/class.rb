@@ -41,6 +41,37 @@ module Hanami
         namespace.const_get(name.to_s)
       end
 
+      # Loads a class for the given name, only if it's defined.
+      #
+      # @param name [String, Class] the specific class name
+      # @param namespace [Class, Module] the Ruby namespace where we want to perform the lookup.
+      # @return [Class, Module, NilClass] the Ruby constant, or nil if not found.
+      #
+      # @since x.x.x
+      #
+      # @example
+      #   require 'hanami/utils/class'
+      #
+      #   module App
+      #     module Service
+      #       class Endpoint
+      #       end
+      #     end
+      #
+      #     class ServiceEndpoint
+      #     end
+      #   end
+      #
+      #   # basic usage
+      #   Hanami::Utils::Class.load('App::Service') # => App::Service
+      #   Hanami::Utils::Class.load(App::Service)   # => App::Service
+      #
+      #   # with explicit namespace
+      #   Hanami::Utils::Class.load('Service', App) # => App::Service
+      def self.load(name, namespace = Object)
+        load!(name, namespace) if namespace.const_defined?(name.to_s)
+      end
+
       # Loads a class from the given pattern name and namespace
       #
       # @param pattern [String] the class name pattern
