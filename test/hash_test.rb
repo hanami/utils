@@ -380,6 +380,80 @@ describe Hanami::Utils::Hash do
       end
     end
 
+    describe '#freeze' do
+      it 'forbids further modifications' do
+        hash = Hanami::Utils::Hash.new('l' => 23)
+        hash.freeze
+
+        exception = -> { hash['m'] = 15 }.must_raise(RuntimeError)
+        exception.message.must_equal "can't modify frozen Hash"
+
+        exception = -> { hash['l'] = 0 }.must_raise(RuntimeError)
+        exception.message.must_equal "can't modify frozen Hash"
+      end
+    end
+
+    describe '#deep_freeze' do
+      it 'forbids further modifications' do
+        hash = Hanami::Utils::Hash.new('l' => 23)
+        hash.deep_freeze
+
+        exception = -> { hash['m'] = 15 }.must_raise(RuntimeError)
+        exception.message.must_equal "can't modify frozen Hash"
+
+        exception = -> { hash['l'] = 0 }.must_raise(RuntimeError)
+        exception.message.must_equal "can't modify frozen Hash"
+      end
+
+      it 'forbids further modifications for objects passed by reference' do
+        hash = Hanami::Utils::Hash.new('nested' => { 'a' => [1], 'b' => Set.new([2]), 'c' => true, 'd' => 2, 'e' => 'foo' })
+        hash.deep_freeze
+
+        exception = -> { hash.delete('nested') }.must_raise(RuntimeError)
+        exception.message.must_equal "can't modify frozen Hash"
+
+        exception = -> { hash.symbolize! }.must_raise(RuntimeError)
+        exception.message.must_equal "can't modify frozen Hash"
+
+        exception = -> { hash['nested']['a'] << 99 }.must_raise(RuntimeError)
+        exception.message.must_equal "can't modify frozen Array"
+
+        exception = -> { hash['nested']['b'].clear }.must_raise(RuntimeError)
+        exception.message.must_equal "can't modify frozen Hash"
+
+        exception = -> { hash['nested']['c'] = false }.must_raise(RuntimeError)
+        exception.message.must_equal "can't modify frozen Hash"
+
+        exception = -> { hash['nested']['d'] += 11 }.must_raise(RuntimeError)
+        exception.message.must_equal "can't modify frozen Hash"
+
+        exception = -> { hash['nested']['e'].upcase! }.must_raise(RuntimeError)
+        exception.message.must_equal "can't modify frozen String"
+      end
+    end
+
+    describe '#frozen?' do
+      it 'returns false by default' do
+        hash = Hanami::Utils::Hash.new('l' => 23)
+
+        hash.wont_be(:frozen?)
+      end
+
+      it 'returns true when frozen' do
+        hash = Hanami::Utils::Hash.new('l' => 23)
+        hash.freeze
+
+        hash.must_be(:frozen?)
+      end
+
+      it 'returns true when deep frozen' do
+        hash = Hanami::Utils::Hash.new('l' => 23)
+        hash.deep_freeze
+
+        hash.must_be(:frozen?)
+      end
+    end
+
     describe 'unknown method' do
       it 'raises error' do
         begin

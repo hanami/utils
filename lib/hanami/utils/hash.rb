@@ -1,4 +1,5 @@
 require 'hanami/utils/duplicable'
+require 'hanami/utils/freezable'
 
 module Hanami
   module Utils
@@ -45,7 +46,7 @@ module Hanami
       #   hash.to_h # => { 'foo' => ['bar'] }
       def initialize(hash = {}, &blk)
         @hash = hash.to_h
-        @hash.default_proc = blk
+        @hash.default_proc = blk unless @hash.frozen?
       end
 
       # Convert in-place all the keys to Symbol instances, nested hashes are converted too.
@@ -163,6 +164,31 @@ module Hanami
         Hash.new.tap do |result|
           @hash.each {|k, v| result[k] = Duplicable.dup(v, &DUPLICATE_LOGIC) }
         end
+      end
+
+      # Freezes the hash
+      #
+      # @return [NilClass]
+      #
+      # @since x.x.x
+      #
+      # @see http://ruby-doc.org/core/Object.html#method-i-freeze
+      def freeze
+        @hash.freeze
+        super
+      end
+
+      # Deep freezes the hash
+      #
+      # @return [NilClass]
+      #
+      # @since x.x.x
+      def deep_freeze
+        each_value do |v|
+          Freezable.freeze(v)
+        end
+
+        freeze
       end
 
       # Returns a new array populated with the keys from this hash
