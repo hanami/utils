@@ -5,6 +5,10 @@ module Hanami
     # Class utilities
     # @since 0.1.0
     class Class
+      # @since x.x.x
+      # @api private
+      NAMESPACE_SEPARATOR = '::'.freeze
+
       # Loads a class for the given name.
       #
       # @param name [String, Class] the specific class name
@@ -70,6 +74,25 @@ module Hanami
       #   Hanami::Utils::Class.load('Service', App) # => App::Service
       def self.load(name, namespace = Object)
         load!(name, namespace) if namespace.const_defined?(name.to_s)
+      end
+
+      # Yields the given block for each namespace of the given constant.
+      #
+      # @since x.x.x
+      # @api private
+      def self.each_namespace(const)
+        result    = nil
+        namespace = []
+        tokens    = *const.name.to_s.split(NAMESPACE_SEPARATOR)
+
+        tokens.each do |token|
+          namespace << token
+          result = load(namespace.join(NAMESPACE_SEPARATOR))
+
+          yield(result) ? break : result = nil
+        end
+
+        result
       end
 
       # Loads a class from the given pattern name and namespace
