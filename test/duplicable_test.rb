@@ -46,6 +46,22 @@ describe Hanami::Utils::Duplicable do
       it "doesn't dup bignum" do
         assert_same_duped_object 70207105185500 ** 64
       end
+
+      it "doesn't dup class" do
+        assert_same_duped_object String
+      end
+
+      it "doesn't dup anonymous class" do
+        assert_same_duped_object Class.new
+      end
+
+      it "doesn't dup module" do
+        assert_same_duped_object Hanami::Utils
+      end
+
+      it "doesn't dup anonymous module" do
+        assert_same_duped_object Module.new
+      end
     end
 
     describe "duplicable types" do

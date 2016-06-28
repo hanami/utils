@@ -67,7 +67,7 @@ module Hanami
       #   puts result.object_id # => 70207105185500 – Different object
       def self.dup(value, &blk)
         case value
-        when NilClass, FalseClass, TrueClass, Symbol, Numeric
+        when NilClass, FalseClass, TrueClass, Symbol, Numeric, Module, Class
           value
         when v = blk && blk.call(value)
           v
