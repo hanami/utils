@@ -1,5 +1,6 @@
 require 'test_helper'
 require 'bigdecimal'
+require 'hanami/utils'
 require 'hanami/utils/hash'
 
 describe Hanami::Utils::Hash do
@@ -416,7 +417,12 @@ describe Hanami::Utils::Hash do
         exception.message.must_equal "can't modify frozen Hash"
 
         exception = -> { hash['nested']['a'] << 99 }.must_raise(RuntimeError)
-        exception.message.must_equal "can't modify frozen Array"
+
+        if Hanami::Utils.jruby?
+          exception.message.must_equal "can't modify frozen array"
+        else
+          exception.message.must_equal "can't modify frozen Array"
+        end
 
         exception = -> { hash['nested']['b'].clear }.must_raise(RuntimeError)
         exception.message.must_equal "can't modify frozen Hash"
@@ -428,7 +434,12 @@ describe Hanami::Utils::Hash do
         exception.message.must_equal "can't modify frozen Hash"
 
         exception = -> { hash['nested']['e'].upcase! }.must_raise(RuntimeError)
-        exception.message.must_equal "can't modify frozen String"
+
+        if Hanami::Utils.jruby?
+          exception.message.must_equal "can't modify frozen string"
+        else
+          exception.message.must_equal "can't modify frozen String"
+        end
       end
     end
 
