@@ -15,9 +15,9 @@ module Hanami
   # When a Hanami application is initialized, it creates a logger for that specific application.
   # For instance for a `Bookshelf::Application` a `Bookshelf::Logger` will be available.
   #
-  # This is useful for auto-tagging the output. Eg (`[Booshelf]`).
+  # This is useful for auto-tagging the output. Eg (`app=Booshelf`).
   #
-  # When used stand alone (eg. `Hanami::Logger.info`), it tags lines with `[Shared]`.
+  # When used stand alone (eg. `Hanami::Logger.info`), it tags lines with `app=Shared`.
   #
   #
   # The available severity levels are the same of `Logger`:
