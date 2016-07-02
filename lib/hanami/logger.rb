@@ -223,7 +223,7 @@ module Hanami
     # @param application_name [String] an optional application name used for
     #   tagging purposes
     #
-    # @param stream [String, IO, StringIO, Pathanem] an optional log stream. This is a filename
+    # @param stream [String, IO, StringIO, Pathname] an optional log stream. This is a filename
     # (String) or IO object (typically STDOUT, STDERR, or an open file).
     #
     # @since 0.5.0
