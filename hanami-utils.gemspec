@@ -8,8 +8,8 @@ Gem::Specification.new do |spec|
   spec.version       = Hanami::Utils::VERSION
   spec.authors       = ['Luca Guidi', 'Trung Lê', 'Alfonso Uceda']
   spec.email         = ['me@lucaguidi.com', 'trung.le@ruby-journal.com', 'uceda73@gmail.com']
-  spec.description   = %q{Hanami utilities}
-  spec.summary       = %q{Ruby core extentions and Hanami utilities}
+  spec.description   = 'Hanami utilities'
+  spec.summary       = 'Ruby core extentions and Hanami utilities'
   spec.homepage      = 'http://hanamirb.org'
   spec.license       = 'MIT'
 

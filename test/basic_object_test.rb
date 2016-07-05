@@ -7,14 +7,14 @@ end
 describe Hanami::Utils::BasicObject do
   describe '#respond_to_missing?' do
     it 'raises an exception if respond_to? method is not implemented' do
-      -> {
+      lambda do
         TestClass.new.respond_to?(:no_existing_method)
-      }.must_raise(NotImplementedError)
+      end.must_raise(NotImplementedError)
     end
 
     it 'returns true given respond_to? method was implemented' do
       TestCase = Class.new(TestClass) do
-        def respond_to?(method_name, include_all = false)
+        def respond_to?(_method_name, _include_all = false)
           true
         end
       end

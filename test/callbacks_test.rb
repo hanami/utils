@@ -28,16 +28,17 @@ class Action
   attr_reader :logger
 
   def initialize
-    @logger = Array.new
+    @logger = []
   end
 
   private
+
   def authenticate!
     logger.push 'authenticate!'
   end
 
-  def set_article(params)
-    logger.push "set_article: #{ params[:id] }"
+  def set_article(params) # rubocop:disable Style/AccessorMethodName
+    logger.push "set_article: #{params[:id]}"
   end
 end
 
@@ -99,7 +100,7 @@ describe Hanami::Utils::Callbacks::Chain do
         @chain.append(&callback)
       end
 
-      let(:callback) { Proc.new{} }
+      let(:callback) { proc {} }
 
       it 'includes the given callback' do
         cb = @chain.last
@@ -112,7 +113,7 @@ describe Hanami::Utils::Callbacks::Chain do
         @chain.append(*callbacks)
       end
 
-      let(:callbacks) { [:upcase, Callable.new, Proc.new{}] }
+      let(:callbacks) { [:upcase, Callable.new, proc {}] }
 
       it 'includes all the given callbacks' do
         @chain.size.must_equal(callbacks.size)
@@ -179,7 +180,7 @@ describe Hanami::Utils::Callbacks::Chain do
         @chain.prepend(&callback)
       end
 
-      let(:callback) { Proc.new{} }
+      let(:callback) { proc {} }
 
       it 'includes the given callback' do
         cb = @chain.first
@@ -192,7 +193,7 @@ describe Hanami::Utils::Callbacks::Chain do
         @chain.prepend(*callbacks)
       end
 
-      let(:callbacks) { [:upcase, Callable.new, Proc.new{}] }
+      let(:callbacks) { [:upcase, Callable.new, proc {}] }
 
       it 'includes all the given callbacks' do
         @chain.size.must_equal(callbacks.size)
@@ -221,7 +222,7 @@ describe Hanami::Utils::Callbacks::Chain do
         authenticate.must_equal 'authenticate!'
 
         set_article = action.logger.shift
-        set_article.must_equal "set_article: #{ params[:id] }"
+        set_article.must_equal "set_article: #{params[:id]}"
       end
     end
 
@@ -232,7 +233,7 @@ describe Hanami::Utils::Callbacks::Chain do
         end
 
         @chain.append do |params|
-          logger.push "set_article: #{ params[:id] }"
+          logger.push "set_article: #{params[:id]}"
         end
 
         @chain.run action, params
@@ -243,7 +244,7 @@ describe Hanami::Utils::Callbacks::Chain do
         authenticate.must_equal 'authenticate!'
 
         set_article = action.logger.shift
-        set_article.must_equal "set_article: #{ params[:id] }"
+        set_article.must_equal "set_article: #{params[:id]}"
       end
     end
   end
@@ -300,14 +301,14 @@ describe Hanami::Utils::Callbacks::Callback do
     @callback = Hanami::Utils::Callbacks::Callback.new(callback)
   end
 
-  let(:callback) { Proc.new{|params| logger.push("set_article: #{ params[:id] }") } }
+  let(:callback) { proc { |params| logger.push("set_article: #{params[:id]}") } }
 
   it 'executes self within the given context' do
     context = Action.new
-    @callback.call(context, { id: 23 })
+    @callback.call(context, id: 23)
 
     invokation = context.logger.shift
-    invokation.must_equal("set_article: 23")
+    invokation.must_equal('set_article: 23')
   end
 end
 
@@ -320,10 +321,10 @@ describe Hanami::Utils::Callbacks::MethodCallback do
 
   it 'executes self within the given context' do
     context = Action.new
-    @callback.call(context, { id: 23 })
+    @callback.call(context, id: 23)
 
     invokation = context.logger.shift
-    invokation.must_equal("set_article: 23")
+    invokation.must_equal('set_article: 23')
   end
 
   it 'implements #hash' do

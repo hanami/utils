@@ -45,7 +45,7 @@ module Hanami
       #   result = Hanami::Utils::Duplicable.dup(object)
       #
       #   puts result           # => "hello"
-      #   puts result.object_id # => 70172671467020 – Different object
+      #   puts result.object_id # => 70172671467020 - Different object
       #
       # @example Custom Logic
       #   require 'hanami/utils/duplicable'
@@ -64,7 +64,7 @@ module Hanami
       #   end
       #
       #   puts result           # => "{:a=>1}"
-      #   puts result.object_id # => 70207105185500 – Different object
+      #   puts result.object_id # => 70207105185500 - Different object
       def self.dup(value, &blk)
         case value
         when NilClass, FalseClass, TrueClass, Symbol, Numeric

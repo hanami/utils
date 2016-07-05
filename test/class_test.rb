@@ -62,22 +62,22 @@ describe Hanami::Utils::Class do
 
     it 'raises error for missing constant' do
       error = -> { Hanami::Utils::Class.load_from_pattern!('MissingConstant') }.must_raise(NameError)
-      error.message.must_equal "uninitialized constant MissingConstant"
+      error.message.must_equal 'uninitialized constant MissingConstant'
     end
 
     it 'raises error for missing constant with multiple alternatives' do
       error = -> { Hanami::Utils::Class.load_from_pattern!('Missing(Constant|Class)') }.must_raise(NameError)
-      error.message.must_equal "uninitialized constant Missing(Constant|Class)"
+      error.message.must_equal 'uninitialized constant Missing(Constant|Class)'
     end
 
     it 'raises error with full constant name' do
       error = -> { Hanami::Utils::Class.load_from_pattern!('Step', App) }.must_raise(NameError)
-      error.message.must_equal "uninitialized constant App::Step"
+      error.message.must_equal 'uninitialized constant App::Step'
     end
 
     it 'raises error with full constant name and multiple alternatives' do
       error = -> { Hanami::Utils::Class.load_from_pattern!('(Step|Point)', App) }.must_raise(NameError)
-      error.message.must_equal "uninitialized constant App::(Step|Point)"
+      error.message.must_equal 'uninitialized constant App::(Step|Point)'
     end
 
     it 'loads the class from given string, by interpolating tokens' do

@@ -21,7 +21,7 @@ module Hanami
       #
       # @see http://ruby-doc.org/core/Object.html#method-i-inspect
       def inspect
-        "#<#{ self.class }:#{'%x' % (__id__ << 1)}#{ __inspect }>"
+        "#<#{self.class}:#{'%x' % (__id__ << 1)}#{__inspect}>" # rubocop:disable Style/FormatString
       end
 
       # Returns true if responds to the given method.
@@ -36,11 +36,12 @@ module Hanami
       end
 
       private
+
       # Must be overridden by descendants
       #
       # @since 0.3.5
       # @api private
-      def respond_to_missing?(method_name, include_all)
+      def respond_to_missing?(_method_name, _include_all)
         ::Kernel.raise ::NotImplementedError
       end
 

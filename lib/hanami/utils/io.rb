@@ -26,7 +26,8 @@ module Hanami
       #     Test::TEST_VALUE = 'redefined'
       #   end
       def self.silence_warnings
-        old_verbose, $VERBOSE = $VERBOSE, nil
+        old_verbose = $VERBOSE
+        $VERBOSE    = nil
         yield
       ensure
         $VERBOSE = old_verbose
@@ -34,4 +35,3 @@ module Hanami
     end
   end
 end
-

@@ -59,7 +59,7 @@ describe Hanami::Utils::ClassAttribute do
     ClassAttributeTest.callbacks.must_equal([:a])
   end
 
-  describe "inheritance" do
+  describe 'inheritance' do
     before do
       @debug = $DEBUG
       $DEBUG = true
@@ -79,7 +79,7 @@ describe Hanami::Utils::ClassAttribute do
     end
 
     it 'if the subclass value changes it does not affects superclass' do
-      SubclassAttributeTest.values = [3,2]
+      SubclassAttributeTest.values = [3, 2]
       ClassAttributeTest.values.must_equal([1])
     end
 

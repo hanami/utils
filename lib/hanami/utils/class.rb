@@ -113,12 +113,12 @@ module Hanami
         String.new(pattern).tokenize do |token|
           begin
             return namespace.const_get(token)
-          rescue NameError
+          rescue NameError # rubocop:disable Lint/HandleExceptions
           end
         end
 
-        full_name = [ (namespace == Object ? nil : namespace), pattern ].compact.join('::')
-        raise NameError.new("uninitialized constant #{ full_name }")
+        full_name = [(namespace == Object ? nil : namespace), pattern].compact.join('::')
+        raise NameError.new("uninitialized constant #{full_name}")
       end
     end
   end

@@ -4,8 +4,8 @@ require 'bigdecimal'
 require 'hanami/utils/duplicable'
 
 describe Hanami::Utils::Duplicable do
-  describe "#dup" do
-    describe "non duplicable types" do
+  describe '#dup' do
+    describe 'non duplicable types' do
       before do
         @debug = $DEBUG
         $DEBUG = true
@@ -44,36 +44,36 @@ describe Hanami::Utils::Duplicable do
       end
 
       it "doesn't dup bignum" do
-        assert_same_duped_object 70207105185500 ** 64
+        assert_same_duped_object 70_207_105_185_500**64
       end
     end
 
-    describe "duplicable types" do
-      it "duplicates array" do
-        assert_different_duped_object [2, [3, "L"]]
+    describe 'duplicable types' do
+      it 'duplicates array' do
+        assert_different_duped_object [2, [3, 'L']]
       end
 
-      it "duplicates set" do
-        assert_different_duped_object Set.new(["L"])
+      it 'duplicates set' do
+        assert_different_duped_object Set.new(['L'])
       end
 
-      it "duplicates hash" do
-        assert_different_duped_object Hash["L" => 23]
+      it 'duplicates hash' do
+        assert_different_duped_object Hash['L' => 23]
       end
 
-      it "duplicates string" do
-        assert_different_duped_object "Hanami"
+      it 'duplicates string' do
+        assert_different_duped_object 'Hanami'
       end
 
-      it "duplicates date" do
+      it 'duplicates date' do
         assert_different_duped_object Date.today
       end
 
-      it "duplicates time" do
+      it 'duplicates time' do
         assert_different_duped_object Time.now
       end
 
-      it "duplicates datetime" do
+      it 'duplicates datetime' do
         assert_different_duped_object DateTime.now
       end
     end

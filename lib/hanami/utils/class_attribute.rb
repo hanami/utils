@@ -12,6 +12,8 @@ module Hanami
         base.extend ClassMethods
       end
 
+      # @since 0.1.0
+      # @api private
       module ClassMethods
         # Defines a class level accessor for the given attribute(s).
         #
@@ -71,6 +73,7 @@ module Hanami
         end
 
         protected
+
         # @see Class#inherited
         def inherited(subclass)
           class_attributes.each do |attr|
@@ -84,6 +87,7 @@ module Hanami
         end
 
         private
+
         # Class accessor for class attributes.
         # @private
         def class_attributes

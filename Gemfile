@@ -6,6 +6,6 @@ unless ENV['TRAVIS']
   gem 'yard',   require: false
 end
 
-gem 'multi_json', '~> 1.0', require: false
-
-gem 'coveralls', require: false
+gem 'multi_json', '~> 1.0',  require: false
+gem 'rubocop',    '~> 0.41', require: false
+gem 'coveralls',             require: false

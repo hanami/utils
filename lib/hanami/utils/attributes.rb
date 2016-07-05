@@ -75,11 +75,11 @@ module Hanami
           value = value[key]
         end
 
-        value.kind_of?(Hash) ? self.class.new(value) : value
+        value.is_a?(Hash) ? self.class.new(value) : value
       end
 
       # @since 0.3.4
-      alias_method :[], :get
+      alias [] get
 
       # Set the given value for the given attribute
       #

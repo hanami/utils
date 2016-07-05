@@ -6,7 +6,9 @@ module Hanami
     # String inflector
     #
     # @since 0.4.1
-    module Inflector
+    #
+    # rubocop:disable Style/PerlBackrefs
+    module Inflector # rubocop:disable Metrics/ModuleLength
       # Rules for irregular plurals
       #
       # @since 0.6.0
@@ -196,66 +198,66 @@ module Hanami
       # @since 0.6.0
       # @api private
       class_attribute :plurals
-      self.plurals = IrregularRules.new({
+      self.plurals = IrregularRules.new(
         # irregular
-        'cactus'       => 'cacti',
-        'child'        => 'children',
-        'corpus'       => 'corpora',
-        'foot'         => 'feet',
-        'genus'        => 'genera',
-        'goose'        => 'geese',
-        'louse'        => 'lice',
-        'man'          => 'men',
-        'mouse'        => 'mice',
-        'ox'           => 'oxen',
-        'person'       => 'people',
-        'quiz'         => 'quizzes',
-        'sex'          => 'sexes',
-        'testis'       => 'testes',
-        'tooth'        => 'teeth',
-        'woman'        => 'women',
+        'cactus'      => 'cacti',
+        'child'       => 'children',
+        'corpus'      => 'corpora',
+        'foot'        => 'feet',
+        'genus'       => 'genera',
+        'goose'       => 'geese',
+        'louse'       => 'lice',
+        'man'         => 'men',
+        'mouse'       => 'mice',
+        'ox'          => 'oxen',
+        'person'      => 'people',
+        'quiz'        => 'quizzes',
+        'sex'         => 'sexes',
+        'testis'      => 'testes',
+        'tooth'       => 'teeth',
+        'woman'       => 'women',
         # uncountable
-        'deer'         => 'deer',
-        'equipment'    => 'equipment',
-        'fish'         => 'fish',
-        'information'  => 'information',
-        'means'        => 'means',
-        'money'        => 'money',
-        'news'         => 'news',
-        'offspring'    => 'offspring',
-        'rice'         => 'rice',
-        'series'       => 'series',
-        'sheep'        => 'sheep',
-        'species'      => 'species',
-        'police'       => 'police',
+        'deer'        => 'deer',
+        'equipment'   => 'equipment',
+        'fish'        => 'fish',
+        'information' => 'information',
+        'means'       => 'means',
+        'money'       => 'money',
+        'news'        => 'news',
+        'offspring'   => 'offspring',
+        'rice'        => 'rice',
+        'series'      => 'series',
+        'sheep'       => 'sheep',
+        'species'     => 'species',
+        'police'      => 'police',
         # regressions
         # https://github.com/hanami/utils/issues/106
-        'album'        => 'albums',
-      })
+        'album'       => 'albums'
+      )
 
       # Irregular rules for singulars
       #
       # @since 0.6.0
       # @api private
       class_attribute :singulars
-      self.singulars = IrregularRules.new({
+      self.singulars = IrregularRules.new(
         # irregular
-        'cacti'   => 'cactus',
-        'children'=> 'child',
-        'corpora' => 'corpus',
-        'feet'    => 'foot',
-        'genera'  => 'genus',
-        'geese'   => 'goose',
-        'lice'    => 'louse',
-        'men'     => 'man',
-        'mice'    => 'mouse',
-        'oxen'    => 'ox',
-        'people'  => 'person',
-        'quizzes' => 'quiz',
-        'sexes'   => 'sex',
-        'testes'  => 'testis',
-        'teeth'   => 'tooth',
-        'women'   => 'woman',
+        'cacti'    => 'cactus',
+        'children' => 'child',
+        'corpora'  => 'corpus',
+        'feet'     => 'foot',
+        'genera'   => 'genus',
+        'geese'    => 'goose',
+        'lice'     => 'louse',
+        'men'      => 'man',
+        'mice'     => 'mouse',
+        'oxen'     => 'ox',
+        'people'   => 'person',
+        'quizzes'  => 'quiz',
+        'sexes'    => 'sex',
+        'testes'   => 'testis',
+        'teeth'    => 'tooth',
+        'women'    => 'woman',
         # uncountable
         'deer'        => 'deer',
         'equipment'   => 'equipment',
@@ -271,8 +273,8 @@ module Hanami
         'species'     => 'species',
         'police'      => 'police',
         # fallback
-        'hives'       => 'hive',
-      })
+        'hives'       => 'hive'
+      )
 
       # Block for custom inflection rules.
       #
@@ -345,6 +347,10 @@ module Hanami
       #
       # @api private
       # @since 0.4.1
+      #
+      # rubocop:disable Metrics/AbcSize
+      # rubocop:disable Metrics/CyclomaticComplexity
+      # rubocop:disable Metrics/MethodLength
       def self.pluralize(string)
         return string if string.nil? || string =~ Utils::Blank::STRING_MATCHER
 
@@ -385,6 +391,9 @@ module Hanami
           string + S
         end
       end
+      # rubocop:enable Metrics/AbcSize
+      # rubocop:enable Metrics/CyclomaticComplexity
+      # rubocop:enable Metrics/MethodLength
 
       # Singularize the given string
       #
@@ -394,6 +403,11 @@ module Hanami
       #
       # @api private
       # @since 0.4.1
+      #
+      # rubocop:disable Metrics/AbcSize
+      # rubocop:disable Metrics/CyclomaticComplexity
+      # rubocop:disable Metrics/MethodLength
+      # rubocop:disable Metrics/PerceivedComplexity
       def self.singularize(string)
         return string if string.nil? || string =~ Utils::Blank::STRING_MATCHER
 
@@ -440,6 +454,11 @@ module Hanami
           string.chop
         end
       end
+      # rubocop:enable Metrics/AbcSize
+      # rubocop:enable Metrics/CyclomaticComplexity
+      # rubocop:enable Metrics/MethodLength
+      # rubocop:enable Metrics/PerceivedComplexity
     end
+    # rubocop:enable Style/PerlBackrefs
   end
 end

@@ -7,7 +7,7 @@ module Hanami
       #
       # @since x.x.x
       # @api private
-      STRING_MATCHER = /\A[[:space:]]*\z/.freeze
+      STRING_MATCHER = /\A[[:space:]]*\z/
 
       # Checks object is blank
       #
@@ -26,10 +26,10 @@ module Hanami
       # @return [TrueClass,FalseClass]
       #
       # @since x.x.x
-      def self.blank?(object)
+      def self.blank?(object) # rubocop:disable Metrics/MethodLength
         case object
         when String, ::String
-          STRING_MATCHER === object
+          STRING_MATCHER === object # rubocop:disable Style/CaseEquality
         when Hash, ::Hash, ::Array
           object.empty?
         when TrueClass, Numeric

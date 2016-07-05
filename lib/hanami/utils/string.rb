@@ -5,7 +5,7 @@ module Hanami
     # String on steroids
     #
     # @since 0.1.0
-    class String
+    class String # rubocop:disable Metrics/ClassLength
       # Empty string for #classify
       #
       # @since 0.6.0
@@ -46,7 +46,7 @@ module Hanami
       #
       # @since 0.3.0
       # @api private
-      UNDERSCORE_DIVISION_TARGET  = '\1_\2'.freeze
+      UNDERSCORE_DIVISION_TARGET = '\1_\2'.freeze
 
       # Separator for #titleize
       #
@@ -251,9 +251,10 @@ module Hanami
       #   # =>
       #     'Hanami::Utils'
       #     'Hanami::App'
-      def tokenize
-        if match = TOKENIZE_REGEXP.match(@string)
-          pre, post = match.pre_match, match.post_match
+      def tokenize # rubocop:disable Metrics/MethodLength
+        if match = TOKENIZE_REGEXP.match(@string) # rubocop:disable Lint/AssignmentInCondition
+          pre  = match.pre_match
+          post = match.post_match
           tokens = match[1].split(TOKENIZE_SEPARATOR)
           tokens.each do |token|
             yield(self.class.new("#{pre}#{token}#{post}"))
@@ -307,7 +308,7 @@ module Hanami
         @string
       end
 
-      alias_method :to_str,  :to_s
+      alias to_str to_s
 
       # Equality
       #
@@ -318,7 +319,7 @@ module Hanami
         to_s == other
       end
 
-      alias_method :eql?, :==
+      alias eql? ==
 
       # Split the string with the given pattern
       #
@@ -382,7 +383,7 @@ module Hanami
       #   puts result
       #     # => #<Hanami::Utils::String:0x007fdb41232ed0 @string="authors/books#index">
       def rsub(pattern, replacement)
-        if i = rindex(pattern)
+        if i = rindex(pattern) # rubocop:disable Lint/AssignmentInCondition
           s    = @string.dup
           s[i] = replacement
           self.class.new s
@@ -403,7 +404,7 @@ module Hanami
           s = self.class.new(s) if s.is_a?(::String)
           s
         else
-          raise NoMethodError.new(%(undefined method `#{ m }' for "#{ @string }":#{ self.class }))
+          raise NoMethodError.new(%(undefined method `#{m}' for "#{@string}":#{self.class}))
         end
       end
 
@@ -411,7 +412,7 @@ module Hanami
       #
       # @api private
       # @since 0.3.0
-      def respond_to_missing?(m, include_private=false)
+      def respond_to_missing?(m, include_private = false)
         @string.respond_to?(m, include_private)
       end
     end

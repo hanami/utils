@@ -17,6 +17,9 @@ module Hanami
   module Utils
     # Kernel utilities
     # @since 0.1.1
+    #
+    # rubocop:disable Style/MethodName
+    # rubocop:disable Metrics/ModuleLength
     module Kernel
       # Matcher for numeric values
       #
@@ -24,7 +27,7 @@ module Hanami
       # @api private
       #
       # @see Hanami::Utils::Kernel.Integer
-      NUMERIC_MATCHER = /\A([\d\/\.\+iE]+|NaN|Infinity)\z/.freeze
+      NUMERIC_MATCHER = %r{\A([\d\/\.\+iE]+|NaN|Infinity)\z}
 
       # @since x.x.x
       # @api private
@@ -323,7 +326,7 @@ module Hanami
       #   # big complex represented as a string
       #   input = Complex(2, 3)
       #   Hanami::Utils::Kernel.Integer(input) # => TypeError
-      def self.Integer(arg)
+      def self.Integer(arg) # rubocop:disable Metrics/MethodLength
         super(arg)
       rescue ArgumentError, TypeError, NoMethodError
         begin
@@ -539,7 +542,7 @@ module Hanami
       #   # big complex represented as a string
       #   input = Complex(2, 3)
       #   Hanami::Utils::Kernel.Float(input) # => TypeError
-      def self.Float(arg)
+      def self.Float(arg) # rubocop:disable Metrics/MethodLength
         super(arg)
       rescue ArgumentError, TypeError
         begin
@@ -888,7 +891,7 @@ module Hanami
       #   # Missing #respond_to?
       #   input = BasicObject.new
       #   Hanami::Utils::Kernel.Boolean(input) # => TypeError
-      def self.Boolean(arg)
+      def self.Boolean(arg) # rubocop:disable Metrics/MethodLength
         case arg
         when Numeric
           arg.to_i == BOOLEAN_TRUE_INTEGER
@@ -1034,11 +1037,11 @@ module Hanami
       # @since 0.4.3
       # @api private
       def self.inspect_type_error(arg)
-        (arg.respond_to?(:inspect) ? arg.inspect : arg.to_s) << " "
+        (arg.respond_to?(:inspect) ? arg.inspect : arg.to_s) << ' '
       rescue NoMethodError => _
         # missing the #respond_to? method, fall back to returning the class' name
         begin
-          arg.class.name << " instance "
+          arg.class.name << ' instance '
         rescue NoMethodError
           # missing the #class method, can't fall back to anything better than nothing
           # Callers will have to guess from their code
@@ -1052,4 +1055,3 @@ module Hanami
     end
   end
 end
-
