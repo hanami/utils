@@ -154,7 +154,7 @@ describe Hanami::Logger do
               logger.close
 
               stat = File.stat(log_file)
-              stat.mode.to_s(8).must_equal('100644')
+              stat.mode.to_s(8).must_match('100644')
             end
           end
         end # end File
