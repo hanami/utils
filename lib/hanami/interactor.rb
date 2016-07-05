@@ -17,7 +17,7 @@ module Hanami
       # @api private
       #
       # @see Hanami::Interactor::Result#respond_to_missing?
-      METHODS = {initialize: true, success?: true, fail!: true, prepare!: true, errors: true, error: true}.freeze
+      METHODS = ::Hash[initialize: true, success?: true, fail!: true, prepare!: true, errors: true, error: true].freeze
 
       # Initialize a new result
       #
@@ -97,6 +97,7 @@ module Hanami
       end
 
       protected
+
       # @since 0.3.5
       # @api private
       def method_missing(m, *)
@@ -105,7 +106,7 @@ module Hanami
 
       # @since 0.3.5
       # @api private
-      def respond_to_missing?(method_name, include_all)
+      def respond_to_missing?(method_name, _include_all)
         method_name = method_name.to_sym
         METHODS[method_name] || @payload.key?(method_name)
       end
@@ -119,7 +120,7 @@ module Hanami
       # @since 0.3.5
       # @api private
       def __inspect
-        " @success=#{ @success } @payload=#{ @payload.inspect }"
+        " @success=#{@success} @payload=#{@payload.inspect}"
       end
     end
 
@@ -251,6 +252,7 @@ module Hanami
     end
 
     private
+
     # Check if proceed with <tt>#call</tt> invokation.
     # By default it returns <tt>true</tt>.
     #
@@ -490,7 +492,7 @@ module Hanami
     #   result.params # => NoMethodError
     def expose(*instance_variable_names)
       instance_variable_names.each do |name|
-        exposures[name] = "@#{ name }"
+        exposures[name] = "@#{name}"
       end
     end
   end

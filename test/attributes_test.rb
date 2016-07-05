@@ -7,7 +7,7 @@ describe Hanami::Utils::Attributes do
     before do
       class AttributesSet
         def to_h
-          {a: 1}
+          { a: 1 }
         end
       end
     end
@@ -18,17 +18,17 @@ describe Hanami::Utils::Attributes do
 
     it 'accepts an object that implements #to_h' do
       attributes = Hanami::Utils::Attributes.new(AttributesSet.new)
-      attributes.to_h.must_equal({'a' => 1})
+      attributes.to_h.must_equal('a' => 1)
     end
 
-    it "ignores hash default" do
-      attributes = Hanami::Utils::Attributes.new{|h,k| h[k] = [] }
+    it 'ignores hash default' do
+      attributes = Hanami::Utils::Attributes.new { |h, k| h[k] = [] }
       attributes.get('uknown').must_be_nil
     end
 
     it 'recursively stringify keys' do
-      attributes = Hanami::Utils::Attributes.new({a: 1, b: { 2 => [3, 4] }})
-      attributes.to_h.must_equal({'a'=>1, 'b'=>{'2'=>[3,4]}})
+      attributes = Hanami::Utils::Attributes.new(a: 1, b: { 2 => [3, 4] })
+      attributes.to_h.must_equal('a' => 1, 'b' => { '2' => [3, 4] })
     end
   end
 
@@ -46,13 +46,13 @@ describe Hanami::Utils::Attributes do
     end
 
     it 'returns value associated to the given key (number)' do
-      attributes = Hanami::Utils::Attributes.new( 23 => 'foo')
+      attributes = Hanami::Utils::Attributes.new(23 => 'foo')
       attributes.get(23).must_equal   'foo'
       attributes.get('23').must_equal 'foo'
     end
 
     it 'allows deep indifferent access' do
-      attributes = Hanami::Utils::Attributes.new(foo: {baz: 'bar'})
+      attributes = Hanami::Utils::Attributes.new(foo: { baz: 'bar' })
       attributes.get(:foo).get(:baz).must_equal 'bar'
       attributes.get(:foo).get('baz').must_equal 'bar'
       attributes.get('foo').get(:baz).must_equal 'bar'
@@ -60,7 +60,7 @@ describe Hanami::Utils::Attributes do
     end
 
     it 'allows deep access via nested key string' do
-      attributes = Hanami::Utils::Attributes.new(foo: {baz: 'bar'})
+      attributes = Hanami::Utils::Attributes.new(foo: { baz: 'bar' })
       attributes.get('foo.baz').must_equal 'bar'
     end
 
@@ -74,7 +74,7 @@ describe Hanami::Utils::Attributes do
     end
 
     it 'ignores hash default' do
-      attributes = Hanami::Utils::Attributes.new{|h,k| h[k] = [] }
+      attributes = Hanami::Utils::Attributes.new { |h, k| h[k] = [] }
       attributes.get('foo').must_be_nil
       attributes.get(:foo).must_be_nil
     end
@@ -100,13 +100,13 @@ describe Hanami::Utils::Attributes do
     end
 
     it 'returns value associated to the given key (number)' do
-      attributes = Hanami::Utils::Attributes.new( 23 => 'foo')
+      attributes = Hanami::Utils::Attributes.new(23 => 'foo')
       attributes[23].must_equal   'foo'
       attributes['23'].must_equal 'foo'
     end
 
     it 'allows deep indifferent access' do
-      attributes = Hanami::Utils::Attributes.new(foo: {baz: 'bar'})
+      attributes = Hanami::Utils::Attributes.new(foo: { baz: 'bar' })
       attributes[:foo][:baz].must_equal 'bar'
       attributes[:foo]['baz'].must_equal 'bar'
       attributes['foo'][:baz].must_equal 'bar'
@@ -114,7 +114,7 @@ describe Hanami::Utils::Attributes do
     end
 
     it 'allows deep access via nested key string' do
-      attributes = Hanami::Utils::Attributes.new(foo: {baz: 'bar'})
+      attributes = Hanami::Utils::Attributes.new(foo: { baz: 'bar' })
       attributes['foo.baz'].must_equal 'bar'
     end
 
@@ -128,7 +128,7 @@ describe Hanami::Utils::Attributes do
     end
 
     it 'ignores hash default' do
-      attributes = Hanami::Utils::Attributes.new{|h,k| h[k] = [] }
+      attributes = Hanami::Utils::Attributes.new { |h, k| h[k] = [] }
       attributes['foo'].must_be_nil
       attributes[:foo].must_be_nil
     end
@@ -178,7 +178,7 @@ describe Hanami::Utils::Attributes do
         end
 
         def to_h
-          {'foo' => 'bar'}
+          { 'foo' => 'bar' }
         end
       end.new
     end
@@ -190,13 +190,13 @@ describe Hanami::Utils::Attributes do
 
     it 'returns a hash serialization' do
       attributes = Hanami::Utils::Attributes.new(foo: 'bar')
-      attributes.to_h.must_equal({'foo' => 'bar'})
+      attributes.to_h.must_equal('foo' => 'bar')
     end
 
     it 'prevents information escape' do
-      actual = Hanami::Utils::Attributes.new({'a' => 1})
+      actual = Hanami::Utils::Attributes.new('a' => 1)
       hash   = actual.to_h
-      hash.merge!('b' => 2)
+      hash['b'] = 2
 
       actual.get('b').must_be_nil
     end
@@ -205,7 +205,7 @@ describe Hanami::Utils::Attributes do
       attributes = Hanami::Utils::Attributes.new(val: @value)
       actual     = attributes.to_h
 
-      actual.must_equal({'val' => { 'foo' => 'bar'}})
+      actual.must_equal('val' => { 'foo' => 'bar' })
       actual['val'].must_be_kind_of(::Hash)
     end
 
@@ -215,7 +215,7 @@ describe Hanami::Utils::Attributes do
       attributes = Hanami::Utils::Attributes.new(val: [1, 2])
       actual     = attributes.to_h
 
-      actual.must_equal({'val' => [1, 2]})
+      actual.must_equal('val' => [1, 2])
       actual['val'].must_be_kind_of(Array)
     end
   end

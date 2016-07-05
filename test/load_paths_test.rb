@@ -40,16 +40,16 @@ describe Hanami::Utils::LoadPaths do
     end
 
     it 'remove duplicates' do
-      paths   = Hanami::Utils::LoadPaths.new '..', '..'
-      paths.each(&Proc.new{}).size.must_equal 1
+      paths = Hanami::Utils::LoadPaths.new '..', '..'
+      paths.each(&proc {}).size.must_equal 1
     end
 
     it 'raises an error if a path is unknown' do
       paths = Hanami::Utils::LoadPaths.new 'unknown/path'
 
-      -> {
-        paths.each { }
-      }.must_raise Errno::ENOENT
+      lambda do
+        paths.each {}
+      end.must_raise Errno::ENOENT
     end
   end
 
@@ -74,13 +74,13 @@ describe Hanami::Utils::LoadPaths do
     it 'removes duplicates' do
       paths = Hanami::Utils::LoadPaths.new '.'
       paths.push '.', '.'
-      paths.each(&Proc.new{}).size.must_equal 1
+      paths.each(&proc {}).size.must_equal 1
     end
 
     it 'removes nil' do
       paths = Hanami::Utils::LoadPaths.new '.'
       paths.push nil
-      paths.each(&Proc.new{}).size.must_equal 1
+      paths.each(&proc {}).size.must_equal 1
     end
 
     it 'returns self so multiple operations can be performed' do
@@ -110,7 +110,7 @@ describe Hanami::Utils::LoadPaths do
       paths = Hanami::Utils::LoadPaths.new '.'
       paths << ['..', '../..']
 
-      assert paths ==  ['.', '..', '../..']
+      assert paths == ['.', '..', '../..']
     end
 
     it 'returns self so multiple operations can be performed' do
@@ -180,7 +180,7 @@ describe Hanami::Utils::LoadPaths do
   end
 
   describe '#==' do
-    it "checks equality with LoadPaths" do
+    it 'checks equality with LoadPaths' do
       paths = Hanami::Utils::LoadPaths.new('.', '.')
       other = Hanami::Utils::LoadPaths.new('.')
 
@@ -194,7 +194,7 @@ describe Hanami::Utils::LoadPaths do
       other.wont_equal paths
     end
 
-    it "checks equality with Array" do
+    it 'checks equality with Array' do
       paths = Hanami::Utils::LoadPaths.new('.', '.')
       other = ['.']
 

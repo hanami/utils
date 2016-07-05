@@ -15,9 +15,9 @@ module Hanami
   # When a Hanami application is initialized, it creates a logger for that specific application.
   # For instance for a `Bookshelf::Application` a `Bookshelf::Logger` will be available.
   #
-  # This is useful for auto-tagging the output. Eg (`[Booshelf]`).
+  # This is useful for auto-tagging the output. Eg (`app=Booshelf`).
   #
-  # When used stand alone (eg. `Hanami::Logger.info`), it tags lines with `[Shared]`.
+  # When used stand alone (eg. `Hanami::Logger.info`), it tags lines with `app=Shared`.
   #
   #
   # The available severity levels are the same of `Logger`:
@@ -91,7 +91,6 @@ module Hanami
   #
   #   Hanami::Logger.new(formatter: Hanami::Logger::JSONFormatter).info('Hello')
   #   # => "{\"app\":\"Hanami\",\"severity\":\"INFO\",\"time\":\"1988-09-01 00:00:00 UTC\",\"message\":\"Hello\"}"
-
   class Logger < ::Logger
     # Hanami::Logger default formatter.
     # This formatter returns string in key=value format.
@@ -142,20 +141,21 @@ module Hanami
       # @api private
       #
       # @see http://www.ruby-doc.org/stdlib/libdoc/logger/rdoc/Logger/Formatter.html#method-i-call
-      def call(severity, time, progname, msg)
+      def call(severity, time, _progname, msg)
         _format({
           app:      @application_name,
           severity: severity,
           time:     time.utc
         }.merge(
-          _message_hash(msg)))
+          _message_hash(msg)
+        ))
       end
 
       private
 
       # @since x.x.x
       # @api private
-      def _message_hash(message)
+      def _message_hash(message) # rubocop:disable Metrics/MethodLength
         case message
         when Hash
           message
@@ -223,7 +223,7 @@ module Hanami
     # @param application_name [String] an optional application name used for
     #   tagging purposes
     #
-    # @param stream [String, IO, StringIO, Pathanem] an optional log stream. This is a filename
+    # @param stream [String, IO, StringIO, Pathname] an optional log stream. This is a filename
     # (String) or IO object (typically STDOUT, STDERR, or an open file).
     #
     # @since 0.5.0
@@ -259,13 +259,14 @@ module Hanami
     end
 
     private
+
     # @since 0.5.0
     # @api private
     def _application_name_from_namespace
       class_name = self.class.name
       namespace  = Utils::String.new(class_name).namespace
 
-      class_name != namespace and return namespace
+      class_name != namespace and return namespace # rubocop:disable Style/AndOr
     end
 
     # @since 0.5.0

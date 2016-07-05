@@ -21,10 +21,8 @@ describe Hanami::Utils::String do
       Hanami::Utils::String.new('hanami_utils').titleize.must_equal 'Hanami Utils'
       Hanami::Utils::String.new('hanami-utils').titleize.must_equal 'Hanami Utils'
       Hanami::Utils::String.new("hanami' utils").titleize.must_equal "Hanami' Utils"
-      Hanami::Utils::String.new("hanami’ utils").titleize.must_equal "Hanami’ Utils"
-      Hanami::Utils::String.new("hanami` utils").titleize.must_equal "Hanami` Utils"
-      # Ruby's upcase works only with ASCII chars.
-      # Hanami::Utils::String.new("è vero?").titleize.must_equal "È Vero?"
+      Hanami::Utils::String.new('hanami’ utils').titleize.must_equal 'Hanami’ Utils'
+      Hanami::Utils::String.new('hanami` utils').titleize.must_equal 'Hanami` Utils'
     end
   end
 
@@ -46,10 +44,8 @@ describe Hanami::Utils::String do
       Hanami::Utils::String.new('hanami_utils').capitalize.must_equal 'Hanami utils'
       Hanami::Utils::String.new('hanami-utils').capitalize.must_equal 'Hanami utils'
       Hanami::Utils::String.new("hanami' utils").capitalize.must_equal "Hanami' utils"
-      Hanami::Utils::String.new("hanami’ utils").capitalize.must_equal "Hanami’ utils"
-      Hanami::Utils::String.new("hanami` utils").capitalize.must_equal "Hanami` utils"
-      # Ruby's upcase works only with ASCII chars.
-      # Hanami::Utils::String.new("è vero?").capitalize.must_equal "È vero?"
+      Hanami::Utils::String.new('hanami’ utils').capitalize.must_equal 'Hanami’ utils'
+      Hanami::Utils::String.new('hanami` utils').capitalize.must_equal 'Hanami` utils'
       Hanami::Utils::String.new('OneTwoThree').capitalize.must_equal   'One two three'
       Hanami::Utils::String.new('one Two three').capitalize.must_equal 'One two three'
       Hanami::Utils::String.new('one_two_three').capitalize.must_equal 'One two three'
@@ -245,7 +241,7 @@ describe Hanami::Utils::String do
     end
 
     it 'returns nil' do
-      result = Hanami::Utils::String.new('Hanami::(Utils|App)').tokenize { }
+      result = Hanami::Utils::String.new('Hanami::(Utils|App)').tokenize {}
       result.must_be_nil
     end
   end
@@ -304,13 +300,13 @@ describe Hanami::Utils::String do
 
     it 'does not mutate original string' do
       string = Hanami::Utils::String.new('authors/books/index')
-      string.rsub(/\//, '#')
+      string.rsub(%r{/}, '#')
 
       string.must_equal('authors/books/index')
     end
 
     it 'replaces rightmost instance (regexp)' do
-      result = Hanami::Utils::String.new('authors/books/index').rsub(/\//, '#')
+      result = Hanami::Utils::String.new('authors/books/index').rsub(%r{/}, '#')
       result.must_equal('authors/books#index')
     end
 
@@ -321,13 +317,13 @@ describe Hanami::Utils::String do
 
     it 'accepts Hanami::Utils::String as replacement' do
       replacement = Hanami::Utils::String.new('#')
-      result      = Hanami::Utils::String.new('authors/books/index').rsub(/\//, replacement)
+      result      = Hanami::Utils::String.new('authors/books/index').rsub(%r{/}, replacement)
 
       result.must_equal('authors/books#index')
     end
 
     it 'returns the initial string no match' do
-      result = Hanami::Utils::String.new('index').rsub(/\//, '#')
+      result = Hanami::Utils::String.new('index').rsub(%r{/}, '#')
       result.must_equal('index')
     end
   end
@@ -369,12 +365,12 @@ describe Hanami::Utils::String do
       it 'has a working case equality' do
         string = Hanami::Utils::String.new('hanami')
         other  = Hanami::Utils::String.new('hanami')
-        assert string === other
+        assert string === other # rubocop:disable Style/CaseEquality
       end
 
       it 'has a working case equality with raw strings' do
         string = Hanami::Utils::String.new('hanami')
-        assert string === 'hanami'
+        assert string === 'hanami' # rubocop:disable Style/CaseEquality
       end
     end
 
@@ -427,7 +423,7 @@ describe Hanami::Utils::String do
       string            = Hanami::Utils::String.new('/path/to/something')
       exception_message = %(undefined method `boom' for "/":String)
 
-      exception = -> { string.gsub(/\//) { |s| s.boom }}.must_raise NoMethodError
+      exception = -> { string.gsub(%r{/}, &:boom) }.must_raise NoMethodError
       exception.message.must_equal exception_message
     end
   end

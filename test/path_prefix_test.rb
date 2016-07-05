@@ -4,12 +4,12 @@ require 'hanami/utils/path_prefix'
 describe Hanami::Utils::PathPrefix do
   it 'exposes itself as a string' do
     prefix = Hanami::Utils::PathPrefix.new
-    assert prefix == '', "Expected #{ prefix } to equal ''"
+    assert prefix == '', "Expected #{prefix} to equal ''"
   end
 
   it 'adds root prefix only when needed' do
     prefix = Hanami::Utils::PathPrefix.new('/fruits')
-    assert prefix == '/fruits', "Expected #{ prefix } to equal '/fruits'"
+    assert prefix == '/fruits', "Expected #{prefix} to equal '/fruits'"
   end
 
   describe '#join' do
@@ -170,12 +170,12 @@ describe Hanami::Utils::PathPrefix do
       it 'has a working case equality' do
         string = Hanami::Utils::PathPrefix.new('hanami')
         other  = Hanami::Utils::PathPrefix.new('hanami')
-        assert string === other
+        assert string === other # rubocop:disable Style/CaseEquality
       end
 
       it 'has a working case equality with raw strings' do
         string = Hanami::Utils::PathPrefix.new('hanami')
-        assert string === 'hanami'
+        assert string === 'hanami' # rubocop:disable Style/CaseEquality
       end
     end
 

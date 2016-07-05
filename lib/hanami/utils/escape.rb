@@ -11,7 +11,7 @@ module Hanami
     # @see https://www.owasp.org/index.php/XSS_(Cross_Site_Scripting)_Prevention_Cheat_Sheet
     # @see https://www.owasp.org/index.php/ESAPI
     # @see https://github.com/ESAPI/esapi-java-legacy
-    module Escape
+    module Escape # rubocop:disable Metrics/ModuleLength
       # Hex base for base 10 integer conversion
       #
       # @since 0.4.0
@@ -30,14 +30,14 @@ module Hanami
       #
       # @since 0.4.0
       # @api private
-      REPLACEMENT_HEX  = "fffd".freeze
+      REPLACEMENT_HEX = 'fffd'.freeze
 
       # Low hex codes lookup table
       #
       # @since 0.4.0
       # @api private
       HEX_CODES = (0..255).each_with_object({}) do |c, codes|
-        if (c >= 0x30 && c <= 0x39) || (c >= 0x41 && c <= 0x5A) || (c >= 0x61 && c <= 0x7A)
+        if (c >= 0x30 && c <= 0x39) || (c >= 0x41 && c <= 0x5A) || (c >= 0x61 && c <= 0x7A) # rubocop:disable Style/ConditionalAssignment
           codes[c] = nil
         else
           codes[c] = c.to_s(HEX_BASE)
@@ -362,7 +362,7 @@ module Hanami
       # @api private
       #
       # @see Hanami::Utils::Escape.url
-      DEFAULT_URL_SCHEMES = ['http', 'https', 'mailto'].freeze
+      DEFAULT_URL_SCHEMES = %w(http https mailto).freeze
 
       # The output of an escape.
       #
@@ -518,58 +518,59 @@ module Hanami
         )
       end
 
-      private
-      # Encode the given string into UTF-8
-      #
-      # @param input [String] the input
-      #
-      # @return [String] an UTF-8 encoded string
-      #
-      # @since 0.4.0
-      # @api private
-      def self.encode(input)
-        return '' if input.nil?
-        input.to_s.encode(Encoding::UTF_8)
-      rescue Encoding::UndefinedConversionError
-        input.dup.force_encoding(Encoding::UTF_8)
-      end
+      class << self
+        private
 
-      # Encode the given UTF-8 char.
-      #
-      # @param char [String] an UTF-8 char
-      # @param safe_chars [Hash] a table of safe chars
-      #
-      # @return [String] an HTML encoded string
-      #
-      # @since 0.4.0
-      # @api private
-      def self.encode_char(char, safe_chars = {})
-        return char if safe_chars[char]
-
-        code = char.ord
-        hex  = hex_for_non_alphanumeric_code(code)
-        return char if hex.nil?
-
-        if NON_PRINTABLE_CHARS[code]
-          hex = REPLACEMENT_HEX
+        # Encode the given string into UTF-8
+        #
+        # @param input [String] the input
+        #
+        # @return [String] an UTF-8 encoded string
+        #
+        # @since 0.4.0
+        # @api private
+        def encode(input)
+          return '' if input.nil?
+          input.to_s.encode(Encoding::UTF_8)
+        rescue Encoding::UndefinedConversionError
+          input.dup.force_encoding(Encoding::UTF_8)
         end
 
-        if entity = HTML_ENTITIES[code]
-          "&#{ entity };"
-        else
-          "&#x#{ hex };"
-        end
-      end
+        # Encode the given UTF-8 char.
+        #
+        # @param char [String] an UTF-8 char
+        # @param safe_chars [Hash] a table of safe chars
+        #
+        # @return [String] an HTML encoded string
+        #
+        # @since 0.4.0
+        # @api private
+        def encode_char(char, safe_chars = {})
+          return char if safe_chars[char]
 
-      # Transforms the given char code
-      #
-      # @since 0.4.0
-      # @api private
-      def self.hex_for_non_alphanumeric_code(input)
-        if input < LOW_HEX_CODE_LIMIT
-          HEX_CODES[input]
-        else
-          input.to_s(HEX_BASE)
+          code = char.ord
+          hex  = hex_for_non_alphanumeric_code(code)
+          return char if hex.nil?
+
+          hex = REPLACEMENT_HEX if NON_PRINTABLE_CHARS[code]
+
+          if entity = HTML_ENTITIES[code] # rubocop:disable Lint/AssignmentInCondition
+            "&#{entity};"
+          else
+            "&#x#{hex};"
+          end
+        end
+
+        # Transforms the given char code
+        #
+        # @since 0.4.0
+        # @api private
+        def hex_for_non_alphanumeric_code(input)
+          if input < LOW_HEX_CODE_LIMIT
+            HEX_CODES[input]
+          else
+            input.to_s(HEX_BASE)
+          end
         end
       end
     end

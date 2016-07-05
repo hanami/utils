@@ -36,93 +36,93 @@ describe Hanami::Utils::Inflector do
   end
 
   describe '.pluralize' do
-    it "returns nil when nil is given" do
+    it 'returns nil when nil is given' do
       actual = Hanami::Utils::Inflector.pluralize(nil)
       actual.must_be_nil
     end
 
-    it "returns empty string when empty string is given" do
-      actual = Hanami::Utils::Inflector.pluralize("")
+    it 'returns empty string when empty string is given' do
+      actual = Hanami::Utils::Inflector.pluralize('')
       actual.must_be_empty
     end
 
-    it "returns empty string when empty string is given (multiple chars)" do
-      actual = Hanami::Utils::Inflector.pluralize(string = "   ")
+    it 'returns empty string when empty string is given (multiple chars)' do
+      actual = Hanami::Utils::Inflector.pluralize(string = '   ')
       actual.must_equal string
     end
 
-    it "returns instance of String" do
-      result = Hanami::Utils::Inflector.pluralize("Hanami")
+    it 'returns instance of String' do
+      result = Hanami::Utils::Inflector.pluralize('Hanami')
       result.class.must_equal ::String
     end
 
     it "doesn't modify original string" do
-      string = "application"
+      string = 'application'
       result = Hanami::Utils::Inflector.pluralize(string)
 
       result.object_id.wont_equal(string.object_id)
-      string.must_equal("application")
+      string.must_equal('application')
     end
 
     TEST_PLURALS.each do |singular, plural|
-      it %(pluralizes "#{ singular }" to "#{ plural }") do
+      it %(pluralizes "#{singular}" to "#{plural}") do
         actual = Hanami::Utils::Inflector.pluralize(singular)
         actual.must_equal plural
       end
 
-      it %(pluralizes titleized "#{ Hanami::Utils::String.new(singular).titleize }" to "#{ plural }") do
+      it %(pluralizes titleized "#{Hanami::Utils::String.new(singular).titleize}" to "#{plural}") do
         actual = Hanami::Utils::Inflector.pluralize(Hanami::Utils::String.new(singular).titleize)
         actual.must_equal Hanami::Utils::String.new(plural).titleize
       end
 
-  #     it %(doesn't pluralize "#{ plural }" as it's already plural) do
-  #       actual = Hanami::Utils::Inflector.pluralize(plural)
-  #       actual.must_equal plural
-  #     end
+      #     it %(doesn't pluralize "#{ plural }" as it's already plural) do
+      #       actual = Hanami::Utils::Inflector.pluralize(plural)
+      #       actual.must_equal plural
+      #     end
 
-  #     it %(doesn't pluralize titleized "#{ Hanami::Utils::String.new(singular).titleize }" as it's already plural) do
-  #       actual = Hanami::Utils::Inflector.pluralize(Hanami::Utils::String.new(plural).titleize)
-  #       actual.must_equal Hanami::Utils::String.new(plural).titleize
-  #     end
+      #     it %(doesn't pluralize titleized "#{ Hanami::Utils::String.new(singular).titleize }" as it's already plural) do
+      #       actual = Hanami::Utils::Inflector.pluralize(Hanami::Utils::String.new(plural).titleize)
+      #       actual.must_equal Hanami::Utils::String.new(plural).titleize
+      #     end
     end
   end
 
   describe '.singularize' do
-    it "returns nil when nil is given" do
+    it 'returns nil when nil is given' do
       actual = Hanami::Utils::Inflector.singularize(nil)
       actual.must_be_nil
     end
 
-    it "returns empty string when empty string is given" do
-      actual = Hanami::Utils::Inflector.singularize("")
+    it 'returns empty string when empty string is given' do
+      actual = Hanami::Utils::Inflector.singularize('')
       actual.must_be_empty
     end
 
-    it "returns empty string when empty string is given (multiple chars)" do
-      actual = Hanami::Utils::Inflector.singularize(string = "   ")
+    it 'returns empty string when empty string is given (multiple chars)' do
+      actual = Hanami::Utils::Inflector.singularize(string = '   ')
       actual.must_equal string
     end
 
-    it "returns instance of String" do
-      result = Hanami::Utils::Inflector.singularize("application")
+    it 'returns instance of String' do
+      result = Hanami::Utils::Inflector.singularize('application')
       result.class.must_equal ::String
     end
 
     it "doesn't modify original string" do
-      string = "applications"
+      string = 'applications'
       result = Hanami::Utils::Inflector.singularize(string)
 
       result.object_id.wont_equal(string.object_id)
-      string.must_equal("applications")
+      string.must_equal('applications')
     end
 
     TEST_SINGULARS.each do |singular, plural|
-      it %(singularizes "#{ plural }" to "#{ singular }") do
+      it %(singularizes "#{plural}" to "#{singular}") do
         actual = Hanami::Utils::Inflector.singularize(plural)
         actual.must_equal singular
       end
 
-      it %(singularizes titleized "#{ Hanami::Utils::String.new(plural).titleize }" to "#{ singular }") do
+      it %(singularizes titleized "#{Hanami::Utils::String.new(plural).titleize}" to "#{singular}") do
         actual = Hanami::Utils::Inflector.singularize(Hanami::Utils::String.new(plural).titleize)
         actual.must_equal Hanami::Utils::String.new(singular).titleize
       end

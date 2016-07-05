@@ -27,15 +27,17 @@ describe Hanami::Utils::Deprecation do
       DeprecationTest.new.old_method
     end
 
+    # rubocop:disable Style/MultilineTernaryOperator
     stack = if Hanami::Utils.jruby?
-      $0 == __FILE__ ? "#{ __FILE__ }:27:in `(root)'" :
-        "#{ __FILE__ }:27:in `block in test_0001_prints a deprecation warning for direct call'"
-    else
-      $0 == __FILE__ ? "#{ __FILE__ }:27:in `block (3 levels) in <main>'" :
-        "#{ __FILE__ }:27:in `block (3 levels) in <top (required)>'"
-    end
+              $PROGRAM_NAME == __FILE__ ? "#{__FILE__}:27:in `(root)'" :
+                "#{__FILE__}:27:in `block in test_0001_prints a deprecation warning for direct call'"
+            else
+              $PROGRAM_NAME == __FILE__ ? "#{__FILE__}:27:in `block (3 levels) in <main>'" :
+                "#{__FILE__}:27:in `block (3 levels) in <top (required)>'"
+            end
+    # rubocop:enable Style/MultilineTernaryOperator
 
-    err.chomp.must_equal "old_method is deprecated, please use new_method - called from: #{ stack }."
+    err.chomp.must_equal "old_method is deprecated, please use new_method - called from: #{stack}."
   end
 
   it 'prints a deprecation warning for nested call' do
@@ -43,6 +45,6 @@ describe Hanami::Utils::Deprecation do
       DeprecationWrapperTest.new.run
     end
 
-    err.chomp.must_equal "old_method is deprecated, please use new_method - called from: #{ __FILE__ }:20:in `run'."
+    err.chomp.must_equal "old_method is deprecated, please use new_method - called from: #{__FILE__}:20:in `run'."
   end
 end

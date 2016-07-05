@@ -71,7 +71,7 @@ describe Hanami::Utils::Kernel do
         let(:input) { [1, [2, 3]] }
 
         it 'returns a flatten array' do
-          @result.must_equal [1,2,3]
+          @result.must_equal [1, 2, 3]
         end
 
         it "doesn't change the argument" do
@@ -83,7 +83,7 @@ describe Hanami::Utils::Kernel do
         let(:input) { [1, [nil, 3]] }
 
         it 'returns a compacted array' do
-          @result.must_equal [1,3]
+          @result.must_equal [1, 3]
         end
       end
 
@@ -91,7 +91,7 @@ describe Hanami::Utils::Kernel do
         let(:input) { [2, [2, 3]] }
 
         it 'returns an array with uniq values' do
-          @result.must_equal [2,3]
+          @result.must_equal [2, 3]
         end
 
         it "doesn't change the argument" do
@@ -100,7 +100,7 @@ describe Hanami::Utils::Kernel do
       end
 
       describe 'when a set is given' do
-        let(:input) { Set.new([33,12]) }
+        let(:input) { Set.new([33, 12]) }
 
         it 'returns an array with uniq values' do
           @result.must_equal [33, 12]
@@ -108,10 +108,10 @@ describe Hanami::Utils::Kernel do
       end
 
       describe 'when a object that implements #to_a is given' do
-        let(:input) { ResultSet.new([2,1,3]) }
+        let(:input) { ResultSet.new([2, 1, 3]) }
 
         it 'returns an array' do
-          @result.must_equal [1,2,3]
+          @result.must_equal [1, 2, 3]
         end
       end
 
@@ -134,7 +134,7 @@ describe Hanami::Utils::Kernel do
 
         def to_set
           Set.new.tap do |set|
-            @uuids.each {|uuid| set.add(uuid) }
+            @uuids.each { |uuid| set.add(uuid) }
           end
         end
       end
@@ -232,7 +232,7 @@ describe Hanami::Utils::Kernel do
         let(:input) { [2, 3, 3] }
 
         it 'returns an set with uniq values' do
-          @result.must_equal Set.new([2,3])
+          @result.must_equal Set.new([2, 3])
         end
       end
 
@@ -240,7 +240,7 @@ describe Hanami::Utils::Kernel do
         let(:input) { [2, [2, 3]] }
 
         it 'returns it wraps in a set' do
-          @result.must_equal Set.new([2, [2,3]])
+          @result.must_equal Set.new([2, [2, 3]])
         end
       end
 
@@ -346,10 +346,10 @@ describe Hanami::Utils::Kernel do
       end
 
       describe 'when a object that implements #to_h is given' do
-        let(:input) { Room.new(:key, 123456) }
+        let(:input) { Room.new(:key, 123_456) }
 
         it 'returns an hash' do
-          @result.must_equal Hash[key: 123456]
+          @result.must_equal Hash[key: 123_456]
         end
       end
 
@@ -486,7 +486,7 @@ describe Hanami::Utils::Kernel do
       end
 
       describe 'when an octal is given' do
-        let(:input) { 011 }
+        let(:input) { 0o11 }
 
         it 'returns the string representation' do
           @result.must_equal 9
@@ -502,10 +502,10 @@ describe Hanami::Utils::Kernel do
       end
 
       describe 'when a bignum is given' do
-        let(:input) { 13289301283 ** 2 }
+        let(:input) { 13_289_301_283**2 }
 
         it 'returns an bignum' do
-          @result.must_equal 176605528590345446089
+          @result.must_equal 176_605_528_590_345_446_089
         end
       end
 
@@ -656,7 +656,7 @@ describe Hanami::Utils::Kernel do
       end
 
       describe 'when a big complex number is given' do
-        let(:input) { Complex(2,3) }
+        let(:input) { Complex(2, 3) }
 
         it 'raises error' do
           -> { Hanami::Utils::Kernel.Integer(input) }.must_raise(TypeError)
@@ -672,7 +672,7 @@ describe Hanami::Utils::Kernel do
       end
 
       describe 'when a big rational number is given' do
-        let(:input) { Rational(-8) ** Rational(1, 3) }
+        let(:input) { Rational(-8)**Rational(1, 3) }
 
         it 'raises error' do
           -> { Hanami::Utils::Kernel.Integer(input) }.must_raise(TypeError)
@@ -756,7 +756,7 @@ describe Hanami::Utils::Kernel do
       end
 
       describe 'when an octal is given' do
-        let(:input) { 011 }
+        let(:input) { 0o11 }
 
         it 'returns a BigDecimal' do
           @result.must_equal BigDecimal.new(9)
@@ -772,10 +772,10 @@ describe Hanami::Utils::Kernel do
       end
 
       describe 'when a bignum is given' do
-        let(:input) { 13289301283 ** 2 }
+        let(:input) { 13_289_301_283**2 }
 
         it 'returns a BigDecimal' do
-          @result.must_equal BigDecimal.new(176605528590345446089)
+          @result.must_equal BigDecimal.new(176_605_528_590_345_446_089)
         end
       end
 
@@ -1023,7 +1023,7 @@ describe Hanami::Utils::Kernel do
       end
 
       describe 'when an octal is given' do
-        let(:input) { 011 }
+        let(:input) { 0o11 }
 
         it 'returns the base 10 float' do
           @result.must_equal 9.0
@@ -1039,11 +1039,11 @@ describe Hanami::Utils::Kernel do
       end
 
       describe 'when a bignum is given' do
-        let(:input) { 13289301283 ** 2 }
+        let(:input) { 13_289_301_283**2 }
 
         it 'returns a float' do
           @result.must_be_kind_of(Float)
-          @result.must_equal 176605528590345446089.0
+          @result.must_equal 176_605_528_590_345_446_089.0
         end
       end
 
@@ -1205,7 +1205,7 @@ describe Hanami::Utils::Kernel do
       end
 
       describe 'when a big complex number is given' do
-        let(:input) { Complex(2,3) }
+        let(:input) { Complex(2, 3) }
 
         it 'raises error' do
           -> { Hanami::Utils::Kernel.Float(input) }.must_raise(TypeError)
@@ -1221,7 +1221,7 @@ describe Hanami::Utils::Kernel do
       end
 
       describe 'when a big rational number is given' do
-        let(:input) { Rational(-8) ** Rational(1, 3) }
+        let(:input) { Rational(-8)**Rational(1, 3) }
 
         it 'raises error' do
           -> { Hanami::Utils::Kernel.Float(input) }.must_raise(TypeError)
@@ -1243,7 +1243,7 @@ describe Hanami::Utils::Kernel do
       Book = Struct.new(:title)
 
       SimpleObject = Class.new(BasicObject) do
-        def respond_to?(method_name, include_private=false)
+        def respond_to?(method_name, _include_private = false)
           method_name.to_sym == :to_s
         end
 
@@ -1327,7 +1327,7 @@ describe Hanami::Utils::Kernel do
       end
 
       describe 'when an octal is given' do
-        let(:input) { 013 }
+        let(:input) { 0o13 }
 
         it 'returns the string representation' do
           @result.must_equal '11'
@@ -1367,7 +1367,7 @@ describe Hanami::Utils::Kernel do
       end
 
       describe 'when a complex is given' do
-        let(:input) { Complex(11,2) }
+        let(:input) { Complex(11, 2) }
 
         it 'returns the string representation' do
           @result.must_equal '11+2i'
@@ -1391,7 +1391,7 @@ describe Hanami::Utils::Kernel do
       end
 
       describe 'when an array of integers is given' do
-        let(:input) { [1,2,3] }
+        let(:input) { [1, 2, 3] }
 
         it 'returns the string representation' do
           @result.must_equal '[1, 2, 3]'
@@ -1399,7 +1399,7 @@ describe Hanami::Utils::Kernel do
       end
 
       describe 'when an array of strings is given' do
-        let(:input) { %w[a b c] }
+        let(:input) { %w(a b c) }
 
         it 'returns the string representation' do
           @result.must_equal '["a", "b", "c"]'
@@ -1423,7 +1423,7 @@ describe Hanami::Utils::Kernel do
       end
 
       describe 'when an hash is given' do
-        let(:input) { {a: 1, 'b' => 2} }
+        let(:input) { { a: 1, 'b' => 2 } }
 
         it 'returns the string representation' do
           @result.must_equal '{:a=>1, "b"=>2}'
@@ -1604,7 +1604,7 @@ describe Hanami::Utils::Kernel do
       end
 
       describe 'when "0" is given (String)' do
-        let(:input) { "0" }
+        let(:input) { '0' }
 
         it 'returns false' do
           @result.must_equal false
@@ -1612,7 +1612,7 @@ describe Hanami::Utils::Kernel do
       end
 
       describe 'when "1" is given (String)' do
-        let(:input) { "1" }
+        let(:input) { '1' }
 
         it 'returns true' do
           @result.must_equal true
@@ -1620,7 +1620,7 @@ describe Hanami::Utils::Kernel do
       end
 
       describe 'when "foo" is given (String)' do
-        let(:input) { "foo" }
+        let(:input) { 'foo' }
 
         it 'returns false' do
           @result.must_equal false
@@ -1628,7 +1628,7 @@ describe Hanami::Utils::Kernel do
       end
 
       describe 'when "0" is given (Hanami::Utils::String)' do
-        let(:input) { Hanami::Utils::String.new("0") }
+        let(:input) { Hanami::Utils::String.new('0') }
 
         it 'returns false' do
           @result.must_equal false
@@ -1636,7 +1636,7 @@ describe Hanami::Utils::Kernel do
       end
 
       describe 'when "1" is given (Hanami::Utils::String)' do
-        let(:input) { Hanami::Utils::String.new("1") }
+        let(:input) { Hanami::Utils::String.new('1') }
 
         it 'returns true' do
           @result.must_equal true
@@ -1644,7 +1644,7 @@ describe Hanami::Utils::Kernel do
       end
 
       describe 'when "foo" is given (Hanami::Utils::String)' do
-        let(:input) { Hanami::Utils::String.new("foo") }
+        let(:input) { Hanami::Utils::String.new('foo') }
 
         it 'returns false' do
           @result.must_equal false
@@ -1696,7 +1696,7 @@ describe Hanami::Utils::Kernel do
       end
 
       BaseObject = Class.new(BasicObject) do
-        def respond_to?(method_name)
+        def respond_to?(_method_name)
           false
         end
       end
@@ -1858,7 +1858,7 @@ describe Hanami::Utils::Kernel do
         end
       end
 
-      describe "when a string that represent a hour is given" do
+      describe 'when a string that represent a hour is given' do
         let(:input) { '18:55' }
 
         it 'raises error' do
@@ -1917,7 +1917,7 @@ describe Hanami::Utils::Kernel do
       end
 
       BaseObject = Class.new(BasicObject) do
-        def respond_to?(method_name)
+        def respond_to?(_method_name)
           false
         end
       end
@@ -1981,7 +1981,7 @@ describe Hanami::Utils::Kernel do
         end
       end
 
-      describe "when a string that represent a hour is given" do
+      describe 'when a string that represent a hour is given' do
         let(:input) { '23:12' }
 
         it 'returns a datetime' do
@@ -1998,7 +1998,7 @@ describe Hanami::Utils::Kernel do
       end
 
       describe 'when a fixnum is given' do
-        let(:input) { 34322 }
+        let(:input) { 34_322 }
 
         it 'raises error' do
           @result.must_equal Time.at(input).to_datetime
@@ -2114,7 +2114,7 @@ describe Hanami::Utils::Kernel do
       end
 
       BaseObject = Class.new(BasicObject) do
-        def respond_to?(method_name)
+        def respond_to?(_method_name)
           false
         end
       end
@@ -2187,7 +2187,7 @@ describe Hanami::Utils::Kernel do
       end
 
       describe 'when a fixnum is given' do
-        let(:input) { 38922 }
+        let(:input) { 38_922 }
 
         it 'returns a time' do
           @result.must_equal Time.at(input)
@@ -2359,7 +2359,7 @@ describe Hanami::Utils::Kernel do
     end
 
     describe 'failure operations' do
-      describe "when nil is given" do
+      describe 'when nil is given' do
         let(:input) { nil }
 
         it 'raises error' do
@@ -2367,7 +2367,7 @@ describe Hanami::Utils::Kernel do
         end
       end
 
-      describe "when true is given" do
+      describe 'when true is given' do
         let(:input) { true }
 
         it 'raises error' do
@@ -2375,7 +2375,7 @@ describe Hanami::Utils::Kernel do
         end
       end
 
-      describe "when false is given" do
+      describe 'when false is given' do
         let(:input) { false }
 
         it 'raises error' do
@@ -2383,7 +2383,7 @@ describe Hanami::Utils::Kernel do
         end
       end
 
-      describe "when a number is given" do
+      describe 'when a number is given' do
         let(:input) { 12 }
 
         it 'raises error' do
@@ -2391,7 +2391,7 @@ describe Hanami::Utils::Kernel do
         end
       end
 
-      describe "when a date is given" do
+      describe 'when a date is given' do
         let(:input) { Date.today }
 
         it 'raises error' do
@@ -2399,7 +2399,7 @@ describe Hanami::Utils::Kernel do
         end
       end
 
-      describe "when a datetime is given" do
+      describe 'when a datetime is given' do
         let(:input) { DateTime.now }
 
         it 'raises error' do
@@ -2407,7 +2407,7 @@ describe Hanami::Utils::Kernel do
         end
       end
 
-      describe "when a time is given" do
+      describe 'when a time is given' do
         let(:input) { Time.now }
 
         it 'raises error' do
@@ -2475,7 +2475,7 @@ describe Hanami::Utils::Kernel do
     end
 
     describe 'failure operations' do
-      describe "when nil is given" do
+      describe 'when nil is given' do
         let(:input) { nil }
 
         it 'raises error' do
@@ -2483,7 +2483,7 @@ describe Hanami::Utils::Kernel do
         end
       end
 
-      describe "when empty string is given" do
+      describe 'when empty string is given' do
         let(:input) { '' }
 
         it 'raises error' do
@@ -2491,7 +2491,7 @@ describe Hanami::Utils::Kernel do
         end
       end
 
-      describe "when true is given" do
+      describe 'when true is given' do
         let(:input) { true }
 
         it 'raises error' do
@@ -2499,7 +2499,7 @@ describe Hanami::Utils::Kernel do
         end
       end
 
-      describe "when false is given" do
+      describe 'when false is given' do
         let(:input) { false }
 
         it 'raises error' do
@@ -2507,7 +2507,7 @@ describe Hanami::Utils::Kernel do
         end
       end
 
-      describe "when a number is given" do
+      describe 'when a number is given' do
         let(:input) { 12 }
 
         it 'raises error' do
@@ -2515,7 +2515,7 @@ describe Hanami::Utils::Kernel do
         end
       end
 
-      describe "when a date is given" do
+      describe 'when a date is given' do
         let(:input) { Date.today }
 
         it 'raises error' do
@@ -2523,7 +2523,7 @@ describe Hanami::Utils::Kernel do
         end
       end
 
-      describe "when a datetime is given" do
+      describe 'when a datetime is given' do
         let(:input) { DateTime.now }
 
         it 'raises error' do
@@ -2531,7 +2531,7 @@ describe Hanami::Utils::Kernel do
         end
       end
 
-      describe "when a time is given" do
+      describe 'when a time is given' do
         let(:input) { Time.now }
 
         it 'raises error' do

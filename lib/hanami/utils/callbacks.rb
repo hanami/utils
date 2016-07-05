@@ -16,7 +16,7 @@ module Hanami
         #
         # @since 0.2.0
         def initialize
-          @chain = Array.new
+          @chain = []
         end
 
         # Appends the given callbacks to the end of the chain.
@@ -168,14 +168,12 @@ module Hanami
           @chain.freeze
         end
 
-
         private
 
         def callables(callbacks, block)
           callbacks.push(block) if block
           callbacks.map { |c| Factory.fabricate(c) }
         end
-
       end
 
       # Callback factory

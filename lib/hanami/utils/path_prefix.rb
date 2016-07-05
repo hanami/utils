@@ -83,7 +83,7 @@ module Hanami
         result = [prefix, strings]
         result.flatten!
         result.compact!
-        result.reject! {|string| string == separator }
+        result.reject! { |string| string == separator }
 
         self.class.new(
           result.join(separator), separator
@@ -131,13 +131,14 @@ module Hanami
       #
       # @see #relative
       def relative!
-        @string.gsub!(%r{(?<!:)#{ separator * 2 }}, separator)
-        @string.sub!(%r{\A#{ separator }}, '')
+        @string.gsub!(/(?<!:)#{separator * 2}/, separator)
+        @string.sub!(/\A#{separator}/, '')
 
         self
       end
 
       private
+
       # @since 0.1.0
       # @api private
       attr_reader :separator

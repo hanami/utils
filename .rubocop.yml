@@ -1,0 +1,8 @@
+Metrics/LineLength:
+  Enabled: false
+Style/RaiseArgs:
+  Enabled: false
+Style/DoubleNegation:
+  Enabled: false
+Style/SpecialGlobalVars:
+  Enabled: false

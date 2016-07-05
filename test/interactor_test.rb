@@ -47,6 +47,7 @@ class Signup
   end
 
   private
+
   def valid?
     !@params[:force_failure]
   end
@@ -67,14 +68,15 @@ class ErrorInteractor
   end
 
   private
+
   def prepare!
     @operations << __method__
-    error "There was an error while preparing data."
+    error 'There was an error while preparing data.'
   end
 
   def persist!
     @operations << __method__
-    error "There was an error while persisting data."
+    error 'There was an error while persisting data.'
   end
 
   def log!
@@ -96,14 +98,15 @@ class ErrorBangInteractor
   end
 
   private
+
   def persist!
     @operations << __method__
-    error! "There was an error while persisting data."
+    error! 'There was an error while persisting data.'
   end
 
   def sync!
     @operations << __method__
-    error "There was an error while syncing data."
+    error 'There was an error while syncing data.'
   end
 end
 
@@ -118,10 +121,11 @@ class PublishVideo
   end
 
   private
+
   def owns?
     # fake failed ownership check
-    1 == 0 or
-      error "You're not owner of this video"
+    1 == 0 ||
+      error("You're not owner of this video")
   end
 end
 
@@ -145,7 +149,7 @@ class CreateUser
 end
 
 class UpdateUser < CreateUser
-  def initialize(user, params)
+  def initialize(_user, params)
     super(params)
     @user.name = params.fetch(:name)
   end
@@ -157,27 +161,27 @@ describe Hanami::Interactor do
       InteractorWithoutInitialize.new
     end
 
-    it "allows to override it" do
+    it 'allows to override it' do
       Signup.new({})
     end
   end
 
   describe '#call' do
-    it "returns a result" do
+    it 'returns a result' do
       result = Signup.new(name: 'Luca').call
       assert result.class == Hanami::Interactor::Result, "Expected `result' to be kind of `Hanami::Interactor::Result'"
     end
 
-    it "is successful by default" do
+    it 'is successful by default' do
       result = Signup.new(name: 'Luca').call
       assert result.success?, "Expected `result' to be successful"
     end
 
-    it "returns the payload" do
+    it 'returns the payload' do
       result = Signup.new(name: 'Luca').call
 
       result.user.name.must_equal 'Luca'
-      result.params.must_equal({name: 'Luca'})
+      result.params.must_equal(name: 'Luca')
     end
 
     it "doesn't include private ivars" do
@@ -186,13 +190,13 @@ describe Hanami::Interactor do
       -> { result.__foo }.must_raise NoMethodError
     end
 
-    it "exposes a convenient API for handling failures" do
+    it 'exposes a convenient API for handling failures' do
       result = Signup.new({}).call
       assert !result.success?, "Expected `result' to NOT be successful"
     end
 
     it "doesn't invoke it if the preconditions are failing" do
-      result = Signup.new({force_failure: true}).call
+      result = Signup.new(force_failure: true).call
       assert !result.success?, "Expected `result' to NOT be successful"
     end
 
@@ -200,15 +204,15 @@ describe Hanami::Interactor do
       -> { InteractorWithoutCall.new.call }.must_raise NoMethodError
     end
 
-    describe "inheritance" do
-      it "is successful for super class" do
+    describe 'inheritance' do
+      it 'is successful for super class' do
         result = CreateUser.new(name: 'L').call
 
         assert result.success?, "Expected `result' to be successful"
         result.user.name.must_equal 'L'
       end
 
-      it "is successful for sub class" do
+      it 'is successful for sub class' do
         user   = User.new(name: 'L')
         result = UpdateUser.new(user, name: 'MG').call
 
@@ -218,17 +222,17 @@ describe Hanami::Interactor do
     end
   end
 
-  describe "#error" do
+  describe '#error' do
     it "isn't successful" do
       result = ErrorInteractor.new.call
       assert !result.success?, "Expected `result' to not be successful"
     end
 
-    it "accumulates errors" do
+    it 'accumulates errors' do
       result = ErrorInteractor.new.call
       result.errors.must_equal [
-        "There was an error while preparing data.",
-        "There was an error while persisting data."
+        'There was an error while preparing data.',
+        'There was an error while persisting data.'
       ]
     end
 
@@ -240,24 +244,24 @@ describe Hanami::Interactor do
     # See https://github.com/hanami/utils/issues/69
     it 'returns false as control flow for caller' do
       interactor = PublishVideo.new
-      assert !interactor.valid?, "Expected interactor to not be valid"
+      assert !interactor.valid?, 'Expected interactor to not be valid'
     end
   end
 
-  describe "#error!" do
+  describe '#error!' do
     it "isn't successful" do
       result = ErrorBangInteractor.new.call
       assert !result.success?, "Expected `result' to not be successful"
     end
 
-    it "stops at the first error" do
+    it 'stops at the first error' do
       result = ErrorBangInteractor.new.call
       result.errors.must_equal [
-        "There was an error while persisting data."
+        'There was an error while persisting data.'
       ]
     end
 
-    it "interrupts the flow" do
+    it 'interrupts the flow' do
       result = ErrorBangInteractor.new.call
       result.operations.must_equal [:persist!]
     end
@@ -282,10 +286,10 @@ describe Hanami::Interactor::Result do
       assert result.success?, "Expected `result' to be successful"
     end
 
-    describe "when it has errors" do
+    describe 'when it has errors' do
       it "isn't successful" do
         result = Hanami::Interactor::Result.new
-        result.add_error "There was a problem"
+        result.add_error 'There was a problem'
         assert !result.success?, "Expected `result' to NOT be successful"
       end
     end
@@ -316,20 +320,20 @@ describe Hanami::Interactor::Result do
     end
   end
 
-  describe "#errors" do
-    it "empty by default" do
+  describe '#errors' do
+    it 'empty by default' do
       result = Hanami::Interactor::Result.new
       result.errors.must_be :empty?
     end
 
-    it "returns all the errors" do
+    it 'returns all the errors' do
       result = Hanami::Interactor::Result.new
       result.add_error ['Error 1', 'Error 2']
 
       result.errors.must_equal ['Error 1', 'Error 2']
     end
 
-    it "prevents information escape" do
+    it 'prevents information escape' do
       result = Hanami::Interactor::Result.new
       result.add_error ['Error 1', 'Error 2']
 
@@ -339,13 +343,13 @@ describe Hanami::Interactor::Result do
     end
   end
 
-  describe "#error" do
-    it "nil by default" do
+  describe '#error' do
+    it 'nil by default' do
       result = Hanami::Interactor::Result.new
       result.error.must_be_nil
     end
 
-    it "returns only the first error" do
+    it 'returns only the first error' do
       result = Hanami::Interactor::Result.new
       result.add_error ['Error 1', 'Error 2']
 
@@ -385,7 +389,7 @@ describe Hanami::Interactor::Result do
     end
 
     it 'reports the object_id' do
-      object_id = "%x" % (result.__id__ << 1)
+      object_id = format('%x', (result.__id__ << 1))
       result.inspect.must_match object_id
     end
 
@@ -415,7 +419,7 @@ describe Hanami::Interactor::Result do
     end
 
     it "doesn't ignore forwarded messages" do
-      result = Hanami::Interactor::Result.new(params: {name: 'Luca'})
+      result = Hanami::Interactor::Result.new(params: { name: 'Luca' })
       result.params[:name].must_equal 'Luca'
     end
 

@@ -1,11 +1,11 @@
 require 'test_helper'
 require 'hanami/logger'
+require 'hanami/utils'
 require 'rbconfig'
 
 describe Hanami::Logger do
-
   before do
-    #clear defined class
+    # clear defined class
     Object.send(:remove_const, :TestLogger) if Object.constants.include?(:TestLogger)
   end
 
@@ -75,13 +75,12 @@ describe Hanami::Logger do
         end
 
         Hash[
-          Pathname.new(Dir.pwd).join('tmp', 'logfile.log').to_s => "absolute path (string)",
-          Pathname.new('tmp').join('logfile.log').to_s          => "relative path (string)",
-          Pathname.new(Dir.pwd).join('tmp', 'logfile.log')      => "absolute path (pathname)",
-          Pathname.new('tmp').join('logfile.log')               => "relative path (pathname)",
+          Pathname.new(Dir.pwd).join('tmp', 'logfile.log').to_s => 'absolute path (string)',
+          Pathname.new('tmp').join('logfile.log').to_s          => 'relative path (string)',
+          Pathname.new(Dir.pwd).join('tmp', 'logfile.log')      => 'absolute path (pathname)',
+          Pathname.new('tmp').join('logfile.log')               => 'relative path (pathname)',
         ].each do |dev, desc|
-
-          describe "when #{ desc }" do
+          describe "when #{desc}" do
             let(:stream) { dev }
 
             after do
@@ -104,10 +103,10 @@ describe Hanami::Logger do
 
             describe 'and it already exists' do
               before do
-                File.open(stream, File::WRONLY|File::TRUNC|File::CREAT, permissions) {|f| f.write('existing') }
+                File.open(stream, File::WRONLY | File::TRUNC | File::CREAT, permissions) { |f| f.write('existing') }
               end
 
-              let(:permissions) { 0664 }
+              let(:permissions) { 0o664 }
 
               it 'appends to file' do
                 logger = Hanami::Logger.new(stream: stream)
@@ -124,13 +123,12 @@ describe Hanami::Logger do
               end
             end
           end
-
         end # end loop
 
         describe 'when file' do
           let(:stream)      { Pathname.new('tmp').join('logfile.log') }
           let(:log_file)    { File.new(stream, 'w+', permissions) }
-          let(:permissions) { 0644 }
+          let(:permissions) { 0o644 }
 
           before(:each) do
             log_file.write('hello')
@@ -154,7 +152,13 @@ describe Hanami::Logger do
               logger.close
 
               stat = File.stat(log_file)
-              stat.mode.to_s(8).must_equal('100644')
+              mode = stat.mode.to_s(8)
+
+              if Hanami::Utils.jruby?
+                mode.must_equal('100664')
+              else
+                mode.must_equal('100644')
+              end
             end
           end
         end # end File
@@ -174,7 +178,6 @@ describe Hanami::Logger do
             contents.must_match(/in file/)
           end
         end # end IO
-
       end # end FileSystem
 
       describe 'when StringIO' do
@@ -188,11 +191,9 @@ describe Hanami::Logger do
           stream.read.must_match(/in file/)
         end
       end # end StringIO
-
     end # end #initialize
 
-
-    describe "#close" do
+    describe '#close' do
       it 'does not close STDOUT output for other code' do
         logger = Hanami::Logger.new(stream: STDOUT)
         logger.close
@@ -277,7 +278,7 @@ describe Hanami::Logger do
 
     it 'infers apptag from namespace' do
       module App2
-        class TestLogger < Hanami::Logger;end
+        class TestLogger < Hanami::Logger; end
         class Bar
           def hoge
             TestLogger.new.send(:application_name).must_equal 'App2'
@@ -288,7 +289,11 @@ describe Hanami::Logger do
     end
 
     it 'uses custom application_name from override class' do
-      class TestLogger < Hanami::Logger; def application_name; 'bar'; end; end
+      class TestLogger < Hanami::Logger
+        def application_name
+          'bar'
+        end
+      end
 
       output =
         stub_stdout_constant do
@@ -303,7 +308,7 @@ describe Hanami::Logger do
         stub_time_now do
           output =
             stub_stdout_constant do
-              class TestLogger < Hanami::Logger;end
+              class TestLogger < Hanami::Logger; end
               TestLogger.new(formatter: nil).info('foo')
             end
           output.must_equal "app=Hanami severity=INFO time=1988-09-01 00:00:00 UTC message=foo\n"
@@ -316,10 +321,10 @@ describe Hanami::Logger do
         stub_time_now do
           output =
             stub_stdout_constant do
-              class TestLogger < Hanami::Logger;end
+              class TestLogger < Hanami::Logger; end
               TestLogger.new(formatter: :json).info('foo')
             end
-          output.must_equal "{\"app\":\"Hanami\",\"severity\":\"INFO\",\"time\":\"1988-09-01 00:00:00 UTC\",\"message\":\"foo\"}"
+          output.must_equal '{"app":"Hanami","severity":"INFO","time":"1988-09-01 00:00:00 UTC","message":"foo"}'
         end
       end
 
@@ -327,10 +332,10 @@ describe Hanami::Logger do
         stub_time_now do
           output =
             stub_stdout_constant do
-              class TestLogger < Hanami::Logger;end
+              class TestLogger < Hanami::Logger; end
               TestLogger.new(formatter: Hanami::Logger::JSONFormatter.new).info('foo')
             end
-          output.must_equal "{\"app\":\"Hanami\",\"severity\":\"INFO\",\"time\":\"1988-09-01 00:00:00 UTC\",\"message\":\"foo\"}"
+          output.must_equal '{"app":"Hanami","severity":"INFO","time":"1988-09-01 00:00:00 UTC","message":"foo"}'
         end
       end
 
@@ -338,10 +343,10 @@ describe Hanami::Logger do
         stub_time_now do
           output =
             stub_stdout_constant do
-              class TestLogger < Hanami::Logger;end
+              class TestLogger < Hanami::Logger; end
               TestLogger.new(formatter: Hanami::Logger::JSONFormatter.new).error(Exception.new('foo'))
             end
-          output.must_equal "{\"app\":\"Hanami\",\"severity\":\"ERROR\",\"time\":\"1988-09-01 00:00:00 UTC\",\"message\":\"foo\",\"backtrace\":[],\"error\":\"Exception\"}"
+          output.must_equal '{"app":"Hanami","severity":"ERROR","time":"1988-09-01 00:00:00 UTC","message":"foo","backtrace":[],"error":"Exception"}'
         end
       end
 
@@ -349,10 +354,10 @@ describe Hanami::Logger do
         stub_time_now do
           output =
             stub_stdout_constant do
-              class TestLogger < Hanami::Logger;end
+              class TestLogger < Hanami::Logger; end
               TestLogger.new(formatter: Hanami::Logger::JSONFormatter.new).info(foo: :bar)
             end
-          output.must_equal "{\"app\":\"Hanami\",\"severity\":\"INFO\",\"time\":\"1988-09-01 00:00:00 UTC\",\"foo\":\"bar\"}"
+          output.must_equal '{"app":"Hanami","severity":"INFO","time":"1988-09-01 00:00:00 UTC","foo":"bar"}'
         end
       end
 
@@ -360,10 +365,10 @@ describe Hanami::Logger do
         stub_time_now do
           output =
             stub_stdout_constant do
-              class TestLogger < Hanami::Logger;end
+              class TestLogger < Hanami::Logger; end
               TestLogger.new(formatter: Hanami::Logger::JSONFormatter.new).info(['foo'])
             end
-          output.must_equal "{\"app\":\"Hanami\",\"severity\":\"INFO\",\"time\":\"1988-09-01 00:00:00 UTC\",\"message\":[\"foo\"]}"
+          output.must_equal '{"app":"Hanami","severity":"INFO","time":"1988-09-01 00:00:00 UTC","message":["foo"]}'
         end
       end
     end
@@ -373,7 +378,7 @@ describe Hanami::Logger do
         stub_time_now do
           output =
             stub_stdout_constant do
-              class TestLogger < Hanami::Logger;end
+              class TestLogger < Hanami::Logger; end
               TestLogger.new(formatter: :default).info('foo')
             end
           output.must_equal "app=Hanami severity=INFO time=1988-09-01 00:00:00 UTC message=foo\n"
@@ -384,7 +389,7 @@ describe Hanami::Logger do
         stub_time_now do
           output =
             stub_stdout_constant do
-              class TestLogger < Hanami::Logger;end
+              class TestLogger < Hanami::Logger; end
               TestLogger.new.info('foo')
             end
           output.must_equal "app=Hanami severity=INFO time=1988-09-01 00:00:00 UTC message=foo\n"
@@ -395,7 +400,7 @@ describe Hanami::Logger do
         stub_time_now do
           output =
             stub_stdout_constant do
-              class TestLogger < Hanami::Logger;end
+              class TestLogger < Hanami::Logger; end
               TestLogger.new.error(Exception.new('foo'))
             end
           output.must_equal "app=Hanami severity=ERROR time=1988-09-01 00:00:00 UTC message=foo backtrace=[] error=Exception\n"
@@ -406,7 +411,7 @@ describe Hanami::Logger do
         stub_time_now do
           output =
             stub_stdout_constant do
-              class TestLogger < Hanami::Logger;end
+              class TestLogger < Hanami::Logger; end
               TestLogger.new.info(foo: :bar)
             end
           output.must_equal "app=Hanami severity=INFO time=1988-09-01 00:00:00 UTC foo=bar\n"
@@ -417,7 +422,7 @@ describe Hanami::Logger do
         stub_time_now do
           output =
             stub_stdout_constant do
-              class TestLogger < Hanami::Logger;end
+              class TestLogger < Hanami::Logger; end
               TestLogger.new.info(['foo'])
             end
           output.must_equal "app=Hanami severity=INFO time=1988-09-01 00:00:00 UTC message=[\"foo\"]\n"

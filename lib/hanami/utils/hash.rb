@@ -10,7 +10,7 @@ module Hanami
       #
       # @see Hanami::Utils::Hash#deep_dup
       # @see Hanami::Utils::Duplicable
-      DUPLICATE_LOGIC = Proc.new do |value|
+      DUPLICATE_LOGIC = proc do |value|
         case value
         when Hash
           value.deep_dup
@@ -160,8 +160,8 @@ module Hanami
       #   # it deeply duplicates Hanami::Utils::Hash, by preserving the class
       #   duped['u_hash'].class # => Hanami::Utils::Hash
       def deep_dup
-        Hash.new.tap do |result|
-          @hash.each {|k, v| result[k] = Duplicable.dup(v, &DUPLICATE_LOGIC) }
+        self.class.new.tap do |result|
+          @hash.each { |k, v| result[k] = Duplicable.dup(v, &DUPLICATE_LOGIC) }
         end
       end
 
@@ -229,7 +229,7 @@ module Hanami
         end
       end
 
-      alias_method :to_hash, :to_h
+      alias to_hash to_h
 
       # Converts into a nested array of [ key, value ] arrays.
       #
@@ -251,7 +251,7 @@ module Hanami
         @hash == other.to_h
       end
 
-      alias_method :eql?, :==
+      alias eql? ==
 
       # Returns the hash of the internal @hash
       #
@@ -283,7 +283,7 @@ module Hanami
           h = self.class.new(h) if h.is_a?(::Hash)
           h
         else
-          raise NoMethodError.new(%(undefined method `#{ m }' for #{ @hash }:#{ self.class }))
+          raise NoMethodError.new(%(undefined method `#{m}' for #{@hash}:#{self.class}))
         end
       end
 
@@ -291,7 +291,7 @@ module Hanami
       #
       # @api private
       # @since 0.3.0
-      def respond_to_missing?(m, include_private=false)
+      def respond_to_missing?(m, include_private = false)
         @hash.respond_to?(m, include_private)
       end
     end

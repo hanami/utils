@@ -7,14 +7,14 @@ describe Hanami::Utils::Escape do
 
   describe '.html' do
     TEST_ENCODINGS.each do |encoding|
-      describe "#{ encoding }" do
+      describe encoding.to_s do
         it "doesn't escape safe string" do
           input  = Hanami::Utils::Escape::SafeString.new('&')
           result = mod.html(input.encode(encoding))
           result.must_equal '&'
         end
 
-        it "escapes nil" do
+        it 'escapes nil' do
           result = mod.html(nil)
           result.must_equal ''
         end
@@ -101,9 +101,10 @@ describe Hanami::Utils::Escape do
       end
     end
 
-    it "escapes word with different encoding" do
-      skip "There is no ASCII-8BIT encoding" unless Encoding.name_list.include?('ASCII-8BIT')
+    it 'escapes word with different encoding' do
+      skip 'There is no ASCII-8BIT encoding' unless Encoding.name_list.include?('ASCII-8BIT')
 
+      # rubocop:disable Style/AsciiComments
       # 'тест' means test in russian
       string   = 'тест'.force_encoding('ASCII-8BIT')
       encoding = string.encoding
@@ -118,14 +119,14 @@ describe Hanami::Utils::Escape do
 
   describe '.html_attribute' do
     TEST_ENCODINGS.each do |encoding|
-      describe "#{ encoding }" do
+      describe encoding.to_s do
         it "doesn't escape safe string" do
           input  = Hanami::Utils::Escape::SafeString.new('&')
           result = mod.html_attribute(input.encode(encoding))
           result.must_equal '&'
         end
 
-        it "escapes nil" do
+        it 'escapes nil' do
           result = mod.html_attribute(nil)
           result.must_equal ''
         end
@@ -212,73 +213,73 @@ describe Hanami::Utils::Escape do
       end
     end # tests with encodings
 
-    TEST_INVALID_CHARS.each do |char, entity|
-      it "escapes '#{ char }'" do
+    TEST_INVALID_CHARS.each do |char, _entity|
+      it "escapes '#{char}'" do
         result = mod.html_attribute(char)
-        result.must_equal "&#x#{ TEST_REPLACEMENT_CHAR };"
+        result.must_equal "&#x#{TEST_REPLACEMENT_CHAR};"
       end
     end
 
-    it "escapes tab" do
+    it 'escapes tab' do
       result = mod.html_attribute("\t")
-      result.must_equal "&#x9;"
+      result.must_equal '&#x9;'
     end
 
-    it "escapes return carriage" do
+    it 'escapes return carriage' do
       result = mod.html_attribute("\r")
-      result.must_equal "&#xd;"
+      result.must_equal '&#xd;'
     end
 
-    it "escapes new line" do
+    it 'escapes new line' do
       result = mod.html_attribute("\n")
-      result.must_equal "&#xa;"
+      result.must_equal '&#xa;'
     end
 
-    it "escapes unicode char" do
-      result = mod.html_attribute("Ā")
+    it 'escapes unicode char' do
+      result = mod.html_attribute('Ā')
       result.must_equal '&#x100;'
     end
 
     it "doesn't escape ','" do
-      result = mod.html_attribute(",")
+      result = mod.html_attribute(',')
       result.must_equal ','
     end
 
     it "doesn't escape '.'" do
-      result = mod.html_attribute(".")
+      result = mod.html_attribute('.')
       result.must_equal '.'
     end
 
     it "doesn't escape '-'" do
-      result = mod.html_attribute("-")
+      result = mod.html_attribute('-')
       result.must_equal '-'
     end
 
     it "doesn't escape '_'" do
-      result = mod.html_attribute("_")
+      result = mod.html_attribute('_')
       result.must_equal '_'
     end
 
     TEST_HTML_ENTITIES.each do |char, entity|
       test_name = Hanami::Utils.jruby? ? char.ord : char
 
-      it "escapes #{ test_name }" do
+      it "escapes #{test_name}" do
         result = mod.html_attribute(char)
-        result.must_equal "&#{ entity };"
+        result.must_equal "&#{entity};"
       end
     end
   end # .html_attribute
 
   describe '.url' do
     TEST_ENCODINGS.each do |encoding|
-      describe "#{ encoding }" do
+      describe encoding.to_s do
         it "doesn't escape safe string" do
           input  = Hanami::Utils::Escape::SafeString.new('javascript:alert(0);')
           result = mod.url(input.encode(encoding))
           result.must_equal 'javascript:alert(0);'
         end
 
-        it "escapes nil" do
+        it 'escapes nil' do
           result = mod.url(nil)
           result.must_equal ''
         end
@@ -342,22 +343,21 @@ describe Hanami::Utils::Escape do
 
       describe 'encodes non-String objects that respond to `.to_s`' do
         TEST_ENCODINGS.each do |enc|
-          describe "#{ enc }" do
-
-            it "escapes a Date" do
-              result = mod.html(Date.new(2016,01,27))
-              result.must_equal "2016-01-27"
+          describe enc.to_s do
+            it 'escapes a Date' do
+              result = mod.html(Date.new(2016, 0o1, 27))
+              result.must_equal '2016-01-27'
             end
 
-            it "escapes a Time" do
-              time_string = Hanami::Utils.jruby? ? "2016-01-27 12:00:00 UTC" : "2016-01-27 12:00:00 +0000"
-              result = mod.html(Time.new(2016,01,27, 12, 0, 0, 0))
+            it 'escapes a Time' do
+              time_string = Hanami::Utils.jruby? ? '2016-01-27 12:00:00 UTC' : '2016-01-27 12:00:00 +0000'
+              result = mod.html(Time.new(2016, 0o1, 27, 12, 0, 0, 0))
               result.must_equal time_string
             end
 
-            it "escapes a DateTime" do
-              result = mod.html(DateTime.new(2016,01,27, 12, 0, 0, 0))
-              result.must_equal "2016-01-27T12:00:00+00:00"
+            it 'escapes a DateTime' do
+              result = mod.html(DateTime.new(2016, 0o1, 27, 12, 0, 0, 0))
+              result.must_equal '2016-01-27T12:00:00+00:00'
             end
           end
         end

@@ -110,12 +110,12 @@ module Hanami
       #   paths = Hanami::Utils::LoadPaths.new
       #   paths << '.' << '../..'
       def push(*paths)
-        @paths.push(*paths)
+        @paths.push(*paths) # rubocop:disable Performance/PushSplat
         @paths = Kernel.Array(@paths)
         self
       end
 
-      alias_method :<<, :push
+      alias << push
 
       # It freezes the object by preventing further modifications.
       #
@@ -149,11 +149,13 @@ module Hanami
       end
 
       protected
+
       # @since 0.6.0
       # @api private
       attr_reader :paths
 
       private
+
       # Allow subclasses to define their own policy to discover the realpath
       # of the given path.
       #

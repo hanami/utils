@@ -58,10 +58,11 @@ module Hanami
       #     # => old_method is deprecated, please use new_method - called from: test.rb:20:in `start'.
       #     # => started
       def initialize(message)
-        ::Kernel.warn("#{ message } - called from: #{ caller[caller_index] }.")
+        ::Kernel.warn("#{message} - called from: #{caller[caller_index]}.")
       end
 
       private
+
       def caller_index
         Utils.jruby? || Utils.rubinius? ? 1 : 2
       end
