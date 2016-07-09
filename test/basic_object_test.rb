@@ -24,13 +24,13 @@ describe Hanami::Utils::BasicObject do
   end
 
   describe '#class' do
-    it 'return TestClass' do
+    it 'returns TestClass' do
       TestClass.new.class.must_equal TestClass
     end
   end
 
   describe "#inspect" do
-    it 'return the inspect message' do
+    it 'returns the inspect message' do
       inspect_msg = TestClass.new.inspect
       inspect_msg.must_match /^#<TestClass:\w+>$/
     end
