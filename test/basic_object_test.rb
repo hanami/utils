@@ -29,10 +29,10 @@ describe Hanami::Utils::BasicObject do
     end
   end
 
-  describe "#inspect" do
+  describe '#inspect' do
     it 'returns the inspect message' do
       inspect_msg = TestClass.new.inspect
-      inspect_msg.must_match /^#<TestClass:\w+>$/
+      inspect_msg.must_match(/\A#<TestClass:\w+>\z/)
     end
   end
 end
