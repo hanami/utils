@@ -10,7 +10,7 @@ module Hanami
       #
       # @see http://ruby-doc.org/core/Object.html#method-i-class
       def class
-        (class << self; self end).superclass
+        (class << self; self; end).superclass
       end
 
       # Bare minimum inspect for debugging purposes.
