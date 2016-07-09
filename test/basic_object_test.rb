@@ -22,4 +22,17 @@ describe Hanami::Utils::BasicObject do
       assert TestCase.new.respond_to?(:no_existing_method)
     end
   end
+
+  describe '#class' do
+    it 'return TestClass' do
+      TestClass.new.class.must_equal TestClass
+    end
+  end
+
+  describe "#inspect" do
+    it 'return the inspect message' do
+      inspect_msg = TestClass.new.inspect
+      inspect_msg.must_match /^#<TestClass:\w+>$/
+    end
+  end
 end
