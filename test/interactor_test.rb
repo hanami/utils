@@ -174,7 +174,7 @@ describe Hanami::Interactor do
 
     it 'is successful by default' do
       result = Signup.new(name: 'Luca').call
-      assert result.success?, "Expected `result' to be successful"
+      assert result.successful?, "Expected `result' to be successful"
     end
 
     it 'returns the payload' do
@@ -192,12 +192,12 @@ describe Hanami::Interactor do
 
     it 'exposes a convenient API for handling failures' do
       result = Signup.new({}).call
-      assert !result.success?, "Expected `result' to NOT be successful"
+      assert result.failing?, "Expected `result' to NOT be successful"
     end
 
     it "doesn't invoke it if the preconditions are failing" do
       result = Signup.new(force_failure: true).call
-      assert !result.success?, "Expected `result' to NOT be successful"
+      assert result.failing?, "Expected `result' to NOT be successful"
     end
 
     it "raises error when #call isn't implemented" do
@@ -208,7 +208,7 @@ describe Hanami::Interactor do
       it 'is successful for super class' do
         result = CreateUser.new(name: 'L').call
 
-        assert result.success?, "Expected `result' to be successful"
+        assert result.successful?, "Expected `result' to be successful"
         result.user.name.must_equal 'L'
       end
 
@@ -216,7 +216,7 @@ describe Hanami::Interactor do
         user   = User.new(name: 'L')
         result = UpdateUser.new(user, name: 'MG').call
 
-        assert result.success?, "Expected `result' to be successful"
+        assert result.successful?, "Expected `result' to be successful"
         result.user.name.must_equal 'MG'
       end
     end
@@ -225,7 +225,7 @@ describe Hanami::Interactor do
   describe '#error' do
     it "isn't successful" do
       result = ErrorInteractor.new.call
-      assert !result.success?, "Expected `result' to not be successful"
+      assert result.failing?, "Expected `result' to not be successful"
     end
 
     it 'accumulates errors' do
@@ -251,7 +251,7 @@ describe Hanami::Interactor do
   describe '#error!' do
     it "isn't successful" do
       result = ErrorBangInteractor.new.call
-      assert !result.success?, "Expected `result' to not be successful"
+      assert result.failing?, "Expected `result' to not be successful"
     end
 
     it 'stops at the first error' do
@@ -280,17 +280,17 @@ describe Hanami::Interactor::Result do
     end
   end
 
-  describe '#success?' do
+  describe '#successful?' do
     it 'is successful by default' do
       result = Hanami::Interactor::Result.new
-      assert result.success?, "Expected `result' to be successful"
+      assert result.successful?, "Expected `result' to be successful"
     end
 
     describe 'when it has errors' do
       it "isn't successful" do
         result = Hanami::Interactor::Result.new
         result.add_error 'There was a problem'
-        assert !result.success?, "Expected `result' to NOT be successful"
+        assert result.failing?, "Expected `result' to NOT be successful"
       end
     end
   end
@@ -300,7 +300,7 @@ describe Hanami::Interactor::Result do
       result = Hanami::Interactor::Result.new
       result.fail!
 
-      assert !result.success?, "Expected `result' to NOT be successful"
+      assert result.failing?, "Expected `result' to NOT be successful"
     end
   end
 
@@ -361,8 +361,11 @@ describe Hanami::Interactor::Result do
     it 'returns true for concrete methods' do
       result = Hanami::Interactor::Result.new
 
-      assert result.respond_to?(:success?),  "Expected `result' to respond to `#success?'"
-      assert result.respond_to?('success?'), "Expected `result' to respond to `#success?'"
+      assert result.respond_to?(:successful?),  "Expected `result' to respond to `#successful?'"
+      assert result.respond_to?('successful?'), "Expected `result' to respond to `#successful?'"
+
+      assert result.respond_to?(:failing?),  "Expected `result' to respond to `#failing?'"
+      assert result.respond_to?('failing?'), "Expected `result' to respond to `#failing?'"
     end
 
     it 'returns true for methods derived from payload' do
