@@ -11,7 +11,7 @@ module Hanami
     # If you use MultiJson gem this wrapper will use it.
     # Otherwise - JSON std lib.
     #
-    # @since x.x.x
+    # @since 0.8.0
     module Json
       # rubocop:disable Style/ClassVars
       if defined?(MultiJson)
@@ -31,7 +31,7 @@ module Hanami
       #
       # @raise [Hanami::Utils::Json::ParserError] if the paylod is invalid
       #
-      # @since x.x.x
+      # @since 0.8.0
       def self.load(payload)
         @@engine.load(payload)
       end
@@ -42,7 +42,7 @@ module Hanami
       #
       # @return [String] the result of the dumping process
       #
-      # @since x.x.x
+      # @since 0.8.0
       def self.dump(object)
         @@engine.dump(object)
       end

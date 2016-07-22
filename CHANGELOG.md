@@ -1,7 +1,7 @@
 # Hanami::Utils
 Ruby core extentions and class utilities for Hanami
 
-## v0.8.0 - (unreleased)
+## v0.8.0 - 2016-07-22
 ### Added
 - [Andrey Morskov] Introduced `Hanami::Utils::Blank`
 - [Anton Davydov] Allow to specify a default log level for `Hanami::Logger`
@@ -16,7 +16,7 @@ Ruby core extentions and class utilities for Hanami
 - [Rogério Ramos] Fix English pluralization for words ending with `"ice"`
 
 ### Changed
-– [Luca Guidi] Drop support for Ruby 2.0, 2.1 and Rubinius. Official support for JRuby 9.0.5.0+.
+- [Luca Guidi] Drop support for Ruby 2.0, 2.1 and Rubinius. Official support for JRuby 9.0.5.0+.
 
 ## v0.7.1 - 2016-02-05
 ### Fixed
