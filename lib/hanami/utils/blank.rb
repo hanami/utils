@@ -1,11 +1,11 @@
 module Hanami
   module Utils
     # Checks for blank
-    # @since x.x.x
+    # @since 0.8.0
     class Blank
       # Matcher for blank strings
       #
-      # @since x.x.x
+      # @since 0.8.0
       # @api private
       STRING_MATCHER = /\A[[:space:]]*\z/
 
@@ -25,7 +25,7 @@ module Hanami
       #
       # @return [TrueClass,FalseClass]
       #
-      # @since x.x.x
+      # @since 0.8.0
       def self.blank?(object) # rubocop:disable Metrics/MethodLength
         case object
         when String, ::String

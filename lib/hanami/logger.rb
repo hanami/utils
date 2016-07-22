@@ -100,11 +100,11 @@ module Hanami
     #
     # @see http://www.ruby-doc.org/stdlib/libdoc/logger/rdoc/Logger/Formatter.html
     class Formatter < ::Logger::Formatter
-      # @since x.x.x
+      # @since 0.8.0
       # @api private
       SEPARATOR = ' '.freeze
 
-      # @since x.x.x
+      # @since 0.8.0
       # @api private
       NEW_LINE = $/
 
@@ -153,7 +153,7 @@ module Hanami
 
       private
 
-      # @since x.x.x
+      # @since 0.8.0
       # @api private
       def _message_hash(message) # rubocop:disable Metrics/MethodLength
         case message
@@ -170,7 +170,7 @@ module Hanami
         end
       end
 
-      # @since x.x.x
+      # @since 0.8.0
       # @api private
       def _format(hash)
         hash.map { |k, v| "#{k}=#{v}" }.join(SEPARATOR) + NEW_LINE
@@ -189,7 +189,7 @@ module Hanami
 
       private
 
-      # @since x.x.x
+      # @since 0.8.0
       # @api private
       def _format(hash)
         Hanami::Utils::Json.dump(hash)
@@ -203,7 +203,7 @@ module Hanami
     # @api private
     DEFAULT_APPLICATION_NAME = 'Hanami'.freeze
 
-    # @since x.x.x
+    # @since 0.8.0
     # @api private
     LEVELS = Hash[
       'debug'   => DEBUG,
@@ -245,7 +245,7 @@ module Hanami
       @application_name || _application_name_from_namespace || _default_application_name
     end
 
-    # @since x.x.x
+    # @since 0.8.0
     # @api private
     def level=(value)
       super _level(value)
@@ -253,7 +253,7 @@ module Hanami
 
     # Close the logging stream if this stream isn't an STDOUT
     #
-    # @since x.x.x
+    # @since 0.8.0
     def close
       super unless [STDOUT, $stdout].include?(@stream)
     end
@@ -275,7 +275,7 @@ module Hanami
       DEFAULT_APPLICATION_NAME
     end
 
-    # @since x.x.x
+    # @since 0.8.0
     # @api private
     def _level(level)
       case level

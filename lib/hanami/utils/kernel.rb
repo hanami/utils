@@ -29,11 +29,11 @@ module Hanami
       # @see Hanami::Utils::Kernel.Integer
       NUMERIC_MATCHER = %r{\A([\d\/\.\+iE]+|NaN|Infinity)\z}
 
-      # @since x.x.x
+      # @since 0.8.0
       # @api private
       BOOLEAN_FALSE_STRING = '0'.freeze
 
-      # @since x.x.x
+      # @since 0.8.0
       # @api private
       BOOLEAN_TRUE_INTEGER = 1
 
@@ -346,7 +346,6 @@ module Hanami
       # Coerces the argument to be a BigDecimal.
       #
       # @param arg [Object] the argument
-      # @param precision [Keyword] precision for Rational objects (Only JRuby).
       #
       # @return [BigDecimal] the result of the coercion
       #
@@ -1022,7 +1021,7 @@ module Hanami
       #
       # @return [TrueClass,FalseClass]
       #
-      # @since x.x.x
+      # @since 0.8.0
       # @api private
       def self.numeric?(arg)
         !(arg.to_s =~ NUMERIC_MATCHER).nil?

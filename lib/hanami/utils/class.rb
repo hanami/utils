@@ -47,7 +47,7 @@ module Hanami
       # @param namespace [Class, Module] the Ruby namespace where we want to perform the lookup.
       # @return [Class, Module, NilClass] the Ruby constant, or nil if not found.
       #
-      # @since x.x.x
+      # @since 0.8.0
       #
       # @example
       #   require 'hanami/utils/class'
