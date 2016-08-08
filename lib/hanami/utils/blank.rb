@@ -37,7 +37,7 @@ module Hanami
         when FalseClass, NilClass
           true
         else
-          object.respond_to?(:empty?) ? !!object.empty? : !self
+          object.respond_to?(:empty?) ? object.empty? : !self
         end
       end
     end
