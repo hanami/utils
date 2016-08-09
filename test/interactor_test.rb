@@ -124,7 +124,7 @@ class PublishVideo
 
   def owns?
     # fake failed ownership check
-    1 == 0 ||
+    1 == 0 || # rubocop:disable Style/NumericPredicate
       error("You're not owner of this video")
   end
 end
