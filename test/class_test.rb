@@ -5,14 +5,14 @@ describe Hanami::Utils::Class do
   before do
     class Bar
       def level
-        "top"
+        'top'
       end
     end
 
     class Foo
       class Bar
         def level
-          "nested"
+          'nested'
         end
       end
     end
