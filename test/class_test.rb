@@ -3,6 +3,20 @@ require 'hanami/utils/class'
 
 describe Hanami::Utils::Class do
   before do
+    class Bar
+      def level
+        "top"
+      end
+    end
+
+    class Foo
+      class Bar
+        def level
+          "nested"
+        end
+      end
+    end
+
     module App
       module Layer
         class Step
@@ -56,6 +70,21 @@ describe Hanami::Utils::Class do
   end
 
   describe '.load_from_pattern!' do
+    it 'loads the class within the given namespace' do
+      klass = Hanami::Utils::Class.load_from_pattern!('(Hanami|Foo)::Bar')
+      klass.new.level.must_equal 'nested'
+    end
+
+    it 'loads the class within the given namespace, when first namespace does not exist' do
+      klass = Hanami::Utils::Class.load_from_pattern!('(NotExisting|Foo)::Bar')
+      klass.new.level.must_equal 'nested'
+    end
+
+    it 'loads the class within the given namespace when first namespace in pattern is correct one' do
+      klass = Hanami::Utils::Class.load_from_pattern!('(Foo|Hanami)::Bar')
+      klass.new.level.must_equal 'nested'
+    end
+
     it 'loads the class from the given static string' do
       Hanami::Utils::Class.load_from_pattern!('App::Layer::Step').must_equal(App::Layer::Step)
     end

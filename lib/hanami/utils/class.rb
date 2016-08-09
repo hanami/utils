@@ -38,7 +38,7 @@ module Hanami
       #   # with missing constant
       #   Hanami::Utils::Class.load!('Unknown') # => raises NameError
       def self.load!(name, namespace = Object)
-        namespace.const_get(name.to_s)
+        namespace.const_get(name.to_s, false)
       end
 
       # Loads a class for the given name, only if it's defined.
@@ -69,7 +69,7 @@ module Hanami
       #   # with explicit namespace
       #   Hanami::Utils::Class.load('Service', App) # => App::Service
       def self.load(name, namespace = Object)
-        load!(name, namespace) if namespace.const_defined?(name.to_s)
+        load!(name, namespace) if namespace.const_defined?(name.to_s, false)
       end
 
       # Loads a class from the given pattern name and namespace
@@ -112,7 +112,7 @@ module Hanami
       def self.load_from_pattern!(pattern, namespace = Object)
         String.new(pattern).tokenize do |token|
           begin
-            return namespace.const_get(token)
+            return namespace.const_get(token, false)
           rescue NameError # rubocop:disable Lint/HandleExceptions
           end
         end
