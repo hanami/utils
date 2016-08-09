@@ -6,3 +6,5 @@ Style/DoubleNegation:
   Enabled: false
 Style/SpecialGlobalVars:
   Enabled: false
+Style/MethodMissing:
+  Enabled: false
