@@ -1,5 +1,6 @@
 require 'test_helper'
 require 'hanami/utils/basic_object'
+require 'pp'
 
 class TestClass < Hanami::Utils::BasicObject
 end
@@ -34,5 +35,10 @@ describe Hanami::Utils::BasicObject do
       inspect_msg = TestClass.new.inspect
       inspect_msg.must_match(/\A#<TestClass:\w+>\z/)
     end
+  end
+
+  # See https://github.com/hanami/hanami/issues/629
+  it 'is pretty printable' do
+    pp TestClass.new
   end
 end
