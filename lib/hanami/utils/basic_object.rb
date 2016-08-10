@@ -24,6 +24,28 @@ module Hanami
         "#<#{self.class}:#{'%x' % (__id__ << 1)}#{__inspect}>" # rubocop:disable Style/FormatString
       end
 
+      # Alias for __id__
+      #
+      # @return [Fixnum] the object id
+      #
+      # @since x.x.x
+      #
+      # @see http://ruby-doc.org/core/Object.html#method-i-object_id
+      def object_id
+        __id__
+      end
+
+      # Interface for <tt>pp</pp>
+      #
+      # @return [String] the pretty printable inspection of the object
+      #
+      # @since x.x.x
+      #
+      # @see https://ruby-doc.org/stdlib/libdoc/pp/rdoc/PP.html
+      def pretty_print(*)
+        inspect
+      end
+
       # Returns true if responds to the given method.
       #
       # @return [TrueClass,FalseClass] the result of the check
