@@ -17,7 +17,14 @@ module Hanami
       # @api private
       #
       # @see Hanami::Interactor::Result#respond_to_missing?
-      METHODS = ::Hash[initialize: true, success?: true, fail!: true, prepare!: true, errors: true, error: true].freeze
+      METHODS = ::Hash[initialize:  true,
+                       success?:    true,
+                       successful?: true,
+                       failing?:    true,
+                       fail!:       true,
+                       prepare!:    true,
+                       errors:      true,
+                       error:       true].freeze
 
       # Initialize a new result
       #
@@ -37,9 +44,21 @@ module Hanami
       #
       # @return [TrueClass,FalseClass] the result of the check
       #
-      # @since 0.3.5
-      def success?
+      # @since 0.8.1
+      def successful?
         @success && errors.empty?
+      end
+
+      # @since 0.3.5
+      alias success? successful?
+
+      # Check if the current status is not successful
+      #
+      # @return [TrueClass,FalseClass] the result of the check
+      #
+      # @since 0.8.1
+      def failing?
+        !successful?
       end
 
       # Force the status to be a failure
@@ -202,7 +221,8 @@ module Hanami
       #   end
       #
       #   result = Signup.new(name: 'Luca').call
-      #   result.success? # => true
+      #   result.failing? # => false
+      #   result.successful? # => true
       #
       #   result.user   # => #<User:0x007fa311105778 @id=1 @name="Luca">
       #   result.params # => { :name=>"Luca" }
@@ -232,7 +252,8 @@ module Hanami
       #   end
       #
       #   result = Signup.new(name: nil).call
-      #   result.success? # => false
+      #   result.successful? # => false
+      #   result.failing? # => true
       #
       #   result.user   # => #<User:0x007fa311105778 @id=nil @name="Luca">
       #
@@ -299,7 +320,7 @@ module Hanami
     #   end
     #
     #   result = CreateEmailTest.new(account_id: 1).call
-    #   result.success? # => false
+    #   result.successful? # => false
     def fail!
       @__result.fail!
       throw :fail
@@ -351,7 +372,7 @@ module Hanami
     #   end
     #
     #   result = CreateRecord.new.call
-    #   result.success? # => false
+    #   result.successful? # => false
     #
     #   result.errors # => ["Prepare data error", "Persist error"]
     #   result.logger # => [:prepare_data!, :persist!, :sync!]
@@ -405,7 +426,7 @@ module Hanami
     #   end
     #
     #   result = CreateRecord.new.call
-    #   result.success? # => false
+    #   result.successful? # => false
     #
     #   result.errors # => ["Prepare data error", "Persist error"]
     #   result.logger # => [:prepare_data!, :persist!]
