@@ -1,6 +1,6 @@
 # Hanami::Utils
 
-Ruby core extentions and class utilities for [Hanami](http://hanamirb.org)
+Ruby core extensions and class utilities for [Hanami](http://hanamirb.org)
 
 ## Status
 
