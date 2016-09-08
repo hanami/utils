@@ -49,6 +49,14 @@ describe Hanami::Utils::Hash do
       hash[:nested].must_be_kind_of Hanami::Utils::Hash
       hash[:nested][:key].must_equal('value')
     end
+
+    it 'symbolize nested object that responds to to_hash' do
+      nested = Hanami::Utils::Hash.new('metadata' => WrappingHash.new('coverage' => 100))
+      nested.symbolize!
+
+      nested[:metadata].must_be_kind_of Hanami::Utils::Hash
+      nested[:metadata][:coverage].must_equal(100)
+    end
   end
 
   describe '#stringify!' do
@@ -75,6 +83,14 @@ describe Hanami::Utils::Hash do
 
       hash['nested'].must_be_kind_of Hanami::Utils::Hash
       hash['nested']['key'].must_equal('value')
+    end
+
+    it 'stringifies nested object that responds to to_hash' do
+      nested = Hanami::Utils::Hash.new(metadata: WrappingHash.new(coverage: 100))
+      nested.stringify!
+
+      nested['metadata'].must_be_kind_of Hanami::Utils::Hash
+      nested['metadata']['coverage'].must_equal(100)
     end
   end
 
@@ -232,6 +248,11 @@ describe Hanami::Utils::Hash do
 
       #   actual.to_h.must_equal({'a' => {'b' => 2}})
       # end
+
+      it 'serializes nested objects that respond to to_hash' do
+        nested = Hanami::Utils::Hash.new(metadata: WrappingHash.new(coverage: 100))
+        nested.to_h.must_equal(metadata: { coverage: 100 })
+      end
     end
 
     describe '#to_hash' do

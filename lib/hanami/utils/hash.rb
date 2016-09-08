@@ -65,7 +65,7 @@ module Hanami
       def symbolize!
         keys.each do |k|
           v = delete(k)
-          v = self.class.new(v).symbolize! if v.is_a?(::Hash) || v.is_a?(self.class)
+          v = self.class.new(v).symbolize! if v.respond_to?(:to_hash)
 
           self[k.to_sym] = v
         end
@@ -90,7 +90,7 @@ module Hanami
       def stringify!
         keys.each do |k|
           v = delete(k)
-          v = self.class.new(v).stringify! if v.is_a?(::Hash) || v.is_a?(self.class)
+          v = self.class.new(v).stringify! if v.respond_to?(:to_hash)
 
           self[k.to_s] = v
         end
@@ -224,7 +224,7 @@ module Hanami
       # @see http://www.ruby-doc.org/core/Hash.html#method-i-to_h
       def to_h
         @hash.each_with_object({}) do |(k, v), result|
-          v = v.to_h if v.is_a?(self.class)
+          v = v.to_h if v.respond_to?(:to_hash)
           result[k] = v
         end
       end
