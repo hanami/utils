@@ -613,3 +613,14 @@ Hanami::Utils::Inflector.inflections do
   exception   'alga',     'algae'
   uncountable 'music', 'butter'
 end
+
+class WrappingHash
+  def initialize(hash)
+    @hash = hash.to_h
+  end
+
+  def to_hash
+    @hash
+  end
+  alias to_h to_hash
+end
