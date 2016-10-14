@@ -33,6 +33,19 @@ describe Hanami::Utils::Hash do
       hash[:fub].must_equal('baz')
     end
 
+    it 'symbolize nested array' do
+      hash = Hanami::Utils::Hash.new('foo' => [{'bar' => 'baz'}, {'bat' => 'quux'}])
+
+      hash.symbolize!
+
+      puts hash.to_hash
+      hash[:foo].first['bar'].must_be_nil
+      hash[:foo].last['bat'].must_be_nil
+
+      hash[:foo].first[:bar].must_equal('baz')
+      hash[:foo].last[:bat].must_equal('quux')
+    end
+
     it 'symbolize nested hashes' do
       hash = Hanami::Utils::Hash.new('nested' => { 'key' => 'value' })
       hash.symbolize!

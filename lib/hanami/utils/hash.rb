@@ -67,6 +67,17 @@ module Hanami
           v = delete(k)
           v = self.class.new(v).symbolize! if v.respond_to?(:to_hash)
 
+          if v.is_a?(Array)
+            v = v.collect do |item|
+              if item.respond_to?(:to_hash)
+                e = self.class.new(item).symbolize!
+                e.respond_to?(:to_h) ? e.to_h : e
+              else
+                item
+              end
+            end
+          end
+
           self[k.to_sym] = v
         end
 
