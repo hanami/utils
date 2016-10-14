@@ -1,5 +1,6 @@
 require 'test_helper'
 require 'bigdecimal'
+require 'hanami/utils'
 require 'hanami/utils/hash'
 
 describe Hanami::Utils::Hash do
@@ -181,7 +182,11 @@ describe Hanami::Utils::Hash do
       ).freeze
 
       exception = -> { hash[:a].push(4) }.must_raise(RuntimeError)
-      exception.message.must_equal "can't modify frozen Array"
+      if Hanami::Utils.jruby?
+        exception.message.must_equal "can't modify frozen array"
+      else
+        exception.message.must_equal "can't modify frozen Array"
+      end
 
       exception = -> { hash[:hash].merge!(foo: 'bar') }.must_raise(RuntimeError)
       exception.message.must_equal "can't modify frozen Hash"
