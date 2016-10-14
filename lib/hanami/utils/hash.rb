@@ -278,13 +278,11 @@ module Hanami
       #
       # @raise [NoMethodError] If doesn't respond to the given method
       def method_missing(m, *args, &blk)
-        if respond_to?(m)
-          h = @hash.__send__(m, *args, &blk)
-          h = self.class.new(h) if h.is_a?(::Hash)
-          h
-        else
-          raise NoMethodError.new(%(undefined method `#{m}' for #{@hash}:#{self.class}))
-        end
+        raise NoMethodError.new(%(undefined method `#{m}' for #{@hash}:#{self.class})) unless respond_to?(m)
+
+        h = @hash.__send__(m, *args, &blk)
+        h = self.class.new(h) if h.is_a?(::Hash)
+        h
       end
 
       # Override Ruby's respond_to_missing? in order to support ::Hash interface

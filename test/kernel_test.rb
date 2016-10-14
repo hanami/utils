@@ -1479,7 +1479,7 @@ describe Hanami::Utils::Kernel do
       end
 
       describe 'when a class is given' do
-        let(:input) { Fixnum }
+        let(:input) { Fixnum } # rubocop:disable Lint/UnifiedInteger
 
         it 'returns the string representation' do
           @result.must_equal 'Fixnum'

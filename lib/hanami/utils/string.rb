@@ -399,13 +399,11 @@ module Hanami
       #
       # @raise [NoMethodError] If doesn't respond to the given method
       def method_missing(m, *args, &blk)
-        if respond_to?(m)
-          s = @string.__send__(m, *args, &blk)
-          s = self.class.new(s) if s.is_a?(::String)
-          s
-        else
-          raise NoMethodError.new(%(undefined method `#{m}' for "#{@string}":#{self.class}))
-        end
+        raise NoMethodError.new(%(undefined method `#{m}' for "#{@string}":#{self.class})) unless respond_to?(m)
+
+        s = @string.__send__(m, *args, &blk)
+        s = self.class.new(s) if s.is_a?(::String)
+        s
       end
 
       # Override Ruby's respond_to_missing? in order to support ::String interface

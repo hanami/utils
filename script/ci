@@ -3,7 +3,7 @@ set -euo pipefail
 IFS=$'\n\t'
 
 run_code_quality_checks() {
-  bundle exec rubocop --display-cop-names
+  bundle exec rubocop .
 }
 
 run_unit_tests() {

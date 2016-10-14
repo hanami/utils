@@ -1,3 +1,7 @@
+AllCops:
+  DisplayCopNames: true
+  DisplayStyleGuide: true
+  ExtraDetails: false
 Metrics/LineLength:
   Enabled: false
 Style/RaiseArgs:
@@ -8,3 +12,6 @@ Style/SpecialGlobalVars:
   Enabled: false
 Style/MethodMissing:
   Enabled: false
+Metrics/BlockLength:
+  Exclude:
+    - 'test/**/*'

@@ -110,7 +110,7 @@ module Hanami
       #   paths = Hanami::Utils::LoadPaths.new
       #   paths << '.' << '../..'
       def push(*paths)
-        @paths.push(*paths) # rubocop:disable Performance/PushSplat
+        @paths.push(*paths)
         @paths = Kernel.Array(@paths)
         self
       end
