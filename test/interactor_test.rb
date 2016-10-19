@@ -412,6 +412,11 @@ describe Hanami::Interactor::Result do
       result.b.must_equal 2
     end
 
+    it 'returns hash values passed in the payload' do
+      result = Hanami::Interactor::Result.new(a: { 100 => 3 })
+      result.a.must_equal(100 => 3)
+    end
+
     it 'returns all the values after a merge' do
       result = Hanami::Interactor::Result.new(a: 1, b: 2)
       result.prepare!(a: 23, c: 3)
