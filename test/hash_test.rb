@@ -61,29 +61,40 @@ describe Hanami::Utils::Hash do
       hash[:fub].must_equal('baz')
     end
 
-    it 'symbolize nested hashes' do
-      hash = Hanami::Utils::Hash.new('nested' => { 'key' => 'value' })
-      hash.symbolize!
+    describe 'with deep true' do
+      it 'symbolize nested hashes' do
+        hash = Hanami::Utils::Hash.new('nested' => { 'key' => 'value' })
+        hash.symbolize!
 
-      hash[:nested].must_be_kind_of Hanami::Utils::Hash
-      hash[:nested][:key].must_equal('value')
+        hash[:nested].must_be_kind_of Hanami::Utils::Hash
+        hash[:nested][:key].must_equal('value')
+      end
+
+      it 'symbolize nested Hanami::Utils::Hashes' do
+        nested = Hanami::Utils::Hash.new('key' => 'value')
+        hash = Hanami::Utils::Hash.new('nested' => nested)
+        hash.symbolize!
+
+        hash[:nested].must_be_kind_of Hanami::Utils::Hash
+        hash[:nested][:key].must_equal('value')
+      end
+
+      it 'symbolize nested object that responds to to_hash' do
+        nested = Hanami::Utils::Hash.new('metadata' => WrappingHash.new('coverage' => 100))
+        nested.symbolize!
+
+        nested[:metadata].must_be_kind_of Hanami::Utils::Hash
+        nested[:metadata][:coverage].must_equal(100)
+      end
     end
 
-    it 'symbolize nested Hanami::Utils::Hashes' do
-      nested = Hanami::Utils::Hash.new('key' => 'value')
-      hash = Hanami::Utils::Hash.new('nested' => nested)
-      hash.symbolize!
+    describe 'with deep false' do
+      it 'does not simbolize nested hashes' do
+        hash = Hanami::Utils::Hash.new('nested' => { 'key' => 'value' })
+        hash.symbolize!(false)
 
-      hash[:nested].must_be_kind_of Hanami::Utils::Hash
-      hash[:nested][:key].must_equal('value')
-    end
-
-    it 'symbolize nested object that responds to to_hash' do
-      nested = Hanami::Utils::Hash.new('metadata' => WrappingHash.new('coverage' => 100))
-      nested.symbolize!
-
-      nested[:metadata].must_be_kind_of Hanami::Utils::Hash
-      nested[:metadata][:coverage].must_equal(100)
+        hash[:nested]['key'].must_equal('value')
+      end
     end
   end
 
