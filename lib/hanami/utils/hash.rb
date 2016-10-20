@@ -62,7 +62,7 @@ module Hanami
       #
       #   hash.keys    # => [:a, :b]
       #   hash.inspect # => {:a=>23, :b=>{:c=>["x", "y", "z"]}}
-      def symbolize!(deep = true)
+      def symbolize!(deep: true)
         keys.each do |k|
           v = delete(k)
           v = self.class.new(v).symbolize! if v.respond_to?(:to_hash) && deep

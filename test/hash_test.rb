@@ -91,7 +91,7 @@ describe Hanami::Utils::Hash do
     describe 'with deep false' do
       it 'does not simbolize nested hashes' do
         hash = Hanami::Utils::Hash.new('nested' => { 'key' => 'value' })
-        hash.symbolize!(false)
+        hash.symbolize!(deep: false)
 
         hash[:nested]['key'].must_equal('value')
       end
