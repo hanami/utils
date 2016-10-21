@@ -1,1 +1,2 @@
-# ab
+class Ab
+end
