@@ -1,1 +1,2 @@
-# aa
+class Aa
+end

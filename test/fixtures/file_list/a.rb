@@ -1,1 +1,2 @@
-# a
+class A
+end
