@@ -44,7 +44,7 @@ module Hanami
       #
       #   hash.to_h # => { 'foo' => ['bar'] }
       def initialize(hash = {}, &blk)
-        @hash = hash.to_h
+        @hash = hash.respond_to?(:to_hash) ? hash.to_hash : hash.to_h
         @hash.default_proc = blk
       end
 
@@ -165,6 +165,16 @@ module Hanami
         end
       end
 
+      # Freezes itself, the inner hash, and the values
+      #
+      # @since x.x.x
+      def freeze
+        @hash.freeze
+        each_value(&:freeze)
+        super
+        self
+      end
+
       # Returns a new array populated with the keys from this hash
       #
       # @return [Array] the keys
@@ -174,6 +184,17 @@ module Hanami
       # @see http://www.ruby-doc.org/core/Hash.html#method-i-keys
       def keys
         @hash.keys
+      end
+
+      # Iterate through values an yields given block
+      #
+      # @param blk [Proc] a block to be yielded for each iteration
+      #
+      # @since x.x.x
+      #
+      # @see http://ruby-doc.org/core/Hash.html#method-i-each_value
+      def each_value(&blk)
+        @hash.each_value(&blk)
       end
 
       # Deletes the key-value pair and returns the value from hsh whose key is
