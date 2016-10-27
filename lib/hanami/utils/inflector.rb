@@ -191,6 +191,14 @@ module Hanami
       # @api private
       Y    = 'y'.freeze
 
+      # @since x.x.x
+      # @api private
+      Z    = 'z'.freeze
+
+      # @since x.x.x
+      # @api private
+      ZZES = 'zzes'.freeze
+
       include Utils::ClassAttribute
 
       # Irregular rules for plurals
@@ -211,7 +219,6 @@ module Hanami
         'mouse'       => 'mice',
         'ox'          => 'oxen',
         'person'      => 'people',
-        'quiz'        => 'quizzes',
         'sex'         => 'sexes',
         'testis'      => 'testes',
         'tooth'       => 'teeth',
@@ -253,7 +260,6 @@ module Hanami
         'mice'     => 'mouse',
         'oxen'     => 'ox',
         'people'   => 'person',
-        'quizzes'  => 'quiz',
         'sexes'    => 'sex',
         'testes'   => 'testis',
         'teeth'    => 'tooth',
@@ -385,6 +391,8 @@ module Hanami
           $1 + ES
         when /\A(.*)ss\z/
           $1 + SSES
+        when /\A(.*)#{Z}\z/
+          $1 + ZZES
         when /s\z/
           string
         else
@@ -448,6 +456,8 @@ module Hanami
           $1 + NON
         when /\A(.*)#{A}\z/
           $1 + UM
+        when /\A(.*)#{ZZES}\z/
+          $1 + Z
         when /[^s]\z/
           string
         else
