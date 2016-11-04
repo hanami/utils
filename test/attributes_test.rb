@@ -6,7 +6,7 @@ describe Hanami::Utils::Attributes do
   describe '#initialize' do
     before do
       class AttributesSet
-        def to_h
+        def to_hash
           { a: 1 }
         end
       end

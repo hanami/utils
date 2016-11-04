@@ -10,8 +10,10 @@ require 'hanami/utils/string'
 # in coercions DSLs
 #
 # @since 0.3.0
-class Boolean
-end unless defined?(Boolean)
+unless defined?(Boolean)
+  class Boolean
+  end
+end
 
 module Hanami
   module Utils
