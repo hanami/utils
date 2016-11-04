@@ -4,6 +4,22 @@ require 'hanami/utils/hash'
 
 describe Hanami::Utils::Hash do
   describe '#initialize' do
+    let(:input_to_hash) do
+      Class.new do
+        def to_hash
+          Hash[foo: 'bar']
+        end
+      end.new
+    end
+
+    let(:input_to_h) do
+      Class.new do
+        def to_h
+          Hash[head: 'tail']
+        end
+      end.new
+    end
+
     it 'holds values passed to the constructor' do
       hash = Hanami::Utils::Hash.new('foo' => 'bar')
       hash['foo'].must_equal('bar')
@@ -21,6 +37,18 @@ describe Hanami::Utils::Hash do
       hash = Hanami::Utils::Hash.new(arg)
 
       hash.to_h.must_be_kind_of(::Hash)
+    end
+
+    it 'accepts object that implements #to_hash' do
+      hash = Hanami::Utils::Hash.new(input_to_hash)
+
+      hash.to_h.must_equal(input_to_hash.to_hash)
+    end
+
+    it "raises error when object doesn't implement #to_hash" do
+      lambda do
+        Hanami::Utils::Hash.new(input_to_h)
+      end.must_raise(NoMethodError)
     end
   end
 
