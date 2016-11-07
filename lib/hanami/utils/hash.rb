@@ -48,7 +48,7 @@ module Hanami
         @hash.default_proc = blk
       end
 
-      # Convert in-place all the keys to Symbol instances. Nested hashes are converted too if deep argument is truthy.
+      # Convert in-place all the keys to Symbol instances.
       #
       # @return [Hash] self
       #
@@ -61,11 +61,34 @@ module Hanami
       #   hash.symbolize!
       #
       #   hash.keys    # => [:a, :b]
-      #   hash.inspect # => {:a=>23, :b=>{:c=>["x", "y", "z"]}}
-      def symbolize!(deep: true)
+      #   hash.inspect # => { :a => 23, :b => { 'c' => ["x", "y", "z"] } }
+      def symbolize!
         keys.each do |k|
           v = delete(k)
-          v = self.class.new(v).symbolize! if v.respond_to?(:to_hash) && deep
+          self[k.to_sym] = v
+        end
+
+        self
+      end
+
+      # Convert in-place all the keys to Symbol instances, nested hashes are converted too.
+      #
+      # @return [Hash] self
+      #
+      # @since 0.1.0
+      #
+      # @example
+      #   require 'hanami/utils/hash'
+      #
+      #   hash = Hanami::Utils::Hash.new 'a' => 23, 'b' => { 'c' => ['x','y','z'] }
+      #   hash.deep_symbolize!
+      #
+      #   hash.keys    # => [:a, :b]
+      #   hash.inspect # => {:a=>23, :b=>{:c=>["x", "y", "z"]}}
+      def deep_symbolize!
+        keys.each do |k|
+          v = delete(k)
+          v = self.class.new(v).symbolize! if v.respond_to?(:to_hash)
           self[k.to_sym] = v
         end
 

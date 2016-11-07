@@ -133,7 +133,7 @@ module Hanami
       # @since 0.3.5
       # @api private
       def _payload(payload)
-        Utils::Hash.new(payload).symbolize!(deep: false)
+        Utils::Hash.new(payload).symbolize!
       end
 
       # @since 0.3.5

@@ -61,40 +61,46 @@ describe Hanami::Utils::Hash do
       hash[:fub].must_equal('baz')
     end
 
-    describe 'with deep true' do
-      it 'symbolize nested hashes' do
-        hash = Hanami::Utils::Hash.new('nested' => { 'key' => 'value' })
-        hash.symbolize!
+    it 'does not symbolize nested hashes' do
+      hash = Hanami::Utils::Hash.new('nested' => { 'key' => 'value' })
+      hash.symbolize!
 
-        hash[:nested].must_be_kind_of Hanami::Utils::Hash
-        hash[:nested][:key].must_equal('value')
-      end
+      hash[:nested].keys.must_equal(['key'])
+    end
+  end
 
-      it 'symbolize nested Hanami::Utils::Hashes' do
-        nested = Hanami::Utils::Hash.new('key' => 'value')
-        hash = Hanami::Utils::Hash.new('nested' => nested)
-        hash.symbolize!
+  describe '#deep_symbolize!' do
+    it 'symbolize keys' do
+      hash = Hanami::Utils::Hash.new('fub' => 'baz')
+      hash.deep_symbolize!
 
-        hash[:nested].must_be_kind_of Hanami::Utils::Hash
-        hash[:nested][:key].must_equal('value')
-      end
-
-      it 'symbolize nested object that responds to to_hash' do
-        nested = Hanami::Utils::Hash.new('metadata' => WrappingHash.new('coverage' => 100))
-        nested.symbolize!
-
-        nested[:metadata].must_be_kind_of Hanami::Utils::Hash
-        nested[:metadata][:coverage].must_equal(100)
-      end
+      hash['fub'].must_be_nil
+      hash[:fub].must_equal('baz')
     end
 
-    describe 'with deep false' do
-      it 'does not simbolize nested hashes' do
-        hash = Hanami::Utils::Hash.new('nested' => { 'key' => 'value' })
-        hash.symbolize!(deep: false)
+    it 'symbolizes nested hashes' do
+      hash = Hanami::Utils::Hash.new('nested' => { 'key' => 'value' })
+      hash.deep_symbolize!
 
-        hash[:nested]['key'].must_equal('value')
-      end
+      hash[:nested].must_be_kind_of Hanami::Utils::Hash
+      hash[:nested][:key].must_equal('value')
+    end
+
+    it 'symbolize nested Hanami::Utils::Hashes' do
+      nested = Hanami::Utils::Hash.new('key' => 'value')
+      hash = Hanami::Utils::Hash.new('nested' => nested)
+      hash.deep_symbolize!
+
+      hash[:nested].must_be_kind_of Hanami::Utils::Hash
+      hash[:nested][:key].must_equal('value')
+    end
+
+    it 'symbolize nested object that responds to to_hash' do
+      nested = Hanami::Utils::Hash.new('metadata' => WrappingHash.new('coverage' => 100))
+      nested.deep_symbolize!
+
+      nested[:metadata].must_be_kind_of Hanami::Utils::Hash
+      nested[:metadata][:coverage].must_equal(100)
     end
   end
 
@@ -258,7 +264,7 @@ describe Hanami::Utils::Hash do
           }
         }
 
-        utils_hash = Hanami::Utils::Hash.new(hash).symbolize!
+        utils_hash = Hanami::Utils::Hash.new(hash).deep_symbolize!
         utils_hash.wont_be_kind_of(::Hash)
 
         actual = utils_hash.to_h
@@ -332,7 +338,7 @@ describe Hanami::Utils::Hash do
           }
         }
 
-        utils_hash = Hanami::Utils::Hash.new(hash).symbolize!
+        utils_hash = Hanami::Utils::Hash.new(hash).deep_symbolize!
         utils_hash.wont_be_kind_of(::Hash)
 
         actual = utils_hash.to_h
