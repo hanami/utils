@@ -1,11 +1,10 @@
 language: ruby
 sudo: false
 cache: bundler
-script: 'script/ci && bundle exec rubocop --display-cop-names'
+script: 'script/ci && bundle exec rubocop'
 rvm:
-  - 2.2.5
   - 2.3.1
-  - jruby-9.0.5.0
+  - jruby-9.1.5.0
   - ruby-head
   - jruby-head
 

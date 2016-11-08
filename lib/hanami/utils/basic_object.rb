@@ -28,7 +28,7 @@ module Hanami
       #
       # @return [Fixnum] the object id
       #
-      # @since x.x.x
+      # @since 0.9.0
       #
       # @see http://ruby-doc.org/core/Object.html#method-i-object_id
       def object_id
@@ -39,7 +39,7 @@ module Hanami
       #
       # @return [String] the pretty printable inspection of the object
       #
-      # @since x.x.x
+      # @since 0.9.0
       #
       # @see https://ruby-doc.org/stdlib/libdoc/pp/rdoc/PP.html
       def pretty_print(*)

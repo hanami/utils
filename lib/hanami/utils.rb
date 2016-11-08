@@ -47,7 +47,7 @@ module Hanami
     #
     # @param [String, Pathname] the directory
     #
-    # @since x.x.x
+    # @since 0.9.0
     def self.require!(directory)
       directory = directory.to_s.gsub(%r{(\/|\\)}, File::SEPARATOR)
       directory = Pathname.new(Dir.pwd).join(directory).to_s

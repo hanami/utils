@@ -1,6 +1,20 @@
 # Hanami::Utils
 Ruby core extentions and class utilities for Hanami
 
+## v0.9.0 - (unreleased)
+### Added
+– [Luca Guidi] Introduced `Utils.require!` to recursively require Ruby files with an order that is consistent across platforms
+– [Luca Guidi] Introduced `Utils::FileList` as cross-platform ordered list of files, alternative to `Dir.glob`
+- [Luca Guidi] Make `Utils::BasicObject` pretty printable 
+- [Grachev Mikhail] Added `Interactor::Result#successful?` and `#failing?`
+
+### Fixed
+- [Pascal Betz] Ensure `Utils::Class.load!` to lookup constant only within the given namespace
+
+### Changed
+- [Luca Guidi] Make `Utils::Hash` only compatible with objects that respond to `#to_hash`
+- [Luca Guidi] Official support for Ruby: MRI 2.3+ and JRuby 9.1.5.0+
+
 ## v0.8.0 - 2016-07-22
 ### Added
 - [Andrey Morskov] Introduced `Hanami::Utils::Blank`
