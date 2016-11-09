@@ -66,7 +66,7 @@ describe Hanami::Utils::String do
     it 'returns a classified string' do
       Hanami::Utils::String.new('hanami').classify.must_equal('Hanami')
       Hanami::Utils::String.new('hanami_router').classify.must_equal('HanamiRouter')
-      Hanami::Utils::String.new('hanami-router').classify.must_equal('Hanami::Router')
+      Hanami::Utils::String.new('hanami-router').classify.must_equal('HanamiRouter')
       Hanami::Utils::String.new('hanami/router').classify.must_equal('Hanami::Router')
       Hanami::Utils::String.new('hanami::router').classify.must_equal('Hanami::Router')
       Hanami::Utils::String.new('hanami::router/base_object').classify.must_equal('Hanami::Router::BaseObject')
@@ -75,7 +75,7 @@ describe Hanami::Utils::String do
     it 'returns a classified string from symbol' do
       Hanami::Utils::String.new(:hanami).classify.must_equal('Hanami')
       Hanami::Utils::String.new(:hanami_router).classify.must_equal('HanamiRouter')
-      Hanami::Utils::String.new(:'hanami-router').classify.must_equal('Hanami::Router')
+      Hanami::Utils::String.new(:'hanami-router').classify.must_equal('HanamiRouter')
       Hanami::Utils::String.new(:'hanami/router').classify.must_equal('Hanami::Router')
       Hanami::Utils::String.new(:'hanami::router').classify.must_equal('Hanami::Router')
     end
