@@ -86,6 +86,24 @@ describe Hanami::Utils::Hash do
       hash[:nested][:key].must_equal('value')
     end
 
+    it 'symbolizes deep nested hashes' do
+      hash = Hanami::Utils::Hash.new('nested1' => { 'nested2' => { 'nested3' => { 'key' => 1 } } })
+      hash.deep_symbolize!
+
+      hash.keys.must_equal([:nested1])
+
+      hash1 = hash[:nested1]
+      hash1.keys.must_equal([:nested2])
+
+      hash2 = hash1[:nested2]
+      hash2.keys.must_equal([:nested3])
+
+      hash3 = hash2[:nested3]
+      hash3.keys.must_equal([:key])
+
+      hash3[:key].must_equal(1)
+    end
+
     it 'symbolize nested Hanami::Utils::Hashes' do
       nested = Hanami::Utils::Hash.new('key' => 'value')
       hash = Hanami::Utils::Hash.new('nested' => nested)

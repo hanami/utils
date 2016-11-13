@@ -88,7 +88,7 @@ module Hanami
       def deep_symbolize!
         keys.each do |k|
           v = delete(k)
-          v = self.class.new(v).symbolize! if v.respond_to?(:to_hash)
+          v = self.class.new(v).deep_symbolize! if v.respond_to?(:to_hash)
           self[k.to_sym] = v
         end
 
