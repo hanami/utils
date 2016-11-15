@@ -45,7 +45,7 @@ module Hanami
     # It respects file separator of the current operating system.
     # A pattern like <tt>"path/to/files"</tt> will work both on *NIX and Windows machines.
     #
-    # @param [String, Pathname] the directory
+    # @param directory [String, Pathname] the directory
     #
     # @since 0.9.0
     def self.require!(directory)
