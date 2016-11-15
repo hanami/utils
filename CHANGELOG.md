@@ -1,7 +1,7 @@
 # Hanami::Utils
 Ruby core extentions and class utilities for Hanami
 
-## v0.9.0 - (unreleased)
+## v0.9.0 - 2016-11-15
 ### Added
 – [Luca Guidi] Introduced `Utils.require!` to recursively require Ruby files with an order that is consistent across platforms
 – [Luca Guidi] Introduced `Utils::FileList` as cross-platform ordered list of files, alternative to `Dir.glob`
