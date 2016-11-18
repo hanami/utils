@@ -56,8 +56,18 @@ describe Hanami::Utils::Json do
 
     describe '.dump' do
       it 'dumps given Hash' do
-        actual = Hanami::Utils::Json.dump(a: 1)
-        actual.must_equal %({"a":1})
+        capture_io do
+          actual = Hanami::Utils::Json.dump(a: 1)
+          actual.must_equal %({"a":1})
+        end
+      end
+
+      it 'is deprecated' do
+        _, err = capture_io do
+          Hanami::Utils::Json.dump(a: 1)
+        end
+
+        err.must_include "`Hanami::Utils::Json.dump' is deprecated, please use `Hanami::Utils::Json.generate'"
       end
     end
   end
