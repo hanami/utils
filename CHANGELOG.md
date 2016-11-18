@@ -1,6 +1,17 @@
 # Hanami::Utils
 Ruby core extentions and class utilities for Hanami
 
+## v0.9.1 - 2016-11-18
+### Added
+- [Luca Guidi] Introduced `Utils::Json.parse` and `.generate`
+
+### Fixed
+- [Luca Guidi] Ensure `Utils::Json` parsing to not eval untrusted input
+
+### Changed
+- [Luca Guidi] Deprecated `Utils::Json.load` in favor of `.parse`
+- [Luca Guidi] Deprecated `Utils::Json.dump` in favor of `.generate`
+
 ## v0.9.0 - 2016-11-15
 ### Added
 – [Luca Guidi] Introduced `Utils.require!` to recursively require Ruby files with an order that is consistent across platforms
