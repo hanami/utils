@@ -354,10 +354,6 @@ TEST_PLURALS = {
   'tomato'   => 'tomatoes',
   'torpedo'  => 'torpedos',
   'veto'     => 'vetos',
-  # en => ina
-  'stamen'  => 'stamina',
-  'foramen' => 'foramina',
-  'lumen'   => 'lumina',
   # a => ata
   'anathema'  => 'anathemata',
   'enema'     => 'enemata',
@@ -543,7 +539,9 @@ TEST_PLURALS = {
   'car'          => 'cars',
   'hive'         => 'hives',
   # https://github.com/hanami/utils/issues/106
-  'album'        => 'albums'
+  'album'        => 'albums',
+  # https://github.com/hanami/utils/issues/173
+  'kitten'       => 'kittens'
 }.freeze
 
 TEST_SINGULARS = {
@@ -572,6 +570,10 @@ TEST_SINGULARS = {
   # f => s
   'chief' => 'chiefs',
   'spoof' => 'spoofs',
+  # en => ina
+  'stamen'  => 'stamina',
+  'foramen' => 'foramina',
+  'lumen'   => 'lumina',
   # s => es
   'acropolis'  => 'acropolises',
   'chaos'      => 'chaoses',
