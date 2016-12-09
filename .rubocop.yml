@@ -2,11 +2,15 @@ AllCops:
   DisplayCopNames: true
   DisplayStyleGuide: true
   ExtraDetails: false
+Bundler/OrderedGems:
+  Enabled: false
 Metrics/LineLength:
   Enabled: false
 Style/RaiseArgs:
   Enabled: false
 Style/DoubleNegation:
+  Enabled: false
+Style/EmptyMethod:
   Enabled: false
 Style/SpecialGlobalVars:
   Enabled: false
