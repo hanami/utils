@@ -192,12 +192,12 @@ describe Hanami::Interactor do
 
     it 'exposes a convenient API for handling failures' do
       result = Signup.new({}).call
-      assert result.failing?, "Expected `result' to NOT be successful"
+      assert result.failure?, "Expected `result' to NOT be successful"
     end
 
     it "doesn't invoke it if the preconditions are failing" do
       result = Signup.new(force_failure: true).call
-      assert result.failing?, "Expected `result' to NOT be successful"
+      assert result.failure?, "Expected `result' to NOT be successful"
     end
 
     it "raises error when #call isn't implemented" do
@@ -225,7 +225,7 @@ describe Hanami::Interactor do
   describe '#error' do
     it "isn't successful" do
       result = ErrorInteractor.new.call
-      assert result.failing?, "Expected `result' to not be successful"
+      assert result.failure?, "Expected `result' to not be successful"
     end
 
     it 'accumulates errors' do
@@ -251,7 +251,7 @@ describe Hanami::Interactor do
   describe '#error!' do
     it "isn't successful" do
       result = ErrorBangInteractor.new.call
-      assert result.failing?, "Expected `result' to not be successful"
+      assert result.failure?, "Expected `result' to not be successful"
     end
 
     it 'stops at the first error' do
@@ -290,8 +290,18 @@ describe Hanami::Interactor::Result do
       it "isn't successful" do
         result = Hanami::Interactor::Result.new
         result.add_error 'There was a problem'
-        assert result.failing?, "Expected `result' to NOT be successful"
+        assert result.failure?, "Expected `result' to NOT be successful"
       end
+    end
+  end
+
+  describe '#failing?' do
+    it 'is deprecated' do
+      _, err = capture_io do
+        Hanami::Interactor::Result.new.failing?
+      end
+
+      err.must_include "`Hanami::Interactor::Result#failing?' is deprecated, please use `Hanami::Interactor::Result#failure?'"
     end
   end
 
@@ -300,7 +310,7 @@ describe Hanami::Interactor::Result do
       result = Hanami::Interactor::Result.new
       result.fail!
 
-      assert result.failing?, "Expected `result' to NOT be successful"
+      assert result.failure?, "Expected `result' to NOT be successful"
     end
   end
 
@@ -364,8 +374,8 @@ describe Hanami::Interactor::Result do
       assert result.respond_to?(:successful?),  "Expected `result' to respond to `#successful?'"
       assert result.respond_to?('successful?'), "Expected `result' to respond to `#successful?'"
 
-      assert result.respond_to?(:failing?),  "Expected `result' to respond to `#failing?'"
-      assert result.respond_to?('failing?'), "Expected `result' to respond to `#failing?'"
+      assert result.respond_to?(:failure?),  "Expected `result' to respond to `#failure?'"
+      assert result.respond_to?('failure?'), "Expected `result' to respond to `#failure?'"
     end
 
     it 'returns true for methods derived from payload' do
