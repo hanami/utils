@@ -266,7 +266,7 @@ module Hanami
       class_name = self.class.name
       namespace  = Utils::String.new(class_name).namespace
 
-      class_name != namespace and return namespace # rubocop:disable Style/AndOr
+      class_name != namespace and return namespace
     end
 
     # @since 0.5.0
