@@ -93,10 +93,6 @@ module Hanami
 
       # @since 0.4.1
       # @api private
-      INA  = 'ina'.freeze
-
-      # @since 0.4.1
-      # @api private
       IS   = 'is'.freeze
 
       # @since 0.4.1
@@ -373,8 +369,6 @@ module Hanami
           $1 + A
         when /\A(buffal|domin|ech|embarg|her|mosquit|potat|tomat)#{ O }\z/i
           $1 + OES
-        when /\A(.*)(en|#{ INA })\z/
-          $1 + INA
         when /\A(.*)(?:([^f]))f[e]*\z/
           $1 + $2 + VES
         when /\A(.*)us\z/

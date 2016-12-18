@@ -1,6 +1,16 @@
 # Hanami::Utils
 Ruby core extentions and class utilities for Hanami
 
+## v0.9.2 - 2016-12-20
+## Added
+- [Grachev Mikhail] Introduced `Hanami::Interactor::Result#failure?`
+
+## Fixed
+- [Paweł Świątkowski] `Utils::Inflector.pluralize` Pluralize -en to -ens instead of -ina 
+
+## Changed
+- [Grachev Mikhail] Deprecate `Hanami::Interactor::Result#failing?` in favor of `#failure?`
+
 ## v0.9.1 - 2016-11-18
 ### Added
 - [Luca Guidi] Introduced `Utils::Json.parse` and `.generate`
