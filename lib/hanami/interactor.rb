@@ -58,7 +58,7 @@ module Hanami
       #
       # @return [TrueClass,FalseClass] the result of the check
       #
-      # @since 0.8.1
+      # @since 0.9.2
       #
       # @deprecated Use {#failure?} instead
       def failing?
@@ -70,7 +70,7 @@ module Hanami
       #
       # @return [TrueClass,FalseClass] the result of the check
       #
-      # @since x.x.x
+      # @since 0.9.2
       def failure?
         !successful?
       end
