@@ -1,7 +1,7 @@
 # Hanami::Utils
 Ruby core extentions and class utilities for Hanami
 
-## v0.9.2 - 2016-12-20
+## v0.9.2 - 2016-12-19
 ## Added
 - [Grachev Mikhail] Introduced `Hanami::Interactor::Result#failure?`
 
