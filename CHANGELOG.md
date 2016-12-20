@@ -1,14 +1,21 @@
 # Hanami::Utils
 Ruby core extentions and class utilities for Hanami
 
+## v1.0.0-beta1 (unreleased)
+### Added
+- [alexd16 & Lucas Amorim] Introduced `Utils::Hash#deep_symbolize!` for deep symbolization
+
+### Changed
+- [alexd16] `Utils::Hash#symbolize!` no longer symbolizes deep structures
+
 ## v0.9.2 - 2016-12-19
-## Added
+### Added
 - [Grachev Mikhail] Introduced `Hanami::Interactor::Result#failure?`
 
-## Fixed
+### Fixed
 - [Paweł Świątkowski] `Utils::Inflector.pluralize` Pluralize -en to -ens instead of -ina 
 
-## Changed
+### Changed
 - [Grachev Mikhail] Deprecate `Hanami::Interactor::Result#failing?` in favor of `#failure?`
 
 ## v0.9.1 - 2016-11-18
