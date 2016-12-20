@@ -1,7 +1,7 @@
 # Hanami::Utils
 Ruby core extentions and class utilities for Hanami
 
-## v1.0.0-beta1 (unreleased)
+## v1.0.0.beta1 (unreleased)
 ### Added
 - [alexd16 & Lucas Amorim] Introduced `Utils::Hash#deep_symbolize!` for deep symbolization
 
