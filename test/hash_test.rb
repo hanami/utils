@@ -132,6 +132,13 @@ describe Hanami::Utils::Hash do
       hash[:foo].first[:bar].must_equal('baz')
       hash[:foo].last[:bat].must_equal('quux')
     end
+
+    it "doesn't try to symbolize nested objects" do
+      hash = Hanami::Utils::Hash.new('foo' => ['bar'])
+      hash.deep_symbolize!
+
+      hash[:foo].must_equal(['bar'])
+    end
   end
 
   describe '#stringify!' do

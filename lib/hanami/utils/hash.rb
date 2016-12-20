@@ -98,7 +98,7 @@ module Hanami
                   if element.respond_to?(:to_hash)
                     self.class.new(element).deep_symbolize!.to_h
                   else
-                    item
+                    element
                   end
                 end
               else
