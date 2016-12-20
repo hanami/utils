@@ -3,7 +3,7 @@ Ruby core extentions and class utilities for Hanami
 
 ## v1.0.0.beta1 (unreleased)
 ### Added
-- [alexd16 & Lucas Amorim] Introduced `Utils::Hash#deep_symbolize!` for deep symbolization
+- [alexd16] Introduced `Utils::Hash#deep_symbolize!` for deep symbolization
 
 ### Changed
 - [alexd16] `Utils::Hash#symbolize!` no longer symbolizes deep structures

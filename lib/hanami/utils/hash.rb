@@ -80,38 +80,21 @@ module Hanami
       # @example
       #   require 'hanami/utils/hash'
       #
-      #   hash = Hanami::Utils::Hash.new 'a' => 23, 'b' => { 'c' => ['x','y','z'], 'd' => [{ 'foo' => 'bar' }] }
+      #   hash = Hanami::Utils::Hash.new 'a' => 23, 'b' => { 'c' => ['x','y','z'] }
       #   hash.deep_symbolize!
       #
       #   hash.keys    # => [:a, :b]
-      #   hash.inspect # => {:a=>23, :b=>{:c=>["x", "y", "z"]}, :d=>[{:foo=>"bar"}]}
-      #
-      # rubocop:disable Metrics/AbcSize
-      # rubocop:disable Metrics/MethodLength
+      #   hash.inspect # => {:a=>23, :b=>{:c=>["x", "y", "z"]}}
       def deep_symbolize!
         keys.each do |k|
           v = delete(k)
-          v = if v.respond_to?(:to_hash)
-                self.class.new(v).deep_symbolize!
-              elsif v.is_a?(Enumerable)
-                v.map do |element|
-                  if element.respond_to?(:to_hash)
-                    self.class.new(element).deep_symbolize!.to_h
-                  else
-                    element
-                  end
-                end
-              else
-                v
-              end
+          v = self.class.new(v).deep_symbolize! if v.respond_to?(:to_hash)
 
           self[k.to_sym] = v
         end
 
         self
       end
-      # rubocop:enable Metrics/AbcSize
-      # rubocop:enable Metrics/MethodLength
 
       # Convert in-place all the keys to Symbol instances, nested hashes are converted too.
       #

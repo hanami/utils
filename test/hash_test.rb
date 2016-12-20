@@ -121,18 +121,6 @@ describe Hanami::Utils::Hash do
       nested[:metadata][:coverage].must_equal(100)
     end
 
-    it 'symbolize nested array' do
-      hash = Hanami::Utils::Hash.new('foo' => [{ 'bar' => 'baz' }, { 'bat' => 'quux' }])
-
-      hash.deep_symbolize!
-
-      hash[:foo].first['bar'].must_be_nil
-      hash[:foo].last['bat'].must_be_nil
-
-      hash[:foo].first[:bar].must_equal('baz')
-      hash[:foo].last[:bat].must_equal('quux')
-    end
-
     it "doesn't try to symbolize nested objects" do
       hash = Hanami::Utils::Hash.new('foo' => ['bar'])
       hash.deep_symbolize!
