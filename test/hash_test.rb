@@ -61,18 +61,53 @@ describe Hanami::Utils::Hash do
       hash[:fub].must_equal('baz')
     end
 
-    it 'symbolize nested hashes' do
+    it 'does not symbolize nested hashes' do
       hash = Hanami::Utils::Hash.new('nested' => { 'key' => 'value' })
       hash.symbolize!
+
+      hash[:nested].keys.must_equal(['key'])
+    end
+  end
+
+  describe '#deep_symbolize!' do
+    it 'symbolize keys' do
+      hash = Hanami::Utils::Hash.new('fub' => 'baz')
+      hash.deep_symbolize!
+
+      hash['fub'].must_be_nil
+      hash[:fub].must_equal('baz')
+    end
+
+    it 'symbolizes nested hashes' do
+      hash = Hanami::Utils::Hash.new('nested' => { 'key' => 'value' })
+      hash.deep_symbolize!
 
       hash[:nested].must_be_kind_of Hanami::Utils::Hash
       hash[:nested][:key].must_equal('value')
     end
 
+    it 'symbolizes deep nested hashes' do
+      hash = Hanami::Utils::Hash.new('nested1' => { 'nested2' => { 'nested3' => { 'key' => 1 } } })
+      hash.deep_symbolize!
+
+      hash.keys.must_equal([:nested1])
+
+      hash1 = hash[:nested1]
+      hash1.keys.must_equal([:nested2])
+
+      hash2 = hash1[:nested2]
+      hash2.keys.must_equal([:nested3])
+
+      hash3 = hash2[:nested3]
+      hash3.keys.must_equal([:key])
+
+      hash3[:key].must_equal(1)
+    end
+
     it 'symbolize nested Hanami::Utils::Hashes' do
       nested = Hanami::Utils::Hash.new('key' => 'value')
       hash = Hanami::Utils::Hash.new('nested' => nested)
-      hash.symbolize!
+      hash.deep_symbolize!
 
       hash[:nested].must_be_kind_of Hanami::Utils::Hash
       hash[:nested][:key].must_equal('value')
@@ -80,7 +115,7 @@ describe Hanami::Utils::Hash do
 
     it 'symbolize nested object that responds to to_hash' do
       nested = Hanami::Utils::Hash.new('metadata' => WrappingHash.new('coverage' => 100))
-      nested.symbolize!
+      nested.deep_symbolize!
 
       nested[:metadata].must_be_kind_of Hanami::Utils::Hash
       nested[:metadata][:coverage].must_equal(100)
@@ -247,7 +282,7 @@ describe Hanami::Utils::Hash do
           }
         }
 
-        utils_hash = Hanami::Utils::Hash.new(hash).symbolize!
+        utils_hash = Hanami::Utils::Hash.new(hash).deep_symbolize!
         utils_hash.wont_be_kind_of(::Hash)
 
         actual = utils_hash.to_h
@@ -321,7 +356,7 @@ describe Hanami::Utils::Hash do
           }
         }
 
-        utils_hash = Hanami::Utils::Hash.new(hash).symbolize!
+        utils_hash = Hanami::Utils::Hash.new(hash).deep_symbolize!
         utils_hash.wont_be_kind_of(::Hash)
 
         actual = utils_hash.to_h
