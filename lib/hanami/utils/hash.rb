@@ -75,7 +75,7 @@ module Hanami
       #
       # @return [Hash] self
       #
-      # @since 0.1.0
+      # @since x.x.x
       #
       # @example
       #   require 'hanami/utils/hash'
