@@ -441,7 +441,12 @@ describe Hanami::Utils::Hash do
       # See: https://github.com/hanami/utils/issues/48
       it 'returns the correct object when a NoMethodError is raised' do
         hash = Hanami::Utils::Hash.new('a' => 1)
-        exception_message = "undefined method `foo' for 1:Fixnum"
+
+        if RUBY_VERSION == '2.4.0' # rubocop:disable Style/ConditionalAssignment
+          exception_message = "undefined method `foo' for 1:Integer"
+        else
+          exception_message = "undefined method `foo' for 1:Fixnum"
+        end
 
         exception = -> { hash.all? { |_, v| v.foo } }.must_raise NoMethodError
         exception.message.must_match exception_message

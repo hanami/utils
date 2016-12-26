@@ -865,8 +865,15 @@ describe Hanami::Utils::Kernel do
     describe 'when a string without numbers is given' do
       let(:input) { 'home' }
 
-      it 'returns an BigDecimal' do
-        Hanami::Utils::Kernel.BigDecimal(input).must_equal BigDecimal.new(0)
+      if RUBY_VERSION == '2.4.0'
+        it 'raises error' do
+          exception = -> { Hanami::Utils::Kernel.BigDecimal(input) }.must_raise(ArgumentError)
+          exception.message.must_equal "invalid value for BigDecimal(): #{input.inspect}"
+        end
+      else
+        it 'returns an BigDecimal' do
+          Hanami::Utils::Kernel.BigDecimal(input).must_equal BigDecimal.new(0)
+        end
       end
     end
 
@@ -1345,8 +1352,14 @@ describe Hanami::Utils::Kernel do
       describe 'when a big decimal is given' do
         let(:input) { BigDecimal.new(7944.2343, 10) }
 
-        it 'returns the string representation' do
-          @result.must_equal '0.79442343E4'
+        if RUBY_VERSION == '2.4.0'
+          it 'returns the string representation' do
+            @result.must_equal '0.79442343e4'
+          end
+        else
+          it 'returns the string representation' do
+            @result.must_equal '0.79442343E4'
+          end
         end
       end
 
@@ -1481,8 +1494,14 @@ describe Hanami::Utils::Kernel do
       describe 'when a class is given' do
         let(:input) { Fixnum } # rubocop:disable Lint/UnifiedInteger
 
-        it 'returns the string representation' do
-          @result.must_equal 'Fixnum'
+        if RUBY_VERSION == '2.4.0'
+          it 'returns the string representation' do
+            @result.must_equal 'Integer'
+          end
+        else
+          it 'returns the string representation' do
+            @result.must_equal 'Fixnum'
+          end
         end
       end
 
