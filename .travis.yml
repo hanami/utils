@@ -3,6 +3,7 @@ sudo: false
 cache: bundler
 script: 'script/ci && bundle exec rubocop'
 rvm:
+  - 2.4.0
   - 2.3.3
   - jruby-9.1.6.0
   - ruby-head
