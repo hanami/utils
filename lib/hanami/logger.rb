@@ -192,7 +192,7 @@ module Hanami
       # @since 0.8.0
       # @api private
       def _format(hash)
-        Hanami::Utils::Json.dump(hash)
+        Hanami::Utils::Json.generate(hash)
       end
     end
 
