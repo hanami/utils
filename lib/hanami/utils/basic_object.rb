@@ -35,9 +35,9 @@ module Hanami
         __id__
       end
 
-      # Interface for <tt>pp</pp>
+      # Interface for pp
       #
-      # @return [String] the pretty printable inspection of the object
+      # @return [String] the pretty-printable inspection of the object
       #
       # @since 0.9.0
       #
