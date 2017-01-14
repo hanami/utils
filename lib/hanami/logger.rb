@@ -108,6 +108,10 @@ module Hanami
       # @api private
       NEW_LINE = $/
 
+      # @since x.x.x
+      # @api private
+      TIME_RFC3339_FORMAT = "%FT%T%:z".freeze
+
       include Utils::ClassAttribute
 
       class_attribute :subclasses
@@ -145,7 +149,7 @@ module Hanami
         _format({
           app:      @application_name,
           severity: severity,
-          time:     time.utc
+          time:     time.utc.strftime(TIME_RFC3339_FORMAT)
         }.merge(
           _message_hash(msg)
         ))
