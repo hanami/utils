@@ -108,10 +108,6 @@ module Hanami
       # @api private
       NEW_LINE = $/
 
-      # @since x.x.x
-      # @api private
-      TIME_RFC3339_FORMAT = "%FT%T%:z".freeze
-
       include Utils::ClassAttribute
 
       class_attribute :subclasses
@@ -149,7 +145,7 @@ module Hanami
         _format({
           app:      @application_name,
           severity: severity,
-          time:     time.utc.strftime(TIME_RFC3339_FORMAT)
+          time:     time
         }.merge(
           _message_hash(msg)
         ))
@@ -202,6 +198,7 @@ module Hanami
       # @since 0.8.0
       # @api private
       def _format(hash)
+        hash[:time] = hash[:time].utc.iso8601
         Hanami::Utils::Json.dump(hash)
       end
     end
@@ -211,7 +208,7 @@ module Hanami
     #
     # @since 0.5.0
     # @api private
-    DEFAULT_APPLICATION_NAME = 'Hanami'.freeze
+    DEFAULT_APPLICATION_NAME = 'hanami'.freeze
 
     # @since 0.8.0
     # @api private
