@@ -168,7 +168,7 @@ module Hanami
         end
       end
 
-      # @since x.x.x
+      # @since 0.8.0
       # @api private
       def _format(hash)
         format = "[#{hash[:app]}] [#{hash[:severity]}] [#{hash[:time]}]"
