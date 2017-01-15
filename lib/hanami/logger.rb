@@ -199,7 +199,7 @@ module Hanami
       # @api private
       def _format(hash)
         hash[:time] = hash[:time].utc.iso8601
-        Hanami::Utils::Json.dump(hash)
+        Hanami::Utils::Json.generate(hash)
       end
     end
 
