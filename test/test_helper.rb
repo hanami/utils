@@ -1,5 +1,6 @@
 require 'rubygems'
 require 'bundler/setup'
+require 'time'
 
 if ENV['COVERALL']
   require 'coveralls'
@@ -41,7 +42,7 @@ def stub_stdout_constant # rubocop:disable Metrics/MethodLength
 end
 
 def stub_time_now
-  Time.stub :now, Time.utc(1988, 9, 1, 0, 0, 0) do
+  Time.stub :now, Time.parse("2017-01-15 16:00:23 +0100") do
     yield
   end
 end
