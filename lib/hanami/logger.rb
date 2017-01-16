@@ -145,7 +145,7 @@ module Hanami
         _format({
           app:      @application_name,
           severity: severity,
-          time:     time.utc
+          time:     time
         }.merge(
           _message_hash(msg)
         ))
@@ -155,10 +155,8 @@ module Hanami
 
       # @since 0.8.0
       # @api private
-      def _message_hash(message) # rubocop:disable Metrics/MethodLength
+      def _message_hash(message)
         case message
-        when Hash
-          message
         when Exception
           Hash[
             message:   message.message,
@@ -173,7 +171,15 @@ module Hanami
       # @since 0.8.0
       # @api private
       def _format(hash)
-        hash.map { |k, v| "#{k}=#{v}" }.join(SEPARATOR) + NEW_LINE
+        format = "[#{hash[:app]}] [#{hash[:severity]}] [#{hash[:time]}]"
+        format << " #{hash[:error]}:" if hash.key?(:error)
+        format << " #{hash[:message]}#{NEW_LINE}"
+        if hash.key?(:backtrace)
+          hash[:backtrace].each do |line|
+            format << "from #{line}#{NEW_LINE}"
+          end
+        end
+        format
       end
     end
 
@@ -192,7 +198,8 @@ module Hanami
       # @since 0.8.0
       # @api private
       def _format(hash)
-        Hanami::Utils::Json.dump(hash)
+        hash[:time] = hash[:time].utc.iso8601
+        Hanami::Utils::Json.generate(hash)
       end
     end
 
@@ -201,7 +208,7 @@ module Hanami
     #
     # @since 0.5.0
     # @api private
-    DEFAULT_APPLICATION_NAME = 'Hanami'.freeze
+    DEFAULT_APPLICATION_NAME = 'hanami'.freeze
 
     # @since 0.8.0
     # @api private

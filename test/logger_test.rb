@@ -274,7 +274,7 @@ describe Hanami::Logger do
 
     it 'has default app tag when not in any namespace' do
       class TestLogger < Hanami::Logger; end
-      TestLogger.new.application_name.must_equal 'Hanami'
+      TestLogger.new.application_name.must_equal 'hanami'
     end
 
     it 'infers apptag from namespace' do
@@ -312,7 +312,7 @@ describe Hanami::Logger do
               class TestLogger < Hanami::Logger; end
               TestLogger.new(formatter: nil).info('foo')
             end
-          output.must_equal "app=Hanami severity=INFO time=1988-09-01 00:00:00 UTC message=foo\n"
+          output.must_equal "[hanami] [INFO] [2017-01-15 16:00:23 +0100] foo\n"
         end
       end
     end
@@ -328,7 +328,7 @@ describe Hanami::Logger do
                 class TestLogger < Hanami::Logger; end
                 TestLogger.new(formatter: :json).info('foo')
               end
-            output.must_equal '{"app":"Hanami","severity":"INFO","time":"1988-09-01 00:00:00 UTC","message":"foo"}'
+            output.must_equal '{"app":"hanami","severity":"INFO","time":"2017-01-15T15:00:23Z","message":"foo"}'
           end
         end
       end
@@ -343,7 +343,7 @@ describe Hanami::Logger do
                 class TestLogger < Hanami::Logger; end
                 TestLogger.new(formatter: Hanami::Logger::JSONFormatter.new).info('foo')
               end
-            output.must_equal '{"app":"Hanami","severity":"INFO","time":"1988-09-01 00:00:00 UTC","message":"foo"}'
+            output.must_equal '{"app":"hanami","severity":"INFO","time":"2017-01-15T15:00:23Z","message":"foo"}'
           end
         end
       end
@@ -358,7 +358,7 @@ describe Hanami::Logger do
                 class TestLogger < Hanami::Logger; end
                 TestLogger.new(formatter: Hanami::Logger::JSONFormatter.new).error(Exception.new('foo'))
               end
-            output.must_equal '{"app":"Hanami","severity":"ERROR","time":"1988-09-01 00:00:00 UTC","message":"foo","backtrace":[],"error":"Exception"}'
+            output.must_equal '{"app":"hanami","severity":"ERROR","time":"2017-01-15T15:00:23Z","message":"foo","backtrace":[],"error":"Exception"}'
           end
         end
       end
@@ -373,7 +373,7 @@ describe Hanami::Logger do
                 class TestLogger < Hanami::Logger; end
                 TestLogger.new(formatter: Hanami::Logger::JSONFormatter.new).info(foo: :bar)
               end
-            output.must_equal '{"app":"Hanami","severity":"INFO","time":"1988-09-01 00:00:00 UTC","foo":"bar"}'
+            output.must_equal '{"app":"hanami","severity":"INFO","time":"2017-01-15T15:00:23Z","message":{"foo":"bar"}}'
           end
         end
       end
@@ -388,7 +388,7 @@ describe Hanami::Logger do
                 class TestLogger < Hanami::Logger; end
                 TestLogger.new(formatter: Hanami::Logger::JSONFormatter.new).info(['foo'])
               end
-            output.must_equal '{"app":"Hanami","severity":"INFO","time":"1988-09-01 00:00:00 UTC","message":["foo"]}'
+            output.must_equal '{"app":"hanami","severity":"INFO","time":"2017-01-15T15:00:23Z","message":["foo"]}'
           end
         end
       end
@@ -402,7 +402,7 @@ describe Hanami::Logger do
               class TestLogger < Hanami::Logger; end
               TestLogger.new(formatter: :default).info('foo')
             end
-          output.must_equal "app=Hanami severity=INFO time=1988-09-01 00:00:00 UTC message=foo\n"
+          output.must_equal "[hanami] [INFO] [2017-01-15 16:00:23 +0100] foo\n"
         end
       end
 
@@ -413,18 +413,27 @@ describe Hanami::Logger do
               class TestLogger < Hanami::Logger; end
               TestLogger.new.info('foo')
             end
-          output.must_equal "app=Hanami severity=INFO time=1988-09-01 00:00:00 UTC message=foo\n"
+          output.must_equal "[hanami] [INFO] [2017-01-15 16:00:23 +0100] foo\n"
         end
       end
 
       it 'has key=value format for error messages' do
         stub_time_now do
-          output =
-            stub_stdout_constant do
-              class TestLogger < Hanami::Logger; end
-              TestLogger.new.error(Exception.new('foo'))
+          exception = nil
+          output = stub_stdout_constant do
+            class TestLogger < Hanami::Logger; end
+            begin
+              raise StandardError.new('foo')
+            rescue => e
+              exception = e
             end
-          output.must_equal "app=Hanami severity=ERROR time=1988-09-01 00:00:00 UTC message=foo backtrace=[] error=Exception\n"
+            TestLogger.new.error(exception)
+          end
+          expectation = "[hanami] [ERROR] [2017-01-15 16:00:23 +0100] StandardError: foo\n"
+          exception.backtrace.each do |line|
+            expectation << "from #{line}\n"
+          end
+          output.must_equal expectation
         end
       end
 
@@ -435,7 +444,7 @@ describe Hanami::Logger do
               class TestLogger < Hanami::Logger; end
               TestLogger.new.info(foo: :bar)
             end
-          output.must_equal "app=Hanami severity=INFO time=1988-09-01 00:00:00 UTC foo=bar\n"
+          output.must_equal "[hanami] [INFO] [2017-01-15 16:00:23 +0100] {:foo=>:bar}\n"
         end
       end
 
@@ -446,7 +455,7 @@ describe Hanami::Logger do
               class TestLogger < Hanami::Logger; end
               TestLogger.new.info(['foo'])
             end
-          output.must_equal "app=Hanami severity=INFO time=1988-09-01 00:00:00 UTC message=[\"foo\"]\n"
+          output.must_equal "[hanami] [INFO] [2017-01-15 16:00:23 +0100] [\"foo\"]\n"
         end
       end
     end
