@@ -49,11 +49,19 @@ module Hanami
     #
     # @since 0.9.0
     def self.require!(directory)
+      for_each_file_in(directory) { |file| require_relative(file) }
+    end
+
+    def self.reload!(directory)
+      for_each_file_in(directory) { |file| load(file) }
+    end
+
+    def self.for_each_file_in(directory, &blk)
       directory = directory.to_s.gsub(%r{(\/|\\)}, File::SEPARATOR)
       directory = Pathname.new(Dir.pwd).join(directory).to_s
       directory = File.join(directory, '**', '*.rb') unless directory =~ /(\*\*)/
 
-      FileList[directory].each { |file| require_relative file }
+      FileList[directory].each(&blk)
     end
   end
 end
