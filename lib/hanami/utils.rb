@@ -49,11 +49,45 @@ module Hanami
     #
     # @since 0.9.0
     def self.require!(directory)
+      for_each_file_in(directory) { |file| require_relative(file) }
+    end
+
+    # Recursively reload Ruby files under the given directory.
+    #
+    # If the directory is relative, it implies it's the path from current directory.
+    # If the directory is absolute, it uses as it is.
+    #
+    # It respects file separator of the current operating system.
+    # A pattern like <tt>"path/to/files"</tt> will work both on *NIX and Windows machines.
+    #
+    # @param directory [String, Pathname] the directory
+    #
+    # @since x.x.x
+    # @api private
+    def self.reload!(directory)
+      for_each_file_in(directory) { |file| load(file) }
+    end
+
+    # Recursively scans through the given directory and yields the given block
+    # for each Ruby source file.
+    #
+    # If the directory is relative, it implies it's the path from current directory.
+    # If the directory is absolute, it uses as it is.
+    #
+    # It respects file separator of the current operating system.
+    # A pattern like <tt>"path/to/files"</tt> will work both on *NIX and Windows machines.
+    #
+    # @param directory [String, Pathname] the directory
+    # @param blk [Proc] the block to yield
+    #
+    # @since x.x.x
+    # @api private
+    def self.for_each_file_in(directory, &blk)
       directory = directory.to_s.gsub(%r{(\/|\\)}, File::SEPARATOR)
       directory = Pathname.new(Dir.pwd).join(directory).to_s
       directory = File.join(directory, '**', '*.rb') unless directory =~ /(\*\*)/
 
-      FileList[directory].each { |file| require_relative file }
+      FileList[directory].each(&blk)
     end
   end
 end
