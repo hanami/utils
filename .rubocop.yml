@@ -5,6 +5,7 @@ inherit_from:
 Metrics/BlockLength:
   Exclude:
     - 'test/**/*'
+    - 'tmp/**/*'
 Style/DoubleNegation:
   Enabled: false
 Style/SpecialGlobalVars:
