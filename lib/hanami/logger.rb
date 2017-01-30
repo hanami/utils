@@ -137,13 +137,17 @@ module Hanami
       # @api private
       attr_writer :application_name
 
+      # @since x.x.x
+      # @api private
+      attr_reader :application_name
+
       # @since 0.5.0
       # @api private
       #
       # @see http://www.ruby-doc.org/stdlib/libdoc/logger/rdoc/Logger/Formatter.html#method-i-call
       def call(severity, time, _progname, msg)
         _format({
-          app:      @application_name,
+          app:      application_name,
           severity: severity,
           time:     time
         }.merge(
