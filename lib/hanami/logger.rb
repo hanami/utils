@@ -108,6 +108,10 @@ module Hanami
       # @api private
       NEW_LINE = $/
 
+      # @since x.x.x
+      # @api private
+      RESERVED_KEYS = [:app, :severity, :time].freeze
+
       include Utils::ClassAttribute
 
       class_attribute :subclasses
@@ -159,8 +163,10 @@ module Hanami
 
       # @since 0.8.0
       # @api private
-      def _message_hash(message)
+      def _message_hash(message) # rubocop:disable Metrics/MethodLength
         case message
+        when Hash
+          message
         when Exception
           Hash[
             message:   message.message,
@@ -175,15 +181,27 @@ module Hanami
       # @since 0.8.0
       # @api private
       def _format(hash)
-        format = "[#{hash[:app]}] [#{hash[:severity]}] [#{hash[:time]}]"
-        format << " #{hash[:error]}:" if hash.key?(:error)
-        format << " #{hash[:message]}#{NEW_LINE}"
+        result = RESERVED_KEYS.map { |k| "[#{hash[k]}]" }.join(SEPARATOR)
+        return _format_error(result, hash) if hash.key?(:error)
+
+        values = hash.each_with_object([]) do |(k, v), memo|
+          memo << v unless RESERVED_KEYS.include?(k)
+        end
+
+        result << " #{values.join(SEPARATOR)}#{NEW_LINE}"
+        result
+      end
+
+      def _format_error(result, hash)
+        result << " #{hash[:error]}:" if hash.key?(:error)
+        result << " #{hash[:message]}#{NEW_LINE}"
         if hash.key?(:backtrace)
           hash[:backtrace].each do |line|
-            format << "from #{line}#{NEW_LINE}"
+            result << "from #{line}#{NEW_LINE}"
           end
         end
-        format
+
+        result
       end
     end
 
@@ -203,7 +221,7 @@ module Hanami
       # @api private
       def _format(hash)
         hash[:time] = hash[:time].utc.iso8601
-        Hanami::Utils::Json.generate(hash)
+        Hanami::Utils::Json.generate(hash) + NEW_LINE
       end
     end
 
