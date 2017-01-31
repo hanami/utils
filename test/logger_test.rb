@@ -328,7 +328,7 @@ describe Hanami::Logger do
                 class TestLogger < Hanami::Logger; end
                 TestLogger.new(formatter: :json).info('foo')
               end
-            output.must_equal '{"app":"hanami","severity":"INFO","time":"2017-01-15T15:00:23Z","message":"foo"}'
+            output.must_equal %({"app":"hanami","severity":"INFO","time":"2017-01-15T15:00:23Z","message":"foo"}\n)
           end
         end
       end
@@ -343,7 +343,7 @@ describe Hanami::Logger do
                 class TestLogger < Hanami::Logger; end
                 TestLogger.new(formatter: Hanami::Logger::JSONFormatter.new).info('foo')
               end
-            output.must_equal '{"app":"hanami","severity":"INFO","time":"2017-01-15T15:00:23Z","message":"foo"}'
+            output.must_equal %({"app":"hanami","severity":"INFO","time":"2017-01-15T15:00:23Z","message":"foo"}\n)
           end
         end
       end
@@ -358,7 +358,7 @@ describe Hanami::Logger do
                 class TestLogger < Hanami::Logger; end
                 TestLogger.new(formatter: Hanami::Logger::JSONFormatter.new).error(Exception.new('foo'))
               end
-            output.must_equal '{"app":"hanami","severity":"ERROR","time":"2017-01-15T15:00:23Z","message":"foo","backtrace":[],"error":"Exception"}'
+            output.must_equal %({"app":"hanami","severity":"ERROR","time":"2017-01-15T15:00:23Z","message":"foo","backtrace":[],"error":"Exception"}\n)
           end
         end
       end
@@ -373,7 +373,7 @@ describe Hanami::Logger do
                 class TestLogger < Hanami::Logger; end
                 TestLogger.new(formatter: Hanami::Logger::JSONFormatter.new).info(foo: :bar)
               end
-            output.must_equal '{"app":"hanami","severity":"INFO","time":"2017-01-15T15:00:23Z","message":{"foo":"bar"}}'
+            output.must_equal %({"app":"hanami","severity":"INFO","time":"2017-01-15T15:00:23Z","foo":"bar"}\n)
           end
         end
       end
@@ -388,7 +388,7 @@ describe Hanami::Logger do
                 class TestLogger < Hanami::Logger; end
                 TestLogger.new(formatter: Hanami::Logger::JSONFormatter.new).info(['foo'])
               end
-            output.must_equal '{"app":"hanami","severity":"INFO","time":"2017-01-15T15:00:23Z","message":["foo"]}'
+            output.must_equal %({"app":"hanami","severity":"INFO","time":"2017-01-15T15:00:23Z","message":["foo"]}\n)
           end
         end
       end
@@ -444,7 +444,7 @@ describe Hanami::Logger do
               class TestLogger < Hanami::Logger; end
               TestLogger.new.info(foo: :bar)
             end
-          output.must_equal "[hanami] [INFO] [2017-01-15 16:00:23 +0100] {:foo=>:bar}\n"
+          output.must_equal "[hanami] [INFO] [2017-01-15 16:00:23 +0100] bar\n"
         end
       end
 
@@ -453,9 +453,9 @@ describe Hanami::Logger do
           output =
             stub_stdout_constant do
               class TestLogger < Hanami::Logger; end
-              TestLogger.new.info(['foo'])
+              TestLogger.new.info(%(foo bar))
             end
-          output.must_equal "[hanami] [INFO] [2017-01-15 16:00:23 +0100] [\"foo\"]\n"
+          output.must_equal "[hanami] [INFO] [2017-01-15 16:00:23 +0100] foo bar\n"
         end
       end
     end
