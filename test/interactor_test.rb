@@ -28,6 +28,10 @@ class User
   def persist!
     raise if name.nil?
   end
+
+  def to_hash
+    { name: name }
+  end
 end
 
 class Signup
@@ -387,7 +391,7 @@ describe Hanami::Interactor::Result do
 
     it 'returns true for methods derived from merged payload' do
       result = Hanami::Interactor::Result.new
-      result.prepare!('bar' => 2)
+      result.prepare!(bar: 2)
 
       assert result.respond_to?(:bar),  "Expected `result' to respond to `#bar'"
       assert result.respond_to?('bar'), "Expected `result' to respond to `#bar'"

@@ -37,7 +37,7 @@ module Hanami
       # @since 0.3.5
       # @api private
       def initialize(payload = {})
-        @payload = _payload(payload)
+        @payload = payload
         @errors  = []
         @success = true
       end
@@ -125,7 +125,7 @@ module Hanami
       # @since 0.3.5
       # @api private
       def prepare!(payload)
-        @payload.merge!(_payload(payload))
+        @payload.merge!(payload)
         self
       end
 
@@ -142,12 +142,6 @@ module Hanami
       def respond_to_missing?(method_name, _include_all)
         method_name = method_name.to_sym
         METHODS[method_name] || @payload.key?(method_name)
-      end
-
-      # @since 0.3.5
-      # @api private
-      def _payload(payload)
-        Utils::Hash.new(payload).symbolize!
       end
 
       # @since 0.3.5
@@ -492,7 +486,7 @@ module Hanami
         include Utils::ClassAttribute
 
         class_attribute :exposures
-        self.exposures = Utils::Hash.new
+        self.exposures = {}
       end
     end
 
@@ -527,7 +521,7 @@ module Hanami
     #   result.params # => NoMethodError
     def expose(*instance_variable_names)
       instance_variable_names.each do |name|
-        exposures[name] = "@#{name}"
+        exposures[name.to_sym] = "@#{name}"
       end
     end
   end
