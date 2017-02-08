@@ -108,7 +108,7 @@ module Hanami
       # @api private
       NEW_LINE = $/
 
-      # @since x.x.x
+      # @since 1.0.0.beta1
       # @api private
       RESERVED_KEYS = [:app, :severity, :time].freeze
 
@@ -141,7 +141,7 @@ module Hanami
       # @api private
       attr_writer :application_name
 
-      # @since x.x.x
+      # @since 1.0.0.beta1
       # @api private
       attr_reader :application_name
 
