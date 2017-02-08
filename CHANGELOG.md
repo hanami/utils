@@ -3,10 +3,20 @@ Ruby core extentions and class utilities for Hanami
 
 ## v1.0.0.beta1 (unreleased)
 ### Added
+- [Luca Guidi] Official support for Ruby: MRI 2.4
 - [alexd16] Introduced `Utils::Hash#deep_symbolize!` for deep symbolization
+- [Luca Guidi] Introduced `Hanami::Utils.reload!` as a mechanism to force code reloading in development
+
+### Fixed
+- [alexd16 & Alfonso Uceda & Luca Guidi] Don't deeply symbolize `Hanami::Interactor::Result` payload
+– [Alfonso Uceda] `Hanami::Interactor::Result`: Don't transform objects that respond to `#to_hash` (like entities)
+- [Bhanu Prakash] Use `Utils::Json.generate` instead of the deprecated `.dump` for `Hanami::Logger` JSON formatter
+- [Luca Guidi] `Hanami::Logger`: when a `Hash` message is passed, don't nest it under `:message` key, but unwrap at the top level
 
 ### Changed
 - [alexd16] `Utils::Hash#symbolize!` no longer symbolizes deep structures
+- [Luca Guidi & Alfonso Uceda] Improve readability for default logger formatter
+- [Luca Guidi] Use ISO-8601 time format for JSON logger formatter
 
 ## v0.9.2 - 2016-12-19
 ### Added
