@@ -2,6 +2,7 @@ module Hanami
   module Utils
     # Checks for blank
     # @since 0.8.0
+    # @api private
     class Blank
       # Matcher for blank strings
       #
@@ -26,6 +27,7 @@ module Hanami
       # @return [TrueClass,FalseClass]
       #
       # @since 0.8.0
+      # @api private
       def self.blank?(object) # rubocop:disable Metrics/MethodLength
         case object
         when String, ::String
@@ -39,6 +41,28 @@ module Hanami
         else
           object.respond_to?(:empty?) ? object.empty? : !self
         end
+      end
+
+      # Checks object is filled
+      #
+      # @example Basic Usage
+      #   require 'hanami/utils/blank'
+      #
+      #   Hanami::Utils::Blank.filled?(true)                          # => true
+      #   Hanami::Utils::Blank.filled?(1)                             # => true
+      #   Hanami::Utils::Blank.filled?(Hanami::Utils::String.new('')) # => false
+      #   Hanami::Utils::Blank.filled?('  ')                          # => false
+      #   Hanami::Utils::Blank.filled?(nil)                           # => false
+      #   Hanami::Utils::Blank.filled?(Hanami::Utils::Hash.new({}))   # => false
+      #
+      # @param object the argument
+      #
+      # @return [TrueClass,FalseClass]
+      #
+      # @since x.x.x
+      # @api private
+      def self.filled?(object)
+        !blank?(object)
       end
     end
   end
