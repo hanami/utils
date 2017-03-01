@@ -1,6 +1,8 @@
 # Hanami::Utils
 Ruby core extentions and class utilities for Hanami
 
+## v1.0.0.beta2 - 2017-03-02
+
 ## v1.0.0.beta1 - 2017-02-14
 ### Added
 - [Luca Guidi] Official support for Ruby: MRI 2.4
