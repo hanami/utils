@@ -59,7 +59,7 @@ module Hanami
       #
       # @return [TrueClass,FalseClass]
       #
-      # @since x.x.x
+      # @since 1.0.0.beta2
       # @api private
       def self.filled?(object)
         !blank?(object)
