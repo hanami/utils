@@ -170,6 +170,7 @@ module Hanami
 
         private
 
+        # @api private
         def callables(callbacks, block)
           callbacks.push(block) if block
           callbacks.map { |c| Factory.fabricate(c) }
@@ -179,7 +180,7 @@ module Hanami
       # Callback factory
       #
       # @since 0.1.0
-      # @private
+      # @api private
       class Factory
         # Instantiates a `Callback` according to if it responds to #call.
         #
@@ -213,8 +214,9 @@ module Hanami
       # It wraps an object that responds to #call
       #
       # @since 0.1.0
-      # @private
+      # @api private
       class Callback
+        # @api private
         attr_reader :callback
 
         # Initialize by wrapping the given callback
@@ -224,7 +226,7 @@ module Hanami
         # @return [Callback] self
         #
         # @since 0.1.0
-        #
+        # @api private
         def initialize(callback)
           @callback = callback
         end
@@ -237,6 +239,7 @@ module Hanami
         # @return [void, Object] It may return a value, it depends on the callback.
         #
         # @since 0.1.0
+        # @api private
         #
         # @see Hanami::Utils::Callbacks::Chain#run
         def call(context, *args)
@@ -248,7 +251,7 @@ module Hanami
       # It wraps a symbol or a string representing a method name that is implemented by the context within it will be called.
       #
       # @since 0.1.0
-      # @private
+      # @api private
       class MethodCallback < Callback
         # Executes the callback within the given context and eventually passing the given arguments.
         # Those arguments will be passed according to the arity of the target method.
@@ -259,6 +262,7 @@ module Hanami
         # @return [void, Object] It may return a value, it depends on the callback.
         #
         # @since 0.1.0
+        # @api private
         #
         # @see Hanami::Utils::Callbacks::Chain#run
         def call(context, *args)
@@ -271,10 +275,12 @@ module Hanami
           end
         end
 
+        # @api private
         def hash
           callback.hash
         end
 
+        # @api private
         def eql?(other)
           hash == other.hash
         end

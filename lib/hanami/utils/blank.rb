@@ -1,6 +1,7 @@
 module Hanami
   module Utils
     # Checks for blank
+    #
     # @since 0.8.0
     # @api private
     class Blank

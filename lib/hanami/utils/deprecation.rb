@@ -63,6 +63,7 @@ module Hanami
 
       private
 
+      # @api private
       def caller_index
         Utils.jruby? || Utils.rubinius? ? 1 : 2
       end

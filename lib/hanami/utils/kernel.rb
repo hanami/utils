@@ -6,11 +6,11 @@ require 'bigdecimal'
 require 'hanami/utils'
 require 'hanami/utils/string'
 
-# Define top level constant Boolean, so it can be easily used by other libraries
-# in coercions DSLs
-#
-# @since 0.3.0
 unless defined?(Boolean)
+  # Define top level constant Boolean, so it can be easily used by other libraries
+  # in coercions DSLs
+  #
+  # @since 0.3.0
   class Boolean
   end
 end
