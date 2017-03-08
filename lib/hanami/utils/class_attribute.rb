@@ -8,6 +8,7 @@ module Hanami
     #
     # @see Hanami::Utils::ClassAttribute::ClassMethods
     module ClassAttribute
+      # @api private
       def self.included(base)
         base.extend ClassMethods
       end
@@ -75,6 +76,7 @@ module Hanami
         protected
 
         # @see Class#inherited
+        # @api private
         def inherited(subclass)
           class_attributes.each do |attr|
             value = send(attr)
@@ -89,7 +91,7 @@ module Hanami
         private
 
         # Class accessor for class attributes.
-        # @private
+        # @api private
         def class_attributes
           @class_attributes ||= Set.new
         end
