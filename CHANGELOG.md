@@ -1,6 +1,12 @@
 # Hanami::Utils
 Ruby core extentions and class utilities for Hanami
 
+## v1.0.0.beta3 (unreleased)
+### Changed
+- [Luca Guidi] Removed `Utils::Attributes`
+- [Luca Guidi] Removed `Hanami::Interactor::Result#failing?`
+- [Luca Guidi] Removed `Utils::Json.load` and `.dump`
+
 ## v1.0.0.beta2 - 2017-03-02
 ### Changed
 - [Anton Davydov] Made `Utils::Blank` private API
