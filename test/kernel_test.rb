@@ -2,6 +2,7 @@ require 'test_helper'
 require 'ostruct'
 require 'bigdecimal'
 require 'hanami/utils/kernel'
+require 'securerandom'
 
 describe Hanami::Utils::Kernel do
   describe '.Array' do

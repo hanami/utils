@@ -6,8 +6,6 @@ module Hanami
     # String inflector
     #
     # @since 0.4.1
-    #
-    # rubocop:disable Style/PerlBackrefs
     module Inflector # rubocop:disable Metrics/ModuleLength
       # Rules for irregular plurals
       #
@@ -347,6 +345,7 @@ module Hanami
       # rubocop:disable Metrics/AbcSize
       # rubocop:disable Metrics/CyclomaticComplexity
       # rubocop:disable Metrics/MethodLength
+      # rubocop:disable Style/PerlBackrefs
       def self.pluralize(string)
         return string if string.nil? || string =~ Utils::Blank::STRING_MATCHER
 
@@ -385,6 +384,7 @@ module Hanami
           string + S
         end
       end
+      # rubocop:enable Style/PerlBackrefs
       # rubocop:enable Metrics/AbcSize
       # rubocop:enable Metrics/CyclomaticComplexity
       # rubocop:enable Metrics/MethodLength
@@ -402,6 +402,7 @@ module Hanami
       # rubocop:disable Metrics/CyclomaticComplexity
       # rubocop:disable Metrics/MethodLength
       # rubocop:disable Metrics/PerceivedComplexity
+      # rubocop:disable Style/PerlBackrefs
       def self.singularize(string)
         return string if string.nil? || string =~ Utils::Blank::STRING_MATCHER
 
@@ -448,11 +449,11 @@ module Hanami
           string.chop
         end
       end
+      # rubocop:enable Style/PerlBackrefs
       # rubocop:enable Metrics/AbcSize
       # rubocop:enable Metrics/CyclomaticComplexity
       # rubocop:enable Metrics/MethodLength
       # rubocop:enable Metrics/PerceivedComplexity
     end
-    # rubocop:enable Style/PerlBackrefs
   end
 end

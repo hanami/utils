@@ -55,10 +55,6 @@ Standardized Service Object with small interface and rich returning result. [[AP
 
 Enhanced version of Ruby's `Logger`. [[API doc](http://www.rubydoc.info/gems/hanami-utils/Hanami/Logger)]
 
-### Hanami::Utils::Attributes
-
-Set of attributes with indifferent access. [[API doc](http://www.rubydoc.info/gems/hanami-utils/Hanami/Utils/Attributes)]
-
 ### Hanami::Utils::BasicObject
 
 Enhanced version of Ruby's `BasicObject`. [[API doc](http://www.rubydoc.info/gems/hanami-utils/Hanami/Utils/BasicObject)]
@@ -134,6 +130,6 @@ __Hanami::Utils__ uses [Semantic Versioning 2.0.0](http://semver.org)
 
 ## Copyright
 
-Copyright © 2014-2016 Luca Guidi – Released under MIT License
+Copyright © 2014-2017 Luca Guidi – Released under MIT License
 
 This project was formerly known as Lotus (`lotus-utils`).

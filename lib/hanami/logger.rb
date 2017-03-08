@@ -39,12 +39,12 @@ module Hanami
   # And if you want to use custom formatter you need create new class inherited from
   # `Formatter` class and define `_format` private method like this:
   #
-  #   class CustomFormatter < Formatter
-  #     private
-  #     def _format(hash)
-  #       # ...
+  #     class CustomFormatter < Formatter
+  #       private
+  #       def _format(hash)
+  #         # ...
+  #       end
   #     end
-  #   end
   #
   # @since 0.5.0
   #
@@ -128,11 +128,13 @@ module Hanami
         end.tap { |f| f.application_name = application_name }
       end
 
+      # @api private
       def self.inherited(subclass)
         super
         subclasses << subclass
       end
 
+      # @api private
       def self.eligible?(name)
         name == :default
       end
@@ -192,6 +194,7 @@ module Hanami
         result
       end
 
+      # @api private
       def _format_error(result, hash)
         result << " #{hash[:error]}:" if hash.key?(:error)
         result << " #{hash[:message]}#{NEW_LINE}"
@@ -211,6 +214,7 @@ module Hanami
     # @since 0.5.0
     # @api private
     class JSONFormatter < Formatter
+      # @api private
       def self.eligible?(name)
         name == :json
       end

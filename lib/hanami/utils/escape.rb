@@ -415,7 +415,7 @@ module Hanami
       #   <div>&lt;script&gt;alert(1);&lt;&#x2F;script&gt;</div>
       #
       # @example Bad practice
-      #   # WRONG Use Escape.html_attribute
+      #   # WRONG Use Escape.html_attribute instead
       #   <a title="<%= Hanami::Utils::Escape.html('...') %>">link</a>
       def self.html(input)
         input = encode(input)

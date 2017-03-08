@@ -6,11 +6,11 @@ require 'bigdecimal'
 require 'hanami/utils'
 require 'hanami/utils/string'
 
-# Define top level constant Boolean, so it can be easily used by other libraries
-# in coercions DSLs
-#
-# @since 0.3.0
 unless defined?(Boolean)
+  # Define top level constant Boolean, so it can be easily used by other libraries
+  # in coercions DSLs
+  #
+  # @since 0.3.0
   class Boolean
   end
 end
@@ -19,10 +19,7 @@ module Hanami
   module Utils
     # Kernel utilities
     # @since 0.1.1
-    #
-    # rubocop:disable Style/MethodName
-    # rubocop:disable Metrics/ModuleLength
-    module Kernel
+    module Kernel # rubocop:disable Metrics/ModuleLength
       # Matcher for numeric values
       #
       # @since 0.3.3
