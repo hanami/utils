@@ -299,16 +299,6 @@ describe Hanami::Interactor::Result do
     end
   end
 
-  describe '#failing?' do
-    it 'is deprecated' do
-      _, err = capture_io do
-        Hanami::Interactor::Result.new.failing?
-      end
-
-      err.must_include "`Hanami::Interactor::Result#failing?' is deprecated, please use `Hanami::Interactor::Result#failure?'"
-    end
-  end
-
   describe '#fail!' do
     it 'causes a failure' do
       result = Hanami::Interactor::Result.new
