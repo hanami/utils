@@ -39,12 +39,12 @@ module Hanami
   # And if you want to use custom formatter you need create new class inherited from
   # `Formatter` class and define `_format` private method like this:
   #
-  #   class CustomFormatter < Formatter
-  #     private
-  #     def _format(hash)
-  #       # ...
+  #     class CustomFormatter < Formatter
+  #       private
+  #       def _format(hash)
+  #         # ...
+  #       end
   #     end
-  #   end
   #
   # @since 0.5.0
   #

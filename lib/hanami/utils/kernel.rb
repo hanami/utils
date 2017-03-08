@@ -19,10 +19,7 @@ module Hanami
   module Utils
     # Kernel utilities
     # @since 0.1.1
-    #
-    # rubocop:disable Style/MethodName
-    # rubocop:disable Metrics/ModuleLength
-    module Kernel
+    module Kernel # rubocop:disable Metrics/ModuleLength
       # Matcher for numeric values
       #
       # @since 0.3.3

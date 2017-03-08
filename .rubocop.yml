@@ -12,3 +12,6 @@ Style/SpecialGlobalVars:
   Enabled: false
 Style/MethodMissing:
   Enabled: false
+Style/MethodName:
+  Exclude:
+    - 'lib/hanami/utils/kernel.rb'
