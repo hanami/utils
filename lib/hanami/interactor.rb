@@ -1,7 +1,6 @@
 require 'hanami/utils/basic_object'
 require 'hanami/utils/class_attribute'
 require 'hanami/utils/hash'
-require 'hanami/utils/deprecation'
 
 module Hanami
   # Hanami Interactor
@@ -53,18 +52,6 @@ module Hanami
 
       # @since 0.3.5
       alias success? successful?
-
-      # Check if the current status is not successful
-      #
-      # @return [TrueClass,FalseClass] the result of the check
-      #
-      # @since 0.9.2
-      #
-      # @deprecated Use {#failure?} instead
-      def failing?
-        Utils::Deprecation.new("`Hanami::Interactor::Result#failing?' is deprecated, please use `Hanami::Interactor::Result#failure?'")
-        failure?
-      end
 
       # Check if the current status is not successful
       #
