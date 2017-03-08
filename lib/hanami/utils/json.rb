@@ -4,8 +4,6 @@ rescue LoadError
   require 'json'
 end
 
-require 'hanami/utils/deprecation'
-
 module Hanami
   module Utils
     # JSON wrapper
