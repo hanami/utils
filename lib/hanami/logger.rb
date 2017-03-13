@@ -257,10 +257,10 @@ module Hanami
     #   tagging purposes
     #
     # @param stream [String, IO, StringIO, Pathname] an optional log stream. This is a filename
-    # (String) or IO object (typically STDOUT, STDERR, or an open file).
+    # (String) or IO object (typically `$stdout`, `$stderr`, or an open file).
     #
     # @since 0.5.0
-    def initialize(application_name = nil, stream: STDOUT, level: DEBUG, formatter: nil)
+    def initialize(application_name = nil, stream: $stdout, level: DEBUG, formatter: nil)
       super(stream)
 
       @level            = _level(level)
