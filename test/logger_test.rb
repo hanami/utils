@@ -1,4 +1,5 @@
 require 'test_helper'
+require 'hanami/utils'
 require 'hanami/logger'
 require 'rbconfig'
 
@@ -16,7 +17,7 @@ describe Hanami::Logger do
   describe '#initialize' do
     it 'uses STDOUT by default' do
       output =
-        stub_stdout_constant do
+        with_captured_stdout do
           class TestLogger < Hanami::Logger; end
           logger = TestLogger.new
           logger.info('foo')
@@ -263,7 +264,7 @@ describe Hanami::Logger do
 
     it 'has application_name when log' do
       output =
-        stub_stdout_constant do
+        with_captured_stdout do
           module App; class TestLogger < Hanami::Logger; end; end
           logger = App::TestLogger.new
           logger.info('foo')
@@ -297,7 +298,7 @@ describe Hanami::Logger do
       end
 
       output =
-        stub_stdout_constant do
+        with_captured_stdout do
           TestLogger.new.info('')
         end
 
@@ -308,7 +309,7 @@ describe Hanami::Logger do
       it 'falls back to Formatter' do
         stub_time_now do
           output =
-            stub_stdout_constant do
+            with_captured_stdout do
               class TestLogger < Hanami::Logger; end
               TestLogger.new(formatter: nil).info('foo')
             end
@@ -324,7 +325,7 @@ describe Hanami::Logger do
         it 'when passed as a symbol, it has JSON format for string messages' do
           stub_time_now do
             output =
-              stub_stdout_constant do
+              with_captured_stdout do
                 class TestLogger < Hanami::Logger; end
                 TestLogger.new(formatter: :json).info('foo')
               end
@@ -339,7 +340,7 @@ describe Hanami::Logger do
         it 'has JSON format for string messages' do
           stub_time_now do
             output =
-              stub_stdout_constant do
+              with_captured_stdout do
                 class TestLogger < Hanami::Logger; end
                 TestLogger.new(formatter: Hanami::Logger::JSONFormatter.new).info('foo')
               end
@@ -354,7 +355,7 @@ describe Hanami::Logger do
         it 'has JSON format for error messages' do
           stub_time_now do
             output =
-              stub_stdout_constant do
+              with_captured_stdout do
                 class TestLogger < Hanami::Logger; end
                 TestLogger.new(formatter: Hanami::Logger::JSONFormatter.new).error(Exception.new('foo'))
               end
@@ -369,7 +370,7 @@ describe Hanami::Logger do
         it 'has JSON format for hash messages' do
           stub_time_now do
             output =
-              stub_stdout_constant do
+              with_captured_stdout do
                 class TestLogger < Hanami::Logger; end
                 TestLogger.new(formatter: Hanami::Logger::JSONFormatter.new).info(foo: :bar)
               end
@@ -384,7 +385,7 @@ describe Hanami::Logger do
         it 'has JSON format for not string messages' do
           stub_time_now do
             output =
-              stub_stdout_constant do
+              with_captured_stdout do
                 class TestLogger < Hanami::Logger; end
                 TestLogger.new(formatter: Hanami::Logger::JSONFormatter.new).info(['foo'])
               end
@@ -398,7 +399,7 @@ describe Hanami::Logger do
       it 'when passed as a symbol, it has key=value format for string messages' do
         stub_time_now do
           output =
-            stub_stdout_constant do
+            with_captured_stdout do
               class TestLogger < Hanami::Logger; end
               TestLogger.new(formatter: :default).info('foo')
             end
@@ -409,7 +410,7 @@ describe Hanami::Logger do
       it 'has key=value format for string messages' do
         stub_time_now do
           output =
-            stub_stdout_constant do
+            with_captured_stdout do
               class TestLogger < Hanami::Logger; end
               TestLogger.new.info('foo')
             end
@@ -420,7 +421,7 @@ describe Hanami::Logger do
       it 'has key=value format for error messages' do
         stub_time_now do
           exception = nil
-          output = stub_stdout_constant do
+          output = with_captured_stdout do
             class TestLogger < Hanami::Logger; end
             begin
               raise StandardError.new('foo')
@@ -440,7 +441,7 @@ describe Hanami::Logger do
       it 'has key=value format for hash messages' do
         stub_time_now do
           output =
-            stub_stdout_constant do
+            with_captured_stdout do
               class TestLogger < Hanami::Logger; end
               TestLogger.new.info(foo: :bar)
             end
@@ -451,7 +452,7 @@ describe Hanami::Logger do
       it 'has key=value format for not string messages' do
         stub_time_now do
           output =
-            stub_stdout_constant do
+            with_captured_stdout do
               class TestLogger < Hanami::Logger; end
               TestLogger.new.info(%(foo bar))
             end

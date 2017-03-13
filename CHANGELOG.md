@@ -2,6 +2,9 @@
 Ruby core extentions and class utilities for Hanami
 
 ## v1.0.0.beta3 (unreleased)
+### Fixed
+- [Luca Guidi] Use `$stdout` instead of `STDOUT` as default stream for `Hanami::Logger`
+
 ### Changed
 - [Luca Guidi] Removed `Utils::Attributes`
 - [Luca Guidi] Removed `Hanami::Interactor::Result#failing?`

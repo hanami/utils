@@ -19,26 +19,14 @@ TEST_ENCODINGS = Encoding.name_list.each_with_object(['UTF-8']) do |encoding, re
   result << encoding if !string.nil? && string != test_string
 end
 
-def stub_stdout_constant # rubocop:disable Metrics/MethodLength
-  begin_block = <<-BLOCK
-    original_verbosity = $VERBOSE
-    $VERBOSE = nil
-
-    origin_stdout = STDOUT
-    STDOUT = StringIO.new
-  BLOCK
-  TOPLEVEL_BINDING.eval begin_block
-
+def with_captured_stdout
+  original = $stdout
+  captured = StringIO.new
+  $stdout  = captured
   yield
-  return_str = STDOUT.string
-
-  ensure_block = <<-BLOCK
-    STDOUT = origin_stdout
-    $VERBOSE = original_verbosity
-  BLOCK
-  TOPLEVEL_BINDING.eval ensure_block
-
-  return_str
+  $stdout.string
+ensure
+  $stdout = original
 end
 
 def stub_time_now
