@@ -24,20 +24,6 @@ module Hanami
           MultiJson.load(payload)
         end
 
-        # FIXME: remove this alias, when Hanami::Utils::Json.load will be removed
-        #
-        # @since 0.9.1
-        # @api private
-        alias load parse
-
-        # FIXME: remove this method, when Hanami::Utils::Json.dump will be removed
-        #
-        # @since 0.9.1
-        # @api private
-        def dump(object)
-          generate(object)
-        end
-
         # @since 0.9.1
         # @api private
         def generate(object)
