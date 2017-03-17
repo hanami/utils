@@ -1,14 +1,14 @@
 # Hanami::Utils
 Ruby core extentions and class utilities for Hanami
 
-## v1.0.0.beta3 (unreleased)
+## v1.0.0.beta3 - 2017-03-17
 ### Fixed
 - [Luca Guidi] Use `$stdout` instead of `STDOUT` as default stream for `Hanami::Logger`
 
 ### Changed
 - [Luca Guidi] Removed `Utils::Attributes`
-- [Luca Guidi] Removed `Hanami::Interactor::Result#failing?`
-- [Luca Guidi] Removed `Utils::Json.load` and `.dump`
+- [Luca Guidi] Removed deprecated `Hanami::Interactor::Result#failing?`
+- [Luca Guidi] Removed deprecated `Utils::Json.load` and `.dump`
 
 ## v1.0.0.beta2 - 2017-03-02
 ### Changed
