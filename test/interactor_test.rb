@@ -269,6 +269,18 @@ describe Hanami::Interactor do
       result = ErrorBangInteractor.new.call
       result.operations.must_equal [:persist!]
     end
+
+    it 'is true when the failure reason matches' do
+      result = ErrorBangInteractor.new.call
+      assert result.failure?(
+        'There was an error while persisting data.'
+      ).must_equal true
+    end
+
+    it 'is false when the failure reason does not match' do
+      result = ErrorBangInteractor.new.call
+      assert result.failure?('foobar').must_equal false
+    end
   end
 end
 
