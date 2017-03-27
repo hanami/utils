@@ -242,7 +242,7 @@ describe Hanami::Interactor do
 
     it "doesn't interrupt the flow" do
       result = ErrorInteractor.new.call
-      result.operations.must_equal [:prepare!, :persist!, :log!]
+      result.operations.must_equal %i(prepare! persist! log!)
     end
 
     # See https://github.com/hanami/utils/issues/69
