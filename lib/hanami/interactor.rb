@@ -21,7 +21,6 @@ module Hanami
                        success?:    true,
                        successful?: true,
                        failure?:    true,
-                       failing?:    true,
                        fail!:       true,
                        prepare!:    true,
                        errors:      true,
@@ -216,7 +215,7 @@ module Hanami
       #   end
       #
       #   result = Signup.new(name: 'Luca').call
-      #   result.failing? # => false
+      #   result.failure? # => false
       #   result.successful? # => true
       #
       #   result.user   # => #<User:0x007fa311105778 @id=1 @name="Luca">
@@ -248,7 +247,7 @@ module Hanami
       #
       #   result = Signup.new(name: nil).call
       #   result.successful? # => false
-      #   result.failing? # => true
+      #   result.failure? # => true
       #
       #   result.user   # => #<User:0x007fa311105778 @id=nil @name="Luca">
       #
