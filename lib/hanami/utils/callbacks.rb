@@ -44,7 +44,7 @@ module Hanami
         #   # Append a Proc to be used as a callback, it will be wrapped by `Callback`
         #   # The optional argument(s) correspond to the one passed when invoked the chain with `run`.
         #   chain.append { Authenticator.authenticate! }
-        #   chain.append { |params| ArticleRepository.find(params[:id]) }
+        #   chain.append { |params| ArticleRepository.new.find(params[:id]) }
         #
         #   # Append a Symbol as a reference to a method name that will be used as a callback.
         #   # It will wrapped by `MethodCallback`
@@ -83,7 +83,7 @@ module Hanami
         #   # Add a Proc to be used as a callback, it will be wrapped by `Callback`
         #   # The optional argument(s) correspond to the one passed when invoked the chain with `run`.
         #   chain.prepend { Authenticator.authenticate! }
-        #   chain.prepend { |params| ArticleRepository.find(params[:id]) }
+        #   chain.prepend { |params| ArticleRepository.new.find(params[:id]) }
         #
         #   # Add a Symbol as a reference to a method name that will be used as a callback.
         #   # It will wrapped by `MethodCallback`
