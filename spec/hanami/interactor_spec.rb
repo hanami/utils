@@ -241,7 +241,7 @@ RSpec.describe Hanami::Interactor do
 
     it "doesn't interrupt the flow" do
       result = ErrorInteractor.new.call
-      expect(result.operations).to eq [:prepare!, :persist!, :log!]
+      expect(result.operations).to eq %i(prepare! persist! log!)
     end
 
     # See https://github.com/hanami/utils/issues/69

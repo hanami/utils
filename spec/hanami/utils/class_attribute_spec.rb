@@ -11,7 +11,7 @@ RSpec.describe Hanami::Utils::ClassAttribute do
 
     class SubclassAttributeTest < ClassAttributeTest
       class_attribute :subattribute
-      self.functions    = [:x, :y]
+      self.functions    = %i(x y)
       self.subattribute = 42
     end
 
@@ -43,15 +43,15 @@ RSpec.describe Hanami::Utils::ClassAttribute do
   end
 
   after do
-    [:ClassAttributeTest,
-     :SubclassAttributeTest,
-     :SubSubclassAttributeTest,
-     :Vehicle,
-     :Car,
-     :Airplane,
-     :SmallAirplane].each do |const|
-      Object.send :remove_const, const
-    end
+    %i(ClassAttributeTest
+       SubclassAttributeTest
+       SubSubclassAttributeTest
+       Vehicle
+       Car
+       Airplane
+       SmallAirplane).each do |const|
+         Object.send :remove_const, const
+       end
   end
 
   it 'sets the given value' do
@@ -74,7 +74,7 @@ RSpec.describe Hanami::Utils::ClassAttribute do
 
     it 'if the superclass value changes it does not affects subclasses' do
       ClassAttributeTest.functions = [:y]
-      expect(SubclassAttributeTest.functions).to eq([:x, :y])
+      expect(SubclassAttributeTest.functions).to eq(%i(x y))
     end
 
     it 'if the subclass value changes it does not affects superclass' do

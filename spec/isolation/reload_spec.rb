@@ -16,12 +16,12 @@ RSpec.describe 'Hanami::Utils.reload!' do
   it 'reloads the files set of files' do
     File.open(root.join('user.rb'), 'w+') do |f|
       f.write <<-EOF
-class User
-  def greet
-    "Hi"
-  end
-end
-EOF
+        class User
+          def greet
+            "Hi"
+          end
+        end
+      EOF
     end
 
     Hanami::Utils.reload!(root)
@@ -29,12 +29,12 @@ EOF
 
     File.open(root.join('user.rb'), 'w+') do |f|
       f.write <<-EOF
-class User
-  def greet
-    "Ciao"
-  end
-end
-EOF
+        class User
+          def greet
+            "Ciao"
+          end
+        end
+      EOF
     end
 
     Hanami::Utils.reload!(root)
