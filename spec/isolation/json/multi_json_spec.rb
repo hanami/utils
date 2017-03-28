@@ -1,10 +1,7 @@
-require 'rubygems'
-require 'bundler'
-Bundler.require(:default, :multi_json)
+require_relative '../../support/isolation_spec_helper'
 
-require 'rspec/autorun'
-$LOAD_PATH.unshift 'lib'
-require 'hanami/utils'
+Bundler.require(:default, :development, :multi_json)
+
 require 'gson' if Hanami::Utils.jruby?
 require 'hanami/utils/json'
 
@@ -39,3 +36,5 @@ RSpec.describe Hanami::Utils::Json do
     end
   end
 end
+
+RSpec::Support::Runner.run

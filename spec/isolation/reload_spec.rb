@@ -1,5 +1,4 @@
-require 'rspec/autorun'
-require 'pathname'
+require_relative '../support/isolation_spec_helper'
 
 RSpec.describe 'Hanami::Utils.reload!' do
   before do
@@ -41,3 +40,5 @@ RSpec.describe 'Hanami::Utils.reload!' do
     expect(User.new.greet).to eq "Ciao"
   end
 end
+
+RSpec::Support::Runner.run

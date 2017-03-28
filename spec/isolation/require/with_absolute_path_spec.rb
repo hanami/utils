@@ -1,4 +1,4 @@
-require 'rspec/autorun'
+require_relative '../../support/isolation_spec_helper'
 
 RSpec.describe 'Hanami::Utils.require!' do
   describe 'with absolute path' do
@@ -13,3 +13,5 @@ RSpec.describe 'Hanami::Utils.require!' do
     end
   end
 end
+
+RSpec::Support::Runner.run

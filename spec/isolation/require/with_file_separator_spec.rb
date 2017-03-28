@@ -1,4 +1,4 @@
-require 'rspec/autorun'
+require_relative '../../support/isolation_spec_helper'
 
 RSpec.describe 'Hanami::Utils.require!' do
   describe 'with file separator' do
@@ -8,7 +8,7 @@ RSpec.describe 'Hanami::Utils.require!' do
       #   * on *NIX systems, instead of having /, we get \
       #   * on Windows systems, instead of having \, we get /
       separator = File::SEPARATOR == '/' ? '\\' : '/'
-      directory = %w(spec fixtures file_list).join(separator)
+      directory = %w(spec support fixtures file_list).join(separator)
       Hanami::Utils.require!(directory)
 
       expect(defined?(A)).to  be_truthy, 'expected A to be defined'
@@ -18,3 +18,5 @@ RSpec.describe 'Hanami::Utils.require!' do
     end
   end
 end
+
+RSpec::Support::Runner.run

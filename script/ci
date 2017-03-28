@@ -16,7 +16,7 @@ run_isolation_tests() {
 
   for test in $(find $root -name '*_spec.rb')
   do
-    run_test $test
+    run_isolation_test $test
 
     if [ $? -ne 0 ]; then
       local exit_code=$?
@@ -26,11 +26,18 @@ run_isolation_tests() {
   done
 }
 
+run_isolation_test() {
+  local test=$1
+
+  printf "\n\n\nRunning: $test\n"
+  ruby $test --options spec/isolation/.rspec
+}
+
 run_test() {
   local test=$1
 
   printf "\n\n\nRunning: $test\n"
-  ruby -Ispec $test
+  COVERAGE=true bundle exec rspec $test
 }
 
 main() {
