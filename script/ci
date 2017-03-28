@@ -30,7 +30,7 @@ run_test() {
   local test=$1
 
   printf "\n\n\nRunning: $test\n"
-  COVERAGE=true bundle exec rspec $test
+  ruby -Ispec $test
 }
 
 main() {

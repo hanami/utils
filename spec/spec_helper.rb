@@ -1,3 +1,6 @@
+require 'bundler/setup'
+require 'rspec'
+
 if ENV['COVERALL']
   require 'coveralls'
   Coveralls.wear!

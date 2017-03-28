@@ -1,4 +1,4 @@
-require 'hanami/utils'
+require 'rspec/autorun'
 require 'pathname'
 
 RSpec.describe 'Hanami::Utils.reload!' do

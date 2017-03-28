@@ -1,4 +1,4 @@
-require 'hanami/utils'
+require 'rspec/autorun'
 
 RSpec.describe 'Hanami::Utils.require!' do
   describe 'with absolute path' do

@@ -2,6 +2,7 @@ require 'rubygems'
 require 'bundler'
 Bundler.require(:default, :multi_json)
 
+require 'rspec/autorun'
 $LOAD_PATH.unshift 'lib'
 require 'hanami/utils'
 require 'gson' if Hanami::Utils.jruby?
