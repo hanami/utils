@@ -1,5 +1,6 @@
 require 'test_helper'
 require 'hanami/utils'
+require 'hanami/utils/file_list'
 require 'hanami/logger'
 require 'rbconfig'
 
@@ -24,6 +25,26 @@ describe Hanami::Logger do
         end
 
       output.must_match(/foo/)
+    end
+
+    describe 'custom arguments' do
+      before do
+        stream.dirname.mkpath
+      end
+
+      let(:stream) { Pathname.new(Dir.pwd).join('tmp', 'rotation.log') }
+      let(:count)  { 5 }
+
+      it 'passes them to the superclass' do
+        logger = Hanami::Logger.new('rotation', count, 512, stream: stream)
+
+        1_000.times do
+          logger.debug "ok"
+        end
+
+        logs = Hanami::Utils::FileList["#{stream.dirname}/rotation.log*"]
+        logs.count.must_equal count
+      end
     end
 
     describe 'custom level option' do
