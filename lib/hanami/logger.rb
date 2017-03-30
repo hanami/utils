@@ -256,10 +256,125 @@ module Hanami
     # @param application_name [String] an optional application name used for
     #   tagging purposes
     #
-    # @param stream [String, IO, StringIO, Pathname] an optional log stream. This is a filename
-    # (String) or IO object (typically `$stdout`, `$stderr`, or an open file).
+    # @param *args [Array<Object>] an optional set of arguments to honor Ruby's
+    #   `Logger#initialize` arguments. See Ruby documentation for details.
+    #
+    # @param stream [String, IO, StringIO, Pathname] an optional log stream.
+    #   This is a filename (`String`) or `IO` object (typically `$stdout`,
+    #   `$stderr`, or an open file). It defaults to `$stderr`.
+    #
+    # @param level [Integer,String] logging level. It can be expressed as an
+    #   integer, according to Ruby's `Logger` from standard library or as a
+    #   string with the name of the level
+    #
+    # @param formatter [Symbol,#_format] a formatter - We support `:json` as
+    #   JSON formatter or an object that respond to `#_format(data)`
     #
     # @since 0.5.0
+    #
+    # @see https://ruby-doc.org/stdlib/libdoc/logger/rdoc/Logger.html#class-Logger-label-How+to+create+a+logger
+    #
+    # @example Basic usage
+    #   require 'hanami/logger'
+    #
+    #   logger = Hanami::Logger.new
+    #   logger.info "Hello World"
+    #
+    #   # => [Hanami] [DEBUG] [2017-03-30 15:41:01 +0200] Hello World
+    #
+    # @example Custom application name
+    #   require 'hanami/logger'
+    #
+    #   logger = Hanami::Logger.new('bookshelf')
+    #   logger.info "Hello World"
+    #
+    #   # => [bookshelf] [DEBUG] [2017-03-30 15:44:23 +0200] Hello World
+    #
+    # @example Logger level (Integer)
+    #   require 'hanami/logger'
+    #
+    #   logger = Hanami::Logger.new(level: 2) # WARN
+    #   logger.info "Hello World"
+    #   # => true
+    #
+    #   logger.info "Hello World"
+    #   # => true
+    #
+    #   logger.warn "Hello World"
+    #   # => [Hanami] [WARN] [2017-03-30 16:00:48 +0200] Hello World
+    #
+    # @example Logger level (Constant)
+    #   require 'hanami/logger'
+    #
+    #   logger = Hanami::Logger.new(level: Hanami::Logger::WARN)
+    #   logger.info "Hello World"
+    #   # => true
+    #
+    #   logger.info "Hello World"
+    #   # => true
+    #
+    #   logger.warn "Hello World"
+    #   # => [Hanami] [WARN] [2017-03-30 16:00:48 +0200] Hello World
+    #
+    # @example Logger level (String)
+    #   require 'hanami/logger'
+    #
+    #   logger = Hanami::Logger.new(level: 'warn')
+    #   logger.info "Hello World"
+    #   # => true
+    #
+    #   logger.info "Hello World"
+    #   # => true
+    #
+    #   logger.warn "Hello World"
+    #   # => [Hanami] [WARN] [2017-03-30 16:00:48 +0200] Hello World
+    #
+    # @example Use a file
+    #   require 'hanami/logger'
+    #
+    #   logger = Hanami::Logger.new(stream: "development.log")
+    #   logger.info "Hello World"
+    #
+    #   # => true
+    #
+    #   File.read("development.log")
+    #   # =>
+    #   #  # Logfile created on 2017-03-30 15:52:48 +0200 by logger.rb/56815
+    #   #  [Hanami] [DEBUG] [2017-03-30 15:52:54 +0200] Hello World
+    #
+    # @example Period rotation
+    #   require 'hanami/logger'
+    #
+    #   # Rotate daily
+    #   logger = Hanami::Logger.new('bookshelf', 'daily', stream: 'development.log')
+    #
+    # @example File size rotation
+    #   require 'hanami/logger'
+    #
+    #   # leave 10 old log files where the size is about 1,024,000 bytes
+    #   logger = Hanami::Logger.new('bookshelf', 10, 1024000, stream: 'development.log')
+    #
+    # @example Use a StringIO
+    #   require 'hanami/logger'
+    #
+    #   stream = StringIO.new
+    #   logger = Hanami::Logger.new(stream: stream)
+    #   logger.info "Hello World"
+    #
+    #   # => true
+    #
+    #   stream.rewind
+    #   stream.read
+    #
+    #   # => "[Hanami] [DEBUG] [2017-03-30 15:55:22 +0200] Hello World\n"
+    #
+    # @example JSON formatter
+    #   require 'hanami/logger'
+    #
+    #   logger = Hanami::Logger.new(formatter: :json)
+    #   logger.info "Hello World"
+    #
+    #   # => {"app":"Hanami","severity":"DEBUG","time":"2017-03-30T13:57:59Z","message":"Hello World"}
     def initialize(application_name = nil, *args, stream: $stdout, level: DEBUG, formatter: nil)
       super(stream, *args)
 
