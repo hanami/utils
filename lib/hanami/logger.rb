@@ -260,8 +260,8 @@ module Hanami
     # (String) or IO object (typically `$stdout`, `$stderr`, or an open file).
     #
     # @since 0.5.0
-    def initialize(application_name = nil, stream: $stdout, level: DEBUG, formatter: nil)
-      super(stream)
+    def initialize(application_name = nil, *args, stream: $stdout, level: DEBUG, formatter: nil)
+      super(stream, *args)
 
       @level            = _level(level)
       @stream           = stream
