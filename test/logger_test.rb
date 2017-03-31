@@ -38,7 +38,7 @@ describe Hanami::Logger do
       it 'passes them to the superclass' do
         logger = Hanami::Logger.new('rotation', count, 512, stream: stream)
 
-        1_000.times do
+        100.times do
           logger.debug "ok"
         end
 
