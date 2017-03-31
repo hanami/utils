@@ -256,7 +256,7 @@ module Hanami
     # @param application_name [String] an optional application name used for
     #   tagging purposes
     #
-    # @param *args [Array<Object>] an optional set of arguments to honor Ruby's
+    # @param args [Array<Object>] an optional set of arguments to honor Ruby's
     #   `Logger#initialize` arguments. See Ruby documentation for details.
     #
     # @param stream [String, IO, StringIO, Pathname] an optional log stream.
