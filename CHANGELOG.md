@@ -1,6 +1,10 @@
 # Hanami::Utils
 Ruby core extentions and class utilities for Hanami
 
+## v1.0.0.rc1 - 2017-03-31
+### Added
+- [Luca Guidi] Allow `Hanami::Logger#initialize` to accept arguments to be compliant with Ruby's `Logger`
+
 ## v1.0.0.beta3 - 2017-03-17
 ### Fixed
 - [Luca Guidi] Use `$stdout` instead of `STDOUT` as default stream for `Hanami::Logger`
