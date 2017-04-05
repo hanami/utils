@@ -1,6 +1,8 @@
 # Hanami::Utils
 Ruby core extentions and class utilities for Hanami
 
+## v1.0.0 - 2017-04-06
+
 ## v1.0.0.rc1 - 2017-03-31
 ### Added
 - [Luca Guidi] Allow `Hanami::Logger#initialize` to accept arguments to be compliant with Ruby's `Logger`
@@ -26,7 +28,7 @@ Ruby core extentions and class utilities for Hanami
 
 ### Fixed
 - [alexd16 & Alfonso Uceda & Luca Guidi] Don't deeply symbolize `Hanami::Interactor::Result` payload
-– [Alfonso Uceda] `Hanami::Interactor::Result`: Don't transform objects that respond to `#to_hash` (like entities)
+- [Alfonso Uceda] `Hanami::Interactor::Result`: Don't transform objects that respond to `#to_hash` (like entities)
 - [Bhanu Prakash] Use `Utils::Json.generate` instead of the deprecated `.dump` for `Hanami::Logger` JSON formatter
 - [Luca Guidi] `Hanami::Logger`: when a `Hash` message is passed, don't nest it under `:message` key, but unwrap at the top level
 
