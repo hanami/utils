@@ -81,7 +81,7 @@ Deprecate Hanami features. [[API doc](http://www.rubydoc.info/gems/hanami-utils/
 
 ### Hanami::Utils::Duplicable
 
-Safe `#dup` logic for Ruby objects. [[API doc](http://www.rubydoc.info/gems/hanami-utils/Hanami/Utils/Deprecation)]
+Safe `#dup` logic for Ruby objects. [[API doc](http://www.rubydoc.info/gems/hanami-utils/Hanami/Utils/Duplicable)]
 
 
 ### Hanami::Utils::Escape
