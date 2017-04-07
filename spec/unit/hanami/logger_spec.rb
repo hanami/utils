@@ -433,6 +433,26 @@ RSpec.describe Hanami::Logger do
           end
         expect(output).to eq "[hanami] [INFO] [2017-01-15 16:00:23 +0100] foo bar\n"
       end
+
+      it 'has key=value format for form_params' do
+        form_params = Hash[
+          form_params: Hash[
+            name: 'John',
+            password: '[FILTERED]'
+          ]
+        ]
+
+        pretty_params = "Parameters: {\n  \"name\": \"John\",\n  \"password\": \"[FILTERED]\"\n}"
+
+        stub_time_now do
+          output =
+            with_captured_stdout do
+              class TestLogger < Hanami::Logger; end
+              TestLogger.new.info(form_params)
+            end
+          output.must_equal "[hanami] [INFO] [2017-01-15 16:00:23 +0100] #{pretty_params}\n"
+        end
+      end
     end
   end
 end
