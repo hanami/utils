@@ -187,7 +187,7 @@ module Hanami
         return _format_error(result, hash) if hash.key?(:error)
 
         values = hash.each_with_object([]) do |(k, v), memo|
-          memo << v unless RESERVED_KEYS.include?(k)
+          memo << _formatted_log_value(k, v) unless RESERVED_KEYS.include?(k)
         end
 
         result << " #{values.join(SEPARATOR)}#{NEW_LINE}"
@@ -205,6 +205,15 @@ module Hanami
         end
 
         result
+      end
+
+      # @api private
+      def _formatted_log_value(k, v)
+        if k == :form_params
+          "Parameters: #{JSON.pretty_generate(v)}"
+        else
+          v
+        end
       end
     end
 
