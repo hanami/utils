@@ -51,8 +51,8 @@ describe Hanami::Utils::ClassAttribute do
        Car
        Airplane
        SmallAirplane).each do |const|
-         Object.send :remove_const, const
-       end
+      Object.send :remove_const, const
+    end
   end
 
   it 'sets the given value' do

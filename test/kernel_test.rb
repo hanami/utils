@@ -866,7 +866,7 @@ describe Hanami::Utils::Kernel do
     describe 'when a string without numbers is given' do
       let(:input) { 'home' }
 
-      if RUBY_VERSION == '2.4.0'
+      if RUBY_VERSION >= '2.4.0'
         it 'raises error' do
           exception = -> { Hanami::Utils::Kernel.BigDecimal(input) }.must_raise(ArgumentError)
           exception.message.must_equal "invalid value for BigDecimal(): #{input.inspect}"
@@ -1353,7 +1353,7 @@ describe Hanami::Utils::Kernel do
       describe 'when a big decimal is given' do
         let(:input) { BigDecimal.new(7944.2343, 10) }
 
-        if RUBY_VERSION == '2.4.0'
+        if RUBY_VERSION >= '2.4.0'
           it 'returns the string representation' do
             @result.must_equal '0.79442343e4'
           end
@@ -1495,7 +1495,7 @@ describe Hanami::Utils::Kernel do
       describe 'when a class is given' do
         let(:input) { Fixnum } # rubocop:disable Lint/UnifiedInteger
 
-        if RUBY_VERSION == '2.4.0'
+        if RUBY_VERSION >= '2.4.0'
           it 'returns the string representation' do
             @result.must_equal 'Integer'
           end

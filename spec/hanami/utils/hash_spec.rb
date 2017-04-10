@@ -475,7 +475,7 @@ RSpec.describe Hanami::Utils::Hash do
     it 'returns the correct object when a NoMethodError is raised' do
       hash = Hanami::Utils::Hash.new('a' => 1)
 
-      if RUBY_VERSION == '2.4.0' # rubocop:disable Style/ConditionalAssignment
+      if RUBY_VERSION >= '2.4' # rubocop:disable Style/ConditionalAssignment
         exception_message = "undefined method `foo' for 1:Integer"
       else
         exception_message = "undefined method `foo' for 1:Fixnum"

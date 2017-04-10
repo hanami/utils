@@ -62,7 +62,7 @@ module Hanami
     #
     # @param directory [String, Pathname] the directory
     #
-    # @since 1.0.0.beta1
+    # @since 1.0.0
     # @api private
     def self.reload!(directory)
       for_each_file_in(directory) { |file| load(file) }
@@ -80,7 +80,7 @@ module Hanami
     # @param directory [String, Pathname] the directory
     # @param blk [Proc] the block to yield
     #
-    # @since 1.0.0.beta1
+    # @since 1.0.0
     # @api private
     def self.for_each_file_in(directory, &blk)
       directory = directory.to_s.gsub(%r{(\/|\\)}, File::SEPARATOR)

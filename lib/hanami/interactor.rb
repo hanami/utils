@@ -21,7 +21,6 @@ module Hanami
                        success?:    true,
                        successful?: true,
                        failure?:    true,
-                       failing?:    true,
                        fail!:       true,
                        prepare!:    true,
                        errors:      true,
@@ -211,12 +210,12 @@ module Hanami
       #     end
       #
       #     def call
-      #       @user = UserRepository.persist(@user)
+      #       @user = UserRepository.new.persist(@user)
       #     end
       #   end
       #
       #   result = Signup.new(name: 'Luca').call
-      #   result.failing? # => false
+      #   result.failure? # => false
       #   result.successful? # => true
       #
       #   result.user   # => #<User:0x007fa311105778 @id=1 @name="Luca">
@@ -237,7 +236,7 @@ module Hanami
       #
       #     # THIS WON'T BE INVOKED BECAUSE #valid? WILL RETURN false
       #     def call
-      #       @user = UserRepository.persist(@user)
+      #       @user = UserRepository.new.persist(@user)
       #     end
       #
       #     private
@@ -248,7 +247,7 @@ module Hanami
       #
       #   result = Signup.new(name: nil).call
       #   result.successful? # => false
-      #   result.failing? # => true
+      #   result.failure? # => true
       #
       #   result.user   # => #<User:0x007fa311105778 @id=nil @name="Luca">
       #
@@ -303,7 +302,7 @@ module Hanami
     #
     #     private
     #     def persist_email_test!
-    #       @email_test = EmailTestRepository.persist(@email_test)
+    #       @email_test = EmailTestRepository.new.persist(@email_test)
     #     end
     #
     #     # IF THIS RAISES AN EXCEPTION WE FORCE A FAILURE
