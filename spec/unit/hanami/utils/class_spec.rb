@@ -1,33 +1,36 @@
 require 'hanami/utils/class'
+require 'hanami/utils/io'
 
 RSpec.describe Hanami::Utils::Class do
   before do
-    class Bar
-      def level
-        'top'
-      end
-    end
-
-    class Foo
+    Hanami::Utils::IO.silence_warnings do
       class Bar
         def level
-          'nested'
-        end
-      end
-    end
-
-    module App
-      module Layer
-        class Step
+          'top'
         end
       end
 
-      module Service
-        class Point
+      class Foo
+        class Bar
+          def level
+            'nested'
+          end
         end
       end
 
-      class ServicePoint
+      module App
+        module Layer
+          class Step
+          end
+        end
+
+        module Service
+          class Point
+          end
+        end
+
+        class ServicePoint
+        end
       end
     end
   end

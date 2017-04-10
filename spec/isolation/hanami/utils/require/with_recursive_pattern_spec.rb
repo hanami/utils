@@ -1,9 +1,9 @@
-require_relative '../../support/isolation_spec_helper'
+require_relative __dir__ + '../../../../../support/isolation_spec_helper'
 
 RSpec.describe 'Hanami::Utils.require!' do
-  describe 'with absolute path' do
+  describe 'with file separator' do
     it 'requires ordered set of files' do
-      directory = Pathname.new(Dir.pwd).join('spec', 'support', 'fixtures', 'file_list')
+      directory = %w(spec support fixtures file_list ** *.rb).join(File::SEPARATOR)
       Hanami::Utils.require!(directory)
 
       expect(defined?(A)).to  be_truthy, 'expected A to be defined'
