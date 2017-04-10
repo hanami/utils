@@ -1,4 +1,3 @@
-require 'test_helper'
 require 'hanami/interactor'
 
 class InteractorWithoutInitialize
@@ -128,7 +127,7 @@ class PublishVideo
 
   def owns?
     # fake failed ownership check
-    1 == 0 || # rubocop:disable Style/NumericPredicate
+    1 == 0 ||
       error("You're not owner of this video")
   end
 end
@@ -159,7 +158,7 @@ class UpdateUser < CreateUser
   end
 end
 
-describe Hanami::Interactor do
+RSpec.describe Hanami::Interactor do
   describe '#initialize' do
     it "works when it isn't overridden" do
       InteractorWithoutInitialize.new
@@ -173,55 +172,55 @@ describe Hanami::Interactor do
   describe '#call' do
     it 'returns a result' do
       result = Signup.new(name: 'Luca').call
-      assert result.class == Hanami::Interactor::Result, "Expected `result' to be kind of `Hanami::Interactor::Result'"
+      expect(result.class).to eq Hanami::Interactor::Result
     end
 
     it 'is successful by default' do
       result = Signup.new(name: 'Luca').call
-      assert result.successful?, "Expected `result' to be successful"
+      expect(result).to be_successful
     end
 
     it 'returns the payload' do
       result = Signup.new(name: 'Luca').call
 
-      result.user.name.must_equal 'Luca'
-      result.params.must_equal(name: 'Luca')
+      expect(result.user.name).to eq 'Luca'
+      expect(result.params).to eq(name: 'Luca')
     end
 
     it "doesn't include private ivars" do
       result = Signup.new(name: 'Luca').call
 
-      -> { result.__foo }.must_raise NoMethodError
+      expect { result.__foo }.to raise_error NoMethodError
     end
 
     it 'exposes a convenient API for handling failures' do
       result = Signup.new({}).call
-      assert result.failure?, "Expected `result' to NOT be successful"
+      expect(result).to be_failure
     end
 
     it "doesn't invoke it if the preconditions are failing" do
       result = Signup.new(force_failure: true).call
-      assert result.failure?, "Expected `result' to NOT be successful"
+      expect(result).to be_failure
     end
 
     it "raises error when #call isn't implemented" do
-      -> { InteractorWithoutCall.new.call }.must_raise NoMethodError
+      expect { InteractorWithoutCall.new.call }.to raise_error NoMethodError
     end
 
     describe 'inheritance' do
       it 'is successful for super class' do
         result = CreateUser.new(name: 'L').call
 
-        assert result.successful?, "Expected `result' to be successful"
-        result.user.name.must_equal 'L'
+        expect(result).to be_successful
+        expect(result.user.name).to eq 'L'
       end
 
       it 'is successful for sub class' do
         user   = User.new(name: 'L')
         result = UpdateUser.new(user, name: 'MG').call
 
-        assert result.successful?, "Expected `result' to be successful"
-        result.user.name.must_equal 'MG'
+        expect(result).to be_successful
+        expect(result.user.name).to eq 'MG'
       end
     end
   end
@@ -229,12 +228,12 @@ describe Hanami::Interactor do
   describe '#error' do
     it "isn't successful" do
       result = ErrorInteractor.new.call
-      assert result.failure?, "Expected `result' to not be successful"
+      expect(result).to be_failure
     end
 
     it 'accumulates errors' do
       result = ErrorInteractor.new.call
-      result.errors.must_equal [
+      expect(result.errors).to eq [
         'There was an error while preparing data.',
         'There was an error while persisting data.'
       ]
@@ -242,37 +241,37 @@ describe Hanami::Interactor do
 
     it "doesn't interrupt the flow" do
       result = ErrorInteractor.new.call
-      result.operations.must_equal %i(prepare! persist! log!)
+      expect(result.operations).to eq %i(prepare! persist! log!)
     end
 
     # See https://github.com/hanami/utils/issues/69
     it 'returns false as control flow for caller' do
       interactor = PublishVideo.new
-      assert !interactor.valid?, 'Expected interactor to not be valid'
+      expect(interactor).not_to be_valid
     end
   end
 
   describe '#error!' do
     it "isn't successful" do
       result = ErrorBangInteractor.new.call
-      assert result.failure?, "Expected `result' to not be successful"
+      expect(result).to be_failure
     end
 
     it 'stops at the first error' do
       result = ErrorBangInteractor.new.call
-      result.errors.must_equal [
+      expect(result.errors).to eq [
         'There was an error while persisting data.'
       ]
     end
 
     it 'interrupts the flow' do
       result = ErrorBangInteractor.new.call
-      result.operations.must_equal [:persist!]
+      expect(result.operations).to eq [:persist!]
     end
   end
 end
 
-describe Hanami::Interactor::Result do
+RSpec.describe Hanami::Interactor::Result do
   describe '#initialize' do
     it 'allows to skip payload' do
       Hanami::Interactor::Result.new
@@ -280,21 +279,21 @@ describe Hanami::Interactor::Result do
 
     it 'accepts a payload' do
       result = Hanami::Interactor::Result.new(foo: 'bar')
-      result.foo.must_equal 'bar'
+      expect(result.foo).to eq 'bar'
     end
   end
 
   describe '#successful?' do
     it 'is successful by default' do
       result = Hanami::Interactor::Result.new
-      assert result.successful?, "Expected `result' to be successful"
+      expect(result).to be_successful
     end
 
     describe 'when it has errors' do
       it "isn't successful" do
         result = Hanami::Interactor::Result.new
         result.add_error 'There was a problem'
-        assert result.failure?, "Expected `result' to NOT be successful"
+        expect(result).to be_failure
       end
     end
   end
@@ -304,7 +303,7 @@ describe Hanami::Interactor::Result do
       result = Hanami::Interactor::Result.new
       result.fail!
 
-      assert result.failure?, "Expected `result' to NOT be successful"
+      expect(result).to be_failure
     end
   end
 
@@ -313,28 +312,28 @@ describe Hanami::Interactor::Result do
       result = Hanami::Interactor::Result.new(foo: 'bar')
       result.prepare!(foo: 23)
 
-      result.foo.must_equal 23
+      expect(result.foo).to eq 23
     end
 
     it 'returns self' do
       result = Hanami::Interactor::Result.new(foo: 'bar')
       returning = result.prepare!(foo: 23)
 
-      assert returning == result, "Expected `returning' to equal `result'"
+      expect(returning).to eq result
     end
   end
 
   describe '#errors' do
     it 'empty by default' do
       result = Hanami::Interactor::Result.new
-      result.errors.must_be :empty?
+      expect(result.errors).to be_empty
     end
 
     it 'returns all the errors' do
       result = Hanami::Interactor::Result.new
       result.add_error ['Error 1', 'Error 2']
 
-      result.errors.must_equal ['Error 1', 'Error 2']
+      expect(result.errors).to eq ['Error 1', 'Error 2']
     end
 
     it 'prevents information escape' do
@@ -343,21 +342,21 @@ describe Hanami::Interactor::Result do
 
       result.errors.clear
 
-      result.errors.must_equal ['Error 1', 'Error 2']
+      expect(result.errors).to eq ['Error 1', 'Error 2']
     end
   end
 
   describe '#error' do
     it 'nil by default' do
       result = Hanami::Interactor::Result.new
-      result.error.must_be_nil
+      expect(result.error).to be_nil
     end
 
     it 'returns only the first error' do
       result = Hanami::Interactor::Result.new
       result.add_error ['Error 1', 'Error 2']
 
-      result.error.must_equal 'Error 1'
+      expect(result.error).to eq 'Error 1'
     end
   end
 
@@ -365,26 +364,26 @@ describe Hanami::Interactor::Result do
     it 'returns true for concrete methods' do
       result = Hanami::Interactor::Result.new
 
-      assert result.respond_to?(:successful?),  "Expected `result' to respond to `#successful?'"
-      assert result.respond_to?('successful?'), "Expected `result' to respond to `#successful?'"
+      expect(result).to respond_to(:successful?)
+      expect(result).to respond_to('successful?')
 
-      assert result.respond_to?(:failure?),  "Expected `result' to respond to `#failure?'"
-      assert result.respond_to?('failure?'), "Expected `result' to respond to `#failure?'"
+      expect(result).to respond_to(:failure?)
+      expect(result).to respond_to('failure?')
     end
 
     it 'returns true for methods derived from payload' do
       result = Hanami::Interactor::Result.new(foo: 1)
 
-      assert result.respond_to?(:foo),  "Expected `result' to respond to `#foo'"
-      assert result.respond_to?('foo'), "Expected `result' to respond to `#foo'"
+      expect(result).to respond_to(:foo)
+      expect(result).to respond_to('foo')
     end
 
     it 'returns true for methods derived from merged payload' do
       result = Hanami::Interactor::Result.new
       result.prepare!(bar: 2)
 
-      assert result.respond_to?(:bar),  "Expected `result' to respond to `#bar'"
-      assert result.respond_to?('bar'), "Expected `result' to respond to `#bar'"
+      expect(result).to respond_to(:bar)
+      expect(result).to respond_to('bar')
     end
   end
 
@@ -392,57 +391,57 @@ describe Hanami::Interactor::Result do
     let(:result) { Hanami::Interactor::Result.new(id: 23, user: User.new) }
 
     it 'reports the class name and the object_id' do
-      result.inspect.must_match %(#<Hanami::Interactor::Result)
+      expect(result.inspect).to match %(#<Hanami::Interactor::Result)
     end
 
     it 'reports the object_id' do
       object_id = format('%x', (result.__id__ << 1))
-      result.inspect.must_match object_id
+      expect(result.inspect).to match object_id
     end
 
     it 'reports @success' do
-      result.inspect.must_match %(@success=true)
+      expect(result.inspect).to match %(@success=true)
     end
 
     it 'reports @payload' do
-      result.inspect.must_match %(@payload={:id=>23, :user=>#<User:)
+      expect(result.inspect).to match %(@payload={:id=>23, :user=>#<User:)
     end
   end
 
   describe 'payload' do
     it 'returns all the values passed in the payload' do
       result = Hanami::Interactor::Result.new(a: 1, b: 2)
-      result.a.must_equal 1
-      result.b.must_equal 2
+      expect(result.a).to eq 1
+      expect(result.b).to eq 2
     end
 
     it 'returns hash values passed in the payload' do
       result = Hanami::Interactor::Result.new(a: { 100 => 3 })
-      result.a.must_equal(100 => 3)
+      expect(result.a).to eq(100 => 3)
     end
 
     it 'returns all the values after a merge' do
       result = Hanami::Interactor::Result.new(a: 1, b: 2)
       result.prepare!(a: 23, c: 3)
 
-      result.a.must_equal 23
-      result.b.must_equal 2
-      result.c.must_equal 3
+      expect(result.a).to eq 23
+      expect(result.b).to eq 2
+      expect(result.c).to eq 3
     end
 
     it "doesn't ignore forwarded messages" do
       result = Hanami::Interactor::Result.new(params: { name: 'Luca' })
-      result.params[:name].must_equal 'Luca'
+      expect(result.params[:name]).to eq 'Luca'
     end
 
     it 'raises an error when unknown message is passed' do
       result = Hanami::Interactor::Result.new
-      -> { result.unknown }.must_raise NoMethodError
+      expect { result.unknown }.to raise_error NoMethodError
     end
 
     it 'raises an error when unknown message is passed with args' do
       result = Hanami::Interactor::Result.new
-      -> { result.unknown(:foo) }.must_raise NoMethodError
+      expect { result.unknown(:foo) }.to raise_error NoMethodError
     end
   end
 end

@@ -6,6 +6,7 @@ Metrics/BlockLength:
   Exclude:
     - 'test/**/*'
     - 'tmp/**/*'
+    - 'spec/**/*'
 Style/DoubleNegation:
   Enabled: false
 Style/SpecialGlobalVars:

@@ -110,7 +110,7 @@ module Hanami
 
       # @since 1.0.0.beta1
       # @api private
-      RESERVED_KEYS = [:app, :severity, :time].freeze
+      RESERVED_KEYS = %i(app severity time).freeze
 
       include Utils::ClassAttribute
 

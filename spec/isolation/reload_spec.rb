@@ -1,8 +1,6 @@
-require 'test_helper'
-require 'hanami/utils'
-require 'pathname'
+require_relative '../support/isolation_spec_helper'
 
-describe 'Hanami::Utils.reload!' do
+RSpec.describe 'Hanami::Utils.reload!' do
   before do
     FileUtils.rm_rf(root) if root.exist?
     root.mkpath
@@ -26,7 +24,7 @@ describe 'Hanami::Utils.reload!' do
     end
 
     Hanami::Utils.reload!(root)
-    User.new.greet.must_equal "Hi"
+    expect(User.new.greet).to eq "Hi"
 
     File.open(root.join('user.rb'), 'w+') do |f|
       f.write <<-EOF
@@ -39,6 +37,8 @@ describe 'Hanami::Utils.reload!' do
     end
 
     Hanami::Utils.reload!(root)
-    User.new.greet.must_equal "Ciao"
+    expect(User.new.greet).to eq "Ciao"
   end
 end
+
+RSpec::Support::Runner.run
