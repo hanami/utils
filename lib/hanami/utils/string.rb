@@ -141,6 +141,7 @@ module Hanami
       #   string = Hanami::Utils::String.new 'hanami_utils'
       #   string.classify # => 'HanamiUtils'
       def classify
+        return self.class.new to_s if classified?
         words = underscore.split(CLASSIFY_WORD_SEPARATOR).map!(&:capitalize)
         delimiters = scan(CLASSIFY_WORD_SEPARATOR)
 
@@ -149,6 +150,10 @@ module Hanami
         end
 
         self.class.new words.zip(delimiters).join
+      end
+
+      def classified?
+        split(NAMESPACE_SEPARATOR).reduce(false) {|memo, str| str.match(/\A[A-Z][a-zA-Z_]*/).to_s.length == str&.length }
       end
 
       # Return a downcased and underscore separated version of the string

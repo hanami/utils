@@ -1,4 +1,4 @@
-require 'test_helper'
+require_relative 'test_helper'
 require 'hanami/utils'
 require 'hanami/utils/string'
 
@@ -70,6 +70,8 @@ describe Hanami::Utils::String do
       Hanami::Utils::String.new('hanami/router').classify.must_equal('Hanami::Router')
       Hanami::Utils::String.new('hanami::router').classify.must_equal('Hanami::Router')
       Hanami::Utils::String.new('hanami::router/base_object').classify.must_equal('Hanami::Router::BaseObject')
+      Hanami::Utils::String.new('AwesomeProject::Namespace').classify.must_equal('AwesomeProject::Namespace')
+      Hanami::Utils::String.new('AwesomeProject::SubNamespace').classify.must_equal('AwesomeProject::SubNamespace')
     end
 
     it 'returns a classified string from symbol' do
@@ -82,6 +84,20 @@ describe Hanami::Utils::String do
 
     it 'does not remove capital letter in string' do
       Hanami::Utils::String.new('AwesomeProject').classify.must_equal('AwesomeProject')
+    end
+  end
+
+  describe '#classified' do
+    it 'correctly recognizes a classified String' do
+      Hanami::Utils::String.new('hanami').classified?.must_equal(false)
+      Hanami::Utils::String.new('Hanami_router').classified?.must_equal(true)
+      Hanami::Utils::String.new('hanami-router').classified?.must_equal(false)
+      Hanami::Utils::String.new('Hanami/router').classified?.must_equal(false)
+      Hanami::Utils::String.new('Hanami/router').classified?.must_equal(false)
+      Hanami::Utils::String.new('Hanami/Router').classified?.must_equal(false)
+      Hanami::Utils::String.new('HanamiRouter').classified?.must_equal(true)
+      Hanami::Utils::String.new('AwesomeProject::Namespace').classified?.must_equal(true)
+      Hanami::Utils::String.new('AwesomeProject::SubNamespace').classified?.must_equal(true)
     end
   end
 
