@@ -72,6 +72,12 @@ module Hanami
       # @api private
       CLASSIFY_WORD_SEPARATOR = /#{CLASSIFY_SEPARATOR}|#{NAMESPACE_SEPARATOR}|#{UNDERSCORE_SEPARATOR}|#{DASHERIZE_SEPARATOR}/
 
+      # Regexp for #classify
+      #
+      # @since 0.9.0
+      # @api private
+      CLASSIFY_DELIMITER_REGEXP = /#{CLASSIFY_SEPARATOR}|#{DASHERIZE_SEPARATOR}/
+
       # Initialize the string
       #
       # @param string [::String, Symbol] the value we want to initialize
@@ -145,7 +151,7 @@ module Hanami
         delimiters = scan(CLASSIFY_WORD_SEPARATOR)
 
         delimiters.map! do |delimiter|
-          delimiter == CLASSIFY_SEPARATOR ? EMPTY_STRING : NAMESPACE_SEPARATOR
+          CLASSIFY_DELIMITER_REGEXP =~ delimiter ? EMPTY_STRING : NAMESPACE_SEPARATOR
         end
 
         self.class.new words.zip(delimiters).join
