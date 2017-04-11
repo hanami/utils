@@ -54,11 +54,14 @@ module Hanami
 
       # Check if the current status is not successful
       #
+      # @param reason [Object] the reason of the failure to check
+      #
       # @return [TrueClass,FalseClass] the result of the check
       #
       # @since 0.9.2
-      def failure?
-        !successful?
+      def failure?(reason = nil)
+        return !successful? if reason.nil?
+        !successful? && (error == reason)
       end
 
       # Force the status to be a failure
