@@ -2,15 +2,6 @@ require 'rake'
 require 'bundler/gem_tasks'
 require 'rspec/core/rake_task'
 
-require 'rake/testtask'
-Rake::TestTask.new do |t|
-  t.test_files = Dir['test/**/*_test.rb'].reject do |path|
-    path.include?('isolation')
-  end
-
-  t.libs.push 'test'
-end
-
 namespace :spec do
   RSpec::Core::RakeTask.new(:unit) do |task|
     file_list = FileList['spec/**/*_spec.rb']
