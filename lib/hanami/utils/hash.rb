@@ -1,4 +1,5 @@
 require 'hanami/utils/duplicable'
+require 'transproc'
 
 module Hanami
   module Utils
@@ -18,6 +19,45 @@ module Hanami
           Hash.new(value).deep_dup.to_h
         end
       end.freeze
+
+      extend Transproc::Registry
+      import Transproc::HashTransformations
+
+      # Symbolize the given hash
+      #
+      # @since x.x.x
+      #
+      # @see .deep_symbolize
+      #
+      # @example Basic Usage
+      #   require 'hanami/utils/hash'
+      #
+      #   hash = Hanami::Utils::Hash.symbolize("foo" => "bar", "baz" => {"a" => 1})
+      #     # => {:foo=>"bar", :baz=>{"a"=>1}}
+      #
+      #   hash.class
+      #     # => Hash
+      def self.symbolize(input)
+        self[:symbolize_keys].call(input)
+      end
+
+      # Deep symbolize the given hash
+      #
+      # @since x.x.x
+      #
+      # @see .symbolize
+      #
+      # @example Basic Usage
+      #   require 'hanami/utils/hash'
+      #
+      #   hash = Hanami::Utils::Hash.deep_symbolize("foo" => "bar", "baz" => {"a" => 1})
+      #     # => {:foo=>"bar", :baz=>{a:=>1}}
+      #
+      #   hash.class
+      #     # => Hash
+      def self.deep_symbolize(input)
+        self[:deep_symbolize_keys].call(input)
+      end
 
       # Initialize the hash
       #
