@@ -7,6 +7,13 @@ class InteractorWithoutInitialize
   end
 end
 
+class InteractorNewFormat
+  include Hanami::Interactor
+
+  def call(*)
+  end
+end
+
 class InteractorWithoutCall
   include Hanami::Interactor
 end
@@ -53,6 +60,25 @@ class Signup
 
   def valid?
     !@params[:force_failure]
+  end
+end
+
+class NewSignup
+  include Hanami::Interactor
+  expose :user, :params
+
+  def call(params)
+    @params = params
+    @user = User.new(params)
+    @user.persist!
+  rescue
+    fail!
+  end
+
+  private
+
+  def valid?(params)
+    !params[:force_failure]
   end
 end
 
@@ -159,6 +185,18 @@ class UpdateUser < CreateUser
 end
 
 RSpec.describe Hanami::Interactor do
+  describe 'interactor interface' do
+    it 'includes the correct interface' do
+      expect(Signup.ancestors).to include(Hanami::Interactor::LegacyInterface)
+      expect(NewSignup.ancestors).to include(Hanami::Interactor::Interface)
+    end
+
+    it 'does not include the other interface' do
+      expect(Signup.ancestors).not_to include(Hanami::Interactor::Interface)
+      expect(NewSignup.ancestors).not_to include(Hanami::Interactor::LegacyInterface)
+    end
+  end
+
   describe '#initialize' do
     it "works when it isn't overridden" do
       InteractorWithoutInitialize.new
@@ -205,6 +243,13 @@ RSpec.describe Hanami::Interactor do
 
     it "raises error when #call isn't implemented" do
       expect { InteractorWithoutCall.new.call }.to raise_error NoMethodError
+    end
+
+    it "works with the new structure" do
+      result = NewSignup.new.call(name: 'Luca')
+
+      expect(result.user.name).to eq 'Luca'
+      expect(result.params).to eq(name: 'Luca')
     end
 
     describe 'inheritance' do

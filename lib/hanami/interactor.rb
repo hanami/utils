@@ -145,15 +145,14 @@ module Hanami
       super
 
       base.class_eval do
-        prepend Interface
-        extend  ClassMethods
+        extend ClassMethods
       end
     end
 
-    # Interactor interface
+    # Interactor legacy interface
     #
     # @since 0.3.5
-    module Interface
+    module LegacyInterface
       # Initialize an interactor
       #
       # It accepts arbitrary number of arguments.
@@ -264,6 +263,47 @@ module Hanami
       def call
         _call { super }
       end
+
+      private
+
+      # @since 0.3.5
+      # @api private
+      def _call
+        catch :fail do
+          validate!
+          yield
+        end
+
+        _prepare!
+      end
+
+      # @since 0.3.5
+      def validate!
+        fail! unless valid?
+      end
+    end
+
+    # New interactor interface
+    module Interface
+      def call(**attrs)
+        @__result = ::Hanami::Interactor::Result.new
+        _call(attrs) { super }
+      end
+
+      private
+
+      def _call(**attrs)
+        catch :fail do
+          validate!(attrs)
+          yield
+        end
+
+        _prepare!
+      end
+
+      def validate!(**attrs)
+        fail! unless valid?(attrs)
+      end
     end
 
     private
@@ -276,7 +316,7 @@ module Hanami
     # @return [TrueClass,FalseClass] the result of the check
     #
     # @since 0.3.5
-    def valid?
+    def valid?(*)
       true
     end
 
@@ -431,22 +471,6 @@ module Hanami
 
     # @since 0.3.5
     # @api private
-    def _call
-      catch :fail do
-        validate!
-        yield
-      end
-
-      _prepare!
-    end
-
-    # @since 0.3.5
-    def validate!
-      fail! unless valid?
-    end
-
-    # @since 0.3.5
-    # @api private
     def _prepare!
       @__result.prepare!(_exposures)
     end
@@ -473,6 +497,16 @@ module Hanami
 
         class_attribute :exposures
         self.exposures = {}
+      end
+    end
+
+    def method_added(method_name)
+      return unless method_name == :call
+
+      if instance_method(:call).arity.zero?
+        prepend Hanami::Interactor::LegacyInterface
+      else
+        prepend Hanami::Interactor::Interface
       end
     end
 
