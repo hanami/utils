@@ -2,6 +2,94 @@ require 'bigdecimal'
 require 'hanami/utils/hash'
 
 RSpec.describe Hanami::Utils::Hash do
+  describe ".symbolize" do
+    it "returns ::Hash" do
+      hash = described_class.symbolize("fub" => "baz")
+
+      expect(hash).to be_kind_of(::Hash)
+    end
+
+    it "symbolizes keys" do
+      hash = described_class.symbolize("fub" => "baz")
+
+      expect(hash).to eq(fub: "baz")
+    end
+
+    it "doesn't mutate original input" do
+      input = { "fub" => "baz" }
+      described_class.symbolize(input)
+
+      expect(input).to eq("fub" => "baz")
+    end
+
+    it "doesn't symbolizes nested hashes" do
+      hash = described_class.symbolize("nested" => { "key" => "value" })
+
+      expect(hash[:nested].keys).to eq(["key"])
+    end
+  end
+
+  describe ".deep_symbolize" do
+    it "returns ::Hash" do
+      hash = described_class.deep_symbolize("fub" => "baz")
+
+      expect(hash).to be_kind_of(::Hash)
+    end
+
+    it "symbolize keys" do
+      hash = described_class.deep_symbolize("fub" => "baz")
+
+      expect(hash["fub"]).to be_nil
+      expect(hash[:fub]).to eq("baz")
+    end
+
+    it "doesn't mutate original input" do
+      input = { "nested" => { "key" => "value" } }
+      described_class.deep_symbolize(input)
+
+      expect(input).to eq("nested" => { "key" => "value" })
+    end
+
+    it "symbolizes nested hashes" do
+      hash = described_class.deep_symbolize("nested" => { "key" => "value" })
+
+      expect(hash[:nested]).to be_kind_of(::Hash)
+      expect(hash[:nested][:key]).to eq("value")
+    end
+
+    it "symbolizes deep nested hashes" do
+      hash = described_class.deep_symbolize("nested1" => { "nested2" => { "nested3" => { "key" => 1 } } })
+
+      expect(hash.keys).to eq([:nested1])
+
+      hash1 = hash[:nested1]
+      expect(hash1).to be_kind_of(::Hash)
+      expect(hash1.keys).to eq([:nested2])
+
+      hash2 = hash1[:nested2]
+      expect(hash2).to be_kind_of(::Hash)
+      expect(hash2.keys).to eq([:nested3])
+
+      hash3 = hash2[:nested3]
+      expect(hash3).to be_kind_of(::Hash)
+      expect(hash3.keys).to eq([:key])
+
+      expect(hash3[:key]).to eq(1)
+    end
+
+    it "does't symbolize nested object that responds to to_hash" do
+      nested = described_class.deep_symbolize("metadata" => WrappingHash.new("coverage" => 100))
+
+      expect(nested[:metadata]).to be_kind_of(WrappingHash)
+    end
+
+    it "doesn't try to symbolize nested objects" do
+      hash = described_class.deep_symbolize('foo' => ['bar'])
+
+      expect(hash[:foo]).to eq(['bar'])
+    end
+  end
+
   describe '#initialize' do
     let(:input_to_hash) do
       Class.new do
