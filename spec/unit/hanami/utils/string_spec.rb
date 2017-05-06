@@ -64,22 +64,20 @@ RSpec.describe Hanami::Utils::String do
     it 'returns a classified string' do
       expect(Hanami::Utils::String.new('hanami').classify).to eq('Hanami')
       expect(Hanami::Utils::String.new('hanami_router').classify).to eq('HanamiRouter')
-      expect(Hanami::Utils::String.new('hanami-router').classify).to eq('Hanami::Router')
+      expect(Hanami::Utils::String.new('hanami-router').classify).to eq('HanamiRouter')
       expect(Hanami::Utils::String.new('hanami/router').classify).to eq('Hanami::Router')
       expect(Hanami::Utils::String.new('hanami::router').classify).to eq('Hanami::Router')
       expect(Hanami::Utils::String.new('hanami::router/base_object').classify).to eq('Hanami::Router::BaseObject')
+      expect(Hanami::Utils::String.new('AwesomeProject').classify).to eq('AwesomeProject')
+      expect(Hanami::Utils::String.new('AwesomeProject::Namespace').classify).to eq('AwesomeProject::Namespace')
     end
 
     it 'returns a classified string from symbol' do
       expect(Hanami::Utils::String.new(:hanami).classify).to eq('Hanami')
       expect(Hanami::Utils::String.new(:hanami_router).classify).to eq('HanamiRouter')
-      expect(Hanami::Utils::String.new(:'hanami-router').classify).to eq('Hanami::Router')
+      expect(Hanami::Utils::String.new(:'hanami-router').classify).to eq('HanamiRouter')
       expect(Hanami::Utils::String.new(:'hanami/router').classify).to eq('Hanami::Router')
       expect(Hanami::Utils::String.new(:'hanami::router').classify).to eq('Hanami::Router')
-    end
-
-    it 'does not remove capital letter in string' do
-      expect(Hanami::Utils::String.new('AwesomeProject').classify).to eq('AwesomeProject')
     end
   end
 
