@@ -66,6 +66,12 @@ module Hanami
       # @api private
       DASHERIZE_SEPARATOR = '-'.freeze
 
+      # Regexp for #classified
+      #
+      # @since 1.0.x
+      # @api private
+      CLASSIFIED_CHECK = /\A[A-Z]\w*/
+
       # Regexp for #classify
       #
       # @since 0.3.4
@@ -141,6 +147,7 @@ module Hanami
       #   string = Hanami::Utils::String.new 'hanami_utils'
       #   string.classify # => 'HanamiUtils'
       def classify
+        return self if classified?
         words = underscore.split(CLASSIFY_WORD_SEPARATOR).map!(&:capitalize)
         delimiters = scan(CLASSIFY_WORD_SEPARATOR)
 
@@ -149,6 +156,24 @@ module Hanami
         end
 
         self.class.new words.zip(delimiters).join
+      end
+
+      # Return true if the string is a valid class name
+      #
+      # @return [Boolean]
+      #
+      # @since 1.0.x
+      #
+      # @example
+      #   require 'hanami/utils/string'
+      #
+      #   string = Hanami::Utils::String.new 'hanami_utils'
+      #   string.classified? # => false
+      #
+      #   string = Hanami::Utils::String.new 'HanamiUtils'
+      #   string.classified? # => true
+      def classified?
+        split(NAMESPACE_SEPARATOR).all? {|str| str.match(CLASSIFIED_CHECK).to_s.length == str.to_s.length }
       end
 
       # Return a downcased and underscore separated version of the string
