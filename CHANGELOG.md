@@ -1,6 +1,15 @@
 # Hanami::Utils
 Ruby core extentions and class utilities for Hanami
 
+## v1.0.1 (unreleased)
+
+### Added
+- [Luca Guidi] Introduced `Utils::Hash.symbolize` and `.deep_symbolize`
+- [Luca Guidi] Introduced `Utils::Hash.deep_dup`
+
+### Fixed
+- [choallin] Ensure `Utils::String#classify` to return output identical to the input for already classified strings.
+
 ## v1.0.0 - 2017-04-06
 
 ## v1.0.0.rc1 - 2017-03-31
