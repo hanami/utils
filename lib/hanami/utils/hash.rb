@@ -1,4 +1,5 @@
 require 'hanami/utils/duplicable'
+require 'transproc'
 
 module Hanami
   module Utils
@@ -18,6 +19,101 @@ module Hanami
           Hash.new(value).deep_dup.to_h
         end
       end.freeze
+
+      extend Transproc::Registry
+      import Transproc::HashTransformations
+
+      # Symbolize the given hash
+      #
+      # @param input [::Hash] the input
+      #
+      # @return [::Hash] the symbolized hash
+      #
+      # @since x.x.x
+      #
+      # @see .deep_symbolize
+      #
+      # @example Basic Usage
+      #   require 'hanami/utils/hash'
+      #
+      #   hash = Hanami::Utils::Hash.symbolize("foo" => "bar", "baz" => {"a" => 1})
+      #     # => {:foo=>"bar", :baz=>{"a"=>1}}
+      #
+      #   hash.class
+      #     # => Hash
+      def self.symbolize(input)
+        self[:symbolize_keys].call(input)
+      end
+
+      # Deep symbolize the given hash
+      #
+      # @param input [::Hash] the input
+      #
+      # @return [::Hash] the deep symbolized hash
+      #
+      # @since x.x.x
+      #
+      # @see .symbolize
+      #
+      # @example Basic Usage
+      #   require 'hanami/utils/hash'
+      #
+      #   hash = Hanami::Utils::Hash.deep_symbolize("foo" => "bar", "baz" => {"a" => 1})
+      #     # => {:foo=>"bar", :baz=>{a:=>1}}
+      #
+      #   hash.class
+      #     # => Hash
+      def self.deep_symbolize(input)
+        self[:deep_symbolize_keys].call(input)
+      end
+
+      # Deep duplicate hash values
+      #
+      # The output of this function is a shallow duplicate of the input.
+      # Any further modification on the input, won't be reflected on the output
+      # and viceversa.
+      #
+      # @param input [::Hash] the input
+      #
+      # @return [::Hash] the shallow duplicate of input
+      #
+      # @since x.x.x
+      #
+      # @example Basic Usage
+      #   require 'hanami/utils/hash'
+      #
+      #   input  = { "a" => { "b" => { "c" => [1, 2, 3] } } }
+      #   output = Hanami::Utils::Hash.deep_dup(input)
+      #     # => {"a"=>{"b"=>{"c"=>[1,2,3]}}}
+      #
+      #   output.class
+      #     # => Hash
+      #
+      #
+      #
+      #   # mutations on input aren't reflected on output
+      #
+      #   input["a"]["b"]["c"] << 4
+      #   output.dig("a", "b", "c")
+      #     # => [1, 2, 3]
+      #
+      #
+      #
+      #   # mutations on output aren't reflected on input
+      #
+      #   output["a"].delete("b")
+      #   input
+      #     # => {"a"=>{"b"=>{"c"=>[1,2,3,4]}}}
+      def self.deep_dup(input)
+        input.each_with_object({}) do |(k, v), result|
+          result[k] = case v
+                      when ::Hash
+                        deep_dup(v)
+                      else
+                        Duplicable.dup(v)
+                      end
+        end
+      end
 
       # Initialize the hash
       #
