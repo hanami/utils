@@ -501,6 +501,7 @@ module Hanami
     end
 
     def method_added(method_name)
+      super
       return unless method_name == :call
 
       if instance_method(:call).arity.zero?

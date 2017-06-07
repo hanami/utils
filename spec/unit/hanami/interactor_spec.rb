@@ -18,6 +18,23 @@ class InteractorWithoutCall
   include Hanami::Interactor
 end
 
+class InteractorWithMethodAdded
+  module MethodAdded; end
+
+  module WatchMethods
+    def method_added(method_name)
+      super
+      include MethodAdded if method_name == :call
+    end
+  end
+
+  include Hanami::Interactor
+  extend WatchMethods
+
+  def call(*)
+  end
+end
+
 class User
   def initialize(attributes = {})
     @attributes = attributes
@@ -299,6 +316,10 @@ RSpec.describe Hanami::Interactor do
 
     it "raises error when #call isn't implemented" do
       expect { InteractorWithoutCall.new.call }.to raise_error NoMethodError
+    end
+
+    it 'lets .method_added open to overrides' do
+      expect(InteractorWithMethodAdded.ancestors).to include(InteractorWithMethodAdded::MethodAdded)
     end
   end
 
