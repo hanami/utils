@@ -283,8 +283,76 @@ module Hanami
       end
     end
 
-    # New interactor interface
+    # Interactor interface
+    # @since x.x.x
     module Interface
+      # Triggers the operation and return a result.
+      #
+      # All the exposed instance variables will be available in the result.
+      #
+      # ATTENTION: This must be implemented by the including class.
+      #
+      # @return [Hanami::Interactor::Result] the result of the operation
+      #
+      # @raise [NoMethodError] if this isn't implemented by the including class.
+      #
+      # @example Expose instance variables in result payload
+      #   require 'hanami/interactor'
+      #
+      #   class Signup
+      #     include Hanami::Interactor
+      #     expose :user, :params
+      #
+      #     def call(params)
+      #       @params = params
+      #       @foo = 'bar'
+      #       @user = UserRepository.new.persist(User.new(params))
+      #     end
+      #   end
+      #
+      #   result = Signup.new(name: 'Luca').call
+      #   result.failure? # => false
+      #   result.successful? # => true
+      #
+      #   result.user   # => #<User:0x007fa311105778 @id=1 @name="Luca">
+      #   result.params # => { :name=>"Luca" }
+      #   result.foo    # => raises NoMethodError
+      #
+      # @example Failed precondition
+      #   require 'hanami/interactor'
+      #
+      #   class Signup
+      #     include Hanami::Interactor
+      #     expose :user
+      #
+      #     # THIS WON'T BE INVOKED BECAUSE #valid? WILL RETURN false
+      #     def call(params)
+      #       @user = User.new(params)
+      #       @user = UserRepository.new.persist(@user)
+      #     end
+      #
+      #     private
+      #     def valid?(params)
+      #       params.valid?
+      #     end
+      #   end
+      #
+      #   result = Signup.new.call(name: nil)
+      #   result.successful? # => false
+      #   result.failure? # => true
+      #
+      #   result.user   # => nil
+      #
+      # @example Bad usage
+      #   require 'hanami/interactor'
+      #
+      #   class Signup
+      #     include Hanami::Interactor
+      #
+      #     # Method #call is not defined
+      #   end
+      #
+      #   Signup.new.call # => NoMethodError
       def call(**attrs)
         @__result = ::Hanami::Interactor::Result.new
         _call(attrs) { super }
@@ -292,6 +360,8 @@ module Hanami
 
       private
 
+      # @api private
+      # @since x.x.x
       def _call(**attrs)
         catch :fail do
           validate!(attrs)
@@ -301,6 +371,7 @@ module Hanami
         _prepare!
       end
 
+      # @since x.x.x
       def validate!(**attrs)
         fail! unless valid?(attrs)
       end
