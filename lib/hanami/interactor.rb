@@ -205,12 +205,11 @@ module Hanami
       #
       #     def initialize(params)
       #       @params = params
-      #       @user   = User.new(@params)
       #       @foo    = 'bar'
       #     end
       #
       #     def call
-      #       @user = UserRepository.new.persist(@user)
+      #       @user = UserRepository.new.create(@params)
       #     end
       #   end
       #
@@ -231,12 +230,11 @@ module Hanami
       #
       #     def initialize(params)
       #       @params = params
-      #       @user   = User.new(@params)
       #     end
       #
       #     # THIS WON'T BE INVOKED BECAUSE #valid? WILL RETURN false
       #     def call
-      #       @user = UserRepository.new.persist(@user)
+      #       @user = UserRepository.new.create(@params)
       #     end
       #
       #     private
@@ -292,7 +290,6 @@ module Hanami
     #
     #     def initialize(params)
     #       @params     = params
-    #       @email_test = EmailTest.new(@params)
     #     end
     #
     #     def call
@@ -302,7 +299,7 @@ module Hanami
     #
     #     private
     #     def persist_email_test!
-    #       @email_test = EmailTestRepository.new.persist(@email_test)
+    #       @email_test = EmailTestRepository.new.create(@params)
     #     end
     #
     #     # IF THIS RAISES AN EXCEPTION WE FORCE A FAILURE
