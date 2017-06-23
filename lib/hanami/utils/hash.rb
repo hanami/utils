@@ -29,7 +29,7 @@ module Hanami
       #
       # @return [::Hash] the symbolized hash
       #
-      # @since x.x.x
+      # @since 1.0.1
       #
       # @see .deep_symbolize
       #
@@ -51,7 +51,7 @@ module Hanami
       #
       # @return [::Hash] the deep symbolized hash
       #
-      # @since x.x.x
+      # @since 1.0.1
       #
       # @see .symbolize
       #
@@ -77,7 +77,7 @@ module Hanami
       #
       # @return [::Hash] the shallow duplicate of input
       #
-      # @since x.x.x
+      # @since 1.0.1
       #
       # @example Basic Usage
       #   require 'hanami/utils/hash'
