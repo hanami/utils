@@ -141,7 +141,7 @@ module Hanami
       #   hash.to_h # => { 'foo' => ['bar'] }
       def initialize(hash = {}, &blk)
         @hash = hash.to_hash
-        @hash.default_proc = blk
+        @hash.default_proc = blk if blk
       end
 
       # Convert in-place all the keys to Symbol instances.
