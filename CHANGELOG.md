@@ -1,7 +1,7 @@
 # Hanami::Utils
 Ruby core extentions and class utilities for Hanami
 
-## v1.0.1 (unreleased)
+## v1.0.1 - 2017-06-23
 
 ### Added
 - [Luca Guidi] Introduced `Utils::Hash.symbolize` and `.deep_symbolize`
@@ -9,6 +9,7 @@ Ruby core extentions and class utilities for Hanami
 
 ### Fixed
 - [choallin] Ensure `Utils::String#classify` to return output identical to the input for already classified strings.
+- [Marion Duprey & Jonas Amundsen] Ensure `Utils::Hash#initialize` to accept frozen `Hash` as argument.
 
 ## v1.0.0 - 2017-04-06
 

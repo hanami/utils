@@ -176,6 +176,11 @@ RSpec.describe Hanami::Utils::Hash do
       expect(hash.to_h).to eq(input_to_hash.to_hash)
     end
 
+    it 'accepts frozen values' do
+      expect { Hanami::Utils::Hash.new({}.freeze) }
+        .to_not raise_error
+    end
+
     it "raises error when object doesn't implement #to_hash" do
       expect { Hanami::Utils::Hash.new(input_to_h) }
         .to raise_error(NoMethodError)
