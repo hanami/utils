@@ -103,6 +103,16 @@ class Signup
   end
 end
 
+class ComplexCall
+  include Hanami::Interactor
+  expose :args, :kwargs
+
+  def call(*args, **kwargs)
+    @args = args
+    @kwargs = kwargs
+  end
+end
+
 class LegacyErrorInteractor
   include Hanami::Interactor
   expose :operations
@@ -479,6 +489,12 @@ RSpec.describe Hanami::Interactor do
 
       it "raises error when #call isn't implemented" do
         expect { InteractorWithoutCall.new.call }.to raise_error NoMethodError
+      end
+
+      it 'handles args and kwargs' do
+        result = ComplexCall.new.call('foo', 'bar', baz: 'baz', buzz: 'buzz')
+        expect(result.args).to eql(%w(foo bar))
+        expect(result.kwargs).to eql(Hash[baz: 'baz', buzz: 'buzz'])
       end
 
       describe 'inheritance' do
