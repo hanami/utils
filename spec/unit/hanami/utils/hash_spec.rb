@@ -264,38 +264,29 @@ RSpec.describe Hanami::Utils::Hash do
     end
   end
 
-  describe '#stringify!' do
-    it 'covert keys to strings' do
-      hash = Hanami::Utils::Hash.new(fub: 'baz')
-      hash.stringify!
+  describe ".stringify" do
+    it "returns ::Hash" do
+      hash = described_class.stringify("fub" => "baz")
 
-      expect(hash[:fub]).to be_nil
-      expect(hash['fub']).to eq('baz')
+      expect(hash).to be_kind_of(::Hash)
     end
 
-    it 'stringifies nested hashes' do
-      hash = Hanami::Utils::Hash.new(nested: { key: 'value' })
-      hash.stringify!
+    it "stringify keys" do
+      hash = described_class.stringify(:fub => "baz")
 
-      expect(hash['nested']).to be_kind_of Hanami::Utils::Hash
-      expect(hash['nested']['key']).to eq('value')
+      expect(hash).to eq("fub" => "baz")
     end
 
-    it 'stringifies nested Hanami::Utils::Hashes' do
-      nested = Hanami::Utils::Hash.new(key: 'value')
-      hash = Hanami::Utils::Hash.new(nested: nested)
-      hash.stringify!
+    it "doesn't mutate original input" do
+      input = { "fub" => "baz" }
+      described_class.stringify(input)
 
-      expect(hash['nested']).to be_kind_of Hanami::Utils::Hash
-      expect(hash['nested']['key']).to eq('value')
+      expect(input).to eq("fub" => "baz")
     end
 
-    it 'stringifies nested object that responds to to_hash' do
-      nested = Hanami::Utils::Hash.new(metadata: WrappingHash.new(coverage: 100))
-      nested.stringify!
-
-      expect(nested['metadata']).to be_kind_of Hanami::Utils::Hash
-      expect(nested['metadata']['coverage']).to eq(100)
+    it "doesn't stringify nested hashes" do
+      hash = described_class.stringify("nested" => { :key => "value" })
+      expect(hash["nested"].keys).to eq([:key])
     end
   end
 
