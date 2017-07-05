@@ -1,14 +1,38 @@
 require 'hanami/interactor'
 
-class InteractorWithoutInitialize
+class LegacyInteractorWithoutInitialize
   include Hanami::Interactor
 
   def call
   end
 end
 
+class InteractorWithoutInitialize
+  include Hanami::Interactor
+
+  def call(*)
+  end
+end
+
 class InteractorWithoutCall
   include Hanami::Interactor
+end
+
+class InteractorWithMethodAdded
+  module MethodAdded; end
+
+  module WatchMethods
+    def method_added(method_name)
+      super
+      include MethodAdded if method_name == :call
+    end
+  end
+
+  include Hanami::Interactor
+  extend WatchMethods
+
+  def call(*)
+  end
 end
 
 class User
@@ -33,7 +57,7 @@ class User
   end
 end
 
-class Signup
+class LegacySignup
   include Hanami::Interactor
   expose :user, :params
 
@@ -56,7 +80,40 @@ class Signup
   end
 end
 
-class ErrorInteractor
+class Signup
+  include Hanami::Interactor
+  expose :user, :params
+
+  def initialize(force_failure: false)
+    @force_failure = force_failure
+  end
+
+  def call(params)
+    @params = params
+    @user = User.new(params)
+    @user.persist!
+  rescue
+    fail!
+  end
+
+  private
+
+  def valid?(*)
+    !@force_failure
+  end
+end
+
+class ComplexCall
+  include Hanami::Interactor
+  expose :args, :kwargs
+
+  def call(*args, **kwargs)
+    @args = args
+    @kwargs = kwargs
+  end
+end
+
+class LegacyErrorInteractor
   include Hanami::Interactor
   expose :operations
 
@@ -87,7 +144,35 @@ class ErrorInteractor
   end
 end
 
-class ErrorBangInteractor
+class ErrorInteractor
+  include Hanami::Interactor
+  expose :operations
+
+  def call(*)
+    @operations = []
+    prepare!
+    persist!
+    log!
+  end
+
+  private
+
+  def prepare!
+    @operations << __method__
+    error 'There was an error while preparing data.'
+  end
+
+  def persist!
+    @operations << __method__
+    error 'There was an error while persisting data.'
+  end
+
+  def log!
+    @operations << __method__
+  end
+end
+
+class LegacyErrorBangInteractor
   include Hanami::Interactor
   expose :operations
 
@@ -113,7 +198,30 @@ class ErrorBangInteractor
   end
 end
 
-class PublishVideo
+class ErrorBangInteractor
+  include Hanami::Interactor
+  expose :operations
+
+  def call(*)
+    @operations = []
+    persist!
+    sync!
+  end
+
+  private
+
+  def persist!
+    @operations << __method__
+    error! 'There was an error while persisting data.'
+  end
+
+  def sync!
+    @operations << __method__
+    error 'There was an error while syncing data.'
+  end
+end
+
+class LegacyPublishVideo
   include Hanami::Interactor
 
   def call
@@ -127,12 +235,31 @@ class PublishVideo
 
   def owns?
     # fake failed ownership check
-    1 == 0 ||
-      error("You're not owner of this video")
+    error("You're not owner of this video")
   end
 end
 
-class CreateUser
+class PublishVideo
+  include Hanami::Interactor
+  expose :video_name
+
+  def call(*)
+    @video_name = 'H2G2'
+  end
+
+  def valid?(*)
+    owns?
+  end
+
+  private
+
+  def owns?
+    # fake failed ownership check
+    error("You're not owner of this video")
+  end
+end
+
+class LegacyCreateUser
   include Hanami::Interactor
   expose :user
 
@@ -151,122 +278,287 @@ class CreateUser
   end
 end
 
-class UpdateUser < CreateUser
+class CreateUser
+  include Hanami::Interactor
+  expose :user
+
+  def call(**params)
+    build_user(params)
+    persist
+  end
+
+  private
+
+  def build_user(params)
+    @user = User.new(params)
+  end
+
+  def persist
+    @user.persist!
+  end
+end
+
+class LegacyUpdateUser < LegacyCreateUser
   def initialize(_user, params)
     super(params)
     @user.name = params.fetch(:name)
   end
 end
 
-RSpec.describe Hanami::Interactor do
-  describe '#initialize' do
-    it "works when it isn't overridden" do
-      InteractorWithoutInitialize.new
-    end
-
-    it 'allows to override it' do
-      Signup.new({})
-    end
+class UpdateUser < CreateUser
+  def build_user(user:, **params)
+    @user = user
+    @user.name = params.fetch(:name)
   end
+end
 
-  describe '#call' do
-    it 'returns a result' do
-      result = Signup.new(name: 'Luca').call
-      expect(result.class).to eq Hanami::Interactor::Result
+RSpec.describe Hanami::Interactor do
+  describe 'interactor interface' do
+    it 'includes the correct interface' do
+      expect(LegacySignup.ancestors).to include(Hanami::Interactor::LegacyInterface)
+      expect(Signup.ancestors).to include(Hanami::Interactor::Interface)
     end
 
-    it 'is successful by default' do
-      result = Signup.new(name: 'Luca').call
-      expect(result).to be_successful
-    end
-
-    it 'returns the payload' do
-      result = Signup.new(name: 'Luca').call
-
-      expect(result.user.name).to eq 'Luca'
-      expect(result.params).to eq(name: 'Luca')
-    end
-
-    it "doesn't include private ivars" do
-      result = Signup.new(name: 'Luca').call
-
-      expect { result.__foo }.to raise_error NoMethodError
-    end
-
-    it 'exposes a convenient API for handling failures' do
-      result = Signup.new({}).call
-      expect(result).to be_failure
-    end
-
-    it "doesn't invoke it if the preconditions are failing" do
-      result = Signup.new(force_failure: true).call
-      expect(result).to be_failure
+    it 'does not include the other interface' do
+      expect(LegacySignup.ancestors).not_to include(Hanami::Interactor::Interface)
+      expect(Signup.ancestors).not_to include(Hanami::Interactor::LegacyInterface)
     end
 
     it "raises error when #call isn't implemented" do
       expect { InteractorWithoutCall.new.call }.to raise_error NoMethodError
     end
 
-    describe 'inheritance' do
-      it 'is successful for super class' do
-        result = CreateUser.new(name: 'L').call
+    it 'lets .method_added open to overrides' do
+      expect(InteractorWithMethodAdded.ancestors).to include(InteractorWithMethodAdded::MethodAdded)
+    end
+  end
 
-        expect(result).to be_successful
-        expect(result.user.name).to eq 'L'
+  describe 'legacy interface' do
+    describe '#initialize' do
+      it "works when it isn't overridden" do
+        LegacyInteractorWithoutInitialize.new
       end
 
-      it 'is successful for sub class' do
-        user   = User.new(name: 'L')
-        result = UpdateUser.new(user, name: 'MG').call
+      it 'allows to override it' do
+        LegacySignup.new({})
+      end
+    end
 
+    describe '#call' do
+      it 'returns a result' do
+        result = LegacySignup.new(name: 'Luca').call
+        expect(result.class).to eq Hanami::Interactor::Result
+      end
+
+      it 'is successful by default' do
+        result = LegacySignup.new(name: 'Luca').call
         expect(result).to be_successful
-        expect(result.user.name).to eq 'MG'
+      end
+
+      it 'returns the payload' do
+        result = LegacySignup.new(name: 'Luca').call
+
+        expect(result.user.name).to eq 'Luca'
+        expect(result.params).to eq(name: 'Luca')
+      end
+
+      it "doesn't include private ivars" do
+        result = LegacySignup.new(name: 'Luca').call
+
+        expect { result.__foo }.to raise_error NoMethodError
+      end
+
+      it 'exposes a convenient API for handling failures' do
+        result = LegacySignup.new({}).call
+        expect(result).to be_failure
+      end
+
+      it "doesn't invoke it if the preconditions are failing" do
+        result = LegacySignup.new(force_failure: true).call
+        expect(result).to be_failure
+      end
+
+      describe 'inheritance' do
+        it 'is successful for super class' do
+          result = LegacyCreateUser.new(name: 'L').call
+
+          expect(result).to be_successful
+          expect(result.user.name).to eq 'L'
+        end
+
+        it 'is successful for sub class' do
+          user   = User.new(name: 'L')
+          result = LegacyUpdateUser.new(user, name: 'MG').call
+
+          expect(result).to be_successful
+          expect(result.user.name).to eq 'MG'
+        end
+      end
+    end
+
+    describe '#error' do
+      it "isn't successful" do
+        result = LegacyErrorInteractor.new.call
+        expect(result).to be_failure
+      end
+
+      it 'accumulates errors' do
+        result = LegacyErrorInteractor.new.call
+        expect(result.errors).to eq [
+          'There was an error while preparing data.',
+          'There was an error while persisting data.'
+        ]
+      end
+
+      it "doesn't interrupt the flow" do
+        result = LegacyErrorInteractor.new.call
+        expect(result.operations).to eq %i(prepare! persist! log!)
+      end
+
+      # See https://github.com/hanami/utils/issues/69
+      it 'returns false as control flow for caller' do
+        interactor = LegacyPublishVideo.new
+        expect(interactor).not_to be_valid
+      end
+    end
+
+    describe '#error!' do
+      it "isn't successful" do
+        result = LegacyErrorBangInteractor.new.call
+        expect(result).to be_failure
+      end
+
+      it 'stops at the first error' do
+        result = LegacyErrorBangInteractor.new.call
+        expect(result.errors).to eq [
+          'There was an error while persisting data.'
+        ]
+      end
+
+      it 'interrupts the flow' do
+        result = LegacyErrorBangInteractor.new.call
+        expect(result.operations).to eq [:persist!]
       end
     end
   end
 
-  describe '#error' do
-    it "isn't successful" do
-      result = ErrorInteractor.new.call
-      expect(result).to be_failure
+  describe 'new interface' do
+    describe '#initialize' do
+      it "works when it isn't overridden" do
+        InteractorWithoutInitialize.new.call
+      end
+
+      it 'allows to override it' do
+        Signup.new.call
+      end
     end
 
-    it 'accumulates errors' do
-      result = ErrorInteractor.new.call
-      expect(result.errors).to eq [
-        'There was an error while preparing data.',
-        'There was an error while persisting data.'
-      ]
+    describe '#call' do
+      it 'returns a result' do
+        result = Signup.new.call(name: 'Luca')
+        expect(result.class).to eq Hanami::Interactor::Result
+      end
+
+      it 'is successful by default' do
+        result = Signup.new.call(name: 'Luca')
+        expect(result).to be_successful
+      end
+
+      it 'returns the payload' do
+        result = Signup.new.call(name: 'Luca')
+
+        expect(result.user.name).to eq 'Luca'
+        expect(result.params).to eq(name: 'Luca')
+      end
+
+      it "doesn't include private ivars" do
+        result = Signup.new.call(name: 'Luca')
+
+        expect { result.force_failure }.to raise_error NoMethodError
+      end
+
+      it 'exposes a convenient API for handling failures' do
+        result = Signup.new.call
+        expect(result).to be_failure
+      end
+
+      it "doesn't invoke it if the preconditions are failing" do
+        result = Signup.new(force_failure: true).call
+        expect(result).to be_failure
+      end
+
+      it "raises error when #call isn't implemented" do
+        expect { InteractorWithoutCall.new.call }.to raise_error NoMethodError
+      end
+
+      it 'handles args and kwargs' do
+        result = ComplexCall.new.call('foo', 'bar', baz: 'baz', buzz: 'buzz')
+        expect(result.args).to eql(%w(foo bar))
+        expect(result.kwargs).to eql(Hash[baz: 'baz', buzz: 'buzz'])
+      end
+
+      describe 'inheritance' do
+        it 'is successful for super class' do
+          result = CreateUser.new.call(name: 'L')
+
+          expect(result).to be_successful
+          expect(result.user.name).to eq 'L'
+        end
+
+        it 'is successful for sub class' do
+          user   = User.new(name: 'L')
+          result = UpdateUser.new.call(user: user, name: 'MG')
+
+          expect(result).to be_successful
+          expect(result.user.name).to eq 'MG'
+        end
+      end
     end
 
-    it "doesn't interrupt the flow" do
-      result = ErrorInteractor.new.call
-      expect(result.operations).to eq %i(prepare! persist! log!)
+    describe '#error' do
+      it "isn't successful" do
+        result = ErrorInteractor.new.call
+        expect(result).to be_failure
+      end
+
+      it 'accumulates errors' do
+        result = ErrorInteractor.new.call
+        expect(result.errors).to eq [
+          'There was an error while preparing data.',
+          'There was an error while persisting data.'
+        ]
+      end
+
+      it "doesn't interrupt the flow" do
+        result = ErrorInteractor.new.call
+        expect(result.operations).to eq %i(prepare! persist! log!)
+      end
+
+      # See https://github.com/hanami/utils/issues/69
+      it 'returns false as control flow for caller' do
+        result = PublishVideo.new.call
+        expect(result).not_to be_successful
+        expect(result.video_name).to be_nil
+      end
     end
 
-    # See https://github.com/hanami/utils/issues/69
-    it 'returns false as control flow for caller' do
-      interactor = PublishVideo.new
-      expect(interactor).not_to be_valid
-    end
-  end
+    describe '#error!' do
+      it "isn't successful" do
+        result = ErrorBangInteractor.new.call
+        expect(result).to be_failure
+      end
 
-  describe '#error!' do
-    it "isn't successful" do
-      result = ErrorBangInteractor.new.call
-      expect(result).to be_failure
-    end
+      it 'stops at the first error' do
+        result = ErrorBangInteractor.new.call
+        expect(result.errors).to eq [
+          'There was an error while persisting data.'
+        ]
+      end
 
-    it 'stops at the first error' do
-      result = ErrorBangInteractor.new.call
-      expect(result.errors).to eq [
-        'There was an error while persisting data.'
-      ]
-    end
-
-    it 'interrupts the flow' do
-      result = ErrorBangInteractor.new.call
-      expect(result.operations).to eq [:persist!]
+      it 'interrupts the flow' do
+        result = ErrorBangInteractor.new.call
+        expect(result.operations).to eq [:persist!]
+      end
     end
   end
 end
