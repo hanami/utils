@@ -272,7 +272,7 @@ RSpec.describe Hanami::Utils::Hash do
     end
 
     it "stringify keys" do
-      hash = described_class.stringify(:fub => "baz")
+      hash = described_class.stringify(fub: "baz")
 
       expect(hash).to eq("fub" => "baz")
     end
@@ -285,7 +285,7 @@ RSpec.describe Hanami::Utils::Hash do
     end
 
     it "doesn't stringify nested hashes" do
-      hash = described_class.stringify("nested" => { :key => "value" })
+      hash = described_class.stringify("nested" => { key: "value" })
       expect(hash["nested"].keys).to eq([:key])
     end
   end
