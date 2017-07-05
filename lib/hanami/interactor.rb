@@ -551,7 +551,7 @@ module Hanami
     def _exposures
       Hash[].tap do |result|
         self.class.exposures.each do |name, ivar|
-          result[name] = instance_variable_get(ivar)
+          result[name] = instance_variable_defined?(ivar) ? instance_variable_get(ivar) : nil
         end
       end
     end
