@@ -207,6 +207,17 @@ module Hanami
       #   hash.keys    # => [:a, :b]
       #   hash.inspect # => {"a"=>23, "b"=>{"c"=>["x", "y", "z"]}}
 
+      def stringify!
+        keys.each do |k|
+          v = delete(k)
+          v = self.class.new(v).stringify! if v.respond_to?(:to_hash)
+
+          self[k.to_s] = v
+        end
+
+        self
+      end
+
       def self.stringify(input)
         self[:stringify_keys].call(input)
       end
