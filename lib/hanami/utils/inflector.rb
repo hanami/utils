@@ -267,7 +267,8 @@ module Hanami
         'species'     => 'species',
         'police'      => 'police',
         # fallback
-        'hives'       => 'hive'
+        'hives'       => 'hive',
+        'phases'      => 'phase'
       )
 
       # Block for custom inflection rules.
