@@ -606,7 +606,9 @@ TEST_SINGULARS = {
   'trellis'    => 'trellises',
   'kiss'       => 'kisses',
   # https://github.com/hanami/utils/issues/106
-  'album'      => 'albums'
+  'album'      => 'albums',
+  # https://github.com/hanami/utils/issues/217
+  'phase'      => 'phases'
 }.merge(TEST_PLURALS)
 
 require 'hanami/utils/inflector'
