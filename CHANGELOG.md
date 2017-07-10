@@ -1,6 +1,10 @@
 # Hanami::Utils
 Ruby core extentions and class utilities for Hanami
 
+## v1.0.2 - 2017-07-10
+### Fixed
+- [Anton Davydov] Fix pluralization/singularization for `"phrase" => "phrases"`
+
 ## v1.0.1 - 2017-06-23
 
 ### Added
