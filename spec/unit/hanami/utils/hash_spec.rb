@@ -264,6 +264,41 @@ RSpec.describe Hanami::Utils::Hash do
     end
   end
 
+  describe '#stringify!' do
+    it 'covert keys to strings' do
+      hash = Hanami::Utils::Hash.new(fub: 'baz')
+      hash.stringify!
+
+      expect(hash[:fub]).to be_nil
+      expect(hash['fub']).to eq('baz')
+    end
+
+    it 'stringifies nested hashes' do
+      hash = Hanami::Utils::Hash.new(nested: { key: 'value' })
+      hash.stringify!
+
+      expect(hash['nested']).to be_kind_of Hanami::Utils::Hash
+      expect(hash['nested']['key']).to eq('value')
+    end
+
+    it 'stringifies nested Hanami::Utils::Hashes' do
+      nested = Hanami::Utils::Hash.new(key: 'value')
+      hash = Hanami::Utils::Hash.new(nested: nested)
+      hash.stringify!
+
+      expect(hash['nested']).to be_kind_of Hanami::Utils::Hash
+      expect(hash['nested']['key']).to eq('value')
+    end
+
+    it 'stringifies nested object that responds to to_hash' do
+      nested = Hanami::Utils::Hash.new(metadata: WrappingHash.new(coverage: 100))
+      nested.stringify!
+
+      expect(nested['metadata']).to be_kind_of Hanami::Utils::Hash
+      expect(nested['metadata']['coverage']).to eq(100)
+    end
+  end
+
   describe ".stringify" do
     it "returns ::Hash" do
       hash = described_class.stringify("fub" => "baz")
