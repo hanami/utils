@@ -1,3 +1,5 @@
+# rubocop:disable LineLength
+
 require 'bigdecimal'
 require 'hanami/utils/hash'
 
