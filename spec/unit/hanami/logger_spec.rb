@@ -434,23 +434,23 @@ RSpec.describe Hanami::Logger do
         expect(output).to eq "[hanami] [INFO] [2017-01-15 16:00:23 +0100] foo bar\n"
       end
 
-      it 'has key=value format for form_params' do
+      it 'displays filtered hash values' do
         form_params = Hash[
           form_params: Hash[
-            name: 'John',
-            password: '[FILTERED]',
-            password_confirmation: '[FILTERED]'
+            'name' => 'John',
+            'password' => '[FILTERED]',
+            'password_confirmation' => '[FILTERED]'
           ]
         ]
 
-        pretty_params = "Parameters: {\n  \"name\": \"John\",\n  \"password\": \"[FILTERED]\",\n  \"password_confirmation\": \"[FILTERED]\"\n}"
+        expected = "{\"name\"=>\"John\", \"password\"=>\"[FILTERED]\", \"password_confirmation\"=>\"[FILTERED]\"}"
 
         output = with_captured_stdout do
           class TestLogger < Hanami::Logger; end
           TestLogger.new.info(form_params)
         end
 
-        expect(output).to eq("[hanami] [INFO] [2017-01-15 16:00:23 +0100] #{pretty_params}\n")
+        expect(output).to eq("[hanami] [INFO] [2017-01-15 16:00:23 +0100] #{expected}\n")
       end
     end
 
@@ -458,12 +458,12 @@ RSpec.describe Hanami::Logger do
       let(:form_params) do
         Hash[
           form_params: Hash[
-            name: 'John',
-            password: 'password',
-            password_confirmation: 'password',
-            credit_card: Hash[
-              number: '4545 4545 4545 4545',
-              name: 'John Citizen'
+            'name' => 'John',
+            'password' => 'password',
+            'password_confirmation' => 'password',
+            'credit_card' => Hash[
+              'number' => '4545 4545 4545 4545',
+              'name' => 'John Citizen'
             ]
           ]
         ]
@@ -471,27 +471,27 @@ RSpec.describe Hanami::Logger do
 
       describe 'with filters' do
         it 'filters values for keys in the filters array' do
-          pretty_params = "Parameters: {\n  \"name\": \"John\",\n  \"password\": \"[FILTERED]\",\n  \"password_confirmation\": \"[FILTERED]\",\n  \"credit_card\": \"[FILTERED]\"\n}"
+          expected = "{\"name\"=>\"John\", \"password\"=>\"[FILTERED]\", \"password_confirmation\"=>\"[FILTERED]\", \"credit_card\"=>\"[FILTERED]\"}"
 
           output = with_captured_stdout do
             class TestLogger < Hanami::Logger; end
             TestLogger.new(filter: [/.*password.*/, :credit_card]).info(form_params)
           end
 
-          expect(output).to eq("[hanami] [INFO] [2017-01-15 16:00:23 +0100] #{pretty_params}\n")
+          expect(output).to eq("[hanami] [INFO] [2017-01-15 16:00:23 +0100] #{expected}\n")
         end
       end
 
       describe 'without filters' do
         it 'outputs unfiltered params' do
-          pretty_params = "Parameters: {\n  \"name\": \"John\",\n  \"password\": \"password\",\n  \"password_confirmation\": \"password\",\n  \"credit_card\": {\n    \"number\": \"4545 4545 4545 4545\",\n    \"name\": \"John Citizen\"\n  }\n}"
+          expected = "{\"name\"=>\"John\", \"password\"=>\"password\", \"password_confirmation\"=>\"password\", \"credit_card\"=>{\"number\"=>\"4545 4545 4545 4545\", \"name\"=>\"John Citizen\"}}"
 
           output = with_captured_stdout do
             class TestLogger < Hanami::Logger; end
             TestLogger.new.info(form_params)
           end
 
-          expect(output).to eq("[hanami] [INFO] [2017-01-15 16:00:23 +0100] #{pretty_params}\n")
+          expect(output).to eq("[hanami] [INFO] [2017-01-15 16:00:23 +0100] #{expected}\n")
         end
       end
     end

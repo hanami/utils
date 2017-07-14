@@ -101,7 +101,7 @@ module Hanami
     # @api private
     #
     # @see http://www.ruby-doc.org/stdlib/libdoc/logger/rdoc/Logger/Formatter.html
-    class Formatter < ::Logger::Formatter # rubocop:disable Metrics/ClassLength
+    class Formatter < ::Logger::Formatter
       # @since 0.8.0
       # @api private
       SEPARATOR = ' '.freeze
@@ -119,15 +119,8 @@ module Hanami
       class_attribute :subclasses
       self.subclasses = Set.new
 
-      def self.fabricate(formatter, application_name, filter) # rubocop:disable Metrics/MethodLength
-        fabricated_formatter = case formatter
-                               when Symbol
-                                 (subclasses.find { |s| s.eligible?(formatter) } || self).new
-                               when nil
-                                 new
-                               else
-                                 formatter
-                               end
+      def self.fabricate(formatter, application_name, filter)
+        fabricated_formatter = _formatter_instance(formatter)
 
         fabricated_formatter.application_name = application_name
         fabricated_formatter.filter           = filter
@@ -145,6 +138,20 @@ module Hanami
       def self.eligible?(name)
         name == :default
       end
+
+      # @api private
+      # @since x.x.x
+      def self._formatter_instance(formatter)
+        case formatter
+        when Symbol
+          (subclasses.find { |s| s.eligible?(formatter) } || self).new
+        when nil
+          new
+        else
+          formatter
+        end
+      end
+      private_class_method :_formatter_instance
 
       # @since 0.5.0
       # @api private
@@ -179,7 +186,7 @@ module Hanami
       def _message_hash(message) # rubocop:disable Metrics/MethodLength
         case message
         when Hash
-          _filtered_message(message)
+          HashFilter.new(filter: @filter).filter(message)
         when Exception
           Hash[
             message:   message.message,
@@ -198,7 +205,7 @@ module Hanami
         return _format_error(result, hash) if hash.key?(:error)
 
         values = hash.each_with_object([]) do |(k, v), memo|
-          memo << _formatted_log_value(k, v) unless RESERVED_KEYS.include?(k)
+          memo << v unless RESERVED_KEYS.include?(k)
         end
 
         result << " #{values.join(SEPARATOR)}#{NEW_LINE}"
@@ -218,55 +225,52 @@ module Hanami
         result
       end
 
-      # @api private
-      def _formatted_log_value(k, v)
-        if k == :form_params
-          "Parameters: #{JSON.pretty_generate(v)}"
-        else
-          v
+      # Filtering logic
+      class HashFilter
+        def initialize(filter:)
+          @filter = filter
         end
-      end
 
-      # @api private
-      def _filtered_message(msg)
-        return msg if Hanami::Utils::Blank.blank?(@filter)
+        def filter(hash)
+          return hash if Hanami::Utils::Blank.blank?(@filter)
 
-        Hash[
-          msg.map do |k, v|
-            [k, _process_hash_value(v)]
-          end
-        ]
-      end
-
-      # @api private
-      def _process_hash_value(value)
-        return value unless value.is_a?(Hash)
-
-        _filtered_hash(value)
-      end
-
-      # @api private
-      def _filtered_hash(hash)
-        Hash[
-          hash.map do |k, v|
-            if _filtered_key?(k)
-              [k, '[FILTERED]']
-            else
+          Hash[
+            hash.map do |k, v|
               [k, _process_hash_value(v)]
             end
-          end
-        ]
-      end
+          ]
+        end
 
-      def _filtered_key?(key)
-        @filter.any? do |filter|
-          case filter
-          when Symbol, String
-            key.to_s == filter.to_s
-          when Regexp
-            key.match(filter)
-          else
-            raise InvalidFilteredParameterTypeException, "Filter must be of any of the following types [Regexp, Symbol, String]. Actual: #{filter.class}"
+        # @api private
+        def _process_hash_value(value)
+          return value unless value.is_a?(Hash)
+
+          _filtered_hash(value)
+        end
+
+        # @api private
+        def _filtered_hash(hash)
+          Hash[
+            hash.map do |k, v|
+              if _filtered_key?(k)
+                [k, '[FILTERED]']
+              else
+                [k, _process_hash_value(v)]
+              end
+            end
+          ]
+        end
+
+        def _filtered_key?(key)
+          @filter.any? do |filter|
+            case filter
+            when Symbol, String
+              key.to_s == filter.to_s
+            when Regexp
+              key.match(filter)
+            else
+              raise InvalidFilteredParameterTypeException, "Filter must be of any of the following types [Regexp, Symbol, String]. Actual: #{filter.class}"
+            end
           end
         end
       end
