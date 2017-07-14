@@ -186,7 +186,7 @@ module Hanami
       def _message_hash(message) # rubocop:disable Metrics/MethodLength
         case message
         when Hash
-          HashFilter.new(filter: @filter).filter(message)
+          HashFilter.new(@filter).filter(message)
         when Exception
           Hash[
             message:   message.message,
@@ -227,50 +227,50 @@ module Hanami
 
       # Filtering logic
       class HashFilter
-        def initialize(filter:)
-          @filter = filter
+        attr_reader :filters
+
+        def initialize(filters = [])
+          @filters = filters
         end
 
         def filter(hash)
-          return hash if Hanami::Utils::Blank.blank?(@filter)
+          @base_hash = hash
 
-          Hash[
-            hash.map do |k, v|
-              [k, _process_hash_value(v)]
-            end
-          ]
+          filters.each do |filter|
+            keys = _filtering_path(filter.is_a?(Array) ? filter : [filter])
+            last = keys.pop
+
+            next if last.nil?
+            keys.inject(hash, :fetch)[last] = "[FILTERED]"
+          end
+
+          hash
         end
 
-        # @api private
-        def _process_hash_value(value)
-          return value unless value.is_a?(Hash)
+        private
 
-          _filtered_hash(value)
+        attr_reader :base_hash
+
+        def _filtering_path(keys)
+          search_in = @base_hash
+          actual_keys = []
+
+          keys.each do |key|
+            correct_key = _correct_key(search_in, key)
+            break if correct_key.nil?
+
+            search_in = search_in[correct_key]
+            actual_keys << correct_key
+          end
+
+          actual_keys.count == keys.count ? actual_keys : []
         end
 
-        # @api private
-        def _filtered_hash(hash)
-          Hash[
-            hash.map do |k, v|
-              if _filtered_key?(k)
-                [k, '[FILTERED]']
-              else
-                [k, _process_hash_value(v)]
-              end
-            end
-          ]
-        end
-
-        def _filtered_key?(key)
-          @filter.any? do |filter|
-            case filter
-            when Symbol, String
-              key.to_s == filter.to_s
-            when Regexp
-              key.match(filter)
-            else
-              raise InvalidFilteredParameterTypeException, "Filter must be of any of the following types [Regexp, Symbol, String]. Actual: #{filter.class}"
-            end
+        def _correct_key(search_in, key)
+          if search_in.key?(key.to_sym)
+            key.to_sym
+          elsif search_in.key?(key.to_s)
+            key.to_s
           end
         end
       end

@@ -475,7 +475,12 @@ RSpec.describe Hanami::Logger do
 
           output = with_captured_stdout do
             class TestLogger < Hanami::Logger; end
-            TestLogger.new(filter: [/.*password.*/, :credit_card]).info(form_params)
+            filters = [
+              %i(form_params password),
+              %i(form_params password_confirmation),
+              %i(form_params credit_card)
+            ]
+            TestLogger.new(filter: filters).info(form_params)
           end
 
           expect(output).to eq("[hanami] [INFO] [2017-01-15 16:00:23 +0100] #{expected}\n")
@@ -493,6 +498,35 @@ RSpec.describe Hanami::Logger do
 
           expect(output).to eq("[hanami] [INFO] [2017-01-15 16:00:23 +0100] #{expected}\n")
         end
+      end
+    end
+  end
+
+  describe Hanami::Logger::Formatter::HashFilter do
+    context 'without filters' do
+      it "doesn't filter" do
+        input = Hash[password: 'azerty']
+        output = described_class.new.filter(input)
+        expect(output).to eql(input)
+      end
+    end
+
+    context 'with filters' do
+      it 'filters simple filters' do
+        output = described_class.new(%i(password)).filter(Hash[password: 'azerty', foo: Hash[password: 'bar']])
+        expect(output).to eql(Hash[password: '[FILTERED]', foo: Hash[password: 'bar']])
+      end
+
+      it 'filters with multiple filters' do
+        input = Hash[password: 'azerty', number: '12345']
+        output = described_class.new(%i(password number)).filter(input)
+        expect(output).to eql(Hash[password: '[FILTERED]', number: '[FILTERED]'])
+      end
+
+      it 'filters with deep dig' do
+        input = Hash[user: Hash[name: 'foo', password: 'azerty']]
+        output = described_class.new([%i(user password)]).filter(input)
+        expect(output).to eql(Hash[user: Hash[name: 'foo', password: '[FILTERED]']])
       end
     end
   end
