@@ -1,3 +1,5 @@
+# rubocop:disable ClassLength
+
 require 'hanami/utils/duplicable'
 require 'transproc'
 
