@@ -1,4 +1,4 @@
-# rubocop:disable LineLength
+# rubocop:disable Metrics/ClassLength
 
 require 'bigdecimal'
 require 'hanami/utils/hash'
