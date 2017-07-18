@@ -115,7 +115,7 @@ module Hanami
         content = ::File.readlines(path)
         line    = content.find do |l|
           case target
-          when String
+          when ::String
             l.include?(target)
           when Regexp
             l =~ target
@@ -145,7 +145,7 @@ module Hanami
       def self.line_number(content, target)
         content.index do |l|
           case target
-          when String
+          when ::String
             l.include?(target)
           when Regexp
             l =~ target
