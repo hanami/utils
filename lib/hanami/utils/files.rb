@@ -6,13 +6,13 @@ module Hanami
     # Files utilities
     #
     # @since x.x.x
-    module Files
+    module Files # rubocop:disable Metrics/ModuleLength
       def self.touch(path)
         write(path, "")
       end
 
       def self.write(path, *content)
-        mkdir(path)
+        mkdir_p(path)
         open(path, ::File::CREAT | ::File::WRONLY, *content)
       end
 
@@ -21,11 +21,15 @@ module Hanami
       end
 
       def self.cp(source, destination)
-        mkdir(destination)
+        mkdir_p(destination)
         FileUtils.cp(source, destination)
       end
 
       def self.mkdir(path)
+        FileUtils.mkdir_p(path)
+      end
+
+      def self.mkdir_p(path)
         Pathname.new(path).dirname.mkpath
       end
 
