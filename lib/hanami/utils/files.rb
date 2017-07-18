@@ -63,7 +63,7 @@ module Hanami
       end
 
       def self.append(path, contents)
-        mkdir(path)
+        mkdir_p(path)
 
         content = ::File.readlines(path)
         content << "#{contents}\n"
