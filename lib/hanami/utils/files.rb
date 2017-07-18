@@ -1,3 +1,6 @@
+require "pathname"
+require "fileutils"
+
 module Hanami
   module Utils
     # Files utilities
@@ -9,12 +12,29 @@ module Hanami
       end
 
       def self.write(path, *content)
-        Pathname.new(path).dirname.mkpath
+        mkdir(path)
         open(path, ::File::CREAT | ::File::WRONLY, *content)
       end
 
       def self.rewrite(path, *content)
         open(path, ::File::TRUNC | ::File::WRONLY, *content)
+      end
+
+      def self.cp(source, destination)
+        mkdir(destination)
+        FileUtils.cp(source, destination)
+      end
+
+      def self.mkdir(path)
+        Pathname.new(path).dirname.mkpath
+      end
+
+      def self.delete(path)
+        FileUtils.rm(path)
+      end
+
+      def self.delete_directory(path)
+        FileUtils.remove_entry_secure(path)
       end
 
       def self.replace(path, target, replacement)
@@ -39,9 +59,27 @@ module Hanami
       end
 
       def self.append(path, contents)
+        mkdir(path)
+
         content = ::File.readlines(path)
         content << "#{contents}\n"
 
+        rewrite(path, content)
+      end
+
+      def self.inject_after(path, contents, after)
+        content = ::File.readlines(path)
+        i       = index(content, path, after)
+
+        content.insert(i + 1, "#{contents}\n")
+        rewrite(path, content)
+      end
+
+      def self.remove_line(path, contents)
+        content = ::File.readlines(path)
+        i       = index(content, path, contents)
+
+        content.delete_at(i)
         rewrite(path, content)
       end
 
@@ -69,9 +107,31 @@ module Hanami
         ::IO.read(Hanami.root.join(path))
       end
 
+      def self.read_matching_line(path, target)
+        content = ::File.readlines(path)
+        line    = content.find do |l|
+          case target
+          when String
+            l.include?(target)
+          when Regexp
+            l =~ target
+          end
+        end
+
+        line or raise ArgumentError.new("Cannot find `#{target}' inside `#{path}'.")
+      end
+
       def self.index(content, path, target)
         line_number(content, target) or
           raise ArgumentError.new("Cannot find `#{target}' inside `#{path}'.")
+      end
+
+      def self.exist?(path)
+        File.exist?(path)
+      end
+
+      def self.directory?(path)
+        File.directory?(path)
       end
 
       def self.containts?(content, target)
@@ -79,7 +139,14 @@ module Hanami
       end
 
       def self.line_number(content, target)
-        content.index { |l| l.include?(target) }
+        content.index do |l|
+          case target
+          when String
+            l.include?(target)
+          when Regexp
+            l =~ target
+          end
+        end
       end
     end
   end
