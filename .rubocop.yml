@@ -1,5 +1,7 @@
 # Please keep AllCops, Bundler, Style, Metrics groups and then order cops
 # alphabetically
+AllCops:
+  TargetRubyVersion: 2.3
 inherit_from:
   - https://raw.githubusercontent.com/hanami/hanami/master/.rubocop.yml
 Metrics/BlockLength:
@@ -16,3 +18,5 @@ Style/MethodMissing:
 Style/MethodName:
   Exclude:
     - 'lib/hanami/utils/kernel.rb'
+Style/FrozenStringLiteralComment:
+  Enabled: false
