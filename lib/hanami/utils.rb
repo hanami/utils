@@ -2,6 +2,7 @@
 #
 # @since 0.1.0
 module Hanami
+  require 'hanami/events'
   require 'hanami/utils/version'
   require 'hanami/utils/file_list'
 
