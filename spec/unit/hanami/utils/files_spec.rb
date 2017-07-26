@@ -158,7 +158,11 @@ RSpec.describe Hanami::Utils::Files do
 
     it "raises error if path doesn't exist" do
       path = root.join("delete", "file")
-      expect { described_class.delete(path) }.to raise_error(Errno::ENOENT, "No such file or directory @ unlink_internal - #{path}")
+
+      expect { described_class.delete(path) }.to raise_error do |exception|
+        expect(exception).to be_kind_of(Errno::ENOENT)
+        expect(exception.message).to match("No such file or directory")
+      end
 
       expect(path).to_not exist
     end
@@ -175,7 +179,11 @@ RSpec.describe Hanami::Utils::Files do
 
     it "raises error if directory doesn't exist" do
       path = root.join("delete", "directory")
-      expect { described_class.delete_directory(path) }.to raise_error(Errno::ENOENT, "No such file or directory @ rb_file_s_lstat - #{path}")
+
+      expect { described_class.delete_directory(path) }.to raise_error do |exception|
+        expect(exception).to be_kind_of(Errno::ENOENT)
+        expect(exception.message).to match("No such file or directory")
+      end
 
       expect(path).to_not exist
     end
