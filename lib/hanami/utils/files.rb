@@ -7,36 +7,112 @@ module Hanami
     #
     # @since x.x.x
     module Files # rubocop:disable Metrics/ModuleLength
+      # Creates an empty file for the given path.
+      # All the intermediate directories are created.
+      # If the path already exists, it doesn't change the contents
+      #
+      # @param path [String,Pathname] the path to file
+      #
+      # @since x.x.x
       def self.touch(path)
         write(path, "")
       end
 
+      # Creates a new file for the given path and content.
+      # All the intermediate directories are created.
+      # If the path already exists, it overrides the contents.
+      #
+      # @param path [String,Pathname] the path to file
+      # @param content [String, Array<String>] the content to write
+      #
+      # @since x.x.x
       def self.write(path, *content)
         mkdir_p(path)
         open(path, ::File::CREAT | ::File::WRONLY, *content)
       end
 
-      def self.rewrite(path, *content)
-        open(path, ::File::TRUNC | ::File::WRONLY, *content)
+      class << self
+        alias rewrite write
       end
 
+      # Copies source into destination.
+      # All the intermediate directories are created.
+      # If the destination already exists, it overrides the contents.
+      #
+      # @param source [String,Pathname] the path to the source file
+      # @param destination [String,Pathname] the path to the destination file
+      #
+      # @since x.x.x
       def self.cp(source, destination)
         mkdir_p(destination)
         FileUtils.cp(source, destination)
       end
 
+      # Creates a directory for the given path.
+      # It assumes that all the tokens in `path` are meant to be a directory.
+      # All the intermediate directories are created.
+      #
+      # @param path [String,Pathname] the path to directory
+      #
+      # @since x.x.x
+      #
+      # @see .mkdir_p
+      #
+      # @example
+      #   require "hanami/utils/files"
+      #
+      #   Hanami::Utils::Files.mkdir("path/to/directory")
+      #     # => creates the `path/to/directory` directory
+      #
+      #   # WRONG this isn't probably what you want, check `.mkdir_p`
+      #   Hanami::Utils::Files.mkdir("path/to/file.rb")
+      #     # => creates the `path/to/file.rb` directory
       def self.mkdir(path)
         FileUtils.mkdir_p(path)
       end
 
+      # Creates a directory for the given path.
+      # It assumes that all the tokens, but the last, in `path` are meant to be
+      # a directory, whereas the last is meant to be a file.
+      # All the intermediate directories are created.
+      #
+      # @param path [String,Pathname] the path to directory
+      #
+      # @since x.x.x
+      #
+      # @see .mkdir
+      #
+      # @example
+      #   require "hanami/utils/files"
+      #
+      #   Hanami::Utils::Files.mkdir_p("path/to/file.rb")
+      #     # => creates the `path/to` directory, but NOT `file.rb`
+      #
+      #   # WRONG it doesn't create the last directory, check `.mkdir`
+      #   Hanami::Utils::Files.mkdir("path/to/directory")
+      #     # => creates the `path/to` directory
       def self.mkdir_p(path)
         Pathname.new(path).dirname.mkpath
       end
 
+      # Deletes given path (file).
+      #
+      # @param path [String,Pathname] the path to file
+      #
+      # @raises [Errno::ENOENT] if the path doesn't exist
+      #
+      # @since x.x.x
       def self.delete(path)
         FileUtils.rm(path)
       end
 
+      # Deletes given path (directory).
+      #
+      # @param path [String,Pathname] the path to file
+      #
+      # @raises [Errno::ENOENT] if the path doesn't exist
+      #
+      # @since x.x.x
       def self.delete_directory(path)
         FileUtils.remove_entry_secure(path)
       end
@@ -101,6 +177,20 @@ module Hanami
         remove_block(path, target) if containts?(content, target)
       end
 
+      def self.exist?(path)
+        File.exist?(path)
+      end
+
+      def self.directory?(path)
+        File.directory?(path)
+      end
+
+      def self.containts?(content, target)
+        !line_number(content, target).nil?
+      end
+
+      # private
+
       def self.open(path, mode, *content)
         ::File.open(path, mode) do |file|
           file.write(Array(content).flatten.join)
@@ -128,18 +218,6 @@ module Hanami
       def self.index(content, path, target)
         line_number(content, target) or
           raise ArgumentError.new("Cannot find `#{target}' inside `#{path}'.")
-      end
-
-      def self.exist?(path)
-        File.exist?(path)
-      end
-
-      def self.directory?(path)
-        File.directory?(path)
-      end
-
-      def self.containts?(content, target)
-        !line_number(content, target).nil?
       end
 
       def self.line_number(content, target)
