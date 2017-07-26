@@ -299,6 +299,32 @@ RSpec.describe Hanami::Utils::Hash do
     end
   end
 
+  describe ".stringify" do
+    it "returns ::Hash" do
+      hash = described_class.stringify("fub" => "baz")
+
+      expect(hash).to be_kind_of(::Hash)
+    end
+
+    it "stringify keys" do
+      hash = described_class.stringify(fub: "baz")
+
+      expect(hash).to eq("fub" => "baz")
+    end
+
+    it "doesn't mutate original input" do
+      input = { "fub" => "baz" }
+      described_class.stringify(input)
+
+      expect(input).to eq("fub" => "baz")
+    end
+
+    it "doesn't stringify nested hashes" do
+      hash = described_class.stringify("nested" => { key: "value" })
+      expect(hash["nested"].keys).to eq([:key])
+    end
+  end
+
   describe '#deep_dup' do
     it 'returns an instance of Utils::Hash' do
       duped = Hanami::Utils::Hash.new('foo' => 'bar').deep_dup
