@@ -98,7 +98,7 @@ module Hanami
       #     # => creates the `path/to` directory, but NOT `file.rb`
       #
       #   # WRONG it doesn't create the last directory, check `.mkdir`
-      #   Hanami::Utils::Files.mkdir("path/to/directory")
+      #   Hanami::Utils::Files.mkdir_p("path/to/directory")
       #     # => creates the `path/to` directory
       def self.mkdir_p(path)
         Pathname.new(path).dirname.mkpath
@@ -162,7 +162,7 @@ module Hanami
         rewrite(path, content)
       end
 
-      # Replace line in `path` that contains `target` with `replacement`.
+      # Replace first line in `path` that contains `target` with `replacement`.
       #
       # @param path [String,Pathname] the path to file
       # @param target [String,Regexp] the target to replace
@@ -174,7 +174,7 @@ module Hanami
       # @see .replace_last_line
       #
       # @since x.x.x
-      def self.replace_line(path, target, replacement)
+      def self.replace_first_line(path, target, replacement)
         content = ::File.readlines(path)
         content[index(content, path, target)] = "#{replacement}\n"
 
@@ -190,7 +190,7 @@ module Hanami
       # @raises [Errno::ENOENT] if the path doesn't exist
       # @raises [ArgumentError] if `target` cannot be found in `path`
       #
-      # @see .replace_line
+      # @see .replace_first_line
       #
       # @since x.x.x
       def self.replace_last_line(path, target, replacement)
@@ -279,8 +279,6 @@ module Hanami
       #   # end
       #
       #   Hanami::Utils::Files.remove_block("app.rb", "configure")
-      #
-      #
       #
       #   puts File.read("app.rb")
       #

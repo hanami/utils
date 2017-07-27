@@ -52,7 +52,7 @@ RSpec.describe Hanami::Utils::Files do
       expect(path).to have_content(":)")
     end
 
-    it "replaces previous contentes" do
+    it "replaces previous contents" do
       path = root.join("write")
       described_class.write(path, "some words")
       described_class.write(path, "some other words")
@@ -99,7 +99,7 @@ RSpec.describe Hanami::Utils::Files do
       source.delete if source.exist?
     end
 
-    it "creates an file with given contents" do
+    it "creates a file with given contents" do
       described_class.write(source, "the source")
 
       destination = root.join("cp")
@@ -276,7 +276,7 @@ RSpec.describe Hanami::Utils::Files do
     end
   end
 
-  describe ".replace_line" do
+  describe ".replace_first_line" do
     it "replaces string target with replacement" do
       path = root.join("replace_string.rb")
       content = <<~EOF
@@ -287,7 +287,7 @@ RSpec.describe Hanami::Utils::Files do
       EOF
 
       described_class.write(path, content)
-      described_class.replace_line(path, "perform", "  def self.call(input)")
+      described_class.replace_first_line(path, "perform", "  def self.call(input)")
 
       expected = <<~EOF
         class Replace
@@ -309,7 +309,7 @@ RSpec.describe Hanami::Utils::Files do
       EOF
 
       described_class.write(path, content)
-      described_class.replace_line(path, /perform/, "  def self.call(input)")
+      described_class.replace_first_line(path, /perform/, "  def self.call(input)")
 
       expected = <<~EOF
         class Replace
@@ -334,7 +334,7 @@ RSpec.describe Hanami::Utils::Files do
       EOF
 
       described_class.write(path, content)
-      described_class.replace_line(path, "perform", "  def self.call(input)")
+      described_class.replace_first_line(path, "perform", "  def self.call(input)")
 
       expected = <<~EOF
         class Replace
@@ -360,7 +360,7 @@ RSpec.describe Hanami::Utils::Files do
 
       described_class.write(path, content)
 
-      expect { described_class.replace_line(path, "not existing target", "  def self.call(input)") }.to raise_error do |exception|
+      expect { described_class.replace_first_line(path, "not existing target", "  def self.call(input)") }.to raise_error do |exception|
         expect(exception).to be_kind_of(ArgumentError)
         expect(exception.message).to eq("Cannot find `not existing target' inside `#{path}'.")
       end
@@ -371,7 +371,7 @@ RSpec.describe Hanami::Utils::Files do
     it "raises error if path doesn't exist" do
       path = root.join("replace_no_exist.rb")
 
-      expect { described_class.replace_line(path, "perform", "  def self.call(input)") }.to raise_error do |exception|
+      expect { described_class.replace_first_line(path, "perform", "  def self.call(input)") }.to raise_error do |exception|
         expect(exception).to be_kind_of(Errno::ENOENT)
         expect(exception.message).to match("No such file or directory")
       end
