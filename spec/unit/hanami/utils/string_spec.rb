@@ -180,6 +180,17 @@ RSpec.describe Hanami::Utils::String do
     end
   end
 
+  describe '#self.demodulize' do
+    it 'returns an instance of ::String' do
+      expect(Hanami::Utils::String.demodulize('Hanami')).to be_kind_of(::String)
+    end
+
+    it 'returns the class name without the namespace' do
+      expect(Hanami::Utils::String.demodulize('String')).to eq('String')
+      expect(Hanami::Utils::String.demodulize('Hanami::Utils::String')).to eq('String')
+    end
+  end
+
   describe '#demodulize' do
     it 'returns an instance of Hanami::Utils::String' do
       expect(Hanami::Utils::String.new('Hanami').demodulize).to be_kind_of(Hanami::Utils::String)
@@ -188,6 +199,17 @@ RSpec.describe Hanami::Utils::String do
     it 'returns the class name without the namespace' do
       expect(Hanami::Utils::String.new('String').demodulize).to eq('String')
       expect(Hanami::Utils::String.new('Hanami::Utils::String').demodulize).to eq('String')
+    end
+  end
+
+  describe '#namespace' do
+    it 'returns an instance of ::String' do
+      expect(Hanami::Utils::String.namespace('Hanami')).to be_kind_of(::String)
+    end
+
+    it 'returns the top level module name' do
+      expect(Hanami::Utils::String.namespace('String')).to eq('String')
+      expect(Hanami::Utils::String.namespace('Hanami::Utils::String')).to eq('Hanami')
     end
   end
 

@@ -165,6 +165,7 @@ module Hanami
       #
       #   string = Hanami::Utils::String.new 'HanamiUtils'
       #   string.underscore # => 'hanami_utils'
+
       def underscore
         new_string = gsub(NAMESPACE_SEPARATOR, UNDERSCORE_SEPARATOR)
         new_string.gsub!(/([A-Z\d]+)([A-Z][a-z])/, UNDERSCORE_DIVISION_TARGET)
@@ -191,6 +192,7 @@ module Hanami
       #
       #   string = Hanami::Utils::String.new 'HanamiUtils'
       #   string.dasherize # => "hanami-utils"
+
       def dasherize
         self.class.new underscore.split(CLASSIFY_SEPARATOR).join(DASHERIZE_SEPARATOR)
       end
@@ -209,6 +211,12 @@ module Hanami
       #
       #   string = Hanami::Utils::String.new 'String'
       #   string.demodulize # => 'String'
+
+
+      def self.demodulize(input)
+        String.new(input).split(NAMESPACE_SEPARATOR).last
+      end
+
       def demodulize
         self.class.new split(NAMESPACE_SEPARATOR).last
       end
@@ -227,6 +235,12 @@ module Hanami
       #
       #   string = Hanami::Utils::String.new 'String'
       #   string.namespace # => 'String'
+
+
+      def self.namespace(input)
+        String.new(input).split(NAMESPACE_SEPARATOR).first
+      end
+
       def namespace
         self.class.new split(NAMESPACE_SEPARATOR).first
       end
@@ -274,6 +288,7 @@ module Hanami
       # @since 0.4.1
       #
       # @see Hanami::Utils::Inflector
+
       def pluralize
         self.class.new Inflector.pluralize(self)
       end
