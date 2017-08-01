@@ -180,7 +180,7 @@ RSpec.describe Hanami::Utils::String do
     end
   end
 
-  describe '#self.demodulize' do
+  describe '.demodulize' do
     it 'returns an instance of ::String' do
       expect(Hanami::Utils::String.demodulize('Hanami')).to be_kind_of(::String)
     end
@@ -202,7 +202,7 @@ RSpec.describe Hanami::Utils::String do
     end
   end
 
-  describe '#namespace' do
+  describe '.namespace' do
     it 'returns an instance of ::String' do
       expect(Hanami::Utils::String.namespace('Hanami')).to be_kind_of(::String)
     end
