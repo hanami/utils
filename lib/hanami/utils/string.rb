@@ -212,7 +212,6 @@ module Hanami
       #   string = Hanami::Utils::String.new 'String'
       #   string.demodulize # => 'String'
 
-
       def self.demodulize(input)
         String.new(input).split(NAMESPACE_SEPARATOR).last
       end
@@ -235,7 +234,6 @@ module Hanami
       #
       #   string = Hanami::Utils::String.new 'String'
       #   string.namespace # => 'String'
-
 
       def self.namespace(input)
         String.new(input).split(NAMESPACE_SEPARATOR).first
