@@ -433,6 +433,67 @@ RSpec.describe Hanami::Logger do
           end
         expect(output).to eq "[hanami] [INFO] [2017-01-15 16:00:23 +0100] foo bar\n"
       end
+
+      it 'has key=value format for form_params' do
+        form_params = Hash[
+          form_params: Hash[
+            name: 'John',
+            password: '[FILTERED]',
+            password_confirmation: '[FILTERED]'
+          ]
+        ]
+
+        pretty_params = "Parameters: {\n  \"name\": \"John\",\n  \"password\": \"[FILTERED]\",\n  \"password_confirmation\": \"[FILTERED]\"\n}"
+
+        output = with_captured_stdout do
+          class TestLogger < Hanami::Logger; end
+          TestLogger.new.info(form_params)
+        end
+
+        expect(output).to eq("[hanami] [INFO] [2017-01-15 16:00:23 +0100] #{pretty_params}\n")
+      end
+    end
+
+    context do
+      let(:form_params) do
+        Hash[
+          form_params: Hash[
+            name: 'John',
+            password: 'password',
+            password_confirmation: 'password',
+            credit_card: Hash[
+              number: '4545 4545 4545 4545',
+              name: 'John Citizen'
+            ]
+          ]
+        ]
+      end
+
+      describe 'with filters' do
+        it 'filters values for keys in the filters array' do
+          pretty_params = "Parameters: {\n  \"name\": \"John\",\n  \"password\": \"[FILTERED]\",\n  \"password_confirmation\": \"[FILTERED]\",\n  \"credit_card\": \"[FILTERED]\"\n}"
+
+          output = with_captured_stdout do
+            class TestLogger < Hanami::Logger; end
+            TestLogger.new(filter: [/.*password.*/, :credit_card]).info(form_params)
+          end
+
+          expect(output).to eq("[hanami] [INFO] [2017-01-15 16:00:23 +0100] #{pretty_params}\n")
+        end
+      end
+
+      describe 'without filters' do
+        it 'outputs unfiltered params' do
+          pretty_params = "Parameters: {\n  \"name\": \"John\",\n  \"password\": \"password\",\n  \"password_confirmation\": \"password\",\n  \"credit_card\": {\n    \"number\": \"4545 4545 4545 4545\",\n    \"name\": \"John Citizen\"\n  }\n}"
+
+          output = with_captured_stdout do
+            class TestLogger < Hanami::Logger; end
+            TestLogger.new.info(form_params)
+          end
+
+          expect(output).to eq("[hanami] [INFO] [2017-01-15 16:00:23 +0100] #{pretty_params}\n")
+        end
+      end
     end
   end
 end

@@ -4,6 +4,7 @@ require 'logger'
 require 'hanami/utils/string'
 require 'hanami/utils/json'
 require 'hanami/utils/class_attribute'
+require 'hanami/utils/blank'
 
 module Hanami
   # Hanami logger
@@ -92,6 +93,7 @@ module Hanami
   #   Hanami::Logger.new(formatter: Hanami::Logger::JSONFormatter).info('Hello')
   #   # => "{\"app\":\"Hanami\",\"severity\":\"INFO\",\"time\":\"1988-09-01 00:00:00 UTC\",\"message\":\"Hello\"}"
   class Logger < ::Logger
+    class InvalidFilteredParameterTypeException < StandardError; end
     # Hanami::Logger default formatter.
     # This formatter returns string in key=value format.
     #
@@ -99,7 +101,7 @@ module Hanami
     # @api private
     #
     # @see http://www.ruby-doc.org/stdlib/libdoc/logger/rdoc/Logger/Formatter.html
-    class Formatter < ::Logger::Formatter
+    class Formatter < ::Logger::Formatter # rubocop:disable Metrics/ClassLength
       # @since 0.8.0
       # @api private
       SEPARATOR = ' '.freeze
@@ -117,15 +119,20 @@ module Hanami
       class_attribute :subclasses
       self.subclasses = Set.new
 
-      def self.fabricate(formatter, application_name)
-        case formatter
-        when Symbol
-          (subclasses.find { |s| s.eligible?(formatter) } || self).new
-        when nil
-          new
-        else
-          formatter
-        end.tap { |f| f.application_name = application_name }
+      def self.fabricate(formatter, application_name, filter) # rubocop:disable Metrics/MethodLength
+        fabricated_formatter = case formatter
+                               when Symbol
+                                 (subclasses.find { |s| s.eligible?(formatter) } || self).new
+                               when nil
+                                 new
+                               else
+                                 formatter
+                               end
+
+        fabricated_formatter.application_name = application_name
+        fabricated_formatter.filter           = filter
+
+        fabricated_formatter
       end
 
       # @api private
@@ -146,6 +153,10 @@ module Hanami
       # @since 1.0.0
       # @api private
       attr_reader :application_name
+
+      # @since x.x.x
+      # @api private
+      attr_writer :filter
 
       # @since 0.5.0
       # @api private
@@ -168,7 +179,7 @@ module Hanami
       def _message_hash(message) # rubocop:disable Metrics/MethodLength
         case message
         when Hash
-          message
+          _filtered_message(message)
         when Exception
           Hash[
             message:   message.message,
@@ -187,7 +198,7 @@ module Hanami
         return _format_error(result, hash) if hash.key?(:error)
 
         values = hash.each_with_object([]) do |(k, v), memo|
-          memo << v unless RESERVED_KEYS.include?(k)
+          memo << _formatted_log_value(k, v) unless RESERVED_KEYS.include?(k)
         end
 
         result << " #{values.join(SEPARATOR)}#{NEW_LINE}"
@@ -205,6 +216,59 @@ module Hanami
         end
 
         result
+      end
+
+      # @api private
+      def _formatted_log_value(k, v)
+        if k == :form_params
+          "Parameters: #{JSON.pretty_generate(v)}"
+        else
+          v
+        end
+      end
+
+      # @api private
+      def _filtered_message(msg)
+        return msg if Hanami::Utils::Blank.blank?(@filter)
+
+        Hash[
+          msg.map do |k, v|
+            [k, _process_hash_value(v)]
+          end
+        ]
+      end
+
+      # @api private
+      def _process_hash_value(value)
+        return value unless value.is_a?(Hash)
+
+        _filtered_hash(value)
+      end
+
+      # @api private
+      def _filtered_hash(hash)
+        Hash[
+          hash.map do |k, v|
+            if _filtered_key?(k)
+              [k, '[FILTERED]']
+            else
+              [k, _process_hash_value(v)]
+            end
+          end
+        ]
+      end
+
+      def _filtered_key?(key)
+        @filter.any? do |filter|
+          case filter
+          when Symbol, String
+            key.to_s == filter.to_s
+          when Regexp
+            key.match(filter)
+          else
+            raise InvalidFilteredParameterTypeException, "Filter must be of any of the following types [Regexp, Symbol, String]. Actual: #{filter.class}"
+          end
+        end
       end
     end
 
@@ -375,13 +439,13 @@ module Hanami
     #   logger.info "Hello World"
     #
     #   # => {"app":"Hanami","severity":"DEBUG","time":"2017-03-30T13:57:59Z","message":"Hello World"}
-    def initialize(application_name = nil, *args, stream: $stdout, level: DEBUG, formatter: nil)
+    def initialize(application_name = nil, *args, stream: $stdout, level: DEBUG, formatter: nil, filter: []) # rubocop:disable Metrics/ParameterLists
       super(stream, *args)
 
       @level            = _level(level)
       @stream           = stream
       @application_name = application_name
-      @formatter        = Formatter.fabricate(formatter, self.application_name)
+      @formatter        = Formatter.fabricate(formatter, self.application_name, filter)
     end
 
     # Returns the current application name, this is used for tagging purposes
