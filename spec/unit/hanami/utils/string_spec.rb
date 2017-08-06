@@ -1,6 +1,29 @@
 require 'hanami/utils/string'
 
 RSpec.describe Hanami::Utils::String do
+  describe '.titleize' do
+    it '::String' do
+      expect(Hanami::Utils::String.titleize('hanami')).to be_kind_of(::String)
+    end
+
+    it 'does not mutate self' do
+      string = Hanami::Utils::String.new('hanami')
+      Hanami::Utils::String.titleize(string)
+      expect(string).to eq('hanami')
+    end
+
+    it 'returns an titleized string' do
+      expect(Hanami::Utils::String.titleize('hanami')).to eq('Hanami')
+      expect(Hanami::Utils::String.titleize('HanamiUtils')).to eq('Hanami Utils')
+      expect(Hanami::Utils::String.titleize('hanami utils')).to eq('Hanami Utils')
+      expect(Hanami::Utils::String.titleize('hanami_utils')).to eq('Hanami Utils')
+      expect(Hanami::Utils::String.titleize('hanami-utils')).to eq('Hanami Utils')
+      expect(Hanami::Utils::String.titleize("hanami' utils")).to eq("Hanami' Utils")
+      expect(Hanami::Utils::String.titleize('hanami’ utils')).to eq('Hanami’ Utils')
+      expect(Hanami::Utils::String.titleize('hanami` utils')).to eq('Hanami` Utils')
+    end
+  end
+
   describe '#titleize' do
     it 'returns an instance of Hanami::Utils::String' do
       expect(Hanami::Utils::String.new('hanami').titleize).to be_kind_of(Hanami::Utils::String)

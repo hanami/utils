@@ -94,6 +94,12 @@ module Hanami
       #
       #   string = Hanami::Utils::String.new 'hanami utils'
       #   string.titleize # => "Hanami Utils"
+
+      def self.titleize(input)
+        string = ::String.new(input)
+        underscore(string).split(CLASSIFY_SEPARATOR).map(&:capitalize).join(TITLEIZE_SEPARATOR)
+      end
+
       def titleize
         self.class.new underscore.split(CLASSIFY_SEPARATOR).map(&:capitalize).join(TITLEIZE_SEPARATOR)
       end
