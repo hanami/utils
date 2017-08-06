@@ -375,6 +375,14 @@ RSpec.describe Hanami::Utils::String do
       result = Hanami::Utils::String.pluralize(@singular)
       expect(result).to eq(@plural)
     end
+
+    it 'does not modify the original string' do
+      string = Hanami::Utils::String.new(@singular)
+      plural_string = Hanami::Utils::String.pluralize(string)
+
+      expect(string).to eq(@singular)
+      expect(plural_string).to eq(@plural)
+    end
   end
 
   describe '#pluralize' do
