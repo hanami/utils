@@ -47,6 +47,38 @@ RSpec.describe Hanami::Utils::String do
     end
   end
 
+  describe '.capitalize' do
+    it 'returns an instance of ::String' do
+      expect(Hanami::Utils::String.capitalize('hanami')).to be_kind_of(::String)
+    end
+
+    it "doesn't mutate self" do
+      string = Hanami::Utils::String.new('hanami')
+      Hanami::Utils::String.capitalize(string)
+      expect(string).to eq('hanami')
+    end
+
+    it 'returns an capitalized string' do
+      expect(Hanami::Utils::String.capitalize('hanami')).to eq('Hanami')
+      expect(Hanami::Utils::String.capitalize('HanamiUtils')).to eq('Hanami utils')
+      expect(Hanami::Utils::String.capitalize('hanami utils')).to eq('Hanami utils')
+      expect(Hanami::Utils::String.capitalize('hanami_utils')).to eq('Hanami utils')
+      expect(Hanami::Utils::String.capitalize('hanami-utils')).to eq('Hanami utils')
+      expect(Hanami::Utils::String.capitalize("hanami' utils")).to eq("Hanami' utils")
+      expect(Hanami::Utils::String.capitalize('hanami’ utils')).to eq('Hanami’ utils')
+      expect(Hanami::Utils::String.capitalize('hanami` utils')).to eq('Hanami` utils')
+      expect(Hanami::Utils::String.capitalize('OneTwoThree')).to eq('One two three')
+      expect(Hanami::Utils::String.capitalize('one Two three')).to eq('One two three')
+      expect(Hanami::Utils::String.capitalize('one_two_three')).to eq('One two three')
+      expect(Hanami::Utils::String.capitalize('one-two-three')).to eq('One two three')
+
+      expect(Hanami::Utils::String.capitalize(:HanamiUtils)).to eq('Hanami utils')
+      expect(Hanami::Utils::String.capitalize(:'hanami utils')).to eq('Hanami utils')
+      expect(Hanami::Utils::String.capitalize(:hanami_utils)).to eq('Hanami utils')
+      expect(Hanami::Utils::String.capitalize(:'hanami-utils')).to eq('Hanami utils')
+    end
+  end
+
   describe '#capitalize' do
     it 'returns an instance of Hanami::Utils::String' do
       expect(Hanami::Utils::String.new('hanami').capitalize).to be_kind_of(Hanami::Utils::String)
@@ -76,6 +108,31 @@ RSpec.describe Hanami::Utils::String do
       expect(Hanami::Utils::String.new(:'hanami utils').capitalize).to eq('Hanami utils')
       expect(Hanami::Utils::String.new(:hanami_utils).capitalize).to eq('Hanami utils')
       expect(Hanami::Utils::String.new(:'hanami-utils').capitalize).to eq('Hanami utils')
+    end
+  end
+
+  describe '.classify' do
+    it 'returns an instance of ::String' do
+      expect(Hanami::Utils::String.classify('hanami')).to be_kind_of(::String)
+    end
+
+    it 'returns a classified string' do
+      expect(Hanami::Utils::String.classify('hanami')).to eq('Hanami')
+      expect(Hanami::Utils::String.classify('hanami_router')).to eq('HanamiRouter')
+      expect(Hanami::Utils::String.classify('hanami-router')).to eq('HanamiRouter')
+      expect(Hanami::Utils::String.classify('hanami/router')).to eq('Hanami::Router')
+      expect(Hanami::Utils::String.classify('hanami::router')).to eq('Hanami::Router')
+      expect(Hanami::Utils::String.classify('hanami::router/base_object')).to eq('Hanami::Router::BaseObject')
+      expect(Hanami::Utils::String.classify('AwesomeProject')).to eq('AwesomeProject')
+      expect(Hanami::Utils::String.classify('AwesomeProject::Namespace')).to eq('AwesomeProject::Namespace')
+    end
+
+    it 'returns a classified string from symbol' do
+      expect(Hanami::Utils::String.classify(:hanami)).to eq('Hanami')
+      expect(Hanami::Utils::String.classify(:hanami_router)).to eq('HanamiRouter')
+      expect(Hanami::Utils::String.classify(:'hanami-router')).to eq('HanamiRouter')
+      expect(Hanami::Utils::String.classify(:'hanami/router')).to eq('Hanami::Router')
+      expect(Hanami::Utils::String.classify(:'hanami::router')).to eq('Hanami::Router')
     end
   end
 

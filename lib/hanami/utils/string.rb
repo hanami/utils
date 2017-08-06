@@ -127,6 +127,14 @@ module Hanami
       #
       #   string = Hanami::Utils::String.new 'hanami-utils'
       #   string.capitalize # => "Hanami utils"
+
+      def self.capitalize(input)
+        string = ::String.new(input.to_s)
+        head, *tail = underscore(string).split(CLASSIFY_SEPARATOR)
+
+        tail.unshift(head.capitalize).join(CAPITALIZE_SEPARATOR)
+      end
+
       def capitalize
         head, *tail = underscore.split(CLASSIFY_SEPARATOR)
 
@@ -146,6 +154,19 @@ module Hanami
       #
       #   string = Hanami::Utils::String.new 'hanami_utils'
       #   string.classify # => 'HanamiUtils'
+
+      def self.classify(input)
+        string = ::String.new(input.to_s)
+        words = underscore(string).split(CLASSIFY_WORD_SEPARATOR).map!(&:capitalize)
+        delimiters = underscore(string).scan(CLASSIFY_WORD_SEPARATOR)
+
+        delimiters.map! do |delimiter|
+          delimiter == CLASSIFY_SEPARATOR ? EMPTY_STRING : NAMESPACE_SEPARATOR
+        end
+
+        words.zip(delimiters).join
+      end
+
       def classify
         words = underscore.split(CLASSIFY_WORD_SEPARATOR).map!(&:capitalize)
         delimiters = underscore.scan(CLASSIFY_WORD_SEPARATOR)
