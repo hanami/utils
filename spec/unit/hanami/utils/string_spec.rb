@@ -400,6 +400,30 @@ RSpec.describe Hanami::Utils::String do
     end
   end
 
+  describe '.singularize' do
+    before do
+      @singular, @plural = *TEST_SINGULARS.to_a.sample
+    end
+
+    it '::String instance' do
+      result = Hanami::Utils::String.singularize(@plural)
+      expect(result).to be_kind_of(::String)
+    end
+
+    it 'singularizes string' do
+      result = Hanami::Utils::String.singularize(@plural)
+      expect(result).to eq(@singular)
+    end
+
+    it 'does not modify the original string' do
+      string = Hanami::Utils::String.new(@plural)
+      singular_string = Hanami::Utils::String.singularize(string)
+
+      expect(singular_string).to eq(@singular)
+      expect(string).to eq(@plural)
+    end
+  end
+
   describe '#singularize' do
     before do
       @singular, @plural = *TEST_SINGULARS.to_a.sample

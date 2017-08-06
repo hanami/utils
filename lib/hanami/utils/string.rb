@@ -319,6 +319,12 @@ module Hanami
       # @since 0.4.1
       #
       # @see Hanami::Utils::Inflector
+
+      def self.singularize(input)
+        string = ::String.new(input)
+        Inflector.singularize(string)
+      end
+
       def singularize
         self.class.new Inflector.singularize(self)
       end
