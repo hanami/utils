@@ -81,6 +81,58 @@ RSpec.describe Hanami::Utils::String do
     end
   end
 
+  describe '.underscore' do
+    it 'returns an instance of ::String' do
+      expect(Hanami::Utils::String.underscore('Hanami')).to be_kind_of(::String)
+    end
+
+    it 'does not mutate itself' do
+      string = Hanami::Utils::String.new('Hanami')
+      Hanami::Utils::String.underscore(string)
+      expect(string).to eq('Hanami')
+    end
+
+    it 'removes all the upcase characters' do
+      string = Hanami::Utils::String.underscore('Hanami')
+      expect(string).to eq('hanami')
+    end
+
+    it 'transforms camel case class names' do
+      string = Hanami::Utils::String.underscore('HanamiView')
+      expect(string).to eq('hanami_view')
+    end
+
+    it 'substitutes double colons with path separators' do
+      string = Hanami::Utils::String.underscore('Hanami::Utils::String')
+      expect(string).to eq('hanami/utils/string')
+    end
+
+    it 'handles acronyms' do
+      string = Hanami::Utils::String.underscore('APIDoc')
+      expect(string).to eq('api_doc')
+    end
+
+    it 'handles numbers' do
+      string = Hanami::Utils::String.underscore('Lucky23Action')
+      expect(string).to eq('lucky23_action')
+    end
+
+    it 'handles dashes' do
+      string = Hanami::Utils::String.underscore('hanami-utils')
+      expect(string).to eq('hanami_utils')
+    end
+
+    it 'handles spaces' do
+      string = Hanami::Utils::String.underscore('Hanami Utils')
+      expect(string).to eq('hanami_utils')
+    end
+
+    it 'handles accented letters' do
+      string = Hanami::Utils::String.underscore('è vero')
+      expect(string).to eq('è_vero')
+    end
+  end
+
   describe '#underscore' do
     it 'returns an instance of Hanami::Utils::String' do
       expect(Hanami::Utils::String.new('Hanami').underscore).to be_kind_of(Hanami::Utils::String)
@@ -130,6 +182,53 @@ RSpec.describe Hanami::Utils::String do
     it 'handles accented letters' do
       string = Hanami::Utils::String.new('è vero')
       expect(string.underscore).to eq('è_vero')
+    end
+  end
+
+  describe '.dasherize' do
+    it 'returns an instance of ::String' do
+      expect(Hanami::Utils::String.dasherize('Hanami')).to be_kind_of(::String)
+    end
+
+    it 'does not mutate itself' do
+      string = Hanami::Utils::String.new('Hanami')
+      Hanami::Utils::String.dasherize(string)
+      expect(string).to eq('Hanami')
+    end
+
+    it 'removes all the upcase characters' do
+      string = Hanami::Utils::String.new('Hanami')
+      expect(Hanami::Utils::String.dasherize(string)).to eq('hanami')
+    end
+
+    it 'transforms camel case class names' do
+      string = Hanami::Utils::String.new('HanamiView')
+      expect(Hanami::Utils::String.dasherize(string)).to eq('hanami-view')
+    end
+
+    it 'handles acronyms' do
+      string = Hanami::Utils::String.new('APIDoc')
+      expect(Hanami::Utils::String.dasherize(string)).to eq('api-doc')
+    end
+
+    it 'handles numbers' do
+      string = Hanami::Utils::String.dasherize('Lucky23Action')
+      expect(string).to eq('lucky23-action')
+    end
+
+    it 'handles underscores' do
+      string = Hanami::Utils::String.dasherize('hanami_utils')
+      expect(string).to eq('hanami-utils')
+    end
+
+    it 'handles spaces' do
+      string = Hanami::Utils::String.dasherize('Hanami Utils')
+      expect(string).to eq('hanami-utils')
+    end
+
+    it 'handles accented letters' do
+      string = Hanami::Utils::String.dasherize('è vero')
+      expect(string).to eq('è-vero')
     end
   end
 
@@ -259,6 +358,22 @@ RSpec.describe Hanami::Utils::String do
     it 'returns nil' do
       result = Hanami::Utils::String.new('Hanami::(Utils|App)').tokenize {}
       expect(result).to be_nil
+    end
+  end
+
+  describe '.pluralize' do
+    before do
+      @singular, @plural = *TEST_PLURALS.to_a.sample
+    end
+
+    it 'returns a String instance' do
+      result = Hanami::Utils::String.pluralize(@singular)
+      expect(result).to be_kind_of(::String)
+    end
+
+    it 'pluralizes string' do
+      result = Hanami::Utils::String.pluralize(@singular)
+      expect(result).to eq(@plural)
     end
   end
 
