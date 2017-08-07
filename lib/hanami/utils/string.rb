@@ -448,6 +448,18 @@ module Hanami
       #
       #   puts result
       #     # => #<Hanami::Utils::String:0x007fdb41232ed0 @string="authors/books#index">
+
+      def self.rsub(input, pattern, replacement)
+        string = ::String.new(input)
+        if i = string.rindex(pattern) # rubocop:disable Lint/AssignmentInCondition
+          s = string.dup
+          s[i] = replacement
+          s
+        else
+          string
+        end
+      end
+
       def rsub(pattern, replacement)
         if i = rindex(pattern) # rubocop:disable Lint/AssignmentInCondition
           s    = @string.dup

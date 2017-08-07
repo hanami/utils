@@ -535,6 +535,42 @@ RSpec.describe Hanami::Utils::String do
     end
   end
 
+  describe '.rsub' do
+    it '::String instance' do
+      result = Hanami::Utils::String.rsub('authors/books/index', //, '')
+      expect(result).to be_kind_of(::String)
+    end
+
+    it 'does not mutate original string' do
+      string = Hanami::Utils::String.new('authors/books/index')
+      Hanami::Utils::String.rsub(string, %r{/}, '#')
+
+      expect(string).to eq('authors/books/index')
+    end
+
+    it 'replaces rightmost instance (regexp)' do
+      result = Hanami::Utils::String.rsub('authors/books/index', %r{/}, '#')
+      expect(result).to eq('authors/books#index')
+    end
+
+    it 'replaces rightmost instance (string)' do
+      result = Hanami::Utils::String.rsub('authors/books/index', '/', '#')
+      expect(result).to eq('authors/books#index')
+    end
+
+    it 'accepts Hanami::Utils::String as replacement' do
+      replacement = Hanami::Utils::String.new('#')
+      result      = Hanami::Utils::String.rsub('authors/books/index', %r{/}, replacement)
+
+      expect(result).to eq('authors/books#index')
+    end
+
+    it 'returns the initial string no match' do
+      result = Hanami::Utils::String.rsub('index', %r{/}, '#')
+      expect(result).to eq('index')
+    end
+  end
+
   describe '#rsub' do
     it 'returns a Hanami::Utils::String instance' do
       result = Hanami::Utils::String.new('authors/books/index').rsub(//, '')
