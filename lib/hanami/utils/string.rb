@@ -72,17 +72,6 @@ module Hanami
       # @api private
       CLASSIFY_WORD_SEPARATOR = /#{CLASSIFY_SEPARATOR}|#{NAMESPACE_SEPARATOR}|#{UNDERSCORE_SEPARATOR}|#{DASHERIZE_SEPARATOR}/
 
-      # Initialize the string
-      #
-      # @param string [::String, Symbol] the value we want to initialize
-      #
-      # @return [String] self
-      #
-      # @since 0.1.0
-      def initialize(string)
-        @string = string.to_s
-      end
-
       # Return a titleized version of the string
       #
       # @return [Hanami::Utils::String] the transformed string
@@ -98,10 +87,6 @@ module Hanami
       def self.titleize(input)
         string = ::String.new(input)
         underscore(string).split(CLASSIFY_SEPARATOR).map(&:capitalize).join(TITLEIZE_SEPARATOR)
-      end
-
-      def titleize
-        self.class.new underscore.split(CLASSIFY_SEPARATOR).map(&:capitalize).join(TITLEIZE_SEPARATOR)
       end
 
       # Return a capitalized version of the string
@@ -135,14 +120,6 @@ module Hanami
         tail.unshift(head.capitalize).join(CAPITALIZE_SEPARATOR)
       end
 
-      def capitalize
-        head, *tail = underscore.split(CLASSIFY_SEPARATOR)
-
-        self.class.new(
-          tail.unshift(head.capitalize).join(CAPITALIZE_SEPARATOR)
-        )
-      end
-
       # Return a CamelCase version of the string
       #
       # @return [String] the transformed string
@@ -165,17 +142,6 @@ module Hanami
         end
 
         words.zip(delimiters).join
-      end
-
-      def classify
-        words = underscore.split(CLASSIFY_WORD_SEPARATOR).map!(&:capitalize)
-        delimiters = underscore.scan(CLASSIFY_WORD_SEPARATOR)
-
-        delimiters.map! do |delimiter|
-          delimiter == CLASSIFY_SEPARATOR ? EMPTY_STRING : NAMESPACE_SEPARATOR
-        end
-
-        self.class.new words.zip(delimiters).join
       end
 
       # Return a downcased and underscore separated version of the string
@@ -203,15 +169,6 @@ module Hanami
         string.downcase
       end
 
-      def underscore
-        new_string = gsub(NAMESPACE_SEPARATOR, UNDERSCORE_SEPARATOR)
-        new_string.gsub!(/([A-Z\d]+)([A-Z][a-z])/, UNDERSCORE_DIVISION_TARGET)
-        new_string.gsub!(/([a-z\d])([A-Z])/, UNDERSCORE_DIVISION_TARGET)
-        new_string.gsub!(/[[:space:]]|\-/, UNDERSCORE_DIVISION_TARGET)
-        new_string.downcase!
-        self.class.new new_string
-      end
-
       # Return a downcased and dash separated version of the string
       #
       # @return [Hanami::Utils::String] the transformed string
@@ -235,10 +192,6 @@ module Hanami
         underscore(string).split(CLASSIFY_SEPARATOR).join(DASHERIZE_SEPARATOR)
       end
 
-      def dasherize
-        self.class.new underscore.split(CLASSIFY_SEPARATOR).join(DASHERIZE_SEPARATOR)
-      end
-
       # Return the string without the Ruby namespace of the class
       #
       # @return [String] the transformed string
@@ -258,10 +211,6 @@ module Hanami
         ::String.new(input).split(NAMESPACE_SEPARATOR).last
       end
 
-      def demodulize
-        self.class.new split(NAMESPACE_SEPARATOR).last
-      end
-
       # Return the top level namespace name
       #
       # @return [String] the transformed string
@@ -279,6 +228,121 @@ module Hanami
 
       def self.namespace(input)
         ::String.new(input).split(NAMESPACE_SEPARATOR).first
+      end
+
+      # Return a pluralized version of self.
+      #
+      # @return [Hanami::Utils::String] the pluralized string.
+      #
+      # @api private
+      # @since 0.4.1
+      #
+      # @see Hanami::Utils::Inflector
+
+      def self.pluralize(input)
+        string = ::String.new(input)
+        Inflector.pluralize(string)
+      end
+
+      # Return a singularized version of self.
+      #
+      # @return [Hanami::Utils::String] the singularized string.
+      #
+      # @api private
+      # @since 0.4.1
+      #
+      # @see Hanami::Utils::Inflector
+
+      def self.singularize(input)
+        string = ::String.new(input)
+        Inflector.singularize(string)
+      end
+
+      # Replace the rightmost match of <tt>pattern</tt> with <tt>replacement</tt>
+      #
+      # If the pattern cannot be matched, it returns the original string.
+      #
+      # This method does NOT mutate the original string.
+      #
+      # @param pattern [Regexp, String] the pattern to find
+      # @param replacement [String, Hanami::Utils::String] the string to replace
+      #
+      # @return [Hanami::Utils::String] the replaced string
+      #
+      # @since 0.6.0
+      #
+      # @example
+      #   require 'hanami/utils/string'
+      #
+      #   string = Hanami::Utils::String.new('authors/books/index')
+      #   result = string.rsub(/\//, '#')
+      #
+      #   puts string
+      #     # => #<Hanami::Utils::String:0x007fdb41233ad8 @string="authors/books/index">
+      #
+      #   puts result
+      #     # => #<Hanami::Utils::String:0x007fdb41232ed0 @string="authors/books#index">
+
+      def self.rsub(input, pattern, replacement)
+        string = ::String.new(input)
+        if i = string.rindex(pattern) # rubocop:disable Lint/AssignmentInCondition
+          s = string.dup
+          s[i] = replacement
+          s
+        else
+          string
+        end
+      end
+
+      # Initialize the string
+      #
+      # @param string [::String, Symbol] the value we want to initialize
+      #
+      # @return [String] self
+      #
+      # @since 0.1.0
+      def initialize(string)
+        @string = string.to_s
+      end
+
+      def titleize
+        self.class.new underscore.split(CLASSIFY_SEPARATOR).map(&:capitalize).join(TITLEIZE_SEPARATOR)
+      end
+
+      def capitalize
+        head, *tail = underscore.split(CLASSIFY_SEPARATOR)
+
+        self.class.new(
+          tail.unshift(head.capitalize).join(CAPITALIZE_SEPARATOR)
+        )
+      end
+
+      def classify
+        words = underscore.split(CLASSIFY_WORD_SEPARATOR).map!(&:capitalize)
+        delimiters = underscore.scan(CLASSIFY_WORD_SEPARATOR)
+
+        delimiters.map! do |delimiter|
+          delimiter == CLASSIFY_SEPARATOR ? EMPTY_STRING : NAMESPACE_SEPARATOR
+        end
+
+        self.class.new words.zip(delimiters).join
+      end
+
+      def underscore
+        new_string = gsub(NAMESPACE_SEPARATOR, UNDERSCORE_SEPARATOR)
+        new_string.gsub!(/([A-Z\d]+)([A-Z][a-z])/, UNDERSCORE_DIVISION_TARGET)
+        new_string.gsub!(/([a-z\d])([A-Z])/, UNDERSCORE_DIVISION_TARGET)
+        new_string.gsub!(/[[:space:]]|\-/, UNDERSCORE_DIVISION_TARGET)
+        new_string.downcase!
+        self.class.new new_string
+      end
+
+      def dasherize
+        self.class.new underscore.split(CLASSIFY_SEPARATOR).join(DASHERIZE_SEPARATOR)
+      end
+
+      def demodulize
+        self.class.new split(NAMESPACE_SEPARATOR).last
       end
 
       def namespace
@@ -320,36 +384,8 @@ module Hanami
         nil
       end
 
-      # Return a pluralized version of self.
-      #
-      # @return [Hanami::Utils::String] the pluralized string.
-      #
-      # @api private
-      # @since 0.4.1
-      #
-      # @see Hanami::Utils::Inflector
-
-      def self.pluralize(input)
-        string = ::String.new(input)
-        Inflector.pluralize(string)
-      end
-
       def pluralize
         self.class.new Inflector.pluralize(self)
-      end
-
-      # Return a singularized version of self.
-      #
-      # @return [Hanami::Utils::String] the singularized string.
-      #
-      # @api private
-      # @since 0.4.1
-      #
-      # @see Hanami::Utils::Inflector
-
-      def self.singularize(input)
-        string = ::String.new(input)
-        Inflector.singularize(string)
       end
 
       def singularize
@@ -422,42 +458,6 @@ module Hanami
       # @since 0.6.0
       def scan(pattern, &blk)
         @string.scan(pattern, &blk)
-      end
-
-      # Replace the rightmost match of <tt>pattern</tt> with <tt>replacement</tt>
-      #
-      # If the pattern cannot be matched, it returns the original string.
-      #
-      # This method does NOT mutate the original string.
-      #
-      # @param pattern [Regexp, String] the pattern to find
-      # @param replacement [String, Hanami::Utils::String] the string to replace
-      #
-      # @return [Hanami::Utils::String] the replaced string
-      #
-      # @since 0.6.0
-      #
-      # @example
-      #   require 'hanami/utils/string'
-      #
-      #   string = Hanami::Utils::String.new('authors/books/index')
-      #   result = string.rsub(/\//, '#')
-      #
-      #   puts string
-      #     # => #<Hanami::Utils::String:0x007fdb41233ad8 @string="authors/books/index">
-      #
-      #   puts result
-      #     # => #<Hanami::Utils::String:0x007fdb41232ed0 @string="authors/books#index">
-
-      def self.rsub(input, pattern, replacement)
-        string = ::String.new(input)
-        if i = string.rindex(pattern) # rubocop:disable Lint/AssignmentInCondition
-          s = string.dup
-          s[i] = replacement
-          s
-        else
-          string
-        end
       end
 
       def rsub(pattern, replacement)
