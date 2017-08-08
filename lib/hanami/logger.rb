@@ -3,6 +3,7 @@ require 'json'
 require 'logger'
 require 'hanami/utils/string'
 require 'hanami/utils/json'
+require 'hanami/utils/hash'
 require 'hanami/utils/class_attribute'
 require 'hanami/utils/blank'
 
@@ -234,43 +235,39 @@ module Hanami
         end
 
         def filter(hash)
-          @base_hash = hash
+          base_hash = Hanami::Utils::Hash.deep_dup(hash)
+          hash_keys = _key_paths(hash)
+          filtering_keys = hash_keys.select { |key| filters.any? { |filter| key =~ %r{(\.|\A)#{filter}(\.|\z)} } }
 
-          filters.each do |filter|
-            keys = _filtering_path(filter.is_a?(Array) ? filter : [filter])
-            last = keys.pop
-
-            next if last.nil?
-            keys.inject(hash, :fetch)[last] = "[FILTERED]"
+          filtering_keys.each do |key|
+            *keys, last = _actual_keys(base_hash, key.split('.'))
+            keys.inject(base_hash, :fetch)[last] = '[FILTERED]'
           end
 
-          hash
+          base_hash
         end
 
         private
 
         attr_reader :base_hash
 
-        def _filtering_path(keys)
-          search_in = @base_hash
-          actual_keys = []
-
-          keys.each do |key|
-            correct_key = _correct_key(search_in, key)
-            break if correct_key.nil?
-
-            search_in = search_in[correct_key]
-            actual_keys << correct_key
+        def _key_paths(hash, base = nil)
+          hash.inject([]) do |results, (k, v)|
+            results + (v.respond_to?(:each) ? _key_paths(v, _build_path(base, k)) : [_build_path(base, k)])
           end
-
-          actual_keys.count == keys.count ? actual_keys : []
         end
 
-        def _correct_key(search_in, key)
-          if search_in.key?(key.to_sym)
-            key.to_sym
-          elsif search_in.key?(key.to_s)
-            key.to_s
+        def _build_path(base, key)
+          [base, key.to_s].compact.join('.')
+        end
+
+        def _actual_keys(hash, keys)
+          search_in = hash
+
+          keys.inject([]) do |res, key|
+            correct_key = search_in.key?(key.to_sym) ? key.to_sym : key
+            search_in = search_in[correct_key]
+            res + [correct_key]
           end
         end
       end
