@@ -120,11 +120,11 @@ module Hanami
       class_attribute :subclasses
       self.subclasses = Set.new
 
-      def self.fabricate(formatter, application_name, filter)
+      def self.fabricate(formatter, application_name, filters)
         fabricated_formatter = _formatter_instance(formatter)
 
         fabricated_formatter.application_name = application_name
-        fabricated_formatter.filter           = filter
+        fabricated_formatter.hash_filter      = HashFilter.new(filters)
 
         fabricated_formatter
       end
@@ -164,7 +164,7 @@ module Hanami
 
       # @since x.x.x
       # @api private
-      attr_writer :filter
+      attr_writer :hash_filter
 
       # @since 0.5.0
       # @api private
@@ -187,7 +187,7 @@ module Hanami
       def _message_hash(message) # rubocop:disable Metrics/MethodLength
         case message
         when Hash
-          HashFilter.new(@filter).filter(message)
+          @hash_filter.filter(message)
         when Exception
           Hash[
             message:   message.message,
@@ -235,21 +235,19 @@ module Hanami
         end
 
         def filter(hash)
-          base_hash = Hanami::Utils::Hash.deep_dup(hash)
-          hash_keys = _key_paths(hash)
-          filtering_keys = hash_keys.select { |key| filters.any? { |filter| key =~ %r{(\.|\A)#{filter}(\.|\z)} } }
-
-          filtering_keys.each do |key|
-            *keys, last = _actual_keys(base_hash, key.split('.'))
-            keys.inject(base_hash, :fetch)[last] = '[FILTERED]'
+          _filtered_keys(hash).each do |key|
+            *keys, last = _actual_keys(hash, key.split('.'))
+            keys.inject(hash, :fetch)[last] = '[FILTERED]'
           end
 
-          base_hash
+          hash
         end
 
         private
 
-        attr_reader :base_hash
+        def _filtered_keys(hash)
+          _key_paths(hash).select { |key| filters.any? { |filter| key =~ %r{(\.|\A)#{filter}(\.|\z)} } }
+        end
 
         def _key_paths(hash, base = nil)
           hash.inject([]) do |results, (k, v)|
