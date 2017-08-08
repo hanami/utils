@@ -5,7 +5,6 @@ require 'hanami/utils/string'
 require 'hanami/utils/json'
 require 'hanami/utils/hash'
 require 'hanami/utils/class_attribute'
-require 'hanami/utils/blank'
 
 module Hanami
   # Hanami logger
@@ -94,7 +93,6 @@ module Hanami
   #   Hanami::Logger.new(formatter: Hanami::Logger::JSONFormatter).info('Hello')
   #   # => "{\"app\":\"Hanami\",\"severity\":\"INFO\",\"time\":\"1988-09-01 00:00:00 UTC\",\"message\":\"Hello\"}"
   class Logger < ::Logger
-    class InvalidFilteredParameterTypeException < StandardError; end
     # Hanami::Logger default formatter.
     # This formatter returns string in key=value format.
     #
