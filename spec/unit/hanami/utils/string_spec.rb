@@ -56,7 +56,13 @@ RSpec.describe Hanami::Utils::String do
     it "raises error when given proc has arity not equal to 1" do
       input = "Cherry"
 
-      expect { Hanami::Utils::String.transform(input, -> { "blossom" }) }.to raise_error(ArgumentError, %(wrong number of arguments (given 1, expected 0)))
+      message = if Hanami::Utils.jruby?
+                  "wrong number of arguments (1 for 0)"
+                else
+                  "wrong number of arguments (given 1, expected 0)"
+                end
+
+      expect { Hanami::Utils::String.transform(input, -> { "blossom" }) }.to raise_error(ArgumentError, message)
     end
   end
 
