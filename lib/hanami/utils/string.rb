@@ -1,4 +1,6 @@
 require 'hanami/utils/inflector'
+require 'transproc'
+require 'concurrent/map'
 
 module Hanami
   module Utils
@@ -71,6 +73,97 @@ module Hanami
       # @since 0.3.4
       # @api private
       CLASSIFY_WORD_SEPARATOR = /#{CLASSIFY_SEPARATOR}|#{NAMESPACE_SEPARATOR}|#{UNDERSCORE_SEPARATOR}|#{DASHERIZE_SEPARATOR}/
+
+      @__transformations__ = Concurrent::Map.new
+
+      extend Transproc::Registry
+      extend Transproc::Composer
+
+      # Apply the given transformation(s) to `input`
+      #
+      # It performs a pipeline of transformations, by applying the given functions from `Hanami::Utils::String` and `::String`.
+      # The transformations are applied with the given order.
+      #
+      # It doesn't mutate the input, unless you use destructive methods from `::String`
+      #
+      # @param input [::String] the string to be transformed
+      # @param transformations [Array<Symbol,Proc,Array>] one or many
+      #   transformations expressed as:
+      #     * `Symbol` to reference a function from `Hanami::Utils::String` or `String`.
+      #     * `Proc` an anonymous function that MUST accept one input
+      #     * `Array` where the first element is a `Symbol` to reference a
+      #       function from `Hanami::Utils::String` or `String` and the rest of
+      #       the elements are the arguments to pass
+      #
+      # @return [::String] the result of the transformations
+      #
+      # @raise [NoMethodError] if a `Hanami::Utils::String` and `::String`
+      #   don't respond to a given method name
+      #
+      # @raise [ArgumentError] if a Proc transformation has an arity not equal
+      #   to 1
+      #
+      # @since 1.1.0
+      #
+      # @example Basic usage
+      #   require "hanami/utils/string"
+      #
+      #   Hanami::Utils::String.transform("hanami/utils", :underscore, :classify)
+      #     # => "Hanami::Utils"
+      #
+      #   Hanami::Utils::String.transform("Hanami::Utils::String", [:gsub, /[aeiouy]/, "*"], :demodulize)
+      #     # => "H*n*m*"
+      #
+      #   Hanami::Utils::String.transform("Hanami", ->(s) { s.upcase })
+      #     # => "HANAMI"
+      #
+      # @example Unkown transformation
+      #   require "hanami/utils/string"
+      #
+      #   Hanami::Utils::String.transform("Sakura", :foo)
+      #     # => NoMethodError: undefined method `:foo' for "Sakura":String
+      #
+      # @example Proc with arity not equal to 1
+      #   require "hanami/utils/string"
+      #
+      #   Hanami::Utils::String.transform("Cherry", -> { "blossom" }))
+      #     # => ArgumentError: wrong number of arguments (given 1, expected 0)
+      #
+      # rubocop:disable Metrics/MethodLength
+      # rubocop:disable Metrics/AbcSize
+      def self.transform(input, *transformations)
+        fn = @__transformations__.fetch_or_store(transformations.hash) do
+          compose do |fns|
+            transformations.each do |transformation|
+              tr, *args = transformation
+              fns << if tr.is_a?(Proc)
+                       tr
+                     elsif contain?(tr)
+                       self[*transformation]
+                     elsif input.respond_to?(tr)
+                       t(:bind, input, ->(i) { i.public_send(tr, *args) })
+                     else
+                       raise NoMethodError.new(%(undefined method `#{tr.inspect}' for #{input.inspect}:#{input.class}))
+                     end
+            end
+          end
+        end
+
+        fn.call(input)
+      end
+      # rubocop:enable Metrics/AbcSize
+      # rubocop:enable Metrics/MethodLength
+
+      # Extracted from `transproc` source code
+      #
+      # `transproc` is Copyright 2014 by Piotr Solnica (piotr.solnica@gmail.com),
+      # released under the MIT License
+      #
+      # @since 1.1.0
+      # @api private
+      def self.bind(value, binding, fn)
+        binding.instance_exec(value, &fn)
+      end
 
       # Return a titleized version of the string
       #
