@@ -88,6 +88,10 @@ Safe `#dup` logic for Ruby objects. [[API doc](http://www.rubydoc.info/gems/hana
 
 Safe and fast escape for URLs, HTML content and attributes. Based on OWASP/ESAPI code. [[API doc](http://www.rubydoc.info/gems/hanami-utils/Hanami/Utils/Escape)]
 
+### Hanami::Utils::FileList
+
+Recursive, cross-platform ordered list of files. [[API doc](http://www.rubydoc.info/gems/hanami-utils/Hanami/Utils/FileList)]
+
 ### Hanami::Utils::Hash
 
 Enhanced version of Ruby's `Hash`. [[API doc](http://www.rubydoc.info/gems/hanami-utils/Hanami/Utils/Hash)]
@@ -99,6 +103,10 @@ Silence Ruby warnings. [[API doc](http://www.rubydoc.info/gems/hanami-utils/Hana
 ### Hanami::Utils::Inflector
 
 Complete and customizable english inflections (pluralization and singularization). [[API doc](http://www.rubydoc.info/gems/hanami-utils/Hanami/Utils/Inflector)]
+
+### Hanami::Utils::Json
+
+JSON engine with swappable backends (via optional `multi_json` gem) or powered by Ruby's `json` (default). [[API doc](http://www.rubydoc.info/gems/hanami-utils/Hanami/Utils/Json)]
 
 ### Hanami::Utils::Kernel
 
