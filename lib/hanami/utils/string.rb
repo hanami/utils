@@ -83,7 +83,7 @@ module Hanami
       # @example
       #   require 'hanami/utils/string'
       #
-      #   Hanami::Utils::String.titleize('hanami utils') => "Hanami Utils"
+      #   Hanami::Utils::String.titleize('hanami utils') # => "Hanami Utils"
       def self.titleize(input)
         string = ::String.new(input)
         underscore(string).split(CLASSIFY_SEPARATOR).map(&:capitalize).join(TITLEIZE_SEPARATOR)
@@ -228,10 +228,14 @@ module Hanami
       #
       # @return [::String] the pluralized string.
       #
-      # @api private
       # @since 1.1.0
       #
       # @see Hanami::Utils::Inflector
+      #
+      # @example
+      #   require 'hanami/utils/string'
+      #
+      #   Hanami::Utils::String.pluralize('book') # => 'books'
       def self.pluralize(input)
         string = ::String.new(input)
         Inflector.pluralize(string)
@@ -243,24 +247,28 @@ module Hanami
       #
       # @return [::String] the singularized string.
       #
-      # @api private
       # @since 1.1.0
       #
       # @see Hanami::Utils::Inflector
+      #
+      # @example
+      #   require 'hanami/utils/string'
+      #
+      #   Hanami::Utils::String.singularize('books') # => 'book'
       def self.singularize(input)
         string = ::String.new(input)
         Inflector.singularize(string)
       end
 
-      # Replace the rightmost match of <tt>pattern</tt> with <tt>replacement</tt>
+      # Replace the rightmost match of `pattern` with `replacement`
       #
       # If the pattern cannot be matched, it returns the original string.
       #
       # This method does NOT mutate the original string.
       #
       # @param input [::String] the input
-      # @param pattern [Regexp, String] the pattern to find
-      # @param replacement [String, Hanami::Utils::String] the string to replace
+      # @param pattern [Regexp, ::String] the pattern to find
+      # @param replacement [String] the string to replace
       #
       # @return [::String] the replaced string
       #
@@ -269,14 +277,8 @@ module Hanami
       # @example
       #   require 'hanami/utils/string'
       #
-      #   string = Hanami::Utils::String.new('authors/books/index')
-      #   result = rsub(string, /\//, '#')
-      #
-      #   puts string
-      #     # => #<Hanami::Utils::String:0x007fdb41233ad8 @string="authors/books/index">
-      #
-      #   puts result
-      #     # => #<Hanami::Utils::String:0x007fdb41232ed0 @string="authors/books#index">
+      #   Hanami::Utils::String.rsub('authors/books/index', %r{/}, '#')
+      #     # => 'authors/books#index'
       def self.rsub(input, pattern, replacement)
         string = ::String.new(input)
         if i = string.rindex(pattern) # rubocop:disable Lint/AssignmentInCondition
@@ -574,7 +576,7 @@ module Hanami
         @string.scan(pattern, &blk)
       end
 
-      # Replace the rightmost match of <tt>pattern</tt> with <tt>replacement</tt>
+      # Replace the rightmost match of `pattern` with `replacement`
       #
       # If the pattern cannot be matched, it returns the original string.
       #
