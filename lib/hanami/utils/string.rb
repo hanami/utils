@@ -178,7 +178,7 @@ module Hanami
       #
       #   Hanami::Utils::String.titleize('hanami utils') # => "Hanami Utils"
       def self.titleize(input)
-        string = ::String.new(input)
+        string = ::String.new(input.to_s)
         underscore(string).split(CLASSIFY_SEPARATOR).map(&:capitalize).join(TITLEIZE_SEPARATOR)
       end
 
@@ -249,7 +249,7 @@ module Hanami
       #
       #   Hanami::Utils::String.underscore('HanamiUtils') # => 'hanami_utils'
       def self.underscore(input)
-        string = ::String.new(input)
+        string = ::String.new(input.to_s)
         string.gsub!(NAMESPACE_SEPARATOR, UNDERSCORE_SEPARATOR)
         string.gsub!(NAMESPACE_SEPARATOR, UNDERSCORE_SEPARATOR)
         string.gsub!(/([A-Z\d]+)([A-Z][a-z])/, UNDERSCORE_DIVISION_TARGET)
@@ -275,7 +275,7 @@ module Hanami
       #
       #   Hanami::Utils::String.dasherize('HanamiUtils') # => "hanami-utils"
       def self.dasherize(input)
-        string = ::String.new(input)
+        string = ::String.new(input.to_s)
         underscore(string).split(CLASSIFY_SEPARATOR).join(DASHERIZE_SEPARATOR)
       end
 
@@ -294,7 +294,7 @@ module Hanami
       #
       #   Hanami::Utils::String.demodulize('String') # => 'String'
       def self.demodulize(input)
-        ::String.new(input).split(NAMESPACE_SEPARATOR).last
+        ::String.new(input.to_s).split(NAMESPACE_SEPARATOR).last
       end
 
       # Return the top level namespace name
@@ -312,7 +312,7 @@ module Hanami
       #
       #   Hanami::Utils::String.namespace('String') # => 'String'
       def self.namespace(input)
-        ::String.new(input).split(NAMESPACE_SEPARATOR).first
+        ::String.new(input.to_s).split(NAMESPACE_SEPARATOR).first
       end
 
       # Return a pluralized version of self.
@@ -330,7 +330,7 @@ module Hanami
       #
       #   Hanami::Utils::String.pluralize('book') # => 'books'
       def self.pluralize(input)
-        string = ::String.new(input)
+        string = ::String.new(input.to_s)
         Inflector.pluralize(string)
       end
 
@@ -349,7 +349,7 @@ module Hanami
       #
       #   Hanami::Utils::String.singularize('books') # => 'book'
       def self.singularize(input)
-        string = ::String.new(input)
+        string = ::String.new(input.to_s)
         Inflector.singularize(string)
       end
 
@@ -373,7 +373,7 @@ module Hanami
       #   Hanami::Utils::String.rsub('authors/books/index', %r{/}, '#')
       #     # => 'authors/books#index'
       def self.rsub(input, pattern, replacement)
-        string = ::String.new(input)
+        string = ::String.new(input.to_s)
         if i = string.rindex(pattern) # rubocop:disable Lint/AssignmentInCondition
           s = string.dup
           s[i] = replacement

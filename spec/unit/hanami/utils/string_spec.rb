@@ -67,7 +67,7 @@ RSpec.describe Hanami::Utils::String do
   end
 
   describe '.titleize' do
-    it '::String' do
+    it 'returns an instance of ::String' do
       expect(Hanami::Utils::String.titleize('hanami')).to be_kind_of(::String)
     end
 
@@ -80,6 +80,7 @@ RSpec.describe Hanami::Utils::String do
 
     it 'returns an titleized string' do
       expect(Hanami::Utils::String.titleize('hanami')).to eq('Hanami')
+      expect(Hanami::Utils::String.titleize(:hanami)).to eq('Hanami')
       expect(Hanami::Utils::String.titleize('HanamiUtils')).to eq('Hanami Utils')
       expect(Hanami::Utils::String.titleize('hanami utils')).to eq('Hanami Utils')
       expect(Hanami::Utils::String.titleize('hanami_utils')).to eq('Hanami Utils')
@@ -104,6 +105,7 @@ RSpec.describe Hanami::Utils::String do
 
     it 'returns an capitalized string' do
       expect(Hanami::Utils::String.capitalize('hanami')).to eq('Hanami')
+      expect(Hanami::Utils::String.capitalize(:hanami)).to eq('Hanami')
       expect(Hanami::Utils::String.capitalize('HanamiUtils')).to eq('Hanami utils')
       expect(Hanami::Utils::String.capitalize('hanami utils')).to eq('Hanami utils')
       expect(Hanami::Utils::String.capitalize('hanami_utils')).to eq('Hanami utils')
@@ -137,6 +139,7 @@ RSpec.describe Hanami::Utils::String do
 
     it 'returns a classified string' do
       expect(Hanami::Utils::String.classify('hanami')).to eq('Hanami')
+      expect(Hanami::Utils::String.classify(:hanami)).to eq('Hanami')
       expect(Hanami::Utils::String.classify('hanami_router')).to eq('HanamiRouter')
       expect(Hanami::Utils::String.classify('hanami-router')).to eq('HanamiRouter')
       expect(Hanami::Utils::String.classify('hanami/router')).to eq('Hanami::Router')
@@ -206,6 +209,11 @@ RSpec.describe Hanami::Utils::String do
       string = Hanami::Utils::String.underscore('è vero')
       expect(string).to eq('è_vero')
     end
+
+    it 'handles symbols' do
+      string = Hanami::Utils::String.underscore(:'Hanami::Utils')
+      expect(string).to eq('hanami/utils')
+    end
   end
 
   describe '.dasherize' do
@@ -254,6 +262,11 @@ RSpec.describe Hanami::Utils::String do
       string = Hanami::Utils::String.dasherize('è vero')
       expect(string).to eq('è-vero')
     end
+
+    it 'handles symbols' do
+      string = Hanami::Utils::String.dasherize(:'Hanami Utils')
+      expect(string).to eq('hanami-utils')
+    end
   end
 
   describe '.demodulize' do
@@ -270,6 +283,7 @@ RSpec.describe Hanami::Utils::String do
 
     it 'returns the class name without the namespace' do
       expect(Hanami::Utils::String.demodulize('String')).to eq('String')
+      expect(Hanami::Utils::String.demodulize(:String)).to eq('String')
       expect(Hanami::Utils::String.demodulize('Hanami::Utils::String')).to eq('String')
     end
   end
@@ -288,6 +302,7 @@ RSpec.describe Hanami::Utils::String do
 
     it 'returns the top level module name' do
       expect(Hanami::Utils::String.namespace('String')).to eq('String')
+      expect(Hanami::Utils::String.namespace(:String)).to eq('String')
       expect(Hanami::Utils::String.namespace('Hanami::Utils::String')).to eq('Hanami')
     end
   end
@@ -300,6 +315,11 @@ RSpec.describe Hanami::Utils::String do
     it 'returns a String instance' do
       result = Hanami::Utils::String.pluralize(@singular)
       expect(result).to be_kind_of(::String)
+    end
+
+    it 'accepts a symbol' do
+      result = Hanami::Utils::String.pluralize(@singular.to_sym)
+      expect(result).to eq(@plural)
     end
 
     it 'pluralizes string' do
@@ -324,6 +344,11 @@ RSpec.describe Hanami::Utils::String do
     it '::String instance' do
       result = Hanami::Utils::String.singularize(@plural)
       expect(result).to be_kind_of(::String)
+    end
+
+    it 'accepts a symbol' do
+      result = Hanami::Utils::String.singularize(@plural.to_sym)
+      expect(result).to eq(@singular)
     end
 
     it 'singularizes string' do
@@ -373,6 +398,11 @@ RSpec.describe Hanami::Utils::String do
     it 'returns the initial string no match' do
       result = Hanami::Utils::String.rsub('index', %r{/}, '#')
       expect(result).to eq('index')
+    end
+
+    it 'returns accepts a symbol initial string no match' do
+      result = Hanami::Utils::String.rsub(:'authors/books/index', %r{/}, '#')
+      expect(result).to eq('authors/books#index')
     end
   end
 
