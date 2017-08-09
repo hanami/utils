@@ -66,6 +66,65 @@ RSpec.describe Hanami::Utils::String do
     end
   end
 
+  describe ".transform" do
+    it "applies multiple transformations" do
+      input = "hanami/utils"
+      actual = Hanami::Utils::String.transform(input, :underscore, :classify)
+
+      expect(input).to  eq("hanami/utils")
+      expect(actual).to eq("Hanami::Utils")
+      expect(actual).to be_kind_of(::String)
+    end
+
+    it "applies multiple transformations with args" do
+      input = "hanami/utils/string"
+      actual = Hanami::Utils::String.transform(input, [:rsub, %r{/}, "#"])
+
+      expect(input).to  eq("hanami/utils/string")
+      expect(actual).to eq("hanami/utils#string")
+      expect(actual).to be_kind_of(::String)
+    end
+
+    it "applies transformations from proc" do
+      input = "Hanami"
+      actual = Hanami::Utils::String.transform(input, ->(i) { i.upcase })
+
+      expect(input).to  eq("Hanami")
+      expect(actual).to eq("HANAMI")
+      expect(actual).to be_kind_of(::String)
+    end
+
+    it "applies transformations from ::String" do
+      input = "Hanami::Utils::String"
+      actual = Hanami::Utils::String.transform(input, :demodulize, :downcase)
+
+      expect(input).to  eq("Hanami::Utils::String")
+      expect(actual).to eq("string")
+      expect(actual).to be_kind_of(::String)
+    end
+
+    it "applies multiple transformations from ::String" do
+      input = "Hanami::Utils::String"
+      actual = Hanami::Utils::String.transform(input, [:gsub, /[aeiouy]/, "*"], :namespace)
+
+      expect(input).to  eq("Hanami::Utils::String")
+      expect(actual).to eq("H*n*m*")
+      expect(actual).to be_kind_of(::String)
+    end
+
+    it "raises error when try to apply unknown transformation" do
+      input = "Sakura"
+
+      expect { Hanami::Utils::String.transform(input, :unknown) }.to raise_error(NoMethodError, %(undefined method `:unknown' for "Sakura":String))
+    end
+
+    it "raises error when given proc has arity not equal to 1" do
+      input = "Cherry"
+
+      expect { Hanami::Utils::String.transform(input, -> { "blossom" }) }.to raise_error(ArgumentError, %(wrong number of arguments (given 1, expected 0)))
+    end
+  end
+
   describe '.titleize' do
     it 'returns an instance of ::String' do
       expect(Hanami::Utils::String.titleize('hanami')).to be_kind_of(::String)
