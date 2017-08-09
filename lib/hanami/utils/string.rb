@@ -82,7 +82,7 @@ module Hanami
       # Apply the given transformation(s) to `input`
       #
       # It performs a pipeline of transformations, by applying the given functions from `Hanami::Utils::String` and `::String`.
-      # The transformations are applied with the given order.
+      # The transformations are applied in the given order.
       #
       # It doesn't mutate the input, unless you use destructive methods from `::String`
       #
