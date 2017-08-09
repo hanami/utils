@@ -7,6 +7,7 @@ Ruby core extentions and class utilities for Hanami
 - [Marion Schleifer] Introduce `Utils::Hash.stringify`
 - [Marion Schleifer] Introduce `Utils::String.titleize`, `.capitalize`, `.classify`, `.underscore`, `.dasherize`, `.demodulize`, `.namespace`, `.pluralize`, `.singularize`, and `.rsub`
 - [Luca Guidi] Introduce `Utils::Files`: a set of utils for file manipulations
+- [Luca Guidi] Introduce `Utils::String.transform` a pipelined transformations for strings
 - [Gabriel Gizotti & Marion Duprey] Filter sensitive informations for `Hanami::Logger`
 
 ## v1.0.2 - 2017-07-10
