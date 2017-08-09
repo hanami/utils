@@ -5,7 +5,7 @@ module Hanami
   module Utils
     # Files utilities
     #
-    # @since x.x.x
+    # @since 1.1.0
     module Files # rubocop:disable Metrics/ModuleLength
       # Creates an empty file for the given path.
       # All the intermediate directories are created.
@@ -13,7 +13,7 @@ module Hanami
       #
       # @param path [String,Pathname] the path to file
       #
-      # @since x.x.x
+      # @since 1.1.0
       def self.touch(path)
         write(path, "")
       end
@@ -25,7 +25,7 @@ module Hanami
       # @param path [String,Pathname] the path to file
       # @param content [String, Array<String>] the content to write
       #
-      # @since x.x.x
+      # @since 1.1.0
       def self.write(path, *content)
         mkdir_p(path)
         open(path, ::File::CREAT | ::File::WRONLY, *content)
@@ -37,9 +37,9 @@ module Hanami
       # @param path [String,Pathname] the path to file
       # @param content [String, Array<String>] the content to write
       #
-      # @raises [Errno::ENOENT] if the path doesn't exist
+      # @raise [Errno::ENOENT] if the path doesn't exist
       #
-      # @since x.x.x
+      # @since 1.1.0
       def self.rewrite(path, *content)
         open(path, ::File::TRUNC | ::File::WRONLY, *content)
       end
@@ -51,7 +51,7 @@ module Hanami
       # @param source [String,Pathname] the path to the source file
       # @param destination [String,Pathname] the path to the destination file
       #
-      # @since x.x.x
+      # @since 1.1.0
       def self.cp(source, destination)
         mkdir_p(destination)
         FileUtils.cp(source, destination)
@@ -63,7 +63,7 @@ module Hanami
       #
       # @param path [String,Pathname] the path to directory
       #
-      # @since x.x.x
+      # @since 1.1.0
       #
       # @see .mkdir_p
       #
@@ -87,7 +87,7 @@ module Hanami
       #
       # @param path [String,Pathname] the path to directory
       #
-      # @since x.x.x
+      # @since 1.1.0
       #
       # @see .mkdir
       #
@@ -108,9 +108,9 @@ module Hanami
       #
       # @param path [String,Pathname] the path to file
       #
-      # @raises [Errno::ENOENT] if the path doesn't exist
+      # @raise [Errno::ENOENT] if the path doesn't exist
       #
-      # @since x.x.x
+      # @since 1.1.0
       def self.delete(path)
         FileUtils.rm(path)
       end
@@ -119,9 +119,9 @@ module Hanami
       #
       # @param path [String,Pathname] the path to file
       #
-      # @raises [Errno::ENOENT] if the path doesn't exist
+      # @raise [Errno::ENOENT] if the path doesn't exist
       #
-      # @since x.x.x
+      # @since 1.1.0
       def self.delete_directory(path)
         FileUtils.remove_entry_secure(path)
       end
@@ -131,11 +131,11 @@ module Hanami
       # @param path [String,Pathname] the path to file
       # @param line [String] the line to add
       #
-      # @raises [Errno::ENOENT] if the path doesn't exist
+      # @raise [Errno::ENOENT] if the path doesn't exist
       #
       # @see .append
       #
-      # @since x.x.x
+      # @since 1.1.0
       def self.unshift(path, line)
         content = ::File.readlines(path)
         content.unshift("#{line}\n")
@@ -146,13 +146,13 @@ module Hanami
       # Adds a new line at the bottom of the file
       #
       # @param path [String,Pathname] the path to file
-      # @param line [String] the line to add
+      # @param contents [String] the contents to add
       #
-      # @raises [Errno::ENOENT] if the path doesn't exist
+      # @raise [Errno::ENOENT] if the path doesn't exist
       #
       # @see .unshift
       #
-      # @since x.x.x
+      # @since 1.1.0
       def self.append(path, contents)
         mkdir_p(path)
 
@@ -168,12 +168,12 @@ module Hanami
       # @param target [String,Regexp] the target to replace
       # @param replacement [String] the replacement
       #
-      # @raises [Errno::ENOENT] if the path doesn't exist
-      # @raises [ArgumentError] if `target` cannot be found in `path`
+      # @raise [Errno::ENOENT] if the path doesn't exist
+      # @raise [ArgumentError] if `target` cannot be found in `path`
       #
       # @see .replace_last_line
       #
-      # @since x.x.x
+      # @since 1.1.0
       def self.replace_first_line(path, target, replacement)
         content = ::File.readlines(path)
         content[index(content, path, target)] = "#{replacement}\n"
@@ -187,12 +187,12 @@ module Hanami
       # @param target [String,Regexp] the target to replace
       # @param replacement [String] the replacement
       #
-      # @raises [Errno::ENOENT] if the path doesn't exist
-      # @raises [ArgumentError] if `target` cannot be found in `path`
+      # @raise [Errno::ENOENT] if the path doesn't exist
+      # @raise [ArgumentError] if `target` cannot be found in `path`
       #
       # @see .replace_first_line
       #
-      # @since x.x.x
+      # @since 1.1.0
       def self.replace_last_line(path, target, replacement)
         content = ::File.readlines(path)
         content[-index(content.reverse, path, target) - 1] = "#{replacement}\n"
@@ -206,12 +206,12 @@ module Hanami
       # @param target [String,Regexp] the target to replace
       # @param contents [String] the contents to inject
       #
-      # @raises [Errno::ENOENT] if the path doesn't exist
-      # @raises [ArgumentError] if `target` cannot be found in `path`
+      # @raise [Errno::ENOENT] if the path doesn't exist
+      # @raise [ArgumentError] if `target` cannot be found in `path`
       #
       # @see .inject_line_after
       #
-      # @since x.x.x
+      # @since 1.1.0
       def self.inject_line_before(path, target, contents)
         content = ::File.readlines(path)
         i       = index(content, path, target)
@@ -226,12 +226,12 @@ module Hanami
       # @param target [String,Regexp] the target to replace
       # @param contents [String] the contents to inject
       #
-      # @raises [Errno::ENOENT] if the path doesn't exist
-      # @raises [ArgumentError] if `target` cannot be found in `path`
+      # @raise [Errno::ENOENT] if the path doesn't exist
+      # @raise [ArgumentError] if `target` cannot be found in `path`
       #
       # @see .inject_line_before
       #
-      # @since x.x.x
+      # @since 1.1.0
       def self.inject_line_after(path, target, contents)
         content = ::File.readlines(path)
         i       = index(content, path, target)
@@ -245,10 +245,10 @@ module Hanami
       # @param path [String,Pathname] the path to file
       # @param target [String,Regexp] the target to remove
       #
-      # @raises [Errno::ENOENT] if the path doesn't exist
-      # @raises [ArgumentError] if `target` cannot be found in `path`
+      # @raise [Errno::ENOENT] if the path doesn't exist
+      # @raise [ArgumentError] if `target` cannot be found in `path`
       #
-      # @since x.x.x
+      # @since 1.1.0
       def self.remove_line(path, target)
         content = ::File.readlines(path)
         i       = index(content, path, target)
@@ -262,10 +262,10 @@ module Hanami
       # @param path [String,Pathname] the path to file
       # @param target [String] the target block to remove
       #
-      # @raises [Errno::ENOENT] if the path doesn't exist
-      # @raises [ArgumentError] if `target` cannot be found in `path`
+      # @raise [Errno::ENOENT] if the path doesn't exist
+      # @raise [ArgumentError] if `target` cannot be found in `path`
       #
-      # @since x.x.x
+      # @since 1.1.0
       #
       # @example
       #   require "hanami/utils/files"
@@ -302,9 +302,9 @@ module Hanami
       #
       # @param path [String,Pathname] the path to file
       #
-      # @returns [TrueClass,FalseClass] the result of the check
+      # @return [TrueClass,FalseClass] the result of the check
       #
-      # @since x.x.x
+      # @since 1.1.0
       #
       # @example
       #   require "hanami/utils/files"
@@ -321,9 +321,9 @@ module Hanami
       #
       # @param path [String,Pathname] the path to directory
       #
-      # @returns [TrueClass,FalseClass] the result of the check
+      # @return [TrueClass,FalseClass] the result of the check
       #
-      # @since x.x.x
+      # @since 1.1.0
       #
       # @example
       #   require "hanami/utils/files"
@@ -338,7 +338,7 @@ module Hanami
 
       # private
 
-      # @since x.x.x
+      # @since 1.1.0
       # @api private
       def self.match?(content, target)
         !line_number(content, target).nil?
@@ -346,7 +346,7 @@ module Hanami
 
       private_class_method :match?
 
-      # @since x.x.x
+      # @since 1.1.0
       # @api private
       def self.open(path, mode, *content)
         ::File.open(path, mode) do |file|
@@ -356,7 +356,7 @@ module Hanami
 
       private_class_method :open
 
-      # @since x.x.x
+      # @since 1.1.0
       # @api private
       def self.index(content, path, target)
         line_number(content, target) or
@@ -365,7 +365,7 @@ module Hanami
 
       private_class_method :index
 
-      # @since x.x.x
+      # @since 1.1.0
       # @api private
       def self.line_number(content, target)
         content.index do |l|

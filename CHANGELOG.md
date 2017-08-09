@@ -1,6 +1,14 @@
 # Hanami::Utils
 Ruby core extentions and class utilities for Hanami
 
+## v1.1.0.beta1 (unreleased)
+### Added
+- [Marion Duprey] Allow `Hanami::Interactor#call` to accept arguments. `#initialize` should be used for Dependency Injection, while `#call` should be used for input
+- [Marion Schleifer] Introduce `Utils::Hash.stringify`
+- [Marion Schleifer] Introduce `Utils::String.titleize`, `.capitalize`, `.classify`, `.underscore`, `.dasherize`, `.demodulize`, `.namespace`, `.pluralize`, `.singularize`, and `.rsub`
+- [Luca Guidi] Introduce `Utils::Files`: a set of utils for file manipulations
+- [Gabriel Gizotti & Marion Duprey] Filter sensitive informations for `Hanami::Logger`
+
 ## v1.0.2 - 2017-07-10
 ### Fixed
 - [Anton Davydov] Fix pluralization/singularization for `"phrase" => "phrases"`

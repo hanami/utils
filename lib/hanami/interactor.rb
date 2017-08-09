@@ -282,7 +282,7 @@ module Hanami
     end
 
     # Interactor interface
-    # @since x.x.x
+    # @since 1.1.0
     module Interface
       # Triggers the operation and return a result.
       #
@@ -359,7 +359,7 @@ module Hanami
       private
 
       # @api private
-      # @since x.x.x
+      # @since 1.1.0
       def _call(*args, **kwargs)
         catch :fail do
           validate!(*args, **kwargs)
@@ -369,7 +369,7 @@ module Hanami
         _prepare!
       end
 
-      # @since x.x.x
+      # @since 1.1.0
       def validate!(*args, **kwargs)
         fail! unless valid?(*args, **kwargs)
       end
