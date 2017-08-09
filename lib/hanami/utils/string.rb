@@ -82,7 +82,7 @@ module Hanami
       # Apply the given transformation(s) to `input`
       #
       # It performs a pipeline of transformations, by applying the given functions from `Hanami::Utils::String` and `::String`.
-      # The transformations are applied with the given order.
+      # The transformations are applied in the given order.
       #
       # It doesn't mutate the input, unless you use destructive methods from `::String`
       #
@@ -134,16 +134,15 @@ module Hanami
       def self.transform(input, *transformations)
         fn = @__transformations__.fetch_or_store(transformations.hash) do
           compose do |fns|
-            transformations.each do |transformation|
-              tr, *args = transformation
-              fns << if tr.is_a?(Proc)
-                       tr
-                     elsif contain?(tr)
-                       self[*transformation]
-                     elsif input.respond_to?(tr)
-                       t(:bind, input, ->(i) { i.public_send(tr, *args) })
+            transformations.each do |transformation, *args|
+              fns << if transformation.is_a?(Proc)
+                       transformation
+                     elsif contain?(transformation)
+                       self[transformation, *args]
+                     elsif input.respond_to?(transformation)
+                       t(:bind, input, ->(i) { i.public_send(transformation, *args) })
                      else
-                       raise NoMethodError.new(%(undefined method `#{tr.inspect}' for #{input.inspect}:#{input.class}))
+                       raise NoMethodError.new(%(undefined method `#{transformation.inspect}' for #{input.inspect}:#{input.class}))
                      end
             end
           end
