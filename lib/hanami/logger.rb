@@ -139,7 +139,7 @@ module Hanami
       end
 
       # @api private
-      # @since x.x.x
+      # @since 1.1.0
       def self._formatter_instance(formatter)
         case formatter
         when Symbol
@@ -160,7 +160,7 @@ module Hanami
       # @api private
       attr_reader :application_name
 
-      # @since x.x.x
+      # @since 1.1.0
       # @api private
       attr_writer :hash_filter
 
@@ -225,13 +225,22 @@ module Hanami
       end
 
       # Filtering logic
+      #
+      # @since 1.1.0
+      # @api private
       class HashFilter
+        # @since 1.1.0
+        # @api private
         attr_reader :filters
 
+        # @since 1.1.0
+        # @api private
         def initialize(filters = [])
           @filters = filters
         end
 
+        # @since 1.1.0
+        # @api private
         def filter(hash)
           _filtered_keys(hash).each do |key|
             *keys, last = _actual_keys(hash, key.split('.'))
@@ -243,20 +252,28 @@ module Hanami
 
         private
 
+        # @since 1.1.0
+        # @api private
         def _filtered_keys(hash)
           _key_paths(hash).select { |key| filters.any? { |filter| key =~ %r{(\.|\A)#{filter}(\.|\z)} } }
         end
 
+        # @since 1.1.0
+        # @api private
         def _key_paths(hash, base = nil)
           hash.inject([]) do |results, (k, v)|
             results + (v.respond_to?(:each) ? _key_paths(v, _build_path(base, k)) : [_build_path(base, k)])
           end
         end
 
+        # @since 1.1.0
+        # @api private
         def _build_path(base, key)
           [base, key.to_s].compact.join('.')
         end
 
+        # @since 1.1.0
+        # @api private
         def _actual_keys(hash, keys)
           search_in = hash
 
