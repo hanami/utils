@@ -3,6 +3,7 @@ require 'json'
 require 'logger'
 require 'hanami/utils/string'
 require 'hanami/utils/json'
+require 'hanami/utils/hash'
 require 'hanami/utils/class_attribute'
 
 module Hanami
@@ -117,15 +118,13 @@ module Hanami
       class_attribute :subclasses
       self.subclasses = Set.new
 
-      def self.fabricate(formatter, application_name)
-        case formatter
-        when Symbol
-          (subclasses.find { |s| s.eligible?(formatter) } || self).new
-        when nil
-          new
-        else
-          formatter
-        end.tap { |f| f.application_name = application_name }
+      def self.fabricate(formatter, application_name, filters)
+        fabricated_formatter = _formatter_instance(formatter)
+
+        fabricated_formatter.application_name = application_name
+        fabricated_formatter.hash_filter      = HashFilter.new(filters)
+
+        fabricated_formatter
       end
 
       # @api private
@@ -139,6 +138,20 @@ module Hanami
         name == :default
       end
 
+      # @api private
+      # @since x.x.x
+      def self._formatter_instance(formatter)
+        case formatter
+        when Symbol
+          (subclasses.find { |s| s.eligible?(formatter) } || self).new
+        when nil
+          new
+        else
+          formatter
+        end
+      end
+      private_class_method :_formatter_instance
+
       # @since 0.5.0
       # @api private
       attr_writer :application_name
@@ -146,6 +159,10 @@ module Hanami
       # @since 1.0.0
       # @api private
       attr_reader :application_name
+
+      # @since x.x.x
+      # @api private
+      attr_writer :hash_filter
 
       # @since 0.5.0
       # @api private
@@ -168,7 +185,7 @@ module Hanami
       def _message_hash(message) # rubocop:disable Metrics/MethodLength
         case message
         when Hash
-          message
+          @hash_filter.filter(message)
         when Exception
           Hash[
             message:   message.message,
@@ -205,6 +222,50 @@ module Hanami
         end
 
         result
+      end
+
+      # Filtering logic
+      class HashFilter
+        attr_reader :filters
+
+        def initialize(filters = [])
+          @filters = filters
+        end
+
+        def filter(hash)
+          _filtered_keys(hash).each do |key|
+            *keys, last = _actual_keys(hash, key.split('.'))
+            keys.inject(hash, :fetch)[last] = '[FILTERED]'
+          end
+
+          hash
+        end
+
+        private
+
+        def _filtered_keys(hash)
+          _key_paths(hash).select { |key| filters.any? { |filter| key =~ %r{(\.|\A)#{filter}(\.|\z)} } }
+        end
+
+        def _key_paths(hash, base = nil)
+          hash.inject([]) do |results, (k, v)|
+            results + (v.respond_to?(:each) ? _key_paths(v, _build_path(base, k)) : [_build_path(base, k)])
+          end
+        end
+
+        def _build_path(base, key)
+          [base, key.to_s].compact.join('.')
+        end
+
+        def _actual_keys(hash, keys)
+          search_in = hash
+
+          keys.inject([]) do |res, key|
+            correct_key = search_in.key?(key.to_sym) ? key.to_sym : key
+            search_in = search_in[correct_key]
+            res + [correct_key]
+          end
+        end
       end
     end
 
@@ -375,13 +436,13 @@ module Hanami
     #   logger.info "Hello World"
     #
     #   # => {"app":"Hanami","severity":"DEBUG","time":"2017-03-30T13:57:59Z","message":"Hello World"}
-    def initialize(application_name = nil, *args, stream: $stdout, level: DEBUG, formatter: nil)
+    def initialize(application_name = nil, *args, stream: $stdout, level: DEBUG, formatter: nil, filter: []) # rubocop:disable Metrics/ParameterLists
       super(stream, *args)
 
       @level            = _level(level)
       @stream           = stream
       @application_name = application_name
-      @formatter        = Formatter.fabricate(formatter, self.application_name)
+      @formatter        = Formatter.fabricate(formatter, self.application_name, filter)
     end
 
     # Returns the current application name, this is used for tagging purposes

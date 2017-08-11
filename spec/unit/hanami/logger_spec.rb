@@ -433,6 +433,98 @@ RSpec.describe Hanami::Logger do
           end
         expect(output).to eq "[hanami] [INFO] [2017-01-15 16:00:23 +0100] foo bar\n"
       end
+
+      it 'displays filtered hash values' do
+        form_params = Hash[
+          form_params: Hash[
+            'name' => 'John',
+            'password' => '[FILTERED]',
+            'password_confirmation' => '[FILTERED]'
+          ]
+        ]
+
+        expected = "{\"name\"=>\"John\", \"password\"=>\"[FILTERED]\", \"password_confirmation\"=>\"[FILTERED]\"}"
+
+        output = with_captured_stdout do
+          class TestLogger < Hanami::Logger; end
+          TestLogger.new.info(form_params)
+        end
+
+        expect(output).to eq("[hanami] [INFO] [2017-01-15 16:00:23 +0100] #{expected}\n")
+      end
+    end
+
+    context do
+      let(:form_params) do
+        Hash[
+          form_params: Hash[
+            'password' => 'password',
+            'password_confirmation' => 'password',
+            'credit_card' => Hash[
+              'number' => '4545 4545 4545 4545',
+              'name' => 'John Citizen'
+            ],
+            'user' => Hash[
+              'login' => 'John',
+              'name'  => 'John'
+            ]
+          ]
+        ]
+      end
+
+      describe 'with filters' do
+        it 'filters values for keys in the filters array' do
+          expected = %s({"password"=>"[FILTERED]", "password_confirmation"=>"[FILTERED]", "credit_card"=>{"number"=>"[FILTERED]", "name"=>"[FILTERED]"}, "user"=>{"login"=>"[FILTERED]", "name"=>"John"}})
+
+          output = with_captured_stdout do
+            class TestLogger < Hanami::Logger; end
+            filters = %w(password password_confirmation credit_card user.login)
+            TestLogger.new(filter: filters).info(form_params)
+          end
+
+          expect(output).to eq("[hanami] [INFO] [2017-01-15 16:00:23 +0100] #{expected}\n")
+        end
+      end
+
+      describe 'without filters' do
+        it 'outputs unfiltered params' do
+          expected = %s({"password"=>"password", "password_confirmation"=>"password", "credit_card"=>{"number"=>"4545 4545 4545 4545", "name"=>"John Citizen"}, "user"=>{"login"=>"John", "name"=>"John"}})
+
+          output = with_captured_stdout do
+            class TestLogger < Hanami::Logger; end
+            TestLogger.new.info(form_params)
+          end
+
+          expect(output).to eq("[hanami] [INFO] [2017-01-15 16:00:23 +0100] #{expected}\n")
+        end
+      end
+    end
+  end
+
+  describe Hanami::Logger::Formatter::HashFilter do
+    context 'without filters' do
+      it "doesn't filter" do
+        input = Hash[password: 'azerty']
+        output = described_class.new.filter(input)
+        expect(output).to eql(input)
+      end
+    end
+
+    it "doesn't alter the hash keys" do
+      output = described_class.new(%w(password)).filter(Hash["password" => 'azerty', foo: Hash[password: 'bar']])
+      expect(output).to eql(Hash["password" => '[FILTERED]', foo: Hash[password: '[FILTERED]']])
+    end
+
+    it 'filters with multiple filters' do
+      input = Hash[password: 'azerty', number: '12345']
+      output = described_class.new(%i(password number)).filter(input)
+      expect(output).to eql(Hash[password: '[FILTERED]', number: '[FILTERED]'])
+    end
+
+    it 'filters with multi-level filter' do
+      input = Hash[user: Hash[name: 'foo', password: 'azerty'], password: 'foo']
+      output = described_class.new(%w(user.password)).filter(input)
+      expect(output).to eql(Hash[user: Hash[name: 'foo', password: '[FILTERED]'], password: 'foo'])
     end
   end
 end
