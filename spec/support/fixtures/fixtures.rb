@@ -608,7 +608,8 @@ TEST_SINGULARS = {
   # https://github.com/hanami/utils/issues/106
   'album'      => 'albums',
   # https://github.com/hanami/utils/issues/217
-  'phase'      => 'phases'
+  'phase'      => 'phases',
+  'exercise'   => 'exercises'
 }.merge(TEST_PLURALS)
 
 require 'hanami/utils/inflector'
