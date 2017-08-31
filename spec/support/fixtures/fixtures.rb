@@ -537,6 +537,7 @@ TEST_PLURALS = {
   'architecture' => 'architectures',
   'cat'          => 'cats',
   'car'          => 'cars',
+  'area'         => 'areas',
   'hive'         => 'hives',
   # https://github.com/hanami/utils/issues/106
   'album'        => 'albums',
