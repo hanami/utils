@@ -1,6 +1,11 @@
 # Hanami::Utils
 Ruby core extentions and class utilities for Hanami
 
+## v1.0.3 - 2017-09-06
+### Fixed
+- [Malina Sulca] Fix pluralization/singularization for `"exercise" => "exercises"`
+- [Xavier Barbosa] Fix pluralization/singularization for `"area" => "areas"`
+
 ## v1.0.2 - 2017-07-10
 ### Fixed
 - [Anton Davydov] Fix pluralization/singularization for `"phrase" => "phrases"`
