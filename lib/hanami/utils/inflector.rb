@@ -226,7 +226,8 @@ module Hanami
         'police'      => 'police',
         # regressions
         # https://github.com/hanami/utils/issues/106
-        'album'       => 'albums'
+        'album'       => 'albums',
+        'area'        => 'areas'
       )
 
       # Irregular rules for singulars
@@ -267,6 +268,7 @@ module Hanami
         'species'     => 'species',
         'police'      => 'police',
         # fallback
+        'areas'       => 'area',
         'hives'       => 'hive',
         'phases'      => 'phase'
       )
