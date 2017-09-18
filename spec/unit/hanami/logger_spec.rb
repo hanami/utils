@@ -182,6 +182,19 @@ RSpec.describe Hanami::Logger do
         end # end IO
       end # end FileSystem
 
+      describe 'file system without folder created' do
+        let(:stream) { Pathname.new('log').join('logfile.log') }
+
+        it 'creates the folder' do
+          logger = Hanami::Logger.new(stream: stream)
+          logger.info('hello world')
+
+          logger.close
+
+          contents = File.read(stream.to_s)
+          expect(contents).to match(/hello world/)
+        end
+      end
       describe 'when StringIO' do
         let(:stream) { StringIO.new }
 
