@@ -6,8 +6,8 @@ RSpec.describe Hanami::Utils::Inflector do
     it "register irregulars agains Inflecto if it's present" do
       require 'inflecto'
       # just some weird Portuguese pluralization rules
-      Hanami::Utils::Inflector.exception('bacteria', 'bacterias')
-      expect(Inflecto.pluralize('bacteria')).to eq('bacterias')
+      Hanami::Utils::Inflector.exception('poção', 'poções')
+      expect(Inflecto.pluralize('poção')).to eq('poções')
     end
 
     it 'does not explode if Inflecto is not present' do
