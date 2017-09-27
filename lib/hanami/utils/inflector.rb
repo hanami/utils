@@ -311,7 +311,6 @@ module Hanami
       #   Hanami::Utils::Inflector.inflections do
       #     exception 'alga', 'algae'
       #   end
-
       def self.exception(singular, plural)
         add_to_inflecto(singular, plural)
         singulars.add(plural, singular)
