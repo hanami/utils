@@ -78,9 +78,9 @@ RSpec.describe Hanami::Utils::Hash do
     end
 
     it "symbolizes deep nested array of hashes" do
-      hash = described_class.deep_symbolize('foo' => [{'bar' => 'Hello'}])
+      hash = described_class.deep_symbolize('foo' => [{ 'bar' => 'Hello' }])
 
-      expect(hash[:foo]).to eq([{bar: 'Hello'}])
+      expect(hash[:foo]).to eq([{ bar: 'Hello' }])
     end
 
     it "does't symbolize nested object that responds to to_hash" do
