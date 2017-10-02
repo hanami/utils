@@ -1,6 +1,10 @@
 # Hanami::Utils
 Ruby core extentions and class utilities for Hanami
 
+## v1.0.4 - 2017-10-02
+### Fixed
+- [Thiago Kenji Okada] Fix pluralization/singularization for `"release" => "releases"`
+
 ## v1.0.3 - 2017-09-06
 ### Fixed
 - [Malina Sulca] Fix pluralization/singularization for `"exercise" => "exercises"`
