@@ -132,7 +132,7 @@ module Hanami
       # @see #relative
       def relative!
         @string.gsub!(/(?<!:)#{separator * 2}/, separator)
-        @string.sub!(/\A#{separator}/, '')
+        @string[/\A#{separator}|^/] = ''
 
         self
       end
