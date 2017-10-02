@@ -2,20 +2,6 @@ require 'hanami/utils/inflector'
 require 'hanami/utils/string'
 
 RSpec.describe Hanami::Utils::Inflector do
-  describe '.exception' do
-    it "register irregulars agains Inflecto if it's present" do
-      require 'inflecto'
-      # just some weird Portuguese pluralization rules
-      Hanami::Utils::Inflector.exception('poção', 'poções')
-      expect(Inflecto.pluralize('poção')).to eq('poções')
-    end
-
-    it 'does not explode if Inflecto is not present' do
-      Object.send(:remove_const, 'Inflecto') if defined? Inflecto
-      expect { Hanami::Utils::Inflector.exception('receita', 'receitas') }.to_not raise_error
-    end
-  end
-
   describe '.inflections' do
     it 'adds exception for singular rule' do
       actual = Hanami::Utils::Inflector.singularize('analyses') # see spec/support/fixtures.rb
