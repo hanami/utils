@@ -35,8 +35,19 @@ RSpec.describe Hanami::Utils::BasicObject do
     end
   end
 
-  # See https://github.com/hanami/hanami/issues/629
-  it 'is pretty printable' do
-    pp TestClass.new
+  describe "#pretty_print" do
+    # See https://github.com/hanami/hanami/issues/629
+    it 'is pretty printable' do
+      expect { pp TestClass.new }.to output(/TestClass/).to_stdout
+    end
+
+    # See https://github.com/hanami/utils/issues/234
+    it "outputs the inspection to the given printer" do
+      printer = PP.new
+      subject = TestClass.new
+      subject.pretty_print(printer)
+
+      expect(printer.output).to match(/\A#<TestClass:\w+>\z/)
+    end
   end
 end
