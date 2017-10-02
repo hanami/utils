@@ -271,7 +271,8 @@ module Hanami
         'areas'       => 'area',
         'hives'       => 'hive',
         'phases'      => 'phase',
-        'exercises'   => 'exercise'
+        'exercises'   => 'exercise',
+        'releases'    => 'release'
       )
 
       # Block for custom inflection rules.
