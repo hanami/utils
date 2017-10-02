@@ -10,6 +10,10 @@ Ruby core extentions and class utilities for Hanami
 - [Luca Guidi] Introduce `Utils::String.transform` a pipelined transformations for strings
 - [Marion Duprey & Gabriel Gizotti] Filter sensitive informations for `Hanami::Logger`
 
+## v1.0.4 - 2017-10-02
+### Fixed
+- [Thiago Kenji Okada] Fix pluralization/singularization for `"release" => "releases"`
+
 ## v1.0.3 - 2017-09-06
 ### Fixed
 - [Malina Sulca] Fix pluralization/singularization for `"exercise" => "exercises"`
