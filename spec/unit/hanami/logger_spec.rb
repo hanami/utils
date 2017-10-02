@@ -1,5 +1,6 @@
 require 'hanami/logger'
 require 'rbconfig'
+require 'securerandom'
 
 RSpec.describe Hanami::Logger do
   before do
@@ -182,10 +183,10 @@ RSpec.describe Hanami::Logger do
         end # end IO
       end # end FileSystem
 
-      describe 'file system without folder created' do
-        let(:stream) { Pathname.new('log').join('logfile.log') }
+      describe 'file system with non-existing directory' do
+        let(:stream) { Pathname.new(__dir__).join('..', '..', '..', 'tmp', SecureRandom.hex(16), 'logfile.log') }
 
-        it 'creates the folder' do
+        it 'creates the directory' do
           logger = Hanami::Logger.new(stream: stream)
           logger.info('hello world')
 
@@ -195,6 +196,7 @@ RSpec.describe Hanami::Logger do
           expect(contents).to match(/hello world/)
         end
       end
+
       describe 'when StringIO' do
         let(:stream) { StringIO.new }
 
