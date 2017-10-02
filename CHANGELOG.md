@@ -3,6 +3,7 @@ Ruby core extentions and class utilities for Hanami
 
 ## v1.0.4 - 2017-10-02
 ### Fixed
+- [Luca Guidi] Make `Hanami::Utils::BasicObject` to be fully compatible with Ruby's `pp` and to be inspected by Pry.
 - [Thiago Kenji Okada] Fix pluralization/singularization for `"release" => "releases"`
 
 ## v1.0.3 - 2017-09-06
