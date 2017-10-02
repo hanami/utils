@@ -186,7 +186,11 @@ module Hanami
       def deep_symbolize!
         keys.each do |k|
           v = delete(k)
-          v = self.class.new(v).deep_symbolize! if v.respond_to?(:to_hash)
+          if v.respond_to?(:to_hash)
+            v = self.class.new(v).deep_symbolize!
+          elsif v.is_a?(Array)
+            v = v.map { |h| h.respond_to?(:to_hash) ? self.class.new(h).deep_symbolize! : h }
+          end
 
           self[k.to_sym] = v
         end
@@ -351,6 +355,7 @@ module Hanami
       def to_h
         @hash.each_with_object({}) do |(k, v), result|
           v = v.to_h if v.respond_to?(:to_hash)
+          v = v.map { |h| h.respond_to?(:to_hash) ? h.to_h : h } if v.is_a?(Array)
           result[k] = v
         end
       end

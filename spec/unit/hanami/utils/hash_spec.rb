@@ -77,6 +77,12 @@ RSpec.describe Hanami::Utils::Hash do
       expect(hash3[:key]).to eq(1)
     end
 
+    it "symbolizes deep nested array of hashes" do
+      hash = described_class.deep_symbolize('foo' => [{ 'bar' => 'Hello' }])
+
+      expect(hash[:foo]).to eq([{ bar: 'Hello' }])
+    end
+
     it "does't symbolize nested object that responds to to_hash" do
       nested = described_class.deep_symbolize("metadata" => WrappingHash.new("coverage" => 100))
 
