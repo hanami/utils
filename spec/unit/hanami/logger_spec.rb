@@ -493,7 +493,7 @@ RSpec.describe Hanami::Logger do
 
           output = with_captured_stdout do
             class TestLogger < Hanami::Logger; end
-            filters = %w(password password_confirmation credit_card user.login)
+            filters = %w[password password_confirmation credit_card user.login]
             TestLogger.new(filter: filters).info(form_params)
           end
 
@@ -526,19 +526,19 @@ RSpec.describe Hanami::Logger do
     end
 
     it "doesn't alter the hash keys" do
-      output = described_class.new(%w(password)).filter(Hash["password" => 'azerty', foo: Hash[password: 'bar']])
+      output = described_class.new(%w[password]).filter(Hash["password" => 'azerty', foo: Hash[password: 'bar']])
       expect(output).to eql(Hash["password" => '[FILTERED]', foo: Hash[password: '[FILTERED]']])
     end
 
     it 'filters with multiple filters' do
       input = Hash[password: 'azerty', number: '12345']
-      output = described_class.new(%i(password number)).filter(input)
+      output = described_class.new(%i[password number]).filter(input)
       expect(output).to eql(Hash[password: '[FILTERED]', number: '[FILTERED]'])
     end
 
     it 'filters with multi-level filter' do
       input = Hash[user: Hash[name: 'foo', password: 'azerty'], password: 'foo']
-      output = described_class.new(%w(user.password)).filter(input)
+      output = described_class.new(%w[user.password]).filter(input)
       expect(output).to eql(Hash[user: Hash[name: 'foo', password: '[FILTERED]'], password: 'foo'])
     end
   end

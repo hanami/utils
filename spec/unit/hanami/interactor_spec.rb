@@ -412,7 +412,7 @@ RSpec.describe Hanami::Interactor do
 
       it "doesn't interrupt the flow" do
         result = LegacyErrorInteractor.new.call
-        expect(result.operations).to eq %i(prepare! persist! log!)
+        expect(result.operations).to eq %i[prepare! persist! log!]
       end
 
       # See https://github.com/hanami/utils/issues/69
@@ -493,7 +493,7 @@ RSpec.describe Hanami::Interactor do
 
       it 'handles args and kwargs' do
         result = ComplexCall.new.call('foo', 'bar', baz: 'baz', buzz: 'buzz')
-        expect(result.args).to eql(%w(foo bar))
+        expect(result.args).to eql(%w[foo bar])
         expect(result.kwargs).to eql(Hash[baz: 'baz', buzz: 'buzz'])
       end
 
@@ -531,7 +531,7 @@ RSpec.describe Hanami::Interactor do
 
       it "doesn't interrupt the flow" do
         result = ErrorInteractor.new.call
-        expect(result.operations).to eq %i(prepare! persist! log!)
+        expect(result.operations).to eq %i[prepare! persist! log!]
       end
 
       # See https://github.com/hanami/utils/issues/69

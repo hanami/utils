@@ -161,7 +161,7 @@ module Hanami
       #   hash.keys    # => [:a, :b]
       #   hash.inspect # => { :a => 23, :b => { 'c' => ["x", "y", "z"] } }
       def symbolize!
-        keys.each do |k|
+        keys.each do |k| # rubocop:disable Performance/HashEachMethods (this breaks the build)
           v = delete(k)
           self[k.to_sym] = v
         end
@@ -184,7 +184,7 @@ module Hanami
       #   hash.keys    # => [:a, :b]
       #   hash.inspect # => {:a=>23, :b=>{:c=>["x", "y", "z"]}}
       def deep_symbolize!
-        keys.each do |k|
+        keys.each do |k| # rubocop:disable Performance/HashEachMethods (this breaks the build)
           v = delete(k)
           v = self.class.new(v).deep_symbolize! if v.respond_to?(:to_hash)
 
@@ -208,9 +208,8 @@ module Hanami
       #
       #   hash.keys    # => [:a, :b]
       #   hash.inspect # => {"a"=>23, "b"=>{"c"=>["x", "y", "z"]}}
-
       def stringify!
-        keys.each do |k|
+        keys.each do |k| # rubocop:disable Performance/HashEachMethods (this breaks the build)
           v = delete(k)
           v = self.class.new(v).stringify! if v.respond_to?(:to_hash)
 

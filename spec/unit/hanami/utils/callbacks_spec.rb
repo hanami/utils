@@ -36,7 +36,7 @@ class Action
     logger.push 'authenticate!'
   end
 
-  def set_article(params) # rubocop:disable Style/AccessorMethodName
+  def set_article(params) # rubocop:disable Naming/AccessorMethodName
     logger.push "set_article: #{params[:id]}"
   end
 end
