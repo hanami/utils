@@ -69,6 +69,26 @@ module Hanami
         self[:deep_symbolize_keys].call(input)
       end
 
+      # Stringify the given hash
+      #
+      # @param input [::Hash] the input
+      #
+      # @return [::Hash] the stringified hash
+      #
+      # @since 1.0.1
+      #
+      # @example Basic Usage
+      #   require 'hanami/utils/hash'
+      #
+      #   hash = Hanami::Utils::Hash.stringify(foo: "bar", baz: {a: 1})
+      #     # => {"foo"=>"bar", "baz"=>{:a=>1}}
+      #
+      #   hash.class
+      #     # => Hash
+      def self.stringify(input)
+        self[:stringify_keys].call(input)
+      end
+
       # Deep duplicate hash values
       #
       # The output of this function is a shallow duplicate of the input.
@@ -217,10 +237,6 @@ module Hanami
         end
 
         self
-      end
-
-      def self.stringify(input)
-        self[:stringify_keys].call(input)
       end
 
       # Return a deep copy of the current Hanami::Utils::Hash

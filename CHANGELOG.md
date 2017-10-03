@@ -1,6 +1,10 @@
 # Hanami::Utils
 Ruby core extentions and class utilities for Hanami
 
+## v1.1.0.beta2 - 2017-10-03
+### Added
+- [Alfonso Uceda] Auto create directory for `Hanami::Logger`
+
 ## v1.1.0.beta1 - 2017-08-11
 ### Added
 - [Marion Duprey] Allow `Hanami::Interactor#call` to accept arguments. `#initialize` should be used for Dependency Injection, while `#call` should be used for input
