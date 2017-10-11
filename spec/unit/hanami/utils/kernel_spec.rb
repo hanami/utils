@@ -865,7 +865,7 @@ RSpec.describe Hanami::Utils::Kernel do
     describe 'when a string without numbers is given' do
       let(:input) { 'home' }
 
-      if RUBY_VERSION >= '2.4'
+      if RUBY_VERSION.start_with?('2.4')
         it 'raises error' do
           expect { Hanami::Utils::Kernel.BigDecimal(input) }.to raise_error(ArgumentError, "invalid value for BigDecimal(): #{input.inspect}")
         end
