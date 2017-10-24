@@ -1,6 +1,10 @@
 # Hanami::Utils
 Ruby core extentions and class utilities for Hanami
 
+## v1.1.0 - 2017-10-25
+### Added
+- [Luca Guidi] Introduce `Utils::Hash.deep_serialize` to recursively serialize input into `::Hash`
+
 ## v1.1.0.rc1 - 2017-10-16
 
 ## v1.1.0.beta3 - 2017-10-04
