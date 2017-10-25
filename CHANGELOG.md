@@ -1,6 +1,27 @@
 # Hanami::Utils
 Ruby core extentions and class utilities for Hanami
 
+## v1.1.0 - 2017-10-25
+### Added
+- [Luca Guidi] Introduce `Utils::Hash.deep_serialize` to recursively serialize input into `::Hash`
+
+## v1.1.0.rc1 - 2017-10-16
+
+## v1.1.0.beta3 - 2017-10-04
+
+## v1.1.0.beta2 - 2017-10-03
+### Added
+- [Alfonso Uceda] Auto create directory for `Hanami::Logger`
+
+## v1.1.0.beta1 - 2017-08-11
+### Added
+- [Marion Duprey] Allow `Hanami::Interactor#call` to accept arguments. `#initialize` should be used for Dependency Injection, while `#call` should be used for input
+- [Marion Schleifer] Introduce `Utils::Hash.stringify`
+- [Marion Schleifer] Introduce `Utils::String.titleize`, `.capitalize`, `.classify`, `.underscore`, `.dasherize`, `.demodulize`, `.namespace`, `.pluralize`, `.singularize`, and `.rsub`
+- [Luca Guidi] Introduce `Utils::Files`: a set of utils for file manipulations
+- [Luca Guidi] Introduce `Utils::String.transform` a pipelined transformations for strings
+- [Marion Duprey & Gabriel Gizotti] Filter sensitive informations for `Hanami::Logger`
+
 ## v1.0.4 - 2017-10-02
 ### Fixed
 - [Luca Guidi] Make `Hanami::Utils::BasicObject` to be fully compatible with Ruby's `pp` and to be inspected by Pry.
@@ -16,7 +37,6 @@ Ruby core extentions and class utilities for Hanami
 - [Anton Davydov] Fix pluralization/singularization for `"phrase" => "phrases"`
 
 ## v1.0.1 - 2017-06-23
-
 ### Added
 - [Luca Guidi] Introduced `Utils::Hash.symbolize` and `.deep_symbolize`
 - [Luca Guidi] Introduced `Utils::Hash.deep_dup`

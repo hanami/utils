@@ -145,15 +145,14 @@ module Hanami
       super
 
       base.class_eval do
-        prepend Interface
-        extend  ClassMethods
+        extend ClassMethods
       end
     end
 
-    # Interactor interface
+    # Interactor legacy interface
     #
     # @since 0.3.5
-    module Interface
+    module LegacyInterface
       # Initialize an interactor
       #
       # It accepts arbitrary number of arguments.
@@ -262,6 +261,118 @@ module Hanami
       def call
         _call { super }
       end
+
+      private
+
+      # @since 0.3.5
+      # @api private
+      def _call
+        catch :fail do
+          validate!
+          yield
+        end
+
+        _prepare!
+      end
+
+      # @since 0.3.5
+      def validate!
+        fail! unless valid?
+      end
+    end
+
+    # Interactor interface
+    # @since 1.1.0
+    module Interface
+      # Triggers the operation and return a result.
+      #
+      # All the exposed instance variables will be available in the result.
+      #
+      # ATTENTION: This must be implemented by the including class.
+      #
+      # @return [Hanami::Interactor::Result] the result of the operation
+      #
+      # @raise [NoMethodError] if this isn't implemented by the including class.
+      #
+      # @example Expose instance variables in result payload
+      #   require 'hanami/interactor'
+      #
+      #   class Signup
+      #     include Hanami::Interactor
+      #     expose :user, :params
+      #
+      #     def call(params)
+      #       @params = params
+      #       @foo = 'bar'
+      #       @user = UserRepository.new.persist(User.new(params))
+      #     end
+      #   end
+      #
+      #   result = Signup.new(name: 'Luca').call
+      #   result.failure? # => false
+      #   result.successful? # => true
+      #
+      #   result.user   # => #<User:0x007fa311105778 @id=1 @name="Luca">
+      #   result.params # => { :name=>"Luca" }
+      #   result.foo    # => raises NoMethodError
+      #
+      # @example Failed precondition
+      #   require 'hanami/interactor'
+      #
+      #   class Signup
+      #     include Hanami::Interactor
+      #     expose :user
+      #
+      #     # THIS WON'T BE INVOKED BECAUSE #valid? WILL RETURN false
+      #     def call(params)
+      #       @user = User.new(params)
+      #       @user = UserRepository.new.persist(@user)
+      #     end
+      #
+      #     private
+      #     def valid?(params)
+      #       params.valid?
+      #     end
+      #   end
+      #
+      #   result = Signup.new.call(name: nil)
+      #   result.successful? # => false
+      #   result.failure? # => true
+      #
+      #   result.user   # => nil
+      #
+      # @example Bad usage
+      #   require 'hanami/interactor'
+      #
+      #   class Signup
+      #     include Hanami::Interactor
+      #
+      #     # Method #call is not defined
+      #   end
+      #
+      #   Signup.new.call # => NoMethodError
+      def call(*args, **kwargs)
+        @__result = ::Hanami::Interactor::Result.new
+        _call(*args, **kwargs) { super }
+      end
+
+      private
+
+      # @api private
+      # @since 1.1.0
+      def _call(*args, **kwargs)
+        catch :fail do
+          validate!(*args, **kwargs)
+          yield
+        end
+
+        _prepare!
+      end
+
+      # @since 1.1.0
+      def validate!(*args, **kwargs)
+        fail! unless valid?(*args, **kwargs)
+      end
     end
 
     private
@@ -274,7 +385,7 @@ module Hanami
     # @return [TrueClass,FalseClass] the result of the check
     #
     # @since 0.3.5
-    def valid?
+    def valid?(*)
       true
     end
 
@@ -428,22 +539,6 @@ module Hanami
 
     # @since 0.3.5
     # @api private
-    def _call
-      catch :fail do
-        validate!
-        yield
-      end
-
-      _prepare!
-    end
-
-    # @since 0.3.5
-    def validate!
-      fail! unless valid?
-    end
-
-    # @since 0.3.5
-    # @api private
     def _prepare!
       @__result.prepare!(_exposures)
     end
@@ -453,7 +548,7 @@ module Hanami
     def _exposures
       Hash[].tap do |result|
         self.class.exposures.each do |name, ivar|
-          result[name] = instance_variable_get(ivar)
+          result[name] = instance_variable_defined?(ivar) ? instance_variable_get(ivar) : nil
         end
       end
     end
@@ -470,6 +565,17 @@ module Hanami
 
         class_attribute :exposures
         self.exposures = {}
+      end
+    end
+
+    def method_added(method_name)
+      super
+      return unless method_name == :call
+
+      if instance_method(:call).arity.zero?
+        prepend Hanami::Interactor::LegacyInterface
+      else
+        prepend Hanami::Interactor::Interface
       end
     end
 

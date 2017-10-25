@@ -362,7 +362,7 @@ module Hanami
       # @api private
       #
       # @see Hanami::Utils::Escape.url
-      DEFAULT_URL_SCHEMES = %w(http https mailto).freeze
+      DEFAULT_URL_SCHEMES = %w[http https mailto].freeze
 
       # The output of an escape.
       #
@@ -511,7 +511,7 @@ module Hanami
         return input if input.is_a?(SafeString)
 
         SafeString.new(
-          URI::Parser.new.extract(
+          URI::DEFAULT_PARSER.extract(
             URI.decode_www_form_component(input),
             schemes
           ).first.to_s

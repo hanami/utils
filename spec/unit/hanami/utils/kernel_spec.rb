@@ -865,7 +865,7 @@ RSpec.describe Hanami::Utils::Kernel do
     describe 'when a string without numbers is given' do
       let(:input) { 'home' }
 
-      if RUBY_VERSION >= '2.4'
+      if RUBY_VERSION.start_with?('2.4')
         it 'raises error' do
           expect { Hanami::Utils::Kernel.BigDecimal(input) }.to raise_error(ArgumentError, "invalid value for BigDecimal(): #{input.inspect}")
         end
@@ -1411,7 +1411,7 @@ RSpec.describe Hanami::Utils::Kernel do
       end
 
       describe 'when an array of strings is given' do
-        let(:input) { %w(a b c) }
+        let(:input) { %w[a b c] }
 
         it 'returns the string representation' do
           expect(@result).to eq '["a", "b", "c"]'
@@ -1422,7 +1422,7 @@ RSpec.describe Hanami::Utils::Kernel do
         let(:input) { [Object.new] }
 
         it 'returns the string representation' do
-          expect(@result).to include'[#<Object:'
+          expect(@result).to include '[#<Object:'
         end
       end
 

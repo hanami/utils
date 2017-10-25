@@ -1,4 +1,5 @@
 require 'bigdecimal'
+require 'ostruct'
 require 'hanami/utils/hash'
 
 RSpec.describe Hanami::Utils::Hash do
@@ -131,6 +132,38 @@ RSpec.describe Hanami::Utils::Hash do
       result["a"].delete("b")
 
       expect(input).to eq("a" => { "b" => { "c" => 3 } })
+    end
+  end
+
+  describe ".deep_serialize" do
+    let(:input) do
+      klass = Class.new(OpenStruct) do
+        def to_hash
+          to_h
+        end
+      end
+
+      klass.new("foo" => "bar", "baz" => [klass.new(hello: "world")])
+    end
+
+    it "returns a ::Hash" do
+      expect(described_class.deep_serialize(input)).to be_kind_of(::Hash)
+    end
+
+    it "deeply serializes input" do
+      expected = { foo: "bar", baz: [{ hello: "world" }] }
+      actual = described_class.deep_serialize(input)
+
+      expect(actual).to eq(expected)
+    end
+
+    it "uses symbols as keys" do
+      output = described_class.deep_serialize(input)
+
+      expect(output).to be_any
+      output.each_key do |key|
+        expect(key).to be_kind_of(::Symbol)
+      end
     end
   end
 
@@ -296,6 +329,32 @@ RSpec.describe Hanami::Utils::Hash do
 
       expect(nested['metadata']).to be_kind_of Hanami::Utils::Hash
       expect(nested['metadata']['coverage']).to eq(100)
+    end
+  end
+
+  describe ".stringify" do
+    it "returns ::Hash" do
+      hash = described_class.stringify("fub" => "baz")
+
+      expect(hash).to be_kind_of(::Hash)
+    end
+
+    it "stringify keys" do
+      hash = described_class.stringify(fub: "baz")
+
+      expect(hash).to eq("fub" => "baz")
+    end
+
+    it "doesn't mutate original input" do
+      input = { "fub" => "baz" }
+      described_class.stringify(input)
+
+      expect(input).to eq("fub" => "baz")
+    end
+
+    it "doesn't stringify nested hashes" do
+      hash = described_class.stringify("nested" => { key: "value" })
+      expect(hash["nested"].keys).to eq([:key])
     end
   end
 

@@ -92,6 +92,10 @@ Safe and fast escape for URLs, HTML content and attributes. Based on OWASP/ESAPI
 
 Recursive, cross-platform ordered list of files. [[API doc](http://www.rubydoc.info/gems/hanami-utils/Hanami/Utils/FileList)]
 
+### Hanami::Utils::Files
+
+File utilities to manipulate files and directories. [[API doc](http://www.rubydoc.info/gems/hanami-utils/Hanami/Utils/Files)]
+
 ### Hanami::Utils::Hash
 
 Enhanced version of Ruby's `Hash`. [[API doc](http://www.rubydoc.info/gems/hanami-utils/Hanami/Utils/Hash)]
