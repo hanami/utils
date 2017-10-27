@@ -52,13 +52,22 @@ RSpec.describe Hanami::Utils::Files do
       expect(path).to have_content(":)")
     end
 
-    it "replaces previous contents" do
+    it "appends to previous contents (when new string is longer)" do
       path = root.join("write")
-      described_class.write(path, "some words")
+      described_class.write(path, "some words\n")
       described_class.write(path, "some other words")
 
       expect(path).to exist
-      expect(path).to have_content("some other words")
+      expect(path).to have_content("some words\nsome other words")
+    end
+
+    it "appends to previous contents (when new string is shorter)" do
+      path = root.join("write")
+      described_class.write(path, "many many many many words\n")
+      described_class.write(path, "more words")
+
+      expect(path).to exist
+      expect(path).to have_content("many many many many words\nmore words")
     end
   end
 

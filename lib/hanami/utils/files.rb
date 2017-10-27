@@ -28,7 +28,7 @@ module Hanami
       # @since 1.1.0
       def self.write(path, *content)
         mkdir_p(path)
-        open(path, ::File::CREAT | ::File::WRONLY, *content)
+        open(path, ::File::CREAT | ::File::WRONLY | ::File::APPEND, *content)
       end
 
       # Rewrites the contents of an existing file.
