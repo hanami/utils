@@ -113,6 +113,15 @@ class ComplexCall
   end
 end
 
+class CallWithoutKwargs
+  include Hanami::Interactor
+  expose :args
+
+  def call(*args)
+    @args = args
+  end
+end
+
 class LegacyErrorInteractor
   include Hanami::Interactor
   expose :operations
@@ -495,6 +504,23 @@ RSpec.describe Hanami::Interactor do
         result = ComplexCall.new.call('foo', 'bar', baz: 'baz', buzz: 'buzz')
         expect(result.args).to eql(%w[foo bar])
         expect(result.kwargs).to eql(Hash[baz: 'baz', buzz: 'buzz'])
+      end
+
+      it 'handles args without kwargs' do
+        result = CallWithoutKwargs.new.call('foo', 'bar')
+        expect(result.args).to eql(%w[foo bar])
+      end
+
+      it 'handles kwargs without args' do
+        result = ComplexCall.new.call(baz: 'baz', buzz: 'buzz')
+        expect(result.args).to eql(Array[])
+        expect(result.kwargs).to eql(Hash[baz: 'baz', buzz: 'buzz'])
+      end
+
+      it 'handles args with to_hash method' do
+        user = User.new(name: 'Luca')
+        result = CallWithoutKwargs.new.call(user)
+        expect(result.args).to eql(Array[user])
       end
 
       describe 'inheritance' do
