@@ -88,7 +88,7 @@ class Signup
     @force_failure = force_failure
   end
 
-  def call(params)
+  def call(**params)
     @params = params
     @user = User.new(params)
     @user.persist!
