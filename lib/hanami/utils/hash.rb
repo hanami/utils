@@ -254,7 +254,7 @@ module Hanami
         self
       end
 
-      # Convert in-place all the keys to Symbol instances, nested hashes are converted too.
+      # Convert in-place all the keys to Symbol instances, nested hashes and arrays are converted too.
       #
       # @return [Hash] self
       #
@@ -263,15 +263,22 @@ module Hanami
       # @example
       #   require 'hanami/utils/hash'
       #
-      #   hash = Hanami::Utils::Hash.new a: 23, b: { c: ['x','y','z'] }
+      #   hash = Hanami::Utils::Hash.new a: 23, b: { c: ['x','y','z'] }, d: [{ e: 'p' }]
       #   hash.stringify!
       #
       #   hash.keys    # => [:a, :b]
-      #   hash.inspect # => {"a"=>23, "b"=>{"c"=>["x", "y", "z"]}}
-      def stringify!
+      #   hash.inspect # => {"a"=>23, "b"=>{"c"=>["x", "y", "z"]}, "d"=>[{"e"=>"p"}]}
+      def stringify! # rubocop:disable Metrics/MethodLength
         keys.each do |k| # rubocop:disable Performance/HashEachMethods (this breaks the build)
           v = delete(k)
-          v = self.class.new(v).stringify! if v.respond_to?(:to_hash)
+          case v
+          when ->(h) { h.respond_to?(:to_hash) }
+            v = self.class.new(v).stringify!
+          when Array
+            v = v.map do |item|
+              item.respond_to?(:to_hash) ? self.class.new(item).stringify! : item
+            end
+          end
 
           self[k.to_s] = v
         end
