@@ -330,6 +330,14 @@ RSpec.describe Hanami::Utils::Hash do
       expect(nested['metadata']).to be_kind_of Hanami::Utils::Hash
       expect(nested['metadata']['coverage']).to eq(100)
     end
+
+    it 'stringifies nested arrays' do
+      hash = Hanami::Utils::Hash.new(nested: [{ key: 'value' }])
+      hash.stringify!
+
+      expect(hash['nested']).to be_kind_of Array
+      expect(hash['nested'][0]['key']).to eq('value')
+    end
   end
 
   describe ".stringify" do
