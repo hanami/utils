@@ -1,5 +1,6 @@
 require "pathname"
 require "fileutils"
+require 'hanami/utils/deprecation'
 
 module Hanami
   module Utils
@@ -7,6 +8,16 @@ module Hanami
     #
     # @since 1.1.0
     module Files # rubocop:disable Metrics/ModuleLength
+      # An error that will be thrown when a file exists,
+      # but we didn't expect that.
+      #
+      # @since x.x.x
+      class FileAlreadyExistsError < ::StandardError
+        def initialize(path)
+          super "File already exists: #{path}"
+        end
+      end
+
       # Creates an empty file for the given path.
       # All the intermediate directories are created.
       # If the path already exists, it doesn't change the contents
@@ -16,19 +27,29 @@ module Hanami
       # @since 1.1.0
       def self.touch(path)
         write(path, "")
+      rescue FileAlreadyExistsError
+        # This is fine, do nothing.
       end
 
       # Creates a new file for the given path and content.
       # All the intermediate directories are created.
-      # If the path already exists, it appends the contents.
+      # If the path already exists and overwrite is true,
+      # the contents are replaced.
       #
       # @param path [String,Pathname] the path to file
       # @param content [String, Array<String>] the content to write
       #
+      # @raise [FileAlreadyExistsError] if file exists and overwrite is false
+      #
       # @since 1.1.0
-      def self.write(path, *content)
-        mkdir_p(path)
-        open(path, ::File::CREAT | ::File::WRONLY | ::File::APPEND, *content)
+      def self.write(path, *content, overwrite: false)
+        if File.exist?(path)
+          raise FileAlreadyExistsError, path unless overwrite
+          delete(path)
+        else
+          mkdir_p(path)
+        end
+        open(path, ::File::CREAT | ::File::WRONLY, *content)
       end
 
       # Rewrites the contents of an existing file.
@@ -41,7 +62,11 @@ module Hanami
       #
       # @since 1.1.0
       def self.rewrite(path, *content)
-        open(path, ::File::TRUNC | ::File::WRONLY, *content)
+        Hanami::Utils::Deprecation.new(
+          'rewrite is deprecated, please use write and pass overwrite: true'
+        )
+        raise Errno::ENOENT unless File.exist?(path)
+        write(path, *content, overwrite: true)
       end
 
       # Copies source into destination.
