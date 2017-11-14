@@ -76,9 +76,15 @@ module Hanami
       # @param source [String,Pathname] the path to the source file
       # @param destination [String,Pathname] the path to the destination file
       #
+      # @raise [FileAlreadyExistsError] if file exists and overwrite is false
+      #
       # @since 1.1.0
-      def self.cp(source, destination)
-        mkdir_p(destination)
+      def self.cp(source, destination, overwrite: true)
+        if File.exist?(destination)
+          raise FileAlreadyExistsError, destination unless overwrite
+        else
+          mkdir_p(destination)
+        end
         FileUtils.cp(source, destination)
       end
 

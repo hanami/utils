@@ -150,6 +150,20 @@ RSpec.describe Hanami::Utils::Files do
       expect(destination).to exist
       expect(destination).to have_content("the source")
     end
+
+    it "raises FileAlreadyExists error when overwrite is false" do
+      source = root.join("..", "source")
+      described_class.write(source, "the source")
+
+      destination = root.join("cp")
+      described_class.write(destination, "the destination")
+      expect do
+        described_class.cp(source, destination, overwrite: false)
+      end.to raise_error(Hanami::Utils::Files::FileAlreadyExistsError)
+
+      expect(destination).to exist
+      expect(destination).to have_content("the destination")
+    end
   end
 
   describe ".mkdir" do
