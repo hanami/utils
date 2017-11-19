@@ -169,7 +169,7 @@ module Hanami
         content = ::File.readlines(path)
         content.unshift("#{line}\n")
 
-        rewrite(path, content)
+        write(path, content, overwrite: true)
       end
 
       # Adds a new line at the bottom of the file
@@ -188,7 +188,7 @@ module Hanami
         content = ::File.readlines(path)
         content << "#{contents}\n"
 
-        rewrite(path, content)
+        write(path, content, overwrite: true)
       end
 
       # Replace first line in `path` that contains `target` with `replacement`.
@@ -207,7 +207,7 @@ module Hanami
         content = ::File.readlines(path)
         content[index(content, path, target)] = "#{replacement}\n"
 
-        rewrite(path, content)
+        write(path, content, overwrite: true)
       end
 
       # Replace last line in `path` that contains `target` with `replacement`.
@@ -226,7 +226,7 @@ module Hanami
         content = ::File.readlines(path)
         content[-index(content.reverse, path, target) - 1] = "#{replacement}\n"
 
-        rewrite(path, content)
+        write(path, content, overwrite: true)
       end
 
       # Inject `contents` in `path` before `target`.
@@ -246,7 +246,7 @@ module Hanami
         i       = index(content, path, target)
 
         content.insert(i, "#{contents}\n")
-        rewrite(path, content)
+        write(path, content, overwrite: true)
       end
 
       # Inject `contents` in `path` after `target`.
@@ -266,7 +266,7 @@ module Hanami
         i       = index(content, path, target)
 
         content.insert(i + 1, "#{contents}\n")
-        rewrite(path, content)
+        write(path, content, overwrite: true)
       end
 
       # Removes line from `path`, matching `target`.
@@ -283,7 +283,7 @@ module Hanami
         i       = index(content, path, target)
 
         content.delete_at(i)
-        rewrite(path, content)
+        write(path, content, overwrite: true)
       end
 
       # Removes `target` block from `path`
@@ -322,7 +322,7 @@ module Hanami
         ending   = starting + index(content[starting..-1], path, closing)
 
         content.slice!(starting..ending)
-        rewrite(path, content)
+        write(path, content, overwrite: true)
 
         remove_block(path, target) if match?(content, target)
       end
