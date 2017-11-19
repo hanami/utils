@@ -25,11 +25,13 @@ module Hanami
       # @param path [String,Pathname] the path to file
       #
       # @since 1.1.0
+      # rubocop:disable Lint/HandleExceptions:
       def self.touch(path)
         write(path, "")
       rescue FileAlreadyExistsError
         # This is fine, do nothing.
       end
+      # rubocop:enable Lint/HandleExceptions:
 
       # Creates a new file for the given path and content.
       # All the intermediate directories are created.
