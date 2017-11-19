@@ -43,13 +43,9 @@ module Hanami
       #
       # @since 1.1.0
       def self.write(path, *content, overwrite: false)
-        if File.exist?(path)
-          raise FileAlreadyExistsError, path unless overwrite
-          delete(path)
-        else
-          mkdir_p(path)
-        end
-        open(path, ::File::CREAT | ::File::WRONLY, *content)
+        raise FileAlreadyExistsError, path if !overwrite && File.exist?(path)
+        mkdir_p(path)
+        open(path, ::File::CREAT | ::File::WRONLY | ::File::TRUNC, *content)
       end
 
       # Rewrites the contents of an existing file.
