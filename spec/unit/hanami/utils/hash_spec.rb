@@ -78,6 +78,11 @@ RSpec.describe Hanami::Utils::Hash do
       expect(hash3[:key]).to eq(1)
     end
 
+    it "symbolizes arrays of hashes" do
+      hash = described_class.deep_symbolize("books" => [{ "title" => "Hello Ruby" }, { "title" => "Hello Hanami" }])
+      expect(hash).to eq(books: [{ title: "Hello Ruby" }, { title: "Hello Hanami" }])
+    end
+
     it "does't symbolize nested object that responds to to_hash" do
       nested = described_class.deep_symbolize("metadata" => WrappingHash.new("coverage" => 100))
 
@@ -137,6 +142,11 @@ RSpec.describe Hanami::Utils::Hash do
       expect(hash3.keys).to eq(["key"])
 
       expect(hash3["key"]).to eq(1)
+    end
+
+    it "stringifies arrays of hashes" do
+      hash = described_class.deep_stringify(books: [{ title: "Hello Ruby" }, { title: "Hello Hanami" }])
+      expect(hash).to eq("books" => [{ "title" => "Hello Ruby" }, { "title" => "Hello Hanami" }])
     end
 
     it "does't stringify nested object that responds to to_hash" do
