@@ -1,6 +1,13 @@
 # Hanami::Utils
 Ruby core extentions and class utilities for Hanami
 
+## v1.1.1 - 2017-11-22
+### Added
+- [Luca Guidi] Introduce `Utils::Hash.deep_stringify` to recursively stringify a hash
+
+### Fixed
+- [Yuta Tokitake] Ensure `Interactor#call` to accept non-keyword arguments
+
 ## v1.1.0 - 2017-10-25
 ### Added
 - [Luca Guidi] Introduce `Utils::Hash.deep_serialize` to recursively serialize input into `::Hash`
