@@ -224,7 +224,7 @@ RSpec.describe Hanami::Utils::Escape do
       end
     end # tests with encodings
 
-    TEST_INVALID_CHARS.each do |char, _entity|
+    TEST_INVALID_CHARS.each_key do |char|
       it "escapes '#{char}'" do
         result = mod.html_attribute(char)
         expect(result).to eq "&#x#{TEST_REPLACEMENT_CHAR};"

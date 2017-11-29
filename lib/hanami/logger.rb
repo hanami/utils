@@ -5,6 +5,7 @@ require 'hanami/utils/string'
 require 'hanami/utils/json'
 require 'hanami/utils/hash'
 require 'hanami/utils/class_attribute'
+require 'hanami/utils/files'
 
 module Hanami
   # Hanami logger
@@ -111,7 +112,7 @@ module Hanami
 
       # @since 1.0.0
       # @api private
-      RESERVED_KEYS = %i(app severity time).freeze
+      RESERVED_KEYS = %i[app severity time].freeze
 
       include Utils::ClassAttribute
 
@@ -453,7 +454,14 @@ module Hanami
     #   logger.info "Hello World"
     #
     #   # => {"app":"Hanami","severity":"DEBUG","time":"2017-03-30T13:57:59Z","message":"Hello World"}
-    def initialize(application_name = nil, *args, stream: $stdout, level: DEBUG, formatter: nil, filter: []) # rubocop:disable Metrics/ParameterLists
+    # rubocop:disable Lint/HandleExceptions
+    # rubocop:disable Metrics/ParameterLists
+    def initialize(application_name = nil, *args, stream: $stdout, level: DEBUG, formatter: nil, filter: [])
+      begin
+        Utils::Files.mkdir_p(stream)
+      rescue TypeError
+      end
+
       super(stream, *args)
 
       @level            = _level(level)

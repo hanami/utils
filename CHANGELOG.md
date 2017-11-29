@@ -1,6 +1,25 @@
 # Hanami::Utils
 Ruby core extentions and class utilities for Hanami
 
+## v1.1.1 - 2017-11-22
+### Added
+- [Luca Guidi] Introduce `Utils::Hash.deep_stringify` to recursively stringify a hash
+
+### Fixed
+- [Yuta Tokitake] Ensure `Interactor#call` to accept non-keyword arguments
+
+## v1.1.0 - 2017-10-25
+### Added
+- [Luca Guidi] Introduce `Utils::Hash.deep_serialize` to recursively serialize input into `::Hash`
+
+## v1.1.0.rc1 - 2017-10-16
+
+## v1.1.0.beta3 - 2017-10-04
+
+## v1.1.0.beta2 - 2017-10-03
+### Added
+- [Alfonso Uceda] Auto create directory for `Hanami::Logger`
+
 ## v1.1.0.beta1 - 2017-08-11
 ### Added
 - [Marion Duprey] Allow `Hanami::Interactor#call` to accept arguments. `#initialize` should be used for Dependency Injection, while `#call` should be used for input
@@ -10,12 +29,21 @@ Ruby core extentions and class utilities for Hanami
 - [Luca Guidi] Introduce `Utils::String.transform` a pipelined transformations for strings
 - [Marion Duprey & Gabriel Gizotti] Filter sensitive informations for `Hanami::Logger`
 
+## v1.0.4 - 2017-10-02
+### Fixed
+- [Luca Guidi] Make `Hanami::Utils::BasicObject` to be fully compatible with Ruby's `pp` and to be inspected by Pry.
+- [Thiago Kenji Okada] Fix pluralization/singularization for `"release" => "releases"`
+
+## v1.0.3 - 2017-09-06
+### Fixed
+- [Malina Sulca] Fix pluralization/singularization for `"exercise" => "exercises"`
+- [Xavier Barbosa] Fix pluralization/singularization for `"area" => "areas"`
+
 ## v1.0.2 - 2017-07-10
 ### Fixed
 - [Anton Davydov] Fix pluralization/singularization for `"phrase" => "phrases"`
 
 ## v1.0.1 - 2017-06-23
-
 ### Added
 - [Luca Guidi] Introduced `Utils::Hash.symbolize` and `.deep_symbolize`
 - [Luca Guidi] Introduced `Utils::Hash.deep_dup`

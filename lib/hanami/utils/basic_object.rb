@@ -21,7 +21,7 @@ module Hanami
       #
       # @see http://ruby-doc.org/core/Object.html#method-i-inspect
       def inspect
-        "#<#{self.class}:#{'%x' % (__id__ << 1)}#{__inspect}>" # rubocop:disable Style/FormatString
+        "#<#{self.class}:#{'0x0000%x' % (__id__ << 1)}#{__inspect}>" # rubocop:disable Style/FormatString
       end
 
       # Alias for __id__
@@ -37,13 +37,14 @@ module Hanami
 
       # Interface for pp
       #
+      # @param printer [PP] the Pretty Printable printer
       # @return [String] the pretty-printable inspection of the object
       #
       # @since 0.9.0
       #
       # @see https://ruby-doc.org/stdlib/libdoc/pp/rdoc/PP.html
-      def pretty_print(*)
-        inspect
+      def pretty_print(printer)
+        printer.text(inspect)
       end
 
       # Returns true if responds to the given method.

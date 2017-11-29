@@ -226,7 +226,8 @@ module Hanami
         'police'      => 'police',
         # regressions
         # https://github.com/hanami/utils/issues/106
-        'album'       => 'albums'
+        'album'       => 'albums',
+        'area'        => 'areas'
       )
 
       # Irregular rules for singulars
@@ -267,8 +268,11 @@ module Hanami
         'species'     => 'species',
         'police'      => 'police',
         # fallback
+        'areas'       => 'area',
         'hives'       => 'hive',
-        'phases'      => 'phase'
+        'phases'      => 'phase',
+        'exercises'   => 'exercise',
+        'releases'    => 'release'
       )
 
       # Block for custom inflection rules.
@@ -309,8 +313,17 @@ module Hanami
       #     exception 'alga', 'algae'
       #   end
       def self.exception(singular, plural)
+        add_to_inflecto(singular, plural)
         singulars.add(plural, singular)
         plurals.add(singular, plural)
+      end
+
+      # Since ROM uses Inflecto for it inferences, we need to add an exception to it
+      #   when one is registered against our Inflector.
+      # @api private
+      def self.add_to_inflecto(singular, plural)
+        return unless defined? Inflecto
+        Inflecto.inflections.irregular(singular, plural)
       end
 
       # Add an uncountable word

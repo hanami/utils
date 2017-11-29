@@ -69,7 +69,7 @@ module Hanami
         case value
         when NilClass, FalseClass, TrueClass, Symbol, Numeric
           value
-        when v = blk && blk.call(value)
+        when v = blk&.call(value)
           v
         else
           value.dup

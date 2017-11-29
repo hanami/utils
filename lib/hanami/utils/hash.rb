@@ -69,6 +69,58 @@ module Hanami
         self[:deep_symbolize_keys].call(input)
       end
 
+      # Stringify the given hash
+      #
+      # @param input [::Hash] the input
+      #
+      # @return [::Hash] the stringified hash
+      #
+      # @since 1.0.1
+      #
+      # @example Basic Usage
+      #   require 'hanami/utils/hash'
+      #
+      #   hash = Hanami::Utils::Hash.stringify(foo: "bar", baz: {a: 1})
+      #     # => {"foo"=>"bar", "baz"=>{:a=>1}}
+      #
+      #   hash.class
+      #     # => Hash
+      def self.stringify(input)
+        self[:stringify_keys].call(input)
+      end
+
+      # Deeply stringify the given hash
+      #
+      # @param input [::Hash] the input
+      #
+      # @return [::Hash] the deep stringified hash
+      #
+      # @since 1.1.1
+      #
+      # @example Basic Usage
+      #   require "hanami/utils/hash"
+      #
+      #   hash = Hanami::Utils::Hash.deep_stringify(foo: "bar", baz: {a: 1})
+      #     # => {"foo"=>"bar", "baz"=>{"a"=>1}}
+      #
+      #   hash.class
+      #     # => Hash
+      def self.deep_stringify(input) # rubocop:disable Metrics/MethodLength
+        input.each_with_object({}) do |(key, value), output|
+          output[key.to_s] =
+            case value
+            when ::Hash
+              deep_stringify(value)
+            when Array
+              value.map do |item|
+                item.is_a?(::Hash) ? deep_stringify(item) : item
+              end
+            else
+              value
+            end
+        end
+      end
+
       # Deep duplicate hash values
       #
       # The output of this function is a shallow duplicate of the input.
@@ -117,6 +169,46 @@ module Hanami
         end
       end
 
+      # Deep serialize given object into a `Hash`
+      #
+      # Please note that the returning `Hash` will use symbols as keys.
+      #
+      # @param input [#to_hash] the input
+      #
+      # @return [::Hash] the deep serialized hash
+      #
+      # @since 1.1.0
+      #
+      # @example Basic Usage
+      #   require 'hanami/utils/hash'
+      #   require 'ostruct'
+      #
+      #   class Data < OpenStruct
+      #     def to_hash
+      #       to_h
+      #     end
+      #   end
+      #
+      #   input = Data.new("foo" => "bar", baz => [Data.new(hello: "world")])
+      #
+      #   Hanami::Utils::Hash.deep_serialize(input)
+      #     # => {:foo=>"bar", :baz=>[{:hello=>"world"}]}
+      def self.deep_serialize(input) # rubocop:disable Metrics/MethodLength
+        input.to_hash.each_with_object({}) do |(key, value), output|
+          output[key.to_sym] =
+            case value
+            when ->(h) { h.respond_to?(:to_hash) }
+              deep_serialize(value)
+            when Array
+              value.map do |item|
+                item.respond_to?(:to_hash) ? deep_serialize(item) : item
+              end
+            else
+              value
+            end
+        end
+      end
+
       # Initialize the hash
       #
       # @param hash [#to_h] the value we want to use to initialize this instance
@@ -161,7 +253,7 @@ module Hanami
       #   hash.keys    # => [:a, :b]
       #   hash.inspect # => { :a => 23, :b => { 'c' => ["x", "y", "z"] } }
       def symbolize!
-        keys.each do |k|
+        keys.each do |k| # rubocop:disable Performance/HashEachMethods (this breaks the build)
           v = delete(k)
           self[k.to_sym] = v
         end
@@ -184,7 +276,7 @@ module Hanami
       #   hash.keys    # => [:a, :b]
       #   hash.inspect # => {:a=>23, :b=>{:c=>["x", "y", "z"]}}
       def deep_symbolize!
-        keys.each do |k|
+        keys.each do |k| # rubocop:disable Performance/HashEachMethods (this breaks the build)
           v = delete(k)
           v = self.class.new(v).deep_symbolize! if v.respond_to?(:to_hash)
 
@@ -208,9 +300,8 @@ module Hanami
       #
       #   hash.keys    # => [:a, :b]
       #   hash.inspect # => {"a"=>23, "b"=>{"c"=>["x", "y", "z"]}}
-
       def stringify!
-        keys.each do |k|
+        keys.each do |k| # rubocop:disable Performance/HashEachMethods (this breaks the build)
           v = delete(k)
           v = self.class.new(v).stringify! if v.respond_to?(:to_hash)
 
@@ -218,10 +309,6 @@ module Hanami
         end
 
         self
-      end
-
-      def self.stringify(input)
-        self[:stringify_keys].call(input)
       end
 
       # Return a deep copy of the current Hanami::Utils::Hash

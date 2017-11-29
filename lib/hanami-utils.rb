@@ -1,1 +1,1 @@
-require 'hanami/utils' # rubocop:disable Style/FileName
+require 'hanami/utils' # rubocop:disable Naming/FileName

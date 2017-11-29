@@ -1,22 +1,19 @@
 # Please keep AllCops, Bundler, Style, Metrics groups and then order cops
 # alphabetically
-AllCops:
-  TargetRubyVersion: 2.3
 inherit_from:
-  - https://raw.githubusercontent.com/hanami/hanami/master/.rubocop.yml
-Metrics/BlockLength:
+  - https://raw.githubusercontent.com/hanami/devtools/master/.rubocop.yml
+Lint/RescueWithoutErrorClass:
   Exclude:
-    - 'test/**/*'
-    - 'tmp/**/*'
-    - 'spec/**/*'
+    - "spec/**/*"
+Naming/HeredocDelimiterNaming:
+  Exclude:
+    - "spec/**/*"
+Naming/MethodName:
+  Exclude:
+    - "lib/hanami/utils/kernel.rb"
 Style/DoubleNegation:
   Enabled: false
 Style/SpecialGlobalVars:
   Enabled: false
 Style/MethodMissing:
-  Enabled: false
-Style/MethodName:
-  Exclude:
-    - 'lib/hanami/utils/kernel.rb'
-Style/FrozenStringLiteralComment:
   Enabled: false

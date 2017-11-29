@@ -88,7 +88,7 @@ class Signup
     @force_failure = force_failure
   end
 
-  def call(params)
+  def call(**params)
     @params = params
     @user = User.new(params)
     @user.persist!
@@ -110,6 +110,15 @@ class ComplexCall
   def call(*args, **kwargs)
     @args = args
     @kwargs = kwargs
+  end
+end
+
+class CallWithoutKwargs
+  include Hanami::Interactor
+  expose :args
+
+  def call(*args)
+    @args = args
   end
 end
 
@@ -412,7 +421,7 @@ RSpec.describe Hanami::Interactor do
 
       it "doesn't interrupt the flow" do
         result = LegacyErrorInteractor.new.call
-        expect(result.operations).to eq %i(prepare! persist! log!)
+        expect(result.operations).to eq %i[prepare! persist! log!]
       end
 
       # See https://github.com/hanami/utils/issues/69
@@ -493,8 +502,25 @@ RSpec.describe Hanami::Interactor do
 
       it 'handles args and kwargs' do
         result = ComplexCall.new.call('foo', 'bar', baz: 'baz', buzz: 'buzz')
-        expect(result.args).to eql(%w(foo bar))
+        expect(result.args).to eql(%w[foo bar])
         expect(result.kwargs).to eql(Hash[baz: 'baz', buzz: 'buzz'])
+      end
+
+      it 'handles args without kwargs' do
+        result = CallWithoutKwargs.new.call('foo', 'bar')
+        expect(result.args).to eql(%w[foo bar])
+      end
+
+      it 'handles kwargs without args' do
+        result = ComplexCall.new.call(baz: 'baz', buzz: 'buzz')
+        expect(result.args).to eql(Array[])
+        expect(result.kwargs).to eql(Hash[baz: 'baz', buzz: 'buzz'])
+      end
+
+      it 'handles args with to_hash method' do
+        user = User.new(name: 'Luca')
+        result = CallWithoutKwargs.new.call(user)
+        expect(result.args).to eql(Array[user])
       end
 
       describe 'inheritance' do
@@ -531,7 +557,7 @@ RSpec.describe Hanami::Interactor do
 
       it "doesn't interrupt the flow" do
         result = ErrorInteractor.new.call
-        expect(result.operations).to eq %i(prepare! persist! log!)
+        expect(result.operations).to eq %i[prepare! persist! log!]
       end
 
       # See https://github.com/hanami/utils/issues/69
