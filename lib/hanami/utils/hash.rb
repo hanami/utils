@@ -44,6 +44,8 @@ module Hanami
       #
       #   hash.to_h # => { 'foo' => ['bar'] }
       def initialize(hash = {}, &blk)
+        require 'pry'
+        binding.pry
         @hash = hash.to_hash
         @hash.default_proc = blk
       end
