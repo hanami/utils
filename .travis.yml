@@ -5,6 +5,7 @@ script: ./script/ci
 rvm:
   - 2.4.2
   - 2.3.5
+  - 2.5.0
   - jruby-9.1.13.0
   - ruby-head
   - jruby-head
