@@ -212,7 +212,7 @@ module Hanami
       #
       # @param input [::String] the input
       #
-      # @return [String] the transformed string
+      # @return [::String] the transformed string
       #
       # @since 1.1.0
       #
@@ -239,7 +239,7 @@ module Hanami
       #
       # @param input [::String] the input
       #
-      # @return [String] the transformed string
+      # @return [::String] the transformed string
       #
       # @since 1.1.0
       #
@@ -282,7 +282,7 @@ module Hanami
       #
       # @param input [::String] the input
       #
-      # @return [String] the transformed string
+      # @return [::String] the transformed string
       #
       # @since 1.1.0
       #
@@ -300,7 +300,7 @@ module Hanami
       #
       # @param input [::String] the input
       #
-      # @return [String] the transformed string
+      # @return [::String] the transformed string
       #
       # @since 1.1.0
       #
@@ -386,7 +386,7 @@ module Hanami
       #
       # @param string [::String, Symbol] the value we want to initialize
       #
-      # @return [String] self
+      # @return [Hanami::Utils::String] self
       #
       # @since 0.1.0
       def initialize(string)
@@ -441,7 +441,7 @@ module Hanami
 
       # Return a CamelCase version of the string
       #
-      # @return [String] the transformed string
+      # @return [Hanami::Utils::String] the transformed string
       #
       # @since 0.1.0
       #
@@ -466,7 +466,7 @@ module Hanami
       # Revised version of `ActiveSupport::Inflector.underscore` implementation
       # @see https://github.com/rails/rails/blob/feaa6e2048fe86bcf07e967d6e47b865e42e055b/activesupport/lib/active_support/inflector/methods.rb#L90
       #
-      # @return [String] the transformed string
+      # @return [Hanami::Utils::String] the transformed string
       #
       # @since 0.1.0
       #
@@ -507,7 +507,7 @@ module Hanami
 
       # Return the string without the Ruby namespace of the class
       #
-      # @return [String] the transformed string
+      # @return [Hanami::Utils::String] the transformed string
       #
       # @since 0.1.0
       #
@@ -525,7 +525,7 @@ module Hanami
 
       # Return the top level namespace name
       #
-      # @return [String] the transformed string
+      # @return [Hanami::Utils::String] the transformed string
       #
       # @since 0.1.2
       #
@@ -602,7 +602,7 @@ module Hanami
 
       # Returns the hash of the internal string
       #
-      # @return [Fixnum]
+      # @return [Hash]
       #
       # @since 0.3.0
       def hash
@@ -611,7 +611,7 @@ module Hanami
 
       # Returns a string representation
       #
-      # @return [String]
+      # @return [::String]
       #
       # @since 0.3.0
       def to_s
@@ -633,7 +633,7 @@ module Hanami
 
       # Split the string with the given pattern
       #
-      # @return [Array<String>]
+      # @return [Array<::String>]
       #
       # @see http://www.ruby-doc.org/core/String.html#method-i-split
       #
@@ -644,7 +644,7 @@ module Hanami
 
       # Replace the given pattern with the given replacement
       #
-      # @return [String,nil]
+      # @return [::String]
       #
       # @see http://www.ruby-doc.org/core/String.html#method-i-gsub
       #
@@ -657,9 +657,10 @@ module Hanami
         end
       end
 
-      # Both forms iterate through str, matching the pattern
+      # Iterate through the string, matching the pattern.
+      # Either return all those patterns, or pass them to the block.
       #
-      # @return [String,nil]
+      # @return [::String]
       #
       # @see http://www.ruby-doc.org/core/String.html#method-i-scan
       #
