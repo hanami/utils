@@ -74,6 +74,21 @@ module Hanami
       # @api private
       CLASSIFY_WORD_SEPARATOR = /#{CLASSIFY_SEPARATOR}|#{NAMESPACE_SEPARATOR}|#{UNDERSCORE_SEPARATOR}|#{DASHERIZE_SEPARATOR}/
 
+      # Escape codes for terminals to output strings in colors
+      #
+      # @since x.x.x
+      # @api private
+      COLORS = Hash[
+        black:   30,
+        red:     31,
+        green:   32,
+        yellow:  33,
+        blue:    34,
+        magenta: 35,
+        cyan:    36,
+        gray:    37,
+      ].freeze
+
       @__transformations__ = Concurrent::Map.new
 
       extend Transproc::Registry
@@ -725,45 +740,20 @@ module Hanami
       end
 
       # Colorize output
-      # 8 colours available: black, red, green, yellow, blue, magenta, cyan, and gray
+      # 8 colors available: black, red, green, yellow, blue, magenta, cyan, and gray
       #
       # @api private
-      # @since 1.2.beta1
-
-      def colorize(color_code)
-        "\e[#{color_code}m#{self}\e[0m"
+      # @since x.x.x
+      def self.colorize(input, color:)
+        "\e[#{color_code(color)}m#{input}\e[0m"
       end
 
-      def black
-        colorize(30)
-      end
-
-      def red
-        colorize(31)
-      end
-
-      def green
-        colorize(32)
-      end
-
-      def yellow
-        colorize(33)
-      end
-
-      def blue
-        colorize(34)
-      end
-
-      def magenta
-        colorize(35)
-      end
-
-      def cyan
-        colorize(36)
-      end
-
-      def gray
-        colorize(37)
+      # Helper method to translate between color names and terminal escape codes
+      #
+      # @api private
+      # @since x.x.x
+      def self.color_code(name)
+        COLORS.fetch(name)
       end
     end
   end
