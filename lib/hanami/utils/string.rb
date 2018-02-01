@@ -602,7 +602,7 @@ module Hanami
 
       # Returns the hash of the internal string
       #
-      # @return [Hash]
+      # @return [Integer]
       #
       # @since 0.3.0
       def hash
@@ -660,7 +660,7 @@ module Hanami
       # Iterate through the string, matching the pattern.
       # Either return all those patterns, or pass them to the block.
       #
-      # @return [::String]
+      # @return [Array<::String>]
       #
       # @see http://www.ruby-doc.org/core/String.html#method-i-scan
       #
