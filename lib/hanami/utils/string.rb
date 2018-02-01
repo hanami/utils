@@ -742,7 +742,7 @@ module Hanami
       # Colorize output
       # 8 colors available: black, red, green, yellow, blue, magenta, cyan, and gray
       #
-      # @api private
+      # @api public
       # @since x.x.x
       def self.colorize(input, color:)
         "\e[#{color_code(color)}m#{input}\e[0m"
