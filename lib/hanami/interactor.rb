@@ -351,18 +351,18 @@ module Hanami
       #   end
       #
       #   Signup.new.call # => NoMethodError
-      def call(*args, **kwargs)
+      def call(*args)
         @__result = ::Hanami::Interactor::Result.new
-        _call(*args, **kwargs) { super }
+        _call(*args) { super }
       end
 
       private
 
       # @api private
       # @since 1.1.0
-      def _call(*args, **kwargs)
+      def _call(*args)
         catch :fail do
-          validate!(*args, **kwargs)
+          validate!(*args)
           yield
         end
 
@@ -370,8 +370,8 @@ module Hanami
       end
 
       # @since 1.1.0
-      def validate!(*args, **kwargs)
-        fail! unless valid?(*args, **kwargs)
+      def validate!(*args)
+        fail! unless valid?(*args)
       end
     end
 

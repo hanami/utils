@@ -89,6 +89,38 @@ module Hanami
         self[:stringify_keys].call(input)
       end
 
+      # Deeply stringify the given hash
+      #
+      # @param input [::Hash] the input
+      #
+      # @return [::Hash] the deep stringified hash
+      #
+      # @since 1.1.1
+      #
+      # @example Basic Usage
+      #   require "hanami/utils/hash"
+      #
+      #   hash = Hanami::Utils::Hash.deep_stringify(foo: "bar", baz: {a: 1})
+      #     # => {"foo"=>"bar", "baz"=>{"a"=>1}}
+      #
+      #   hash.class
+      #     # => Hash
+      def self.deep_stringify(input) # rubocop:disable Metrics/MethodLength
+        input.each_with_object({}) do |(key, value), output|
+          output[key.to_s] =
+            case value
+            when ::Hash
+              deep_stringify(value)
+            when Array
+              value.map do |item|
+                item.is_a?(::Hash) ? deep_stringify(item) : item
+              end
+            else
+              value
+            end
+        end
+      end
+
       # Deep duplicate hash values
       #
       # The output of this function is a shallow duplicate of the input.
@@ -297,7 +329,7 @@ module Hanami
       #     'bignum'     => 13289301283 ** 2,
       #     'float'      => 1.0,
       #     'complex'    => Complex(0.3),
-      #     'bigdecimal' => BigDecimal.new('12.0001'),
+      #     'bigdecimal' => BigDecimal('12.0001'),
       #     'rational'   => Rational(0.3),
       #     'string'     => 'foo bar',
       #     'hash'       => { a: 1, b: 'two', c: :three },
