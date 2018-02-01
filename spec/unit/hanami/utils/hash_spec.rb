@@ -456,7 +456,7 @@ RSpec.describe Hanami::Utils::Hash do
         'bignum'     => 13_289_301_283**2,
         'float'      => 1.0,
         'complex'    => Complex(0.3),
-        'bigdecimal' => BigDecimal.new('12.0001'),
+        'bigdecimal' => BigDecimal('12.0001'),
         'rational'   => Rational(0.3)
       }
 

@@ -510,7 +510,7 @@ RSpec.describe Hanami::Utils::Kernel do
       end
 
       describe 'when a bigdecimal is given' do
-        let(:input) { BigDecimal.new('12.0001') }
+        let(:input) { BigDecimal('12.0001') }
 
         it 'returns an bignum' do
           expect(@result).to eq 12
@@ -632,7 +632,7 @@ RSpec.describe Hanami::Utils::Kernel do
       end
 
       describe 'when a bigdecimal infinity is given' do
-        let(:input) { BigDecimal.new('Infinity') }
+        let(:input) { BigDecimal('Infinity') }
 
         it 'raises error' do
           expect { Hanami::Utils::Kernel.Integer(input) }.to raise_error(TypeError)
@@ -640,7 +640,7 @@ RSpec.describe Hanami::Utils::Kernel do
       end
 
       describe 'when a bigdecimal NaN is given' do
-        let(:input) { BigDecimal.new('NaN') }
+        let(:input) { BigDecimal('NaN') }
 
         it 'raises error' do
           expect { Hanami::Utils::Kernel.Integer(input) }.to raise_error(TypeError)
@@ -712,7 +712,7 @@ RSpec.describe Hanami::Utils::Kernel do
       before do
         PersonFavDecimalNumber = Struct.new(:name) do
           def to_d
-            BigDecimal.new(Rational(23).to_s)
+            BigDecimal(Rational(23).to_s)
           end
         end
 
@@ -727,7 +727,7 @@ RSpec.describe Hanami::Utils::Kernel do
         let(:input) { 1 }
 
         it 'returns a BigDecimal' do
-          expect(@result).to eq BigDecimal.new(1)
+          expect(@result).to eq BigDecimal(1)
         end
       end
 
@@ -735,7 +735,7 @@ RSpec.describe Hanami::Utils::Kernel do
         let(:input) { 1.2 }
 
         it 'returns a BigDecimal' do
-          expect(@result).to eq BigDecimal.new('1.2')
+          expect(@result).to eq BigDecimal('1.2')
         end
       end
 
@@ -743,7 +743,7 @@ RSpec.describe Hanami::Utils::Kernel do
         let(:input) { '23' }
 
         it 'returns a BigDecimal' do
-          expect(@result).to eq BigDecimal.new(23)
+          expect(@result).to eq BigDecimal(23)
         end
       end
 
@@ -751,7 +751,7 @@ RSpec.describe Hanami::Utils::Kernel do
         let(:input) { '23.1' }
 
         it 'returns a BigDecimal' do
-          expect(@result).to eq BigDecimal.new('23.1')
+          expect(@result).to eq BigDecimal('23.1')
         end
       end
 
@@ -759,7 +759,7 @@ RSpec.describe Hanami::Utils::Kernel do
         let(:input) { 0o11 }
 
         it 'returns a BigDecimal' do
-          expect(@result).to eq BigDecimal.new(9)
+          expect(@result).to eq BigDecimal(9)
         end
       end
 
@@ -767,7 +767,7 @@ RSpec.describe Hanami::Utils::Kernel do
         let(:input) { 0xf5 }
 
         it 'returns a BigDecimal' do
-          expect(@result).to eq BigDecimal.new(245)
+          expect(@result).to eq BigDecimal(245)
         end
       end
 
@@ -775,15 +775,15 @@ RSpec.describe Hanami::Utils::Kernel do
         let(:input) { 13_289_301_283**2 }
 
         it 'returns a BigDecimal' do
-          expect(@result).to eq BigDecimal.new(176_605_528_590_345_446_089)
+          expect(@result).to eq BigDecimal(176_605_528_590_345_446_089)
         end
       end
 
       describe 'when a bigdecimal is given' do
-        let(:input) { BigDecimal.new('12.0001') }
+        let(:input) { BigDecimal('12.0001') }
 
         it 'returns a BigDecimal' do
-          expect(@result).to eq BigDecimal.new('12.0001')
+          expect(@result).to eq BigDecimal('12.0001')
         end
       end
 
@@ -791,7 +791,7 @@ RSpec.describe Hanami::Utils::Kernel do
         let(:input) { Complex(758.3, 0) }
 
         it 'returns a BigDecimal' do
-          expect(@result).to eq BigDecimal.new('758.3')
+          expect(@result).to eq BigDecimal('758.3')
         end
       end
 
@@ -799,7 +799,7 @@ RSpec.describe Hanami::Utils::Kernel do
         let(:input) { Complex(0.3) }
 
         it 'returns a BigDecimal' do
-          expect(@result).to eq BigDecimal.new('0.3')
+          expect(@result).to eq BigDecimal('0.3')
         end
       end
 
@@ -807,7 +807,7 @@ RSpec.describe Hanami::Utils::Kernel do
         let(:input) { '2.5/1' }
 
         it 'returns a BigDecimal' do
-          expect(@result).to eq BigDecimal.new('2.5')
+          expect(@result).to eq BigDecimal('2.5')
         end
       end
 
@@ -815,7 +815,7 @@ RSpec.describe Hanami::Utils::Kernel do
         let(:input) { Rational(0.3) }
 
         it 'returns an BigDecimal' do
-          expect(@result).to eq BigDecimal.new(input.to_s)
+          expect(@result).to eq BigDecimal(input.to_s)
         end
       end
 
@@ -823,7 +823,7 @@ RSpec.describe Hanami::Utils::Kernel do
         let(:input) { '2/3' }
 
         it 'returns a BigDecimal' do
-          expect(@result).to eq BigDecimal.new('2/3')
+          expect(@result).to eq BigDecimal('2/3')
         end
       end
 
@@ -846,10 +846,10 @@ RSpec.describe Hanami::Utils::Kernel do
       end
 
       describe 'when a BigDecimal Infinity is given' do
-        let(:input) { BigDecimal.new('Infinity') }
+        let(:input) { BigDecimal('Infinity') }
 
         it 'returns the BigDecimal Infinity representation' do
-          expect(@result).to eq BigDecimal.new('Infinity')
+          expect(@result).to eq BigDecimal('Infinity')
         end
       end
 
@@ -857,7 +857,7 @@ RSpec.describe Hanami::Utils::Kernel do
         let(:input) { PersonFavDecimalNumber.new('Luca') }
 
         it 'returns a BigDecimal' do
-          expect(@result).to eq BigDecimal.new(23)
+          expect(@result).to eq BigDecimal(23)
         end
       end
     end
@@ -871,7 +871,7 @@ RSpec.describe Hanami::Utils::Kernel do
         end
       else
         it 'returns an BigDecimal' do
-          expect(Hanami::Utils::Kernel.BigDecimal(input)).to eq BigDecimal.new(0)
+          expect(Hanami::Utils::Kernel.BigDecimal(input)).to eq BigDecimal(0)
         end
       end
     end
@@ -880,25 +880,25 @@ RSpec.describe Hanami::Utils::Kernel do
       let(:input) { '23.0 street' }
 
       it 'returns an BigDecimal' do
-        expect(Hanami::Utils::Kernel.BigDecimal(input)).to eq BigDecimal.new(23)
+        expect(Hanami::Utils::Kernel.BigDecimal(input)).to eq BigDecimal(23)
       end
     end
 
     # Bug: https://github.com/hanami/utils/issues/140
     describe 'when a negative bigdecimal is given' do
-      let(:input) { BigDecimal.new('-12.0001') }
+      let(:input) { BigDecimal('-12.0001') }
 
       it 'returns a BigDecimal' do
-        expect(Hanami::Utils::Kernel.BigDecimal(input)).to eq BigDecimal.new('-12.0001')
+        expect(Hanami::Utils::Kernel.BigDecimal(input)).to eq BigDecimal('-12.0001')
       end
     end
 
     # Bug: https://github.com/hanami/utils/issues/140
     describe 'when the big decimal is less than 1 with high precision' do
-      let(:input) { BigDecimal.new('0.0001') }
+      let(:input) { BigDecimal('0.0001') }
 
       it 'returns a BigDecimal' do
-        expect(Hanami::Utils::Kernel.BigDecimal(input)).to eq BigDecimal.new('0.0001')
+        expect(Hanami::Utils::Kernel.BigDecimal(input)).to eq BigDecimal('0.0001')
       end
     end
 
@@ -1054,7 +1054,7 @@ RSpec.describe Hanami::Utils::Kernel do
       end
 
       describe 'when a bigdecimal is given' do
-        let(:input) { BigDecimal.new('12.0001') }
+        let(:input) { BigDecimal('12.0001') }
 
         it 'returns a float' do
           expect(@result).to be_kind_of(Float)
@@ -1063,7 +1063,7 @@ RSpec.describe Hanami::Utils::Kernel do
       end
 
       describe 'when a bigdecimal infinity is given' do
-        let(:input) { BigDecimal.new('Infinity') }
+        let(:input) { BigDecimal('Infinity') }
 
         it 'returns Infinity' do
           expect(@result).to be_kind_of(Float)
@@ -1072,7 +1072,7 @@ RSpec.describe Hanami::Utils::Kernel do
       end
 
       describe 'when a bigdecimal NaN is given' do
-        let(:input) { BigDecimal.new('NaN') }
+        let(:input) { BigDecimal('NaN') }
 
         it 'returns NaN' do
           expect(@result).to be_kind_of(Float)
@@ -1349,7 +1349,7 @@ RSpec.describe Hanami::Utils::Kernel do
       end
 
       describe 'when a big decimal is given' do
-        let(:input) { BigDecimal.new(7944.2343, 10) }
+        let(:input) { BigDecimal(7944.2343, 10) }
 
         if RUBY_VERSION >= '2.4'
           it 'returns the string representation' do
@@ -1363,7 +1363,7 @@ RSpec.describe Hanami::Utils::Kernel do
       end
 
       describe 'when a big decimal infinity is given' do
-        let(:input) { BigDecimal.new('Infinity') }
+        let(:input) { BigDecimal('Infinity') }
 
         it 'returns the string representation' do
           expect(@result).to eq 'Infinity'
@@ -1371,7 +1371,7 @@ RSpec.describe Hanami::Utils::Kernel do
       end
 
       describe 'when a big decimal NaN is given' do
-        let(:input) { BigDecimal.new('NaN') }
+        let(:input) { BigDecimal('NaN') }
 
         it 'returns the string representation' do
           expect(@result).to eq 'NaN'
