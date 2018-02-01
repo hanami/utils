@@ -1,6 +1,6 @@
 require "pathname"
 require "fileutils"
-require 'hanami/utils/deprecation'
+require "hanami/utils/deprecation"
 
 module Hanami
   module Utils
@@ -8,16 +8,6 @@ module Hanami
     #
     # @since 1.1.0
     module Files # rubocop:disable Metrics/ModuleLength
-      # An error that will be thrown when a file exists,
-      # but we didn't expect that.
-      #
-      # @since x.x.x
-      class FileAlreadyExistsError < ::StandardError
-        def initialize(path)
-          super "File already exists: #{path}"
-        end
-      end
-
       # Creates an empty file for the given path.
       # All the intermediate directories are created.
       # If the path already exists, it doesn't change the contents
@@ -25,27 +15,19 @@ module Hanami
       # @param path [String,Pathname] the path to file
       #
       # @since 1.1.0
-      # rubocop:disable Lint/HandleExceptions:
       def self.touch(path)
-        write(path, "")
-      rescue FileAlreadyExistsError
-        # This is fine, do nothing.
+        mkdir_p(path)
+        FileUtils.touch(path)
       end
-      # rubocop:enable Lint/HandleExceptions:
 
       # Creates a new file for the given path and content.
       # All the intermediate directories are created.
-      # If the path already exists and overwrite is true,
-      # the contents are replaced.
       #
       # @param path [String,Pathname] the path to file
       # @param content [String, Array<String>] the content to write
       #
-      # @raise [FileAlreadyExistsError] if file exists and overwrite is false
-      #
       # @since 1.1.0
-      def self.write(path, *content, overwrite: false)
-        raise FileAlreadyExistsError, path if !overwrite && File.exist?(path)
+      def self.write(path, *content)
         mkdir_p(path)
         open(path, ::File::CREAT | ::File::WRONLY | ::File::TRUNC, *content)
       end
@@ -61,10 +43,10 @@ module Hanami
       # @since 1.1.0
       def self.rewrite(path, *content)
         Hanami::Utils::Deprecation.new(
-          'rewrite is deprecated, please use write and pass overwrite: true'
+          "`.rewrite' is deprecated, please use `.write'"
         )
         raise Errno::ENOENT unless File.exist?(path)
-        write(path, *content, overwrite: true)
+        write(path, *content)
       end
 
       # Copies source into destination.
@@ -74,15 +56,9 @@ module Hanami
       # @param source [String,Pathname] the path to the source file
       # @param destination [String,Pathname] the path to the destination file
       #
-      # @raise [FileAlreadyExistsError] if file exists and overwrite is false
-      #
       # @since 1.1.0
-      def self.cp(source, destination, overwrite: true)
-        if File.exist?(destination)
-          raise FileAlreadyExistsError, destination unless overwrite
-        else
-          mkdir_p(destination)
-        end
+      def self.cp(source, destination)
+        mkdir_p(destination)
         FileUtils.cp(source, destination)
       end
 
@@ -169,7 +145,7 @@ module Hanami
         content = ::File.readlines(path)
         content.unshift("#{line}\n")
 
-        write(path, content, overwrite: true)
+        write(path, content)
       end
 
       # Adds a new line at the bottom of the file
@@ -188,7 +164,7 @@ module Hanami
         content = ::File.readlines(path)
         content << "#{contents}\n"
 
-        write(path, content, overwrite: true)
+        write(path, content)
       end
 
       # Replace first line in `path` that contains `target` with `replacement`.
@@ -207,7 +183,7 @@ module Hanami
         content = ::File.readlines(path)
         content[index(content, path, target)] = "#{replacement}\n"
 
-        write(path, content, overwrite: true)
+        write(path, content)
       end
 
       # Replace last line in `path` that contains `target` with `replacement`.
@@ -226,7 +202,7 @@ module Hanami
         content = ::File.readlines(path)
         content[-index(content.reverse, path, target) - 1] = "#{replacement}\n"
 
-        write(path, content, overwrite: true)
+        write(path, content)
       end
 
       # Inject `contents` in `path` before `target`.
@@ -246,7 +222,7 @@ module Hanami
         i       = index(content, path, target)
 
         content.insert(i, "#{contents}\n")
-        write(path, content, overwrite: true)
+        write(path, content)
       end
 
       # Inject `contents` in `path` after `target`.
@@ -266,7 +242,7 @@ module Hanami
         i       = index(content, path, target)
 
         content.insert(i + 1, "#{contents}\n")
-        write(path, content, overwrite: true)
+        write(path, content)
       end
 
       # Removes line from `path`, matching `target`.
@@ -283,7 +259,7 @@ module Hanami
         i       = index(content, path, target)
 
         content.delete_at(i)
-        write(path, content, overwrite: true)
+        write(path, content)
       end
 
       # Removes `target` block from `path`
@@ -322,7 +298,7 @@ module Hanami
         ending   = starting + index(content[starting..-1], path, closing)
 
         content.slice!(starting..ending)
-        write(path, content, overwrite: true)
+        write(path, content)
 
         remove_block(path, target) if match?(content, target)
       end

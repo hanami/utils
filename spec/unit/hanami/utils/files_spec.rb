@@ -52,21 +52,10 @@ RSpec.describe Hanami::Utils::Files do
       expect(path).to have_content(":)")
     end
 
-    it "throws FileAlreadyExists error when not told to overwrite" do
-      path = root.join("write")
-      described_class.write(path, "some words")
-      expect do
-        described_class.write(path, "some other words")
-      end.to raise_error(Hanami::Utils::Files::FileAlreadyExistsError)
-
-      expect(path).to exist
-      expect(path).to have_content("some words")
-    end
-
-    it "overwrites file, when specifically told to" do
+    it "overwrites file when it already exists" do
       path = root.join("write")
       described_class.write(path, "many many many many words")
-      described_class.write(path, "new words", overwrite: true)
+      described_class.write(path, "new words")
 
       expect(path).to exist
       expect(path).to have_content("new words")
@@ -78,7 +67,7 @@ RSpec.describe Hanami::Utils::Files do
       path = root.join("rewrite")
       described_class.write(path, "Hello\nWorld")
       expect { described_class.rewrite(path, "Ciao Mondo") }.to output(
-        include("rewrite is deprecated, please use write and pass overwrite: true - called from: #{__FILE__}:80:in `block")
+        include("`.rewrite' is deprecated, please use `.write' - called from: #{__FILE__}:69:in `block")
       ).to_stderr
     end
 
@@ -149,20 +138,6 @@ RSpec.describe Hanami::Utils::Files do
 
       expect(destination).to exist
       expect(destination).to have_content("the source")
-    end
-
-    it "raises FileAlreadyExists error when overwrite is false" do
-      source = root.join("..", "source")
-      described_class.write(source, "the source")
-
-      destination = root.join("cp")
-      described_class.write(destination, "the destination")
-      expect do
-        described_class.cp(source, destination, overwrite: false)
-      end.to raise_error(Hanami::Utils::Files::FileAlreadyExistsError)
-
-      expect(destination).to exist
-      expect(destination).to have_content("the destination")
     end
   end
 
