@@ -39,7 +39,7 @@ RSpec.describe Hanami::Utils::Duplicable do
       end
 
       it "doesn't dup bigdecimal" do
-        assert_same_duped_object BigDecimal.new(42)
+        assert_same_duped_object BigDecimal(42)
       end
 
       it "doesn't dup bignum" do

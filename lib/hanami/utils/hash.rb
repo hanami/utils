@@ -329,7 +329,7 @@ module Hanami
       #     'bignum'     => 13289301283 ** 2,
       #     'float'      => 1.0,
       #     'complex'    => Complex(0.3),
-      #     'bigdecimal' => BigDecimal.new('12.0001'),
+      #     'bigdecimal' => BigDecimal('12.0001'),
       #     'rational'   => Rational(0.3),
       #     'string'     => 'foo bar',
       #     'hash'       => { a: 1, b: 'two', c: :three },
