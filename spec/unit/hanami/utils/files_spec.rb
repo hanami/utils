@@ -1,5 +1,6 @@
 require "hanami/utils/files"
 require "securerandom"
+require "hanami/utils/io"
 
 RSpec.describe Hanami::Utils::Files do
   let(:root) { Pathname.new(Dir.pwd).join("tmp", SecureRandom.uuid).tap(&:mkpath) }
@@ -52,42 +53,56 @@ RSpec.describe Hanami::Utils::Files do
       expect(path).to have_content(":)")
     end
 
-    it "replaces previous contents" do
+    it "overwrites file when it already exists" do
       path = root.join("write")
-      described_class.write(path, "some words")
-      described_class.write(path, "some other words")
+      described_class.write(path, "many many many many words")
+      described_class.write(path, "new words")
 
       expect(path).to exist
-      expect(path).to have_content("some other words")
+      expect(path).to have_content("new words")
     end
   end
 
   describe ".rewrite" do
-    it "rewrites an existing file with given contents" do
+    it "is deprecated" do
       path = root.join("rewrite")
       described_class.write(path, "Hello\nWorld")
-      described_class.rewrite(path, "Ciao Mondo")
+      expect { described_class.rewrite(path, "Ciao Mondo") }.to output(
+        include("`.rewrite' is deprecated, please use `.write' - called from: #{__FILE__}:#{__LINE__ - 1}:in `block")
+      ).to_stderr
+    end
 
-      expect(path).to     exist
-      expect(path).to     have_content("Ciao Mondo")
-      expect(path).to_not have_content("Hello\nWorld")
+    it "rewrites an existing file with given contents" do
+      Hanami::Utils::IO.silence_warnings do
+        path = root.join("rewrite")
+        described_class.write(path, "Hello\nWorld")
+        described_class.rewrite(path, "Ciao Mondo")
+
+        expect(path).to     exist
+        expect(path).to     have_content("Ciao Mondo")
+        expect(path).to_not have_content("Hello\nWorld")
+      end
     end
 
     it "raises an error when intermediate directories aren't present" do
-      path = root.join("path", "to", "file", "rewrite")
+      Hanami::Utils::IO.silence_warnings do
+        path = root.join("path", "to", "file", "rewrite")
 
-      expect { described_class.rewrite(path, "Hello") }.to raise_error do |exception|
-        expect(exception).to be_kind_of(Errno::ENOENT)
-        expect(exception.message).to match("No such file or directory")
+        expect { described_class.rewrite(path, "Hello") }.to raise_error do |exception|
+          expect(exception).to be_kind_of(Errno::ENOENT)
+          expect(exception.message).to match("No such file or directory")
+        end
       end
     end
 
     it "raises an error when the file was not found" do
-      path = root.join("rewrite_not_found")
+      Hanami::Utils::IO.silence_warnings do
+        path = root.join("rewrite_not_found")
 
-      expect { described_class.rewrite(path, "Hello") }.to raise_error do |exception|
-        expect(exception).to be_kind_of(Errno::ENOENT)
-        expect(exception.message).to match("No such file or directory")
+        expect { described_class.rewrite(path, "Hello") }.to raise_error do |exception|
+          expect(exception).to be_kind_of(Errno::ENOENT)
+          expect(exception.message).to match("No such file or directory")
+        end
       end
     end
   end

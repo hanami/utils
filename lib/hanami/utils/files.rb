@@ -1,5 +1,6 @@
 require "pathname"
 require "fileutils"
+require "hanami/utils/deprecation"
 
 module Hanami
   module Utils
@@ -15,12 +16,12 @@ module Hanami
       #
       # @since 1.1.0
       def self.touch(path)
-        write(path, "")
+        mkdir_p(path)
+        FileUtils.touch(path)
       end
 
       # Creates a new file for the given path and content.
       # All the intermediate directories are created.
-      # If the path already exists, it appends the contents.
       #
       # @param path [String,Pathname] the path to file
       # @param content [String, Array<String>] the content to write
@@ -28,7 +29,7 @@ module Hanami
       # @since 1.1.0
       def self.write(path, *content)
         mkdir_p(path)
-        open(path, ::File::CREAT | ::File::WRONLY, *content)
+        open(path, ::File::CREAT | ::File::WRONLY | ::File::TRUNC, *content)
       end
 
       # Rewrites the contents of an existing file.
@@ -41,7 +42,11 @@ module Hanami
       #
       # @since 1.1.0
       def self.rewrite(path, *content)
-        open(path, ::File::TRUNC | ::File::WRONLY, *content)
+        Hanami::Utils::Deprecation.new(
+          "`.rewrite' is deprecated, please use `.write'"
+        )
+        raise Errno::ENOENT unless File.exist?(path)
+        write(path, *content)
       end
 
       # Copies source into destination.
@@ -140,7 +145,7 @@ module Hanami
         content = ::File.readlines(path)
         content.unshift("#{line}\n")
 
-        rewrite(path, content)
+        write(path, content)
       end
 
       # Adds a new line at the bottom of the file
@@ -159,7 +164,7 @@ module Hanami
         content = ::File.readlines(path)
         content << "#{contents}\n"
 
-        rewrite(path, content)
+        write(path, content)
       end
 
       # Replace first line in `path` that contains `target` with `replacement`.
@@ -178,7 +183,7 @@ module Hanami
         content = ::File.readlines(path)
         content[index(content, path, target)] = "#{replacement}\n"
 
-        rewrite(path, content)
+        write(path, content)
       end
 
       # Replace last line in `path` that contains `target` with `replacement`.
@@ -197,7 +202,7 @@ module Hanami
         content = ::File.readlines(path)
         content[-index(content.reverse, path, target) - 1] = "#{replacement}\n"
 
-        rewrite(path, content)
+        write(path, content)
       end
 
       # Inject `contents` in `path` before `target`.
@@ -217,7 +222,7 @@ module Hanami
         i       = index(content, path, target)
 
         content.insert(i, "#{contents}\n")
-        rewrite(path, content)
+        write(path, content)
       end
 
       # Inject `contents` in `path` after `target`.
@@ -237,7 +242,7 @@ module Hanami
         i       = index(content, path, target)
 
         content.insert(i + 1, "#{contents}\n")
-        rewrite(path, content)
+        write(path, content)
       end
 
       # Removes line from `path`, matching `target`.
@@ -254,7 +259,7 @@ module Hanami
         i       = index(content, path, target)
 
         content.delete_at(i)
-        rewrite(path, content)
+        write(path, content)
       end
 
       # Removes `target` block from `path`
@@ -293,7 +298,7 @@ module Hanami
         ending   = starting + index(content[starting..-1], path, closing)
 
         content.slice!(starting..ending)
-        rewrite(path, content)
+        write(path, content)
 
         remove_block(path, target) if match?(content, target)
       end
