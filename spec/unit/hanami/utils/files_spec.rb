@@ -52,17 +52,25 @@ RSpec.describe Hanami::Utils::Files do
       expect(path).to have_content(":)")
     end
 
-    it "replaces previous contents" do
+    it "overwrites file when it already exists" do
       path = root.join("write")
-      described_class.write(path, "some words")
-      described_class.write(path, "some other words")
+      described_class.write(path, "many many many many words")
+      described_class.write(path, "new words")
 
       expect(path).to exist
-      expect(path).to have_content("some other words")
+      expect(path).to have_content("new words")
     end
   end
 
   describe ".rewrite" do
+    it "is deprecated" do
+      path = root.join("rewrite")
+      described_class.write(path, "Hello\nWorld")
+      expect { described_class.rewrite(path, "Ciao Mondo") }.to output(
+        include("`.rewrite' is deprecated, please use `.write' - called from: #{__FILE__}:69:in `block")
+      ).to_stderr
+    end
+
     it "rewrites an existing file with given contents" do
       path = root.join("rewrite")
       described_class.write(path, "Hello\nWorld")
