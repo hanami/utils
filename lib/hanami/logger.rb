@@ -469,6 +469,8 @@ module Hanami
       @application_name = application_name
       @formatter        = Formatter.fabricate(formatter, self.application_name, filter)
     end
+    # rubocop:enable Metrics/ParameterLists
+    # rubocop:enable Lint/HandleExceptions
 
     # Returns the current application name, this is used for tagging purposes
     #

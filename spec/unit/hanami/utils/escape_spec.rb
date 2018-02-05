@@ -125,6 +125,7 @@ RSpec.describe Hanami::Utils::Escape do
       expect(result.encoding).to eq Encoding::UTF_8
 
       expect(string.encoding).to eq encoding
+      # rubocop:enable Style/AsciiComments
     end
   end
 
