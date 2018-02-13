@@ -214,11 +214,15 @@ module Hanami
 
       # @api private
       def _format_error(result, hash)
-        result << " #{hash[:error]}:" if hash.key?(:error)
-        result << " #{hash[:message]}#{NEW_LINE}"
+        error_message = Hanami::Utils::String.colorize(
+          [ hash[:error], hash[:message] ].compact.join(": "),
+          color: :red,
+        )
+        result << [" ", error_message, NEW_LINE].join
         if hash.key?(:backtrace)
           hash[:backtrace].each do |line|
-            result << "from #{line}#{NEW_LINE}"
+            result << Hanami::Utils::String.colorize("from #{line}#{NEW_LINE}",
+                      color: :yellow)
           end
         end
 
