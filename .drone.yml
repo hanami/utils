@@ -2,5 +2,8 @@ pipeline:
   build:
     image: ruby
     commands:
+      - ruby -v
+      - gem --version
+      - bundler version
       - bundle install
       - ./script/ci
