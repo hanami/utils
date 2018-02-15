@@ -1,6 +1,6 @@
 pipeline:
   build:
-    image: ruby:${RUBY_VERSION}
+    image: ${RUBY_VERSION}
     commands:
       - ruby -v
       - gem --version
@@ -9,6 +9,7 @@ pipeline:
 
 matrix:
   RUBY_VERSION:
-    - 2.3.6
-    - 2.4.2
-    - 2.5.0
+    - ruby:2.3.6
+    - ruby:2.4.2
+    - ruby:2.5.0
+    - jruby:9.1.15.0
