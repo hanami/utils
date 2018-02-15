@@ -4,6 +4,6 @@ pipeline:
     commands:
       - ruby -v
       - gem --version
-      - bundler version
       - bundle install
+      - bundler version
       - ./script/ci
