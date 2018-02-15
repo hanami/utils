@@ -5,5 +5,4 @@ pipeline:
       - ruby -v
       - gem --version
       - bundle install
-      - bundler version
       - ./script/ci
