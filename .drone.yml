@@ -2,4 +2,5 @@ pipeline:
   build:
     image: ruby
     commands:
+      - bundle install
       - ./script/ci
