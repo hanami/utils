@@ -4,8 +4,12 @@ pipeline:
     commands:
       - ruby -v
       - gem --version
-      - bundle install
+      - bundle install --path=gems --retry=4 --jobs=4
       - ./script/ci
+
+cache:
+  mount:
+    - gems
 
 matrix:
   RUBY_VERSION:
