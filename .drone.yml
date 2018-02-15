@@ -4,12 +4,8 @@ pipeline:
     commands:
       - ruby -v
       - gem --version
-      - bundle install --path=/drone/gems --retry=4 --jobs=4
+      - bundle install --retry=4 --jobs=4
       - ./script/ci
-
-cache:
-  mount:
-    - /drone/gems
 
 matrix:
   RUBY_VERSION:
