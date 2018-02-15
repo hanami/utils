@@ -1,0 +1,5 @@
+pipeline:
+  build:
+    image: ruby
+    commands:
+      - ./script/ci
