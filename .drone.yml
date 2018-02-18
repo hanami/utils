@@ -2,33 +2,28 @@ pipeline:
   rubocop:
     image: ruby:latest
     commands:
-      - bundle install --retry=4 --jobs=4
-      - bundle exec rubocop --parallel
+      - ./script/ci qa
 
   specs_mri_23:
     group: build
     image: ruby:2.3.6
     commands:
-      - bundle install --retry=4 --jobs=4
       - ./script/ci
 
   specs_mri_24:
     group: build
     image: ruby:2.4.2
     commands:
-      - bundle install --retry=4 --jobs=4
       - ./script/ci
 
   specs_mri_25:
     group: build
     image: ruby:2.5.0
     commands:
-      - bundle install --retry=4 --jobs=4
       - ./script/ci
 
   specs_jruby_91:
     group: build
     image: jruby:9.1.15.0
     commands:
-      - bundle install --retry=4 --jobs=4
       - ./script/ci
