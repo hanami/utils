@@ -1,24 +1,34 @@
 pipeline:
-  specs:
-    group: build
-    image: ${RUBY_VERSION}
-    commands:
-      - ruby -v
-      - gem --version
-      - bundle install --retry=4 --jobs=4
-      - ./script/ci
-
   rubocop:
     image: ruby:latest
     commands:
-      - ruby -v
-      - gem --version
       - bundle install --retry=4 --jobs=4
       - bundle exec rubocop
 
-matrix:
-  RUBY_VERSION:
-    - ruby:2.3.6
-    - ruby:2.4.2
-    - ruby:2.5.0
-    - jruby:9.1.15.0
+  specs_mri_23:
+    group: build
+    image: ruby:2.3.6
+    commands:
+      - bundle install --retry=4 --jobs=4
+      - ./script/ci
+
+  specs_mri_24:
+    group: build
+    image: ruby:2.4.2
+    commands:
+      - bundle install --retry=4 --jobs=4
+      - ./script/ci
+
+  specs_mri_25:
+    group: build
+    image: ruby:2.5.0
+    commands:
+      - bundle install --retry=4 --jobs=4
+      - ./script/ci
+
+  specs_jruby_91:
+    group: build
+    image: jruby:9.1.15.0
+    commands:
+      - bundle install --retry=4 --jobs=4
+      - ./script/ci
