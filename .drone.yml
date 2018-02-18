@@ -3,7 +3,7 @@ pipeline:
     image: ruby:latest
     commands:
       - bundle install --retry=4 --jobs=4
-      - bundle exec rubocop
+      - bundle exec rubocop --parallel
 
   specs_mri_23:
     group: build
