@@ -2,10 +2,6 @@
 set -euo pipefail
 IFS=$'\n\t'
 
-run_code_quality_checks() {
-  bundle exec rubocop .
-}
-
 run_unit_tests() {
   bundle exec rake spec:coverage
 }
@@ -41,8 +37,7 @@ run_test() {
 }
 
 main() {
-  run_code_quality_checks &&
-    run_unit_tests &&
+  run_unit_tests &&
     run_isolation_tests
 }
 

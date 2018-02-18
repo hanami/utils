@@ -1,11 +1,21 @@
 pipeline:
-  build:
+  specs:
+    group: build
     image: ${RUBY_VERSION}
     commands:
       - ruby -v
       - gem --version
       - bundle install --retry=4 --jobs=4
       - ./script/ci
+
+  rubocop:
+    group: build
+    image: ruby:latest
+    commands:
+      - ruby -v
+      - gem --version
+      - bundle install --retry=4 --jobs=4
+      - bundle exec rubocop
 
 matrix:
   RUBY_VERSION:
