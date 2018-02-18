@@ -1,4 +1,11 @@
 pipeline:
+  restore-cache:
+    image: plugins/s3-cache:1
+    pull: true
+    endpoint: http://minio.company.com
+    secrets: [ s3_cache_access_key, s3_cache_secret_key ]
+    restore: true
+
   rubocop:
     image: ruby:latest
     commands:
@@ -27,3 +34,24 @@ pipeline:
     image: jruby:9.1.15.0
     commands:
       - ./script/ci
+
+   rebuild-cache:
+    image: plugins/s3-cache:1
+    pull: true
+    endpoint: http://minio.company.com
+    access_key: myaccesskey
+    secret_key: supersecretKey
+    rebuild: true
+    mount:
+      - node_modules
+    when:
+      event: push
+
+  flush_cache:
+    image: plugins/s3-cache:1
+    pull: true
+    endpoint: http://minio.company.com
+    access_key: myaccesskey
+    secret_key: supersecretKey
+    flush: true
+    flush_age: 14
