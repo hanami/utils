@@ -9,7 +9,6 @@ pipeline:
       - ./script/ci
 
   rubocop:
-    group: build
     image: ruby:latest
     commands:
       - ruby -v
