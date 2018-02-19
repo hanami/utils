@@ -50,3 +50,5 @@ pipeline:
     secrets: [aws_access_key_id, aws_secret_access_key]
     flush: true
     flush_age: 14
+    when:
+      event: push
