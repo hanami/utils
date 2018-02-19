@@ -3,7 +3,7 @@ set -euo pipefail
 IFS=$'\n\t'
 
 setup() {
-  bundle install --retry=10 --jobs=$(_cpu_count) --path=vendor/cache
+  bundle install --retry=10 --jobs=$(_cpu_count) --path=vendor/cache --no-prune
 }
 
 qa() {
