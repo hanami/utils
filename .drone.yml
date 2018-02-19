@@ -1,4 +1,10 @@
 pipeline:
+  restore-cache:
+    image: plugins/s3-cache:1
+    pull: true
+    secrets: [aws_access_key_id, aws_secret_access_key]
+    restore: true
+
   rubocop:
     image: ruby:latest
     commands:
@@ -27,3 +33,20 @@ pipeline:
     image: jruby:9.1.15.0
     commands:
       - ./script/ci
+
+  rebuild-cache:
+    image: plugins/s3-cache:1
+    pull: true
+    secrets: [aws_access_key_id, aws_secret_access_key]
+    rebuild: true
+    mount:
+      - vendor/cache
+    when:
+      event: push
+
+  flush_cache:
+    image: plugins/s3-cache:1
+    pull: true
+    secrets: [aws_access_key_id, aws_secret_access_key]
+    flush: true
+    flush_age: 14
