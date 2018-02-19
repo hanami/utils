@@ -41,8 +41,6 @@ pipeline:
     rebuild: true
     mount:
       - vendor/cache
-    when:
-      event: push
 
   flush_cache:
     image: plugins/s3-cache:1
