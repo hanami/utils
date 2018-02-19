@@ -1,0 +1,54 @@
+pipeline:
+  restore-cache:
+    image: plugins/s3-cache:1
+    pull: true
+    secrets: [aws_access_key_id, aws_secret_access_key]
+    restore: true
+
+  rubocop:
+    image: ruby:latest
+    commands:
+      - ./script/ci qa
+
+  specs_mri_23:
+    group: build
+    image: ruby:2.3.6
+    commands:
+      - ./script/ci
+
+  specs_mri_24:
+    group: build
+    image: ruby:2.4.2
+    commands:
+      - ./script/ci
+
+  specs_mri_25:
+    group: build
+    image: ruby:2.5.0
+    commands:
+      - ./script/ci
+
+  specs_jruby_91:
+    group: build
+    image: jruby:9.1.15.0
+    commands:
+      - ./script/ci
+
+  rebuild-cache:
+    image: plugins/s3-cache:1
+    pull: true
+    secrets: [aws_access_key_id, aws_secret_access_key]
+    rebuild: true
+    mount:
+      - vendor/cache
+    when:
+      event: push
+
+  flush_cache:
+    image: plugins/s3-cache:1
+    pull: true
+    secrets: [aws_access_key_id, aws_secret_access_key]
+    flush: true
+    flush_age: 14
+    when:
+      event: push

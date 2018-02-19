@@ -2,8 +2,31 @@
 set -euo pipefail
 IFS=$'\n\t'
 
-run_code_quality_checks() {
-  bundle exec rubocop .
+setup() {
+  bundle install --retry=10 --jobs=$(_cpu_count) --path=vendor/cache --no-prune
+}
+
+qa() {
+  rubocop_check
+}
+
+specs() {
+  run_unit_tests &&
+    run_isolation_tests
+}
+
+rubocop_check() {
+  bundle exec rubocop --parallel
+}
+
+_cpu_count() {
+    if [ -f /proc/cpuinfo ]; then
+      echo $(grep -c ^processor /proc/cpuinfo)
+    elif [ -z "$(command -v sysctl)" ]; then
+      echo $(sysctl -n hw.cpu)
+    else
+      echo 1
+    fi
 }
 
 run_unit_tests() {
@@ -41,9 +64,14 @@ run_test() {
 }
 
 main() {
-  run_code_quality_checks &&
-    run_unit_tests &&
-    run_isolation_tests
+  local subcommand=$@
+  setup
+
+  if [ "$subcommand" = "qa" ]; then
+    qa
+  else
+    specs
+  fi
 }
 
-main
+main $@
