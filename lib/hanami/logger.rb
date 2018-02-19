@@ -6,6 +6,7 @@ require 'hanami/utils/json'
 require 'hanami/utils/hash'
 require 'hanami/utils/class_attribute'
 require 'hanami/utils/files'
+require 'hanami/utils/shell_code'
 
 module Hanami
   # Hanami logger
@@ -214,19 +215,31 @@ module Hanami
 
       # @api private
       def _format_error(result, hash)
-        error_message = Hanami::Utils::String.colorize(
+        error_message = if tty? Hanami::Utils::ShellCode.colorize(
           [ hash[:error], hash[:message] ].compact.join(": "),
           color: :red,
-        )
+          )
+        else
+          [ hash[:error], hash[:message] ].compact.join(": ")
+        end
         result << [" ", error_message, NEW_LINE].join
         if hash.key?(:backtrace)
           hash[:backtrace].each do |line|
-            result << Hanami::Utils::String.colorize("from #{line}#{NEW_LINE}",
-                      color: :yellow)
+            if tty?
+              result << Hanami::Utils::ShellCode.colorize("from #{line}#{NEW_LINE}", color: :yellow)
+            else
+              result << "from #{line}#{NEW_LINE}"
+            end
           end
         end
 
         result
+      end
+
+      # @since x.x.x
+      # @api private
+      def tty?
+        @logdev.dev.tty?
       end
 
       # Filtering logic

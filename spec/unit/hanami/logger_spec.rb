@@ -424,9 +424,9 @@ RSpec.describe Hanami::Logger do
           end
           TestLogger.new.error(exception)
         end
-        expectation = "[hanami] [ERROR] [2017-01-15 16:00:23 +0100] \e[31mStandardError: foo\e[0m\n"
+        expectation = "[hanami] [ERROR] [2017-01-15 16:00:23 +0100] StandardError: foo\n"
         exception.backtrace.each do |line|
-          expectation << "\e[33mfrom #{line}\n\e[0m"
+          expectation << "from #{line}\n"
         end
         expect(output).to eq expectation
       end
