@@ -42,35 +42,4 @@ RSpec.describe Hanami::Utils::ShellCode do
       expect(result).to eq("\e[37mSakura\e[0m")
     end
   end
-
-  # describe '#initialize' do
-  #   it 'uses STDOUT by default' do
-  #     output =
-  #       with_captured_stdout do
-  #         class TestLogger < Hanami::Logger; end
-  #         logger = TestLogger.new
-  #         logger.info('foo')
-  #       end
-
-  #     expect(output).to match(/foo/)
-  #   end
-
-  #   it 'has key=value format for error messages' do
-  #     exception = nil
-  #     output = with_captured_stdout do
-  #       class TestLogger < Hanami::Logger; end
-  #       begin
-  #         raise StandardError.new('foo')
-  #       rescue => e
-  #         exception = e
-  #       end
-  #       TestLogger.new.error(exception)
-  #     end
-  #     expectation = "[hanami] [ERROR] [2017-01-15 16:00:23 +0100] \e[31mStandardError: foo\e[0m\n"
-  #     exception.backtrace.each do |line|
-  #       expectation << "\e[33mfrom #{line}\n\e[0m"
-  #     end
-  #     expect(output).to eq expectation
-  #   end
-  # end
 end

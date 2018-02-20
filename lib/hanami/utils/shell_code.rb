@@ -1,5 +1,3 @@
-require 'transproc'
-
 module Hanami
   module Utils
     class ShellCode
@@ -7,7 +5,7 @@ module Hanami
       #
       # @since x.x.x
       # @api private
-      COLORS = Hash[
+      COLORS = ::Hash[
         black:   30,
         red:     31,
         green:   32,
