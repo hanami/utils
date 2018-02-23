@@ -226,10 +226,8 @@ module Hanami
           color: :red
         )
         result << [" ", error_message, NEW_LINE].join
-        if hash.key?(:backtrace)
-          hash[:backtrace].each do |line|
-            result << _colored("from #{line}#{NEW_LINE}", color: :yellow)
-          end
+        hash[:backtrace].each do |line|
+          result << _colored("from #{line}#{NEW_LINE}", color: :yellow)
         end
 
         result
