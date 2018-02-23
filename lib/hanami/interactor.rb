@@ -10,7 +10,7 @@ module Hanami
     # Result of an operation
     #
     # @since 0.3.5
-    class Result < Utils::BasicObject
+    class Result
       # Concrete methods
       #
       # @since 0.3.5
@@ -128,12 +128,6 @@ module Hanami
       def respond_to_missing?(method_name, _include_all)
         method_name = method_name.to_sym
         METHODS[method_name] || @payload.key?(method_name)
-      end
-
-      # @since 0.3.5
-      # @api private
-      def __inspect
-        " @success=#{@success} @payload=#{@payload.inspect}"
       end
     end
 
