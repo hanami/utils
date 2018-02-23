@@ -120,11 +120,12 @@ module Hanami
       class_attribute :subclasses
       self.subclasses = Set.new
 
-      def self.fabricate(formatter, application_name, filters)
+      def self.fabricate(formatter, application_name, filters, colorize: false)
         fabricated_formatter = _formatter_instance(formatter)
 
         fabricated_formatter.application_name = application_name
         fabricated_formatter.hash_filter      = HashFilter.new(filters)
+        fabricated_formatter.colorize         = colorize
 
         fabricated_formatter
       end
@@ -165,6 +166,10 @@ module Hanami
       # @since 1.1.0
       # @api private
       attr_writer :hash_filter
+
+      # @since x.x.x
+      # @api private
+      attr_writer :colorize
 
       # @since 0.5.0
       # @api private
@@ -215,21 +220,14 @@ module Hanami
 
       # @api private
       def _format_error(result, hash)
-        error_message = if tty? Hanami::Utils::ShellCode.colorize(
-          [ hash[:error], hash[:message] ].compact.join(": "),
-          color: :red,
-          )
-        else
-          [ hash[:error], hash[:message] ].compact.join(": ")
-        end
+        error_message = _colored(
+          [hash[:error], hash[:message]].compact.join(": "),
+          color: :red
+        )
         result << [" ", error_message, NEW_LINE].join
         if hash.key?(:backtrace)
           hash[:backtrace].each do |line|
-            if tty?
-              result << Hanami::Utils::ShellCode.colorize("from #{line}#{NEW_LINE}", color: :yellow)
-            else
-              result << "from #{line}#{NEW_LINE}"
-            end
+            result << _colored("from #{line}#{NEW_LINE}", color: :yellow)
           end
         end
 
@@ -238,8 +236,12 @@ module Hanami
 
       # @since x.x.x
       # @api private
-      def tty?
-        @logdev.dev.tty?
+      def _colored(message, color:)
+        if @colorize
+          Hanami::Utils::ShellCode.colorize(message, color: color)
+        else
+          message
+        end
       end
 
       # Filtering logic
@@ -484,7 +486,13 @@ module Hanami
       @level            = _level(level)
       @stream           = stream
       @application_name = application_name
-      @formatter        = Formatter.fabricate(formatter, self.application_name, filter)
+      @formatter        = Formatter.fabricate(formatter, self.application_name, filter, colorize: tty?)
+    end
+
+    # @since x.x.x
+    # @api private
+    def tty?
+      @logdev.dev.tty?
     end
 
     # Returns the current application name, this is used for tagging purposes
