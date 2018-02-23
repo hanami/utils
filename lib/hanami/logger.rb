@@ -218,6 +218,7 @@ module Hanami
         result
       end
 
+      # @since x.x.x
       # @api private
       def _format_error(result, hash)
         error_message = _colored(
