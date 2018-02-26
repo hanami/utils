@@ -442,7 +442,27 @@ RSpec.describe Hanami::Logger do
         expect(output).to eq expectation
       end
 
-      describe "colorized errors, with colorize: true" do
+      describe 'colorization setting' do
+        it 'colorizes when colorize: true' do
+          output =
+            with_captured_stdout do
+              class TestLogger < Hanami::Logger; end
+              logger = TestLogger.new(colorize: true).info('foo')
+            end
+          expect(output).to eq(
+            "[\e[33mhanami\e[0m] [\e[36mINFO\e[0m] [\e[32m2017-01-15 16:00:23 +0100\e[0m] foo\n"
+          )
+        end
+
+        it 'does not colorize when colorize: false' do
+          output =
+            with_captured_stdout do
+              class TestLogger < Hanami::Logger; end
+              TestLogger.new(colorize: false).info('foo')
+            end
+          expect(output).to eq "[hanami] [INFO] [2017-01-15 16:00:23 +0100] foo\n"
+        end
+
         it 'has colorized key=value format for error messages' do
           exception = nil
           output = with_captured_stdout do
@@ -454,7 +474,7 @@ RSpec.describe Hanami::Logger do
             end
             TestLogger.new(colorize: true).error(exception)
           end
-          expectation = "[hanami] [ERROR] [2017-01-15 16:00:23 +0100] \e[31mStandardError: foo\e[0m\n"
+          expectation = "[\e[33mhanami\e[0m] [\e[36mERROR\e[0m] [\e[32m2017-01-15 16:00:23 +0100\e[0m] \e[31mStandardError: foo\e[0m\n"
           exception.backtrace.each do |line|
             expectation << "\e[33mfrom #{line}\n\e[0m"
           end
@@ -468,7 +488,7 @@ RSpec.describe Hanami::Logger do
             exception = StandardError.new('foo')
             TestLogger.new(colorize: true).error(exception)
           end
-          expectation = "[hanami] [ERROR] [2017-01-15 16:00:23 +0100] \e[31mStandardError: foo\e[0m\n"
+          expectation = "[\e[33mhanami\e[0m] [\e[36mERROR\e[0m] [\e[32m2017-01-15 16:00:23 +0100\e[0m] \e[31mStandardError: foo\e[0m\n"
           expect(output).to eq expectation
         end
       end

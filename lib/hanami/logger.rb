@@ -207,25 +207,39 @@ module Hanami
       # @since 0.8.0
       # @api private
       def _format(hash)
-        result = RESERVED_KEYS.map { |k| "[#{hash[k]}]" }.join(SEPARATOR)
-        return _format_error(result, hash) if hash.key?(:error)
-
-        values = hash.each_with_object([]) do |(k, v), memo|
-          memo << v unless RESERVED_KEYS.include?(k)
-        end
-
-        result << " #{values.join(SEPARATOR)}#{NEW_LINE}"
-        result
+        [_line_front_matter(hash), _format_message(hash)].join(SEPARATOR)
       end
 
       # @since x.x.x
       # @api private
-      def _format_error(result, hash)
+      def _line_front_matter(hash)
+        [
+          _colored(hash[:app], color: :yellow),
+          _colored(hash[:severity], color: :cyan),
+          _colored(hash[:time], color: :green),
+        ].map { |string| "[#{string}]" }.join(SEPARATOR)
+      end
+
+      # @since x.x.x
+      # @api private
+      def _format_message(hash)
+        if hash.key?(:error)
+          _format_error(hash)
+        else
+          hash.each_with_object([]) do |(k, v), memo|
+            memo << v unless RESERVED_KEYS.include?(k)
+          end.join(SEPARATOR).concat(NEW_LINE)
+        end
+      end
+
+      # @since x.x.x
+      # @api private
+      def _format_error(hash)
         error_message = _colored(
           [hash[:error], hash[:message]].compact.join(": "),
           color: :red
         )
-        result << [" ", error_message, NEW_LINE].join
+        result = [error_message, NEW_LINE].join
         hash[:backtrace].each do |line|
           result << _colored("from #{line}#{NEW_LINE}", color: :yellow)
         end
