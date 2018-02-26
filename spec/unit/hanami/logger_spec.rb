@@ -473,7 +473,6 @@ RSpec.describe Hanami::Logger do
         end
       end
 
-
       it 'has key=value format for hash messages' do
         output =
           with_captured_stdout do
