@@ -491,7 +491,7 @@ module Hanami
       end
 
       super(stream, *args)
-      colorize ||= tty?
+      colorize ||= colorize.nil? && tty? # By default, colorize if tty?
 
       @level            = _level(level)
       @stream           = stream
