@@ -462,35 +462,6 @@ RSpec.describe Hanami::Logger do
             end
           expect(output).to eq "[hanami] [INFO] [2017-01-15 16:00:23 +0100] foo\n"
         end
-
-        it 'has colorized key=value format for error messages' do
-          exception = nil
-          output = with_captured_stdout do
-            class TestLogger < Hanami::Logger; end
-            begin
-              raise StandardError.new('foo')
-            rescue => e
-              exception = e
-            end
-            TestLogger.new(colorize: true).error(exception)
-          end
-          expectation = "[\e[33mhanami\e[0m] [\e[36mERROR\e[0m] [\e[32m2017-01-15 16:00:23 +0100\e[0m] StandardError: foo\n"
-          exception.backtrace.each do |line|
-            expectation << "\e[33mfrom #{line}\n\e[0m"
-          end
-          expect(output).to eq expectation
-        end
-
-        it 'has colorized key=value format for error messages without backtrace' do
-          exception = nil
-          output = with_captured_stdout do
-            class TestLogger < Hanami::Logger; end
-            exception = StandardError.new('foo')
-            TestLogger.new(colorize: true).error(exception)
-          end
-          expectation = "[\e[33mhanami\e[0m] [\e[36mERROR\e[0m] [\e[32m2017-01-15 16:00:23 +0100\e[0m] StandardError: foo\n"
-          expect(output).to eq expectation
-        end
       end
 
       it 'has key=value format for hash messages' do
