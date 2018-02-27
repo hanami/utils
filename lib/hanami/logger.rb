@@ -235,11 +235,7 @@ module Hanami
       # @since x.x.x
       # @api private
       def _format_error(hash)
-        error_message = _colored(
-          [hash[:error], hash[:message]].compact.join(": "),
-          color: :red
-        )
-        result = [error_message, NEW_LINE].join
+        result = [hash[:error], hash[:message]].compact.join(": ").concat(NEW_LINE)
         hash[:backtrace].each do |line|
           result << _colored("from #{line}#{NEW_LINE}", color: :yellow)
         end
