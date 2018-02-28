@@ -1,5 +1,3 @@
-# rubocop:disable ClassLength
-
 require 'hanami/utils/duplicable'
 require 'transproc'
 
@@ -7,6 +5,8 @@ module Hanami
   module Utils
     # Hash on steroids
     # @since 0.1.0
+    #
+    # rubocop:disable ClassLength
     class Hash
       # @since 0.6.0
       # @api private
@@ -329,7 +329,7 @@ module Hanami
       #     'bignum'     => 13289301283 ** 2,
       #     'float'      => 1.0,
       #     'complex'    => Complex(0.3),
-      #     'bigdecimal' => BigDecimal.new('12.0001'),
+      #     'bigdecimal' => BigDecimal('12.0001'),
       #     'rational'   => Rational(0.3),
       #     'string'     => 'foo bar',
       #     'hash'       => { a: 1, b: 'two', c: :three },
@@ -506,5 +506,6 @@ module Hanami
         @hash.respond_to?(m, include_private)
       end
     end
+    # rubocop:enable ClassLength
   end
 end

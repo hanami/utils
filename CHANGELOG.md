@@ -1,6 +1,19 @@
 # Hanami::Utils
 Ruby core extentions and class utilities for Hanami
 
+## v1.2.0.beta1 - 2018-02-28
+
+## v1.1.2 - 2018-02-02
+### Added
+- [Luca Guidi] Official support for Ruby: MRI 2.5
+
+### Fixed
+- [Sean Collins & Luca Guidi] Make `Utils::Files.write` idempotent: ensure to truncate the file before to write
+- [Sean Collins & Luca Guidi] Don't erase file contents when invoking `Utils::Files.touch`
+
+### Changed
+- [Sean Collins & Luca Guidi] Deprecate `Utils::Files.rewrite` in favor of `.write`
+
 ## v1.1.1 - 2017-11-22
 ### Added
 - [Luca Guidi] Introduce `Utils::Hash.deep_stringify` to recursively stringify a hash

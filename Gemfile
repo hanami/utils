@@ -16,5 +16,5 @@ end
 
 gem 'gson', '>= 0.6', require: false, platforms: :jruby
 
-gem 'hanami-devtools', git: 'https://github.com/hanami/devtools.git', require: false
+gem 'rubocop', '0.52.1', require: false
 gem 'coveralls', require: false

@@ -2,18 +2,26 @@
 # alphabetically
 inherit_from:
   - https://raw.githubusercontent.com/hanami/devtools/master/.rubocop.yml
-Lint/RescueWithoutErrorClass:
-  Exclude:
-    - "spec/**/*"
 Naming/HeredocDelimiterNaming:
   Exclude:
     - "spec/**/*"
 Naming/MethodName:
   Exclude:
     - "lib/hanami/utils/kernel.rb"
+Style/CommentedKeyword:
+  Exclude:
+    - "spec/**/*"
+Style/DateTime:
+  Enabled: false
 Style/DoubleNegation:
   Enabled: false
+Style/FormatStringToken:
+  Exclude:
+    - "spec/**/*"
 Style/SpecialGlobalVars:
   Enabled: false
 Style/MethodMissing:
   Enabled: false
+Style/RescueStandardError:
+  Exclude:
+    - "spec/**/*"

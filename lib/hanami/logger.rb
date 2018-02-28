@@ -504,6 +504,8 @@ module Hanami
     def tty?
       @logdev.dev.tty?
     end
+    # rubocop:enable Metrics/ParameterLists
+    # rubocop:enable Lint/HandleExceptions
 
     # Returns the current application name, this is used for tagging purposes
     #

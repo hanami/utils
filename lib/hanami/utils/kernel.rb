@@ -244,7 +244,7 @@ module Hanami
       #   Hanami::Utils::Kernel.Integer("1")                      # => 1
       #   Hanami::Utils::Kernel.Integer(Rational(0.3))            # => 0
       #   Hanami::Utils::Kernel.Integer(Complex(0.3))             # => 0
-      #   Hanami::Utils::Kernel.Integer(BigDecimal.new(12.00001)) # => 12
+      #   Hanami::Utils::Kernel.Integer(BigDecimal(12.00001))     # => 12
       #   Hanami::Utils::Kernel.Integer(176605528590345446089)
       #     # => 176605528590345446089
       #
@@ -311,11 +311,11 @@ module Hanami
       #   Hanami::Utils::Kernel.Integer(input) # => TypeError
       #
       #   # bigdecimal infinity
-      #   input = BigDecimal.new("Infinity")
+      #   input = BigDecimal("Infinity")
       #   Hanami::Utils::Kernel.Integer(input) # => TypeError
       #
       #   # bigdecimal NaN
-      #   input = BigDecimal.new("NaN")
+      #   input = BigDecimal("NaN")
       #   Hanami::Utils::Kernel.Integer(input) # => TypeError
       #
       #   # big rational
@@ -364,7 +364,7 @@ module Hanami
       #   Hanami::Utils::Kernel.BigDecimal("1")                      # => 1
       #   Hanami::Utils::Kernel.BigDecimal(Rational(0.3))            # => 0.3
       #   Hanami::Utils::Kernel.BigDecimal(Complex(0.3))             # => 0.3
-      #   Hanami::Utils::Kernel.BigDecimal(BigDecimal.new(12.00001)) # => 12.00001
+      #   Hanami::Utils::Kernel.BigDecimal(BigDecimal(12.00001))     # => 12.00001
       #   Hanami::Utils::Kernel.BigDecimal(176605528590345446089)
       #     # => 176605528590345446089
       #
@@ -373,7 +373,7 @@ module Hanami
       #
       #   UltimateAnswer = Struct.new(:question) do
       #     def to_d
-      #       BigDecimal.new(42)
+      #       BigDecimal(42)
       #     end
       #   end
       #
@@ -422,7 +422,7 @@ module Hanami
         when ->(a) { a.respond_to?(:to_d) }
           arg.to_d
         else
-          BigDecimal.new(arg)
+          ::Kernel.BigDecimal(arg)
         end
       rescue NoMethodError
         raise TypeError.new "can't convert #{inspect_type_error(arg)}into BigDecimal"
@@ -454,7 +454,7 @@ module Hanami
       #   Hanami::Utils::Kernel.Float("1")                      # => 1.0
       #   Hanami::Utils::Kernel.Float(Rational(0.3))            # => 0.3
       #   Hanami::Utils::Kernel.Float(Complex(0.3))             # => 0.3
-      #   Hanami::Utils::Kernel.Float(BigDecimal.new(12.00001)) # => 12.00001
+      #   Hanami::Utils::Kernel.Float(BigDecimal(12.00001))     # => 12.00001
       #   Hanami::Utils::Kernel.Float(176605528590345446089)
       #     # => 176605528590345446089.0
       #
@@ -493,11 +493,11 @@ module Hanami
       #   Hanami::Utils::Kernel.Float("2.5/1") # => 2.5
       #
       #   # bigdecimal infinity
-      #   input = BigDecimal.new("Infinity")
+      #   input = BigDecimal("Infinity")
       #   Hanami::Utils::Kernel.Float(input) # => Infinity
       #
       #   # bigdecimal NaN
-      #   input = BigDecimal.new("NaN")
+      #   input = BigDecimal("NaN")
       #   Hanami::Utils::Kernel.Float(input) # => NaN
       #
       # @example Unchecked Exceptions
@@ -606,9 +606,9 @@ module Hanami
       #
       #   Hanami::Utils::Kernel.String(Rational(-22))                 # => "-22/1"
       #   Hanami::Utils::Kernel.String(Complex(11, 2))                # => "11+2i"
-      #   Hanami::Utils::Kernel.String(BigDecimal.new(7944.2343, 10)) # => "0.79442343E4"
-      #   Hanami::Utils::Kernel.String(BigDecimal.new('Infinity'))    # => "Infinity"
-      #   Hanami::Utils::Kernel.String(BigDecimal.new('NaN'))         # => "Infinity"
+      #   Hanami::Utils::Kernel.String(BigDecimal(7944.2343, 10))     # => "0.79442343E4"
+      #   Hanami::Utils::Kernel.String(BigDecimal('Infinity'))        # => "Infinity"
+      #   Hanami::Utils::Kernel.String(BigDecimal('NaN'))             # => "Infinity"
       #
       # @example String interface
       #   require 'hanami/utils/kernel'
