@@ -178,7 +178,7 @@ RSpec.describe Hanami::Logger do
               )
             end
 
-            it 'does not colorizes by default (since not tty)' do
+            it 'does not colorize by default (since not tty)' do
               logger = Hanami::Logger.new(stream: log_file)
               logger.info('world')
 
@@ -190,7 +190,7 @@ RSpec.describe Hanami::Logger do
               )
             end
 
-            it 'does not colorizes with colorize: nil, (since not tty)' do
+            it 'does not colorize with colorize: nil (since not tty)' do
               logger = Hanami::Logger.new(stream: log_file, colorize: nil)
               logger.info('world')
 
@@ -202,7 +202,7 @@ RSpec.describe Hanami::Logger do
               )
             end
 
-            it 'does not colorizes with colorize: false' do
+            it 'does not colorize with colorize: false' do
               logger = Hanami::Logger.new(stream: log_file, colorize: false)
               logger.info('world')
 
