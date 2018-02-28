@@ -484,7 +484,7 @@ module Hanami
     #   # => {"app":"Hanami","severity":"DEBUG","time":"2017-03-30T13:57:59Z","message":"Hello World"}
     # rubocop:disable Lint/HandleExceptions
     # rubocop:disable Metrics/ParameterLists
-    def initialize(application_name = nil, *args, stream: $stdout, level: DEBUG, formatter: nil, filter: [], colorize: false)
+    def initialize(application_name = nil, *args, stream: $stdout, level: DEBUG, formatter: nil, filter: [], colorize: nil)
       begin
         Utils::Files.mkdir_p(stream)
       rescue TypeError
