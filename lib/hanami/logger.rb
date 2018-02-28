@@ -216,7 +216,7 @@ module Hanami
         [
           _colored(hash[:app], color: :yellow),
           _colored(hash[:severity], color: :cyan),
-          _colored(hash[:time], color: :green),
+          _colored(hash[:time], color: :green)
         ].map { |string| "[#{string}]" }.join(SEPARATOR)
       end
 
