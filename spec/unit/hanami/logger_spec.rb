@@ -505,26 +505,21 @@ RSpec.describe Hanami::Logger do
         end
 
         it 'colorizes when for tty by default (i.e. when colorize: nil)' do
-          expect($stdout).to receive(:tty?) { true }
-          output =
-            with_captured_stdout do
-              class TestLogger < Hanami::Logger; end
-              TestLogger.new.info('foo')
-            end
-          expect(output).to eq(
+          stdout = IO.new($stdout.fileno)
+          expect(stdout).to receive(:write).with(
             "[\e[33mhanami\e[0m] [\e[36mINFO\e[0m] [\e[32m2017-01-15 16:00:23 +0100\e[0m] foo\n"
           )
+          class TestLogger < Hanami::Logger; end
+          TestLogger.new(stream: stdout).info('foo')
         end
 
         it 'colorizes when for tty when colorize: nil' do
-          output =
-            with_captured_stdout do
-              class TestLogger < Hanami::Logger; end
-              TestLogger.new(colorize: nil).info('foo')
-            end
-          expect(output).to eq(
+          stdout = IO.new($stdout.fileno)
+          expect(stdout).to receive(:write).with(
             "[\e[33mhanami\e[0m] [\e[36mINFO\e[0m] [\e[32m2017-01-15 16:00:23 +0100\e[0m] foo\n"
           )
+          class TestLogger < Hanami::Logger; end
+          TestLogger.new(stream: stdout, colorize: nil).info('foo')
         end
 
         it 'does not colorize when colorize: false' do
