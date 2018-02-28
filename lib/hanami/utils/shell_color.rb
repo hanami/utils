@@ -1,10 +1,10 @@
 module Hanami
   module Utils
-    # Shellcode helper, for colorizing STDOUT
+    # Shellcode helper for colorizing STDOUT
     #
     # It doesn't check if you're writing to a file or anything, so you have to
     # check that yourself before using this module.
-    module ShellCode
+    module ShellColor
       # Escape codes for terminals to output strings in colors
       #
       # @since x.x.x

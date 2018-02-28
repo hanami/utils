@@ -6,7 +6,7 @@ require 'hanami/utils/json'
 require 'hanami/utils/hash'
 require 'hanami/utils/class_attribute'
 require 'hanami/utils/files'
-require 'hanami/utils/shell_code'
+require 'hanami/utils/shell_color'
 
 module Hanami
   # Hanami logger
@@ -247,7 +247,7 @@ module Hanami
       # @api private
       def _colored(message, color:)
         if @colorize
-          Hanami::Utils::ShellCode.colorize(message, color: color)
+          Hanami::Utils::ShellColor.colorize(message, color: color)
         else
           message
         end
