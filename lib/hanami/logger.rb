@@ -120,12 +120,11 @@ module Hanami
       class_attribute :subclasses
       self.subclasses = Set.new
 
-      def self.fabricate(formatter, application_name, filters, colorize: false)
+      def self.fabricate(formatter, application_name, filters)
         fabricated_formatter = _formatter_instance(formatter)
 
         fabricated_formatter.application_name = application_name
         fabricated_formatter.hash_filter      = HashFilter.new(filters)
-        fabricated_formatter.colorize         = colorize
 
         fabricated_formatter
       end
@@ -166,10 +165,6 @@ module Hanami
       # @since 1.1.0
       # @api private
       attr_writer :hash_filter
-
-      # @since x.x.x
-      # @api private
-      attr_writer :colorize
 
       # @since 0.5.0
       # @api private
@@ -213,11 +208,9 @@ module Hanami
       # @since x.x.x
       # @api private
       def _line_front_matter(hash)
-        [
-          _colored(hash[:app], color: :yellow),
-          _colored(hash[:severity], color: :cyan),
-          _colored(hash[:time], color: :green)
-        ].map { |string| "[#{string}]" }.join(SEPARATOR)
+        [hash[:app], hash[:severity], hash[:time]].map do |string|
+          "[#{string}]"
+        end.join(SEPARATOR)
       end
 
       # @since x.x.x
@@ -237,20 +230,10 @@ module Hanami
       def _format_error(hash)
         result = [hash[:error], hash[:message]].compact.join(": ").concat(NEW_LINE)
         hash[:backtrace].each do |line|
-          result << _colored("from #{line}#{NEW_LINE}", color: :yellow)
+          result << "from #{line}#{NEW_LINE}"
         end
 
         result
-      end
-
-      # @since x.x.x
-      # @api private
-      def _colored(message, color:)
-        if @colorize
-          Hanami::Utils::ShellColor.colorize(message, color: color)
-        else
-          message
-        end
       end
 
       # Filtering logic
@@ -333,6 +316,113 @@ module Hanami
       def _format(hash)
         hash[:time] = hash[:time].utc.iso8601
         Hanami::Utils::Json.generate(hash) + NEW_LINE
+      end
+    end
+
+    # Hanami::Logger NullColorizer
+    # This colorizer does nothing. It should be used when writing to a file, or
+    # whenever you're not using a tty.
+    #
+    # When creating a new Colorizer, you should inherit from this class,
+    # and define your own `_severity`, `_datetime`, `_progname` and `_msg`
+    # methods.
+    #
+    # @since x.x.x
+    # @api private
+    class NullColorizer
+      # @since x.x.x
+      # @api private
+      def call(severity, datetime, progname, msg)
+        [
+          _severity(severity),
+          _datetime(datetime),
+          _progname(progname),
+          _msg(msg)
+        ]
+      end
+
+      private
+
+      # @since x.x.x
+      # @api public
+      def _severity(input)
+        input
+      end
+
+      # @since x.x.x
+      # @api public
+      def _datetime(input)
+        input
+      end
+
+      # @since x.x.x
+      # @api public
+      def _progname(input)
+        input
+      end
+
+      # @since x.x.x
+      # @api public
+      def _msg(input)
+        input
+      end
+    end
+
+    # Hanami::Logger Colorizer
+    # This colorizer takes in parts of the log message and returns them with
+    # proper shellcode to colorize when displayed to a tty.
+    #
+    # @since x.x.x
+    # @api private
+    class Colorizer < NullColorizer
+      # The colors defined for the four parts of the log message
+      #
+      # These can be overridden, keeping the name keys, with acceptable values
+      # being any from Hanami::Utils::ShellColor::COLORS
+      #
+      # @since x.x.x
+      # @api public
+      COLORS = Hash[
+        severity: :cyan,
+        datetime: :green,
+        progname: nil,
+        msg:      nil
+      ].freeze
+
+      private
+
+      # @since x.x.x
+      # @api private
+      def _severity(input)
+        _colorized(input, color: COLORS.fetch(:severity))
+      end
+
+      # @since x.x.x
+      # @api private
+      def _datetime(input)
+        _colorized(input, color: COLORS.fetch(:datetime))
+      end
+
+      # @since x.x.x
+      # @api private
+      def _progname(input)
+        _colorized(input, color: COLORS.fetch(:progname))
+      end
+
+      # @since x.x.x
+      # @api private
+      def _msg(input)
+        _colorized(input, color: COLORS.fetch(:msg))
+      end
+
+      # @since x.x.x
+      # @api private
+      def _colorized(message, color:)
+        if color
+          Hanami::Utils::ShellColor.colorize(message, color: color)
+        else
+          message
+        end
       end
     end
 
@@ -484,19 +574,19 @@ module Hanami
     #   # => {"app":"Hanami","severity":"DEBUG","time":"2017-03-30T13:57:59Z","message":"Hello World"}
     # rubocop:disable Lint/HandleExceptions
     # rubocop:disable Metrics/ParameterLists
-    def initialize(application_name = nil, *args, stream: $stdout, level: DEBUG, formatter: nil, filter: [], colorize: nil)
+    def initialize(application_name = nil, *args, stream: $stdout, level: DEBUG, formatter: nil, filter: [], colorizer: nil)
       begin
         Utils::Files.mkdir_p(stream)
       rescue TypeError
       end
 
       super(stream, *args)
-      colorize ||= colorize.nil? && tty? # By default, colorize if tty?
 
       @level            = _level(level)
       @stream           = stream
       @application_name = application_name
-      @formatter        = Formatter.fabricate(formatter, self.application_name, filter, colorize: colorize)
+      @colorizer        = colorizer || (tty? ? Colorizer.new : NullColorizer.new)
+      @formatter        = Formatter.fabricate(formatter, self.application_name, filter)
     end
 
     # @since x.x.x
@@ -504,6 +594,7 @@ module Hanami
     def tty?
       @logdev.dev.tty?
     end
+
     # rubocop:enable Metrics/ParameterLists
     # rubocop:enable Lint/HandleExceptions
 
@@ -555,6 +646,19 @@ module Hanami
       else
         LEVELS.fetch(level.to_s.downcase, DEBUG)
       end
+    end
+
+    # @since x.x.x
+    # @api private
+    def format_message(severity, datetime, progname, msg)
+      super(
+        *@colorizer.call(
+          severity,
+          datetime,
+          progname,
+          msg
+        )
+      )
     end
   end
 end

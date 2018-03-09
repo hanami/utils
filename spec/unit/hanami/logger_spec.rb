@@ -166,15 +166,15 @@ RSpec.describe Hanami::Logger do
           end
 
           describe 'colorization setting' do
-            it 'colorizes when colorize: true' do
-              logger = Hanami::Logger.new(stream: log_file, colorize: true)
+            it 'colorizes when colorizer: Colorizer.new' do
+              logger = Hanami::Logger.new(stream: log_file, colorizer: Hanami::Logger::Colorizer.new)
               logger.info('world')
 
               logger.close
 
               contents = File.read(log_file)
               expect(contents).to include(
-                "hello[\e[33mHanami\e[0m] [\e[36mINFO\e[0m] [\e[32m2017-01-15 16:00:23 +0100\e[0m] world"
+                "hello[Hanami] [\e[36mINFO\e[0m] [\e[32m2017-01-15 16:00:23 +0100\e[0m] world"
               )
             end
 
@@ -190,8 +190,8 @@ RSpec.describe Hanami::Logger do
               )
             end
 
-            it 'does not colorize with colorize: nil (since not tty)' do
-              logger = Hanami::Logger.new(stream: log_file, colorize: nil)
+            it 'does not colorize with colorizer: nil (since not tty)' do
+              logger = Hanami::Logger.new(stream: log_file, colorizer: nil)
               logger.info('world')
 
               logger.close
@@ -202,8 +202,8 @@ RSpec.describe Hanami::Logger do
               )
             end
 
-            it 'does not colorize with colorize: false' do
-              logger = Hanami::Logger.new(stream: log_file, colorize: false)
+            it 'does not colorize with colorizer: NullColorizer.new' do
+              logger = Hanami::Logger.new(stream: log_file, colorizer: Hanami::Logger::NullColorizer.new)
               logger.info('world')
 
               logger.close
@@ -493,40 +493,40 @@ RSpec.describe Hanami::Logger do
       end
 
       describe 'colorization setting' do
-        it 'colorizes when colorize: true' do
+        it 'colorizes when colorizer: Colorizer.new' do
           output =
             with_captured_stdout do
               class TestLogger < Hanami::Logger; end
-              TestLogger.new(colorize: true).info('foo')
+              TestLogger.new(colorizer: Hanami::Logger::Colorizer.new).info('foo')
             end
           expect(output).to eq(
-            "[\e[33mhanami\e[0m] [\e[36mINFO\e[0m] [\e[32m2017-01-15 16:00:23 +0100\e[0m] foo\n"
+            "[hanami] [\e[36mINFO\e[0m] [\e[32m2017-01-15 16:00:23 +0100\e[0m] foo\n"
           )
         end
 
-        it 'colorizes when for tty by default (i.e. when colorize: nil)' do
+        it 'colorizes when for tty by default (i.e. when colorizer: nil)' do
           stdout = IO.new($stdout.fileno)
           expect(stdout).to receive(:write).with(
-            "[\e[33mhanami\e[0m] [\e[36mINFO\e[0m] [\e[32m2017-01-15 16:00:23 +0100\e[0m] foo\n"
+            "[hanami] [\e[36mINFO\e[0m] [\e[32m2017-01-15 16:00:23 +0100\e[0m] foo\n"
           )
           class TestLogger < Hanami::Logger; end
           TestLogger.new(stream: stdout).info('foo')
         end
 
-        it 'colorizes when for tty when colorize: nil' do
+        it 'colorizes for tty when colorizer: nil' do
           stdout = IO.new($stdout.fileno)
           expect(stdout).to receive(:write).with(
-            "[\e[33mhanami\e[0m] [\e[36mINFO\e[0m] [\e[32m2017-01-15 16:00:23 +0100\e[0m] foo\n"
+            "[hanami] [\e[36mINFO\e[0m] [\e[32m2017-01-15 16:00:23 +0100\e[0m] foo\n"
           )
           class TestLogger < Hanami::Logger; end
-          TestLogger.new(stream: stdout, colorize: nil).info('foo')
+          TestLogger.new(stream: stdout, colorizer: nil).info('foo')
         end
 
-        it 'does not colorize when colorize: false' do
+        it 'does not colorize when colorizer: NullColorizer.new' do
           output =
             with_captured_stdout do
               class TestLogger < Hanami::Logger; end
-              TestLogger.new(colorize: false).info('foo')
+              TestLogger.new(colorizer: Hanami::Logger::NullColorizer.new).info('foo')
             end
           expect(output).to eq "[hanami] [INFO] [2017-01-15 16:00:23 +0100] foo\n"
         end
