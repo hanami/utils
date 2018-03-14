@@ -120,11 +120,12 @@ module Hanami
       class_attribute :subclasses
       self.subclasses = Set.new
 
-      def self.fabricate(formatter, application_name, filters)
+      def self.fabricate(formatter, application_name, filters, colorizer: NullColorizer.new)
         fabricated_formatter = _formatter_instance(formatter)
 
         fabricated_formatter.application_name = application_name
         fabricated_formatter.hash_filter      = HashFilter.new(filters)
+        fabricated_formatter.colorizer        = colorizer
 
         fabricated_formatter
       end
@@ -166,11 +167,16 @@ module Hanami
       # @api private
       attr_writer :hash_filter
 
+      # @since x.x.x
+      # @api private
+      attr_writer :colorizer
+
       # @since 0.5.0
       # @api private
       #
       # @see http://www.ruby-doc.org/stdlib/libdoc/logger/rdoc/Logger/Formatter.html#method-i-call
-      def call(severity, time, _progname, msg)
+      def call(severity, time, progname, msg)
+        severity, time, progname, msg = @colorizer.call(severity, time, progname, msg)
         _format({
           app:      application_name,
           severity: severity,
@@ -585,8 +591,8 @@ module Hanami
       @level            = _level(level)
       @stream           = stream
       @application_name = application_name
-      @colorizer        = colorizer || (tty? ? Colorizer.new : NullColorizer.new)
-      @formatter        = Formatter.fabricate(formatter, self.application_name, filter)
+      colorizer         = colorizer || (tty? && Colorizer.new) || NullColorizer.new
+      @formatter        = Formatter.fabricate(formatter, self.application_name, filter, colorizer: colorizer)
     end
 
     # @since x.x.x
@@ -646,19 +652,6 @@ module Hanami
       else
         LEVELS.fetch(level.to_s.downcase, DEBUG)
       end
-    end
-
-    # @since x.x.x
-    # @api private
-    def format_message(severity, datetime, progname, msg)
-      super(
-        *@colorizer.call(
-          severity,
-          datetime,
-          progname,
-          msg
-        )
-      )
     end
   end
 end
