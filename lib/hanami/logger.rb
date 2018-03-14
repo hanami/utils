@@ -203,15 +203,16 @@ module Hanami
       # @since 0.8.0
       # @api private
       def _format(hash)
-        [_line_front_matter(hash), _format_message(hash)].join(SEPARATOR)
+        [
+          _line_front_matter(hash[:app], hash[:severity], hash[:time]),
+          _format_message(hash)
+        ].join(SEPARATOR)
       end
 
       # @since x.x.x
       # @api private
-      def _line_front_matter(hash)
-        [hash[:app], hash[:severity], hash[:time]].map do |string|
-          "[#{string}]"
-        end.join(SEPARATOR)
+      def _line_front_matter(*args)
+        args.map { |string| "[#{string}]" }.join(SEPARATOR)
       end
 
       # @since x.x.x
