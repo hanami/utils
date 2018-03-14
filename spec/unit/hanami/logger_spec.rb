@@ -174,7 +174,7 @@ RSpec.describe Hanami::Logger do
 
               contents = File.read(log_file)
               expect(contents).to include(
-                "hello[Hanami] [\e[36mINFO\e[0m] [\e[32m2017-01-15 16:00:23 +0100\e[0m] world"
+                "hello[\e[33mHanami\e[0m] [\e[36mINFO\e[0m] [\e[32m2017-01-15 16:00:23 +0100\e[0m] world"
               )
             end
 
@@ -500,14 +500,14 @@ RSpec.describe Hanami::Logger do
               TestLogger.new(colorizer: Hanami::Logger::Colorizer.new).info('foo')
             end
           expect(output).to eq(
-            "[hanami] [\e[36mINFO\e[0m] [\e[32m2017-01-15 16:00:23 +0100\e[0m] foo\n"
+            "[\e[33mhanami\e[0m] [\e[36mINFO\e[0m] [\e[32m2017-01-15 16:00:23 +0100\e[0m] foo\n"
           )
         end
 
         it 'colorizes when for tty by default (i.e. when colorizer: nil)' do
           stdout = IO.new($stdout.fileno)
           expect(stdout).to receive(:write).with(
-            "[hanami] [\e[36mINFO\e[0m] [\e[32m2017-01-15 16:00:23 +0100\e[0m] foo\n"
+            "[\e[33mhanami\e[0m] [\e[36mINFO\e[0m] [\e[32m2017-01-15 16:00:23 +0100\e[0m] foo\n"
           )
           class TestLogger < Hanami::Logger; end
           TestLogger.new(stream: stdout).info('foo')
@@ -516,7 +516,7 @@ RSpec.describe Hanami::Logger do
         it 'colorizes for tty when colorizer: nil' do
           stdout = IO.new($stdout.fileno)
           expect(stdout).to receive(:write).with(
-            "[hanami] [\e[36mINFO\e[0m] [\e[32m2017-01-15 16:00:23 +0100\e[0m] foo\n"
+            "[\e[33mhanami\e[0m] [\e[36mINFO\e[0m] [\e[32m2017-01-15 16:00:23 +0100\e[0m] foo\n"
           )
           class TestLogger < Hanami::Logger; end
           TestLogger.new(stream: stdout, colorizer: nil).info('foo')

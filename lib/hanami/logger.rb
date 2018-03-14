@@ -176,14 +176,9 @@ module Hanami
       #
       # @see http://www.ruby-doc.org/stdlib/libdoc/logger/rdoc/Logger/Formatter.html#method-i-call
       def call(severity, time, progname, msg)
-        severity, time, progname, msg = @colorizer.call(severity, time, progname, msg)
-        _format({
-          app:      application_name,
-          severity: severity,
-          time:     time
-        }.merge(
-          _message_hash(msg)
-        ))
+        colorized = @colorizer.call(application_name, severity, time, progname)
+        colorized.delete(:progname)
+        _format(colorized.merge(_message_hash(msg)))
       end
 
       private
@@ -338,16 +333,22 @@ module Hanami
     class NullColorizer
       # @since x.x.x
       # @api private
-      def call(severity, datetime, progname, msg)
-        [
-          _severity(severity),
-          _datetime(datetime),
-          _progname(progname),
-          _msg(msg)
-        ]
+      def call(app, severity, datetime, progname)
+        {
+          app:      _app(app),
+          severity: _severity(severity),
+          time:     _datetime(datetime),
+          progname: _progname(progname)
+        }
       end
 
       private
+
+      # @since x.x.x
+      # @api public
+      def _app(input)
+        input
+      end
 
       # @since x.x.x
       # @api public
@@ -364,12 +365,6 @@ module Hanami
       # @since x.x.x
       # @api public
       def _progname(input)
-        input
-      end
-
-      # @since x.x.x
-      # @api public
-      def _msg(input)
         input
       end
     end
@@ -389,13 +384,19 @@ module Hanami
       # @since x.x.x
       # @api public
       COLORS = Hash[
+        app:      :yellow,
         severity: :cyan,
         datetime: :green,
         progname: nil,
-        msg:      nil
       ].freeze
 
       private
+
+      # @since x.x.x
+      # @api private
+      def _app(input)
+        _colorized(input, color: COLORS.fetch(:app))
+      end
 
       # @since x.x.x
       # @api private
@@ -413,12 +414,6 @@ module Hanami
       # @api private
       def _progname(input)
         _colorized(input, color: COLORS.fetch(:progname))
-      end
-
-      # @since x.x.x
-      # @api private
-      def _msg(input)
-        _colorized(input, color: COLORS.fetch(:msg))
       end
 
       # @since x.x.x
