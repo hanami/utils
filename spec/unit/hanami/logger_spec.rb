@@ -166,8 +166,8 @@ RSpec.describe Hanami::Logger do
           end
 
           describe 'colorization setting' do
-            it 'colorizes when colorizer: Colorizer.new' do
-              logger = Hanami::Logger.new(stream: log_file, colorizer: Hanami::Logger::Colorizer.new)
+            it 'colorizes when colorizer: DefaultColorizer.new' do
+              logger = Hanami::Logger.new(stream: log_file, colorizer: Hanami::Logger::DefaultColorizer.new)
               logger.info('world')
 
               logger.close
@@ -493,11 +493,11 @@ RSpec.describe Hanami::Logger do
       end
 
       describe 'colorization setting' do
-        it 'colorizes when colorizer: Colorizer.new' do
+        it 'colorizes when colorizer: DefaultColorizer.new' do
           output =
             with_captured_stdout do
               class TestLogger < Hanami::Logger; end
-              TestLogger.new(colorizer: Hanami::Logger::Colorizer.new).info('foo')
+              TestLogger.new(colorizer: Hanami::Logger::DefaultColorizer.new).info('foo')
             end
           expect(output).to eq(
             "[\e[33mhanami\e[0m] [\e[36mINFO\e[0m] [\e[32m2017-01-15 16:00:23 +0100\e[0m] foo\n"

@@ -370,13 +370,13 @@ module Hanami
       end
     end
 
-    # Hanami::Logger Colorizer
+    # Hanami::Logger DEfault Colorizer
     # This colorizer takes in parts of the log message and returns them with
     # proper shellcode to colorize when displayed to a tty.
     #
     # @since x.x.x
     # @api private
-    class Colorizer < NullColorizer
+    class DefaultColorizer < NullColorizer
       # The colors defined for the four parts of the log message
       #
       # These can be overridden, keeping the name keys, with acceptable values
@@ -587,7 +587,7 @@ module Hanami
       @level            = _level(level)
       @stream           = stream
       @application_name = application_name
-      colorizer         = colorizer || (tty? && Colorizer.new) || NullColorizer.new
+      colorizer         = colorizer || default_colorizer
       @formatter        = Formatter.fabricate(formatter, self.application_name, filter, colorizer: colorizer)
     end
 
@@ -595,6 +595,12 @@ module Hanami
     # @api private
     def tty?
       @logdev.dev.tty?
+    end
+
+    # @since x.x.x
+    # @api private
+    def default_colorizer
+      (tty? && DefaultColorizer.new) || NullColorizer.new
     end
 
     # rubocop:enable Metrics/ParameterLists
