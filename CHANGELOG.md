@@ -1,6 +1,8 @@
 # Hanami::Utils
 Ruby core extentions and class utilities for Hanami
 
+## v1.2.0.beta2 - 2018-03-23
+
 ## v1.2.0.beta1 - 2018-02-28
 
 ## v1.1.2 - 2018-02-02
