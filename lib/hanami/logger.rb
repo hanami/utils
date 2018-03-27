@@ -584,10 +584,10 @@ module Hanami
 
       super(stream, *args)
 
+      colorizer       ||= default_colorizer
       @level            = _level(level)
       @stream           = stream
       @application_name = application_name
-      colorizer         = colorizer || default_colorizer
       @formatter        = Formatter.fabricate(formatter, self.application_name, filter, colorizer: colorizer)
     end
 
