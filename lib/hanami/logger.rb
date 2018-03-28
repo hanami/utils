@@ -165,6 +165,16 @@ module Hanami
       # @api private
       attr_writer :hash_filter
 
+      # @since x.x.x
+      # @api private
+      attr_writer :context
+
+      # @since x.x.x
+      # @api private
+      def context
+        @context ||= {}
+      end
+
       # @since 0.5.0
       # @api private
       #
@@ -173,7 +183,8 @@ module Hanami
         _format({
           app:      application_name,
           severity: severity,
-          time:     time
+          time:     time,
+          **context
         }.merge(
           _message_hash(msg)
         ))
@@ -492,6 +503,12 @@ module Hanami
     # @since 0.8.0
     def close
       super unless [STDOUT, $stdout].include?(@stream)
+    end
+
+    def with_context(context)
+      @formatter.context.merge!(context)
+      yield if block_given?
+      context.each_key { |key| @formatter.context.delete(key) }
     end
 
     private
