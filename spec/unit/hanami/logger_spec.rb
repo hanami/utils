@@ -475,6 +475,15 @@ RSpec.describe Hanami::Logger do
         expect(output).to eq "[hanami] [INFO] [2017-01-15 16:00:23 +0100] foo\n"
       end
 
+      it 'has key=value format for hash messages' do
+        output =
+          with_captured_stdout do
+            class TestLogger < Hanami::Logger; end
+            TestLogger.new.info(foo: "bar")
+          end
+        expect(output).to eq "[hanami] [INFO] [2017-01-15 16:00:23 +0100] foo=bar\n"
+      end
+
       it 'has key=value format for error messages' do
         exception = nil
         output = with_captured_stdout do
@@ -550,7 +559,7 @@ RSpec.describe Hanami::Logger do
             class TestLogger < Hanami::Logger; end
             TestLogger.new.info(foo: :bar)
           end
-        expect(output).to eq "[hanami] [INFO] [2017-01-15 16:00:23 +0100] bar\n"
+        expect(output).to eq "[hanami] [INFO] [2017-01-15 16:00:23 +0100] foo=bar\n"
       end
 
       it 'has key=value format for not string messages' do
@@ -563,8 +572,8 @@ RSpec.describe Hanami::Logger do
       end
 
       it 'displays filtered hash values' do
-        form_params = Hash[
-          form_params: Hash[
+        params = Hash[
+          params: Hash[
             'name' => 'John',
             'password' => '[FILTERED]',
             'password_confirmation' => '[FILTERED]'
@@ -575,7 +584,7 @@ RSpec.describe Hanami::Logger do
 
         output = with_captured_stdout do
           class TestLogger < Hanami::Logger; end
-          TestLogger.new.info(form_params)
+          TestLogger.new.info(params)
         end
 
         expect(output).to eq("[hanami] [INFO] [2017-01-15 16:00:23 +0100] #{expected}\n")
@@ -583,9 +592,9 @@ RSpec.describe Hanami::Logger do
     end
 
     context do
-      let(:form_params) do
+      let(:params) do
         Hash[
-          form_params: Hash[
+          params: Hash[
             'password' => 'password',
             'password_confirmation' => 'password',
             'credit_card' => Hash[
@@ -607,7 +616,7 @@ RSpec.describe Hanami::Logger do
           output = with_captured_stdout do
             class TestLogger < Hanami::Logger; end
             filters = %w[password password_confirmation credit_card user.login]
-            TestLogger.new(filter: filters).info(form_params)
+            TestLogger.new(filter: filters).info(params)
           end
 
           expect(output).to eq("[hanami] [INFO] [2017-01-15 16:00:23 +0100] #{expected}\n")
@@ -620,7 +629,7 @@ RSpec.describe Hanami::Logger do
 
           output = with_captured_stdout do
             class TestLogger < Hanami::Logger; end
-            TestLogger.new.info(form_params)
+            TestLogger.new.info(params)
           end
 
           expect(output).to eq("[hanami] [INFO] [2017-01-15 16:00:23 +0100] #{expected}\n")

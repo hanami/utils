@@ -124,6 +124,10 @@ Manage directories where to find Ruby source code or web static assets. [[API do
 
 Safe logic to manage relative URLs. [[API doc](http://www.rubydoc.info/gems/hanami-utils/Hanami/Utils/PathPrefix)]
 
+### Hanami::Utils::QueryString
+
+URI query string transformation [[API doc](http://www.rubydoc.info/gems/hanami-utils/Hanami/Utils/QueryString)]
+
 ### Hanami::Utils::ShellColor
 
 Shell colorizer [[API doc](http://www.rubydoc.info/gems/hanami-utils/Hanami/Utils/ShellColor)]
