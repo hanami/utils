@@ -136,7 +136,7 @@ module Hanami
         if hash.key?(:error)
           _format_error(hash)
         elsif hash.key?(:params)
-          "#{hash[:params]}#{NEW_LINE}"
+          "#{hash.values.join(SEPARATOR)}#{NEW_LINE}"
         else
           "#{Utils::QueryString.call(hash[:message] || hash)}#{NEW_LINE}"
         end

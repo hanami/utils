@@ -571,6 +571,17 @@ RSpec.describe Hanami::Logger do
         expect(output).to eq "[hanami] [INFO] [2017-01-15 16:00:23 +0100] foo bar\n"
       end
 
+      it 'logs HTTP request' do
+        message = { http: "HTTP/1.1", verb: "GET", status: "200", ip: "::1", path: "/books/23", length: "175", params: {}, elapsed: 0.005829 }
+
+        output =
+          with_captured_stdout do
+            class TestLogger < Hanami::Logger; end
+            TestLogger.new.info(message)
+          end
+        expect(output).to eq "[hanami] [INFO] [2017-01-15 16:00:23 +0100] HTTP/1.1 GET 200 ::1 /books/23 175 {} 0.005829\n"
+      end
+
       it 'displays filtered hash values' do
         params = Hash[
           params: Hash[
