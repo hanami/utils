@@ -5,6 +5,7 @@ require "json"
 require "logger"
 require "hanami/utils/json"
 require "hanami/utils/class_attribute"
+require "hanami/utils/query_string"
 
 module Hanami
   class Logger < ::Logger
@@ -120,7 +121,7 @@ module Hanami
       # @since 0.8.0
       # @api private
       def _format(hash)
-        "#{_line_front_matter(hash[:app], hash[:severity], hash[:time])}#{SEPARATOR}#{_format_message(hash)}"
+        "#{_line_front_matter(hash.delete(:app), hash.delete(:severity), hash.delete(:time))}#{SEPARATOR}#{_format_message(hash)}"
       end
 
       # @since 1.2.0
@@ -134,10 +135,10 @@ module Hanami
       def _format_message(hash)
         if hash.key?(:error)
           _format_error(hash)
+        elsif hash.key?(:params)
+          "#{hash[:params]}#{NEW_LINE}"
         else
-          hash.each_with_object([]) do |(k, v), memo|
-            memo << v unless RESERVED_KEYS.include?(k)
-          end.join(SEPARATOR).concat(NEW_LINE)
+          "#{Utils::QueryString.call(hash[:message] || hash)}#{NEW_LINE}"
         end
       end
 
