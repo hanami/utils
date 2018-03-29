@@ -164,6 +164,56 @@ RSpec.describe Hanami::Logger do
             #   end
             # end
           end
+
+          describe 'colorization setting' do
+            it 'colorizes when colorizer: DefaultColorizer.new' do
+              logger = Hanami::Logger.new(stream: log_file, colorizer: Hanami::Logger::DefaultColorizer.new)
+              logger.info('world')
+
+              logger.close
+
+              contents = File.read(log_file)
+              expect(contents).to include(
+                "hello[\e[33mHanami\e[0m] [\e[36mINFO\e[0m] [\e[32m2017-01-15 16:00:23 +0100\e[0m] world"
+              )
+            end
+
+            it 'does not colorize by default (since not tty)' do
+              logger = Hanami::Logger.new(stream: log_file)
+              logger.info('world')
+
+              logger.close
+
+              contents = File.read(log_file)
+              expect(contents).to eq(
+                "hello[Hanami] [INFO] [2017-01-15 16:00:23 +0100] world\n"
+              )
+            end
+
+            it 'does not colorize with colorizer: nil (since not tty)' do
+              logger = Hanami::Logger.new(stream: log_file, colorizer: nil)
+              logger.info('world')
+
+              logger.close
+
+              contents = File.read(log_file)
+              expect(contents).to eq(
+                "hello[Hanami] [INFO] [2017-01-15 16:00:23 +0100] world\n"
+              )
+            end
+
+            it 'does not colorize with colorizer: NullColorizer.new' do
+              logger = Hanami::Logger.new(stream: log_file, colorizer: Hanami::Logger::NullColorizer.new)
+              logger.info('world')
+
+              logger.close
+
+              contents = File.read(log_file)
+              expect(contents).to eq(
+                "hello[Hanami] [INFO] [2017-01-15 16:00:23 +0100] world\n"
+              )
+            end
+          end
         end # end File
 
         describe 'when IO' do
@@ -429,6 +479,57 @@ RSpec.describe Hanami::Logger do
           expectation << "from #{line}\n"
         end
         expect(output).to eq expectation
+      end
+
+      it 'has key=value format for error messages without backtrace' do
+        exception = nil
+        output = with_captured_stdout do
+          class TestLogger < Hanami::Logger; end
+          exception = StandardError.new('foo')
+          TestLogger.new.error(exception)
+        end
+        expectation = "[hanami] [ERROR] [2017-01-15 16:00:23 +0100] StandardError: foo\n"
+        expect(output).to eq expectation
+      end
+
+      describe 'colorization setting' do
+        it 'colorizes when colorizer: DefaultColorizer.new' do
+          output =
+            with_captured_stdout do
+              class TestLogger < Hanami::Logger; end
+              TestLogger.new(colorizer: Hanami::Logger::DefaultColorizer.new).info('foo')
+            end
+          expect(output).to eq(
+            "[\e[33mhanami\e[0m] [\e[36mINFO\e[0m] [\e[32m2017-01-15 16:00:23 +0100\e[0m] foo\n"
+          )
+        end
+
+        it 'colorizes when for tty by default (i.e. when colorizer: nil)' do
+          stdout = IO.new($stdout.fileno)
+          expect(stdout).to receive(:write).with(
+            "[\e[33mhanami\e[0m] [\e[36mINFO\e[0m] [\e[32m2017-01-15 16:00:23 +0100\e[0m] foo\n"
+          )
+          class TestLogger < Hanami::Logger; end
+          TestLogger.new(stream: stdout).info('foo')
+        end
+
+        it 'colorizes for tty when colorizer: nil' do
+          stdout = IO.new($stdout.fileno)
+          expect(stdout).to receive(:write).with(
+            "[\e[33mhanami\e[0m] [\e[36mINFO\e[0m] [\e[32m2017-01-15 16:00:23 +0100\e[0m] foo\n"
+          )
+          class TestLogger < Hanami::Logger; end
+          TestLogger.new(stream: stdout, colorizer: nil).info('foo')
+        end
+
+        it 'does not colorize when colorizer: NullColorizer.new' do
+          output =
+            with_captured_stdout do
+              class TestLogger < Hanami::Logger; end
+              TestLogger.new(colorizer: Hanami::Logger::NullColorizer.new).info('foo')
+            end
+          expect(output).to eq "[hanami] [INFO] [2017-01-15 16:00:23 +0100] foo\n"
+        end
       end
 
       it 'has key=value format for hash messages' do
