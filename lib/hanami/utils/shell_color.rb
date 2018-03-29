@@ -1,13 +1,26 @@
+# frozen_string_literal: true
+
 module Hanami
   module Utils
-    # Shellcode helper for colorizing STDOUT
+    # Shell helper for colorizing STDOUT
     #
     # It doesn't check if you're writing to a file or anything, so you have to
     # check that yourself before using this module.
+    #
+    # @since 1.2.0
     module ShellColor
+      # Unknown color code error
+      #
+      # @since 1.2.0
+      class UnknownColorCodeError < ::StandardError
+        def initialize(code)
+          super("unknown color code: `#{code.inspect}'")
+        end
+      end
+
       # Escape codes for terminals to output strings in colors
       #
-      # @since x.x.x
+      # @since 1.2.0
       # @api private
       COLORS = ::Hash[
         black:   30,
@@ -23,18 +36,28 @@ module Hanami
       # Colorize output
       # 8 colors available: black, red, green, yellow, blue, magenta, cyan, and gray
       #
-      # @api public
-      # @since x.x.x
-      def self.colorize(input, color:)
+      # @param input [#to_s] the string to colorize
+      # @param color [Symbol] the color
+      #
+      # @raise [Hanami::Utils::ShellColor::UnknownColorError] if the color code is
+      #   unknown
+      #
+      # @return [String] the colorized string
+      #
+      # @since 1.2.0
+      def self.call(input, color:)
         "\e[#{color_code(color)}m#{input}\e[0m"
       end
 
       # Helper method to translate between color names and terminal escape codes
       #
       # @api private
-      # @since x.x.x
-      def self.color_code(name)
-        COLORS.fetch(name)
+      # @since 1.2.0
+      #
+      # @raise [Hanami::Utils::ShellColor::UnknownColorError] if the color code is
+      #   unknown
+      def self.color_code(code)
+        COLORS.fetch(code) { raise UnknownColorCodeError.new(code) }
       end
     end
   end

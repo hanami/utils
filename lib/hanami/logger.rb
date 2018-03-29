@@ -421,7 +421,7 @@ module Hanami
       # @api private
       def _colorized(message, color:)
         if color
-          Hanami::Utils::ShellColor.colorize(message, color: color)
+          Hanami::Utils::ShellColor.call(message, color: color)
         else
           message
         end
