@@ -166,8 +166,8 @@ RSpec.describe Hanami::Logger do
           end
 
           describe 'colorization setting' do
-            it 'colorizes when colorizer: DefaultColorizer.new' do
-              logger = Hanami::Logger.new(stream: log_file, colorizer: Hanami::Logger::DefaultColorizer.new)
+            it 'colorizes when colorizer: Colorizer.new' do
+              logger = Hanami::Logger.new(stream: log_file, colorizer: Hanami::Logger::Colorizer.new)
               logger.info('world')
 
               logger.close
@@ -175,6 +175,18 @@ RSpec.describe Hanami::Logger do
               contents = File.read(log_file)
               expect(contents).to include(
                 "hello[\e[33mHanami\e[0m] [\e[36mINFO\e[0m] [\e[32m2017-01-15 16:00:23 +0100\e[0m] world"
+              )
+            end
+
+            it 'colorizes when using custom colors: Colorizer.new' do
+              logger = Hanami::Logger.new(stream: log_file, colorizer: Hanami::Logger::Colorizer.new(colors: { app: :red }))
+              logger.info('world')
+
+              logger.close
+
+              contents = File.read(log_file)
+              expect(contents).to include(
+                "hello[\e[31mHanami\e[0m] [INFO] [2017-01-15 16:00:23 +0100] world"
               )
             end
 
@@ -493,11 +505,11 @@ RSpec.describe Hanami::Logger do
       end
 
       describe 'colorization setting' do
-        it 'colorizes when colorizer: DefaultColorizer.new' do
+        it 'colorizes when colorizer: Colorizer.new' do
           output =
             with_captured_stdout do
               class TestLogger < Hanami::Logger; end
-              TestLogger.new(colorizer: Hanami::Logger::DefaultColorizer.new).info('foo')
+              TestLogger.new(colorizer: Hanami::Logger::Colorizer.new).info('foo')
             end
           expect(output).to eq(
             "[\e[33mhanami\e[0m] [\e[36mINFO\e[0m] [\e[32m2017-01-15 16:00:23 +0100\e[0m] foo\n"
@@ -617,29 +629,29 @@ RSpec.describe Hanami::Logger do
     end
   end
 
-  describe Hanami::Logger::Formatter::HashFilter do
+  describe Hanami::Logger::Filter do
     context 'without filters' do
       it "doesn't filter" do
         input = Hash[password: 'azerty']
-        output = described_class.new.filter(input)
+        output = described_class.new.call(input)
         expect(output).to eql(input)
       end
     end
 
     it "doesn't alter the hash keys" do
-      output = described_class.new(%w[password]).filter(Hash["password" => 'azerty', foo: Hash[password: 'bar']])
+      output = described_class.new(%w[password]).call(Hash["password" => 'azerty', foo: Hash[password: 'bar']])
       expect(output).to eql(Hash["password" => '[FILTERED]', foo: Hash[password: '[FILTERED]']])
     end
 
     it 'filters with multiple filters' do
       input = Hash[password: 'azerty', number: '12345']
-      output = described_class.new(%i[password number]).filter(input)
+      output = described_class.new(%i[password number]).call(input)
       expect(output).to eql(Hash[password: '[FILTERED]', number: '[FILTERED]'])
     end
 
     it 'filters with multi-level filter' do
       input = Hash[user: Hash[name: 'foo', password: 'azerty'], password: 'foo']
-      output = described_class.new(%w[user.password]).filter(input)
+      output = described_class.new(%w[user.password]).call(input)
       expect(output).to eql(Hash[user: Hash[name: 'foo', password: '[FILTERED]'], password: 'foo'])
     end
   end
