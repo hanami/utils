@@ -93,7 +93,6 @@ module Hanami
       # @see http://www.ruby-doc.org/stdlib/libdoc/logger/rdoc/Logger/Formatter.html#method-i-call
       def call(severity, time, progname, msg)
         colorized = @colorizer.call(application_name, severity, time, progname)
-        colorized.delete(:progname)
         colorized.merge!(_message_hash(msg))
 
         _format(colorized)

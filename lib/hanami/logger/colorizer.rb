@@ -12,12 +12,11 @@ module Hanami
     class NullColorizer
       # @since 1.2.0
       # @api private
-      def call(app, severity, datetime, progname)
+      def call(app, severity, datetime, _progname)
         ::Hash[
           app:      app,
           severity: severity,
           time:     datetime,
-          progname: progname
         ]
       end
     end
@@ -39,15 +38,15 @@ module Hanami
       # @param app [#to_s] the app name
       # @param severity [#to_s] log severity
       # @param datetime [#to_s] timestamp
-      # @param progname [#to_s] program name
+      # @param _progname [#to_s] program name - ignored, accepted for
+      #   compatibility with Ruby's Logger
       #
-      # @return [::Hash] an Hash containing the keys `:app`, `:severity`, `:time`, and `:progname`
-      def call(app, severity, datetime, progname)
+      # @return [::Hash] an Hash containing the keys `:app`, `:severity`, and `:time`
+      def call(app, severity, datetime, _progname)
         ::Hash[
           app:      app(app),
           severity: severity(severity),
           time:     datetime(datetime),
-          progname: progname(progname)
         ]
       end
 
@@ -63,7 +62,6 @@ module Hanami
         app:      :yellow,
         severity: :cyan,
         datetime: :green,
-        progname: nil,
       ].freeze
 
       attr_reader :colors
@@ -84,12 +82,6 @@ module Hanami
       # @api private
       def datetime(input)
         colorize(input, color: colors.fetch(:datetime, nil))
-      end
-
-      # @since 1.2.0
-      # @api private
-      def progname(input)
-        colorize(input, color: colors.fetch(:progname, nil))
       end
 
       # @since 1.2.0
