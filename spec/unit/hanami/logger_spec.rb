@@ -165,65 +165,54 @@ RSpec.describe Hanami::Logger do
             # end
           end
 
-          describe 'colorization setting' do
-            it 'colorizes when colorizer: Colorizer.new' do
-              logger = Hanami::Logger.new(stream: log_file, colorizer: Hanami::Logger::Colorizer.new)
-              logger.info('world')
+          describe "colorization setting" do
+            context "with TTY" do
+              it "uses default colorizer" do
+                output = with_tty do
+                  logger = Hanami::Logger.new
+                  logger.info("hello")
+                end
 
-              logger.close
+                expect(output).to include(
+                  "[\e[33mHanami\e[0m] [\e[36mINFO\e[0m] [\e[32m"
+                )
+              end
 
-              contents = File.read(log_file)
-              expect(contents).to include(
-                "hello[\e[33mHanami\e[0m] [\e[36mINFO\e[0m] [\e[32m2017-01-15 16:00:23 +0100\e[0m] world"
-              )
+              it "uses custom colors" do
+                output = with_tty do
+                  logger = Hanami::Logger.new(colorizer: Hanami::Logger::Colorizer.new(colors: { app: :red }))
+                  logger.info("hello")
+                end
+
+                expect(output).to include(
+                  "[\e[31mHanami\e[0m] [INFO] ["
+                )
+              end
+
+              it "doesn't colorize with false" do
+                output = with_tty do
+                  logger = Hanami::Logger.new(colorizer: false)
+                  logger.info("hello")
+                end
+
+                expect(output).to include(
+                  "[Hanami] [INFO] ["
+                )
+              end
             end
 
-            it 'colorizes when using custom colors: Colorizer.new' do
-              logger = Hanami::Logger.new(stream: log_file, colorizer: Hanami::Logger::Colorizer.new(colors: { app: :red }))
-              logger.info('world')
+            context "with file" do
+              it "doesn't colorize by default" do
+                logger = Hanami::Logger.new(stream: log_file)
+                logger.info("world")
 
-              logger.close
+                logger.close
 
-              contents = File.read(log_file)
-              expect(contents).to include(
-                "hello[\e[31mHanami\e[0m] [INFO] [2017-01-15 16:00:23 +0100] world"
-              )
-            end
-
-            it 'does not colorize by default (since not tty)' do
-              logger = Hanami::Logger.new(stream: log_file)
-              logger.info('world')
-
-              logger.close
-
-              contents = File.read(log_file)
-              expect(contents).to eq(
-                "hello[Hanami] [INFO] [2017-01-15 16:00:23 +0100] world\n"
-              )
-            end
-
-            it 'does not colorize with colorizer: nil (since not tty)' do
-              logger = Hanami::Logger.new(stream: log_file, colorizer: nil)
-              logger.info('world')
-
-              logger.close
-
-              contents = File.read(log_file)
-              expect(contents).to eq(
-                "hello[Hanami] [INFO] [2017-01-15 16:00:23 +0100] world\n"
-              )
-            end
-
-            it 'does not colorize with colorizer: NullColorizer.new' do
-              logger = Hanami::Logger.new(stream: log_file, colorizer: Hanami::Logger::NullColorizer.new)
-              logger.info('world')
-
-              logger.close
-
-              contents = File.read(log_file)
-              expect(contents).to eq(
-                "hello[Hanami] [INFO] [2017-01-15 16:00:23 +0100] world\n"
-              )
+                contents = File.read(log_file)
+                expect(contents).to eq(
+                  "hello[Hanami] [INFO] [2017-01-15 16:00:23 +0100] world\n"
+                )
+              end
             end
           end
         end # end File

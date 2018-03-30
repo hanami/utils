@@ -79,17 +79,45 @@ module Hanami
   #   # => app=FOO severity=INFO time=2016-05-27 10:14:42 UTC message=Hello
   #
   # @example Write to file
-  #   require 'hanami'
+  #   require 'hanami/logger'
   #
   #   Hanami::Logger.new(stream: 'logfile.log').info('Hello')
   #   # in logfile.log
   #   # => app=FOO severity=INFO time=2016-05-27 10:14:42 UTC message=Hello
   #
   # @example Use JSON formatter
-  #   require 'hanami'
+  #   require 'hanami/logger'
   #
   #   Hanami::Logger.new(formatter: Hanami::Logger::JSONFormatter).info('Hello')
   #   # => "{\"app\":\"Hanami\",\"severity\":\"INFO\",\"time\":\"1988-09-01 00:00:00 UTC\",\"message\":\"Hello\"}"
+  #
+  # @example Disable colorization
+  #   require 'hanami/logger'
+  #
+  #   Hanami::Logger.new(colorizer: false)
+  #
+  # @example Use custom colors
+  #   require 'hanami/logger'
+  #
+  #   Hanami::Logger.new(colorizer: Hanami::Logger::Colorizer.new(colors: { app: :red }))
+  #
+  # @example Use custom colorizer
+  #   require "hanami/logger"
+  #   require "paint" # gem install paint
+  #
+  #   class LogColorizer < Hanami::Logger::Colorizer
+  #     def initialize(colors: { app: [:red, :bright], severity: [:red, :blue], datetime: [:italic, :yellow] })
+  #       super
+  #     end
+  #
+  #     private
+  #
+  #     def colorize(message, color:)
+  #       Paint[message, *color]
+  #     end
+  #   end
+  #
+  #   Hanami::Logger.new(colorizer: LogColorizer.new)
   class Logger < ::Logger
     require "hanami/logger/formatter"
     require "hanami/logger/colorizer"
@@ -253,7 +281,7 @@ module Hanami
       @level            = _level(level)
       @stream           = stream
       @application_name = application_name
-      @formatter        = Formatter.fabricate(formatter, self.application_name, filter, colorizer || lookup_colorizer)
+      @formatter        = Formatter.fabricate(formatter, self.application_name, filter, lookup_colorizer(colorizer))
     end
 
     # rubocop:enable Metrics/ParameterLists
@@ -311,8 +339,9 @@ module Hanami
 
     # @since 1.2.0
     # @api private
-    def lookup_colorizer
-      (tty? ? Colorizer : NullColorizer).new
+    def lookup_colorizer(colorizer)
+      return NullColorizer.new if colorizer == false
+      colorizer || (tty? ? Colorizer : NullColorizer).new
     end
 
     # @since 1.2.0

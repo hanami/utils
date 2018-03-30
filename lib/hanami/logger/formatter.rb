@@ -18,6 +18,7 @@ module Hanami
     # @see http://www.ruby-doc.org/stdlib/libdoc/logger/rdoc/Logger/Formatter.html
     class Formatter < ::Logger::Formatter
       require "hanami/logger/filter"
+      require "hanami/logger/colorizer"
 
       # @since 0.8.0
       # @api private
@@ -162,6 +163,11 @@ module Hanami
       # @api private
       def self.eligible?(name)
         name == :json
+      end
+
+      # @api private
+      def colorizer=(*)
+        @colorizer = NullColorizer.new
       end
 
       private
