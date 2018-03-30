@@ -59,9 +59,9 @@ module Hanami
       #
       # @since 1.2.0
       COLORS = ::Hash[
-        app:      :yellow,
-        severity: :cyan,
-        datetime: :green,
+        app:      :blue,
+        severity: :magenta,
+        datetime: :cyan,
       ].freeze
 
       attr_reader :colors
