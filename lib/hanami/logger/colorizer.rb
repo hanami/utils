@@ -52,16 +52,24 @@ module Hanami
 
       private
 
-      # The colors defined for the four parts of the log message
-      #
-      # These can be overridden, keeping the name keys, with acceptable values
-      # being any from Hanami::Utils::ShellColor::COLORS
+      # The colors defined for the three parts of the log message
       #
       # @since 1.2.0
+      # @api private
       COLORS = ::Hash[
         app:      :blue,
-        severity: :gray,
         datetime: :cyan,
+      ].freeze
+
+      # @since 1.2.0
+      # @api private
+      LEVELS = ::Hash[
+        Hanami::Logger::DEBUG   => :cyan,
+        Hanami::Logger::INFO    => :magenta,
+        Hanami::Logger::WARN    => :yellow,
+        Hanami::Logger::ERROR   => :red,
+        Hanami::Logger::FATAL   => :red,
+        Hanami::Logger::UNKNOWN => :blue,
       ].freeze
 
       attr_reader :colors
@@ -75,16 +83,7 @@ module Hanami
       # @since 1.2.0
       # @api private
       def severity(input)
-        color = case Hanami::Logger.level(input)
-                when Hanami::Logger::INFO                         then :magenta
-                when Hanami::Logger::WARN                         then :yellow
-                when Hanami::Logger::DEBUG                        then :cyan
-                when Hanami::Logger::UNKNOWN                      then :blue
-                when Hanami::Logger::ERROR, Hanami::Logger::FATAL then :red
-                else
-                  colors.fetch(:severity, nil)
-                end
-
+        color = LEVELS.fetch(Hanami::Logger.level(input), :gray)
         colorize(input, color: color)
       end
 
