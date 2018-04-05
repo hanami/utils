@@ -2,6 +2,8 @@
 Ruby core extentions and class utilities for Hanami
 
 ## v1.2.0.rc2 - 2018-04-06
+### Added
+- [Luca Guidi] Use different colors for each `Hanami::Logger` level
 
 ## v1.2.0.rc1 - 2018-03-30
 ### Added
