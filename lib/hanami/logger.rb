@@ -140,6 +140,17 @@ module Hanami
       "unknown" => UNKNOWN
     ].freeze
 
+    # @since 1.2.0
+    # @api private
+    def self.level(level)
+      case level
+      when DEBUG..UNKNOWN
+        level
+      else
+        LEVELS.fetch(level.to_s.downcase, DEBUG)
+      end
+    end
+
     # @since 0.5.0
     # @api private
     attr_writer :application_name
@@ -329,12 +340,7 @@ module Hanami
     # @since 0.8.0
     # @api private
     def _level(level)
-      case level
-      when DEBUG..UNKNOWN
-        level
-      else
-        LEVELS.fetch(level.to_s.downcase, DEBUG)
-      end
+      self.class.level(level)
     end
 
     # @since 1.2.0

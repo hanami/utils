@@ -60,7 +60,7 @@ module Hanami
       # @since 1.2.0
       COLORS = ::Hash[
         app:      :blue,
-        severity: :magenta,
+        severity: :gray,
         datetime: :cyan,
       ].freeze
 
@@ -75,7 +75,17 @@ module Hanami
       # @since 1.2.0
       # @api private
       def severity(input)
-        colorize(input, color: colors.fetch(:severity, nil))
+        color = case Hanami::Logger.level(input)
+                when Hanami::Logger::INFO                         then :magenta
+                when Hanami::Logger::WARN                         then :yellow
+                when Hanami::Logger::DEBUG                        then :cyan
+                when Hanami::Logger::UNKNOWN                      then :blue
+                when Hanami::Logger::ERROR, Hanami::Logger::FATAL then :red
+                else
+                  colors.fetch(:severity, nil)
+                end
+
+        colorize(input, color: color)
       end
 
       # @since 1.2.0
