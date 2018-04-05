@@ -185,7 +185,7 @@ RSpec.describe Hanami::Logger do
                 end
 
                 expect(output).to include(
-                  "[\e[31mHanami\e[0m] [INFO] ["
+                  "[\e[31mHanami\e[0m] [\e[35mINFO\e[0m] ["
                 )
               end
 
