@@ -1,6 +1,23 @@
 # Hanami::Utils
 Ruby core extentions and class utilities for Hanami
 
+## v1.2.0 - 2018-04-11
+
+## v1.2.0.rc2 - 2018-04-06
+### Added
+- [Luca Guidi] Use different colors for each `Hanami::Logger` level
+
+## v1.2.0.rc1 - 2018-03-30
+### Added
+- [Oana Sipos & Sean Collins & Luca Guidi] Colored logging
+
+### Fixed
+- [Luca Guidi] Make `Hanami::Logger` to properly log hash messages
+
+## v1.2.0.beta2 - 2018-03-23
+
+## v1.2.0.beta1 - 2018-02-28
+
 ## v1.1.2 - 2018-02-02
 ### Added
 - [Luca Guidi] Official support for Ruby: MRI 2.5

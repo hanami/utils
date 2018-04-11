@@ -1,11 +1,8 @@
-require 'set'
-require 'json'
-require 'logger'
-require 'hanami/utils/string'
-require 'hanami/utils/json'
-require 'hanami/utils/hash'
-require 'hanami/utils/class_attribute'
-require 'hanami/utils/files'
+# frozen_string_literal: true
+
+require "logger"
+require "hanami/utils/string"
+require "hanami/utils/files"
 
 module Hanami
   # Hanami logger
@@ -82,249 +79,77 @@ module Hanami
   #   # => app=FOO severity=INFO time=2016-05-27 10:14:42 UTC message=Hello
   #
   # @example Write to file
-  #   require 'hanami'
+  #   require 'hanami/logger'
   #
   #   Hanami::Logger.new(stream: 'logfile.log').info('Hello')
   #   # in logfile.log
   #   # => app=FOO severity=INFO time=2016-05-27 10:14:42 UTC message=Hello
   #
   # @example Use JSON formatter
-  #   require 'hanami'
+  #   require 'hanami/logger'
   #
   #   Hanami::Logger.new(formatter: Hanami::Logger::JSONFormatter).info('Hello')
   #   # => "{\"app\":\"Hanami\",\"severity\":\"INFO\",\"time\":\"1988-09-01 00:00:00 UTC\",\"message\":\"Hello\"}"
+  #
+  # @example Disable colorization
+  #   require 'hanami/logger'
+  #
+  #   Hanami::Logger.new(colorizer: false)
+  #
+  # @example Use custom colors
+  #   require 'hanami/logger'
+  #
+  #   Hanami::Logger.new(colorizer: Hanami::Logger::Colorizer.new(colors: { app: :red }))
+  #
+  # @example Use custom colorizer
+  #   require "hanami/logger"
+  #   require "paint" # gem install paint
+  #
+  #   class LogColorizer < Hanami::Logger::Colorizer
+  #     def initialize(colors: { app: [:red, :bright], severity: [:red, :blue], datetime: [:italic, :yellow] })
+  #       super
+  #     end
+  #
+  #     private
+  #
+  #     def colorize(message, color:)
+  #       Paint[message, *color]
+  #     end
+  #   end
+  #
+  #   Hanami::Logger.new(colorizer: LogColorizer.new)
   class Logger < ::Logger
-    # Hanami::Logger default formatter.
-    # This formatter returns string in key=value format.
-    #
-    # @since 0.5.0
-    # @api private
-    #
-    # @see http://www.ruby-doc.org/stdlib/libdoc/logger/rdoc/Logger/Formatter.html
-    class Formatter < ::Logger::Formatter
-      # @since 0.8.0
-      # @api private
-      SEPARATOR = ' '.freeze
-
-      # @since 0.8.0
-      # @api private
-      NEW_LINE = $/
-
-      # @since 1.0.0
-      # @api private
-      RESERVED_KEYS = %i[app severity time].freeze
-
-      include Utils::ClassAttribute
-
-      class_attribute :subclasses
-      self.subclasses = Set.new
-
-      def self.fabricate(formatter, application_name, filters)
-        fabricated_formatter = _formatter_instance(formatter)
-
-        fabricated_formatter.application_name = application_name
-        fabricated_formatter.hash_filter      = HashFilter.new(filters)
-
-        fabricated_formatter
-      end
-
-      # @api private
-      def self.inherited(subclass)
-        super
-        subclasses << subclass
-      end
-
-      # @api private
-      def self.eligible?(name)
-        name == :default
-      end
-
-      # @api private
-      # @since 1.1.0
-      def self._formatter_instance(formatter)
-        case formatter
-        when Symbol
-          (subclasses.find { |s| s.eligible?(formatter) } || self).new
-        when nil
-          new
-        else
-          formatter
-        end
-      end
-      private_class_method :_formatter_instance
-
-      # @since 0.5.0
-      # @api private
-      attr_writer :application_name
-
-      # @since 1.0.0
-      # @api private
-      attr_reader :application_name
-
-      # @since 1.1.0
-      # @api private
-      attr_writer :hash_filter
-
-      # @since 0.5.0
-      # @api private
-      #
-      # @see http://www.ruby-doc.org/stdlib/libdoc/logger/rdoc/Logger/Formatter.html#method-i-call
-      def call(severity, time, _progname, msg)
-        _format({
-          app:      application_name,
-          severity: severity,
-          time:     time
-        }.merge(
-          _message_hash(msg)
-        ))
-      end
-
-      private
-
-      # @since 0.8.0
-      # @api private
-      def _message_hash(message) # rubocop:disable Metrics/MethodLength
-        case message
-        when Hash
-          @hash_filter.filter(message)
-        when Exception
-          Hash[
-            message:   message.message,
-            backtrace: message.backtrace || [],
-            error:     message.class
-          ]
-        else
-          Hash[message: message]
-        end
-      end
-
-      # @since 0.8.0
-      # @api private
-      def _format(hash)
-        result = RESERVED_KEYS.map { |k| "[#{hash[k]}]" }.join(SEPARATOR)
-        return _format_error(result, hash) if hash.key?(:error)
-
-        values = hash.each_with_object([]) do |(k, v), memo|
-          memo << v unless RESERVED_KEYS.include?(k)
-        end
-
-        result << " #{values.join(SEPARATOR)}#{NEW_LINE}"
-        result
-      end
-
-      # @api private
-      def _format_error(result, hash)
-        result << " #{hash[:error]}:" if hash.key?(:error)
-        result << " #{hash[:message]}#{NEW_LINE}"
-        if hash.key?(:backtrace)
-          hash[:backtrace].each do |line|
-            result << "from #{line}#{NEW_LINE}"
-          end
-        end
-
-        result
-      end
-
-      # Filtering logic
-      #
-      # @since 1.1.0
-      # @api private
-      class HashFilter
-        # @since 1.1.0
-        # @api private
-        attr_reader :filters
-
-        # @since 1.1.0
-        # @api private
-        def initialize(filters = [])
-          @filters = filters
-        end
-
-        # @since 1.1.0
-        # @api private
-        def filter(hash)
-          _filtered_keys(hash).each do |key|
-            *keys, last = _actual_keys(hash, key.split('.'))
-            keys.inject(hash, :fetch)[last] = '[FILTERED]'
-          end
-
-          hash
-        end
-
-        private
-
-        # @since 1.1.0
-        # @api private
-        def _filtered_keys(hash)
-          _key_paths(hash).select { |key| filters.any? { |filter| key =~ %r{(\.|\A)#{filter}(\.|\z)} } }
-        end
-
-        # @since 1.1.0
-        # @api private
-        def _key_paths(hash, base = nil)
-          hash.inject([]) do |results, (k, v)|
-            results + (v.respond_to?(:each) ? _key_paths(v, _build_path(base, k)) : [_build_path(base, k)])
-          end
-        end
-
-        # @since 1.1.0
-        # @api private
-        def _build_path(base, key)
-          [base, key.to_s].compact.join('.')
-        end
-
-        # @since 1.1.0
-        # @api private
-        def _actual_keys(hash, keys)
-          search_in = hash
-
-          keys.inject([]) do |res, key|
-            correct_key = search_in.key?(key.to_sym) ? key.to_sym : key
-            search_in = search_in[correct_key]
-            res + [correct_key]
-          end
-        end
-      end
-    end
-
-    # Hanami::Logger JSON formatter.
-    # This formatter returns string in JSON format.
-    #
-    # @since 0.5.0
-    # @api private
-    class JSONFormatter < Formatter
-      # @api private
-      def self.eligible?(name)
-        name == :json
-      end
-
-      private
-
-      # @since 0.8.0
-      # @api private
-      def _format(hash)
-        hash[:time] = hash[:time].utc.iso8601
-        Hanami::Utils::Json.generate(hash) + NEW_LINE
-      end
-    end
+    require "hanami/logger/formatter"
+    require "hanami/logger/colorizer"
 
     # Default application name.
     # This is used as a fallback for tagging purposes.
     #
     # @since 0.5.0
     # @api private
-    DEFAULT_APPLICATION_NAME = 'hanami'.freeze
+    DEFAULT_APPLICATION_NAME = "hanami"
 
     # @since 0.8.0
     # @api private
-    LEVELS = Hash[
-      'debug'   => DEBUG,
-      'info'    => INFO,
-      'warn'    => WARN,
-      'error'   => ERROR,
-      'fatal'   => FATAL,
-      'unknown' => UNKNOWN
+    LEVELS = ::Hash[
+      "debug"   => DEBUG,
+      "info"    => INFO,
+      "warn"    => WARN,
+      "error"   => ERROR,
+      "fatal"   => FATAL,
+      "unknown" => UNKNOWN
     ].freeze
+
+    # @since 1.2.0
+    # @api private
+    def self.level(level)
+      case level
+      when DEBUG..UNKNOWN
+        level
+      else
+        LEVELS.fetch(level.to_s.downcase, DEBUG)
+      end
+    end
 
     # @since 0.5.0
     # @api private
@@ -456,7 +281,7 @@ module Hanami
     #   # => {"app":"Hanami","severity":"DEBUG","time":"2017-03-30T13:57:59Z","message":"Hello World"}
     # rubocop:disable Lint/HandleExceptions
     # rubocop:disable Metrics/ParameterLists
-    def initialize(application_name = nil, *args, stream: $stdout, level: DEBUG, formatter: nil, filter: [])
+    def initialize(application_name = nil, *args, stream: $stdout, level: DEBUG, formatter: nil, filter: [], colorizer: nil)
       begin
         Utils::Files.mkdir_p(stream)
       rescue TypeError
@@ -467,8 +292,9 @@ module Hanami
       @level            = _level(level)
       @stream           = stream
       @application_name = application_name
-      @formatter        = Formatter.fabricate(formatter, self.application_name, filter)
+      @formatter        = Formatter.fabricate(formatter, self.application_name, filter, lookup_colorizer(colorizer))
     end
+
     # rubocop:enable Metrics/ParameterLists
     # rubocop:enable Lint/HandleExceptions
 
@@ -500,7 +326,7 @@ module Hanami
     # @api private
     def _application_name_from_namespace
       class_name = self.class.name
-      namespace  = Utils::String.new(class_name).namespace
+      namespace  = Utils::String.namespace(class_name)
 
       class_name != namespace and return namespace
     end
@@ -514,12 +340,20 @@ module Hanami
     # @since 0.8.0
     # @api private
     def _level(level)
-      case level
-      when DEBUG..UNKNOWN
-        level
-      else
-        LEVELS.fetch(level.to_s.downcase, DEBUG)
-      end
+      self.class.level(level)
+    end
+
+    # @since 1.2.0
+    # @api private
+    def lookup_colorizer(colorizer)
+      return NullColorizer.new if colorizer == false
+      colorizer || (tty? ? Colorizer : NullColorizer).new
+    end
+
+    # @since 1.2.0
+    # @api private
+    def tty?
+      @logdev.dev.tty?
     end
   end
 end

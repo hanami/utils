@@ -119,8 +119,8 @@ module Hanami
 
       # @since 0.3.5
       # @api private
-      def method_missing(m, *)
-        @payload.fetch(m) { super }
+      def method_missing(method_name, *)
+        @payload.fetch(method_name) { super }
       end
 
       # @since 0.3.5

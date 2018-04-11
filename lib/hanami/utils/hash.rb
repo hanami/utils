@@ -253,7 +253,7 @@ module Hanami
       #   hash.keys    # => [:a, :b]
       #   hash.inspect # => { :a => 23, :b => { 'c' => ["x", "y", "z"] } }
       def symbolize!
-        keys.each do |k| # rubocop:disable Performance/HashEachMethods (this breaks the build)
+        keys.each do |k|
           v = delete(k)
           self[k.to_sym] = v
         end
@@ -276,7 +276,7 @@ module Hanami
       #   hash.keys    # => [:a, :b]
       #   hash.inspect # => {:a=>23, :b=>{:c=>["x", "y", "z"]}}
       def deep_symbolize!
-        keys.each do |k| # rubocop:disable Performance/HashEachMethods (this breaks the build)
+        keys.each do |k|
           v = delete(k)
           v = self.class.new(v).deep_symbolize! if v.respond_to?(:to_hash)
 
@@ -301,7 +301,7 @@ module Hanami
       #   hash.keys    # => [:a, :b]
       #   hash.inspect # => {"a"=>23, "b"=>{"c"=>["x", "y", "z"]}}
       def stringify!
-        keys.each do |k| # rubocop:disable Performance/HashEachMethods (this breaks the build)
+        keys.each do |k|
           v = delete(k)
           v = self.class.new(v).stringify! if v.respond_to?(:to_hash)
 
@@ -490,10 +490,10 @@ module Hanami
       # @since 0.3.0
       #
       # @raise [NoMethodError] If doesn't respond to the given method
-      def method_missing(m, *args, &blk)
-        raise NoMethodError.new(%(undefined method `#{m}' for #{@hash}:#{self.class})) unless respond_to?(m)
+      def method_missing(method_name, *args, &blk)
+        raise NoMethodError.new(%(undefined method `#{method_name}' for #{@hash}:#{self.class})) unless respond_to?(method_name)
 
-        h = @hash.__send__(m, *args, &blk)
+        h = @hash.__send__(method_name, *args, &blk)
         h = self.class.new(h) if h.is_a?(::Hash)
         h
       end
@@ -502,8 +502,8 @@ module Hanami
       #
       # @api private
       # @since 0.3.0
-      def respond_to_missing?(m, include_private = false)
-        @hash.respond_to?(m, include_private)
+      def respond_to_missing?(method_name, include_private = false)
+        @hash.respond_to?(method_name, include_private)
       end
     end
     # rubocop:enable ClassLength

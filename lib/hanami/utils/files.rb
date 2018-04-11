@@ -29,7 +29,7 @@ module Hanami
       # @since 1.1.0
       def self.write(path, *content)
         mkdir_p(path)
-        open(path, ::File::CREAT | ::File::WRONLY | ::File::TRUNC, *content)
+        open(path, ::File::CREAT | ::File::WRONLY | ::File::TRUNC, *content) # rubocop:disable Security/Open - this isn't a call to `::Kernel.open`, but to `self.open`
       end
 
       # Rewrites the contents of an existing file.

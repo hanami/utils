@@ -160,8 +160,8 @@ module Hanami
       #
       # @since 1.1.0
       # @api private
-      def self.bind(value, binding, fn)
-        binding.instance_exec(value, &fn)
+      def self.bind(value, binding, fun)
+        binding.instance_exec(value, &fun)
       end
 
       # Return a titleized version of the string
@@ -709,10 +709,10 @@ module Hanami
       # @since 0.3.0
       #
       # @raise [NoMethodError] If doesn't respond to the given method
-      def method_missing(m, *args, &blk)
-        raise NoMethodError.new(%(undefined method `#{m}' for "#{@string}":#{self.class})) unless respond_to?(m)
+      def method_missing(method_name, *args, &blk)
+        raise NoMethodError.new(%(undefined method `#{method_name}' for "#{@string}":#{self.class})) unless respond_to?(method_name)
 
-        s = @string.__send__(m, *args, &blk)
+        s = @string.__send__(method_name, *args, &blk)
         s = self.class.new(s) if s.is_a?(::String)
         s
       end
@@ -721,8 +721,8 @@ module Hanami
       #
       # @api private
       # @since 0.3.0
-      def respond_to_missing?(m, include_private = false)
-        @string.respond_to?(m, include_private)
+      def respond_to_missing?(method_name, include_private = false)
+        @string.respond_to?(method_name, include_private)
       end
     end
   end
