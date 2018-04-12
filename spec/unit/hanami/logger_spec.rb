@@ -164,6 +164,57 @@ RSpec.describe Hanami::Logger do
             #   end
             # end
           end
+
+          describe "colorization setting" do
+            context "with TTY" do
+              it "uses default colorizer" do
+                output = with_tty do
+                  logger = Hanami::Logger.new
+                  logger.info("hello")
+                end
+
+                expect(output).to include(
+                  "[\e[34mHanami\e[0m] [\e[35mINFO\e[0m] [\e[36m"
+                )
+              end
+
+              it "uses custom colors" do
+                output = with_tty do
+                  logger = Hanami::Logger.new(colorizer: Hanami::Logger::Colorizer.new(colors: { app: :red }))
+                  logger.info("hello")
+                end
+
+                expect(output).to include(
+                  "[\e[31mHanami\e[0m] [\e[35mINFO\e[0m] ["
+                )
+              end
+
+              it "doesn't colorize with false" do
+                output = with_tty do
+                  logger = Hanami::Logger.new(colorizer: false)
+                  logger.info("hello")
+                end
+
+                expect(output).to include(
+                  "[Hanami] [INFO] ["
+                )
+              end
+            end
+
+            context "with file" do
+              it "doesn't colorize by default" do
+                logger = Hanami::Logger.new(stream: log_file)
+                logger.info("world")
+
+                logger.close
+
+                contents = File.read(log_file)
+                expect(contents).to eq(
+                  "hello[Hanami] [INFO] [2017-01-15 16:00:23 +0100] world\n"
+                )
+              end
+            end
+          end
         end # end File
 
         describe 'when IO' do
@@ -413,6 +464,15 @@ RSpec.describe Hanami::Logger do
         expect(output).to eq "[hanami] [INFO] [2017-01-15 16:00:23 +0100] foo\n"
       end
 
+      it 'has key=value format for hash messages' do
+        output =
+          with_captured_stdout do
+            class TestLogger < Hanami::Logger; end
+            TestLogger.new.info(foo: "bar")
+          end
+        expect(output).to eq "[hanami] [INFO] [2017-01-15 16:00:23 +0100] foo=bar\n"
+      end
+
       it 'has key=value format for error messages' do
         exception = nil
         output = with_captured_stdout do
@@ -431,13 +491,64 @@ RSpec.describe Hanami::Logger do
         expect(output).to eq expectation
       end
 
+      it 'has key=value format for error messages without backtrace' do
+        exception = nil
+        output = with_captured_stdout do
+          class TestLogger < Hanami::Logger; end
+          exception = StandardError.new('foo')
+          TestLogger.new.error(exception)
+        end
+        expectation = "[hanami] [ERROR] [2017-01-15 16:00:23 +0100] StandardError: foo\n"
+        expect(output).to eq expectation
+      end
+
+      describe 'colorization setting' do
+        it 'colorizes when colorizer: Colorizer.new' do
+          output =
+            with_captured_stdout do
+              class TestLogger < Hanami::Logger; end
+              TestLogger.new(colorizer: Hanami::Logger::Colorizer.new).info('foo')
+            end
+          expect(output).to eq(
+            "[\e[34mhanami\e[0m] [\e[35mINFO\e[0m] [\e[36m2017-01-15 16:00:23 +0100\e[0m] foo\n"
+          )
+        end
+
+        it 'colorizes when for tty by default (i.e. when colorizer: nil)' do
+          stdout = IO.new($stdout.fileno)
+          expect(stdout).to receive(:write).with(
+            "[\e[34mhanami\e[0m] [\e[35mINFO\e[0m] [\e[36m2017-01-15 16:00:23 +0100\e[0m] foo\n"
+          )
+          class TestLogger < Hanami::Logger; end
+          TestLogger.new(stream: stdout).info('foo')
+        end
+
+        it 'colorizes for tty when colorizer: nil' do
+          stdout = IO.new($stdout.fileno)
+          expect(stdout).to receive(:write).with(
+            "[\e[34mhanami\e[0m] [\e[35mINFO\e[0m] [\e[36m2017-01-15 16:00:23 +0100\e[0m] foo\n"
+          )
+          class TestLogger < Hanami::Logger; end
+          TestLogger.new(stream: stdout, colorizer: nil).info('foo')
+        end
+
+        it 'does not colorize when colorizer: NullColorizer.new' do
+          output =
+            with_captured_stdout do
+              class TestLogger < Hanami::Logger; end
+              TestLogger.new(colorizer: Hanami::Logger::NullColorizer.new).info('foo')
+            end
+          expect(output).to eq "[hanami] [INFO] [2017-01-15 16:00:23 +0100] foo\n"
+        end
+      end
+
       it 'has key=value format for hash messages' do
         output =
           with_captured_stdout do
             class TestLogger < Hanami::Logger; end
             TestLogger.new.info(foo: :bar)
           end
-        expect(output).to eq "[hanami] [INFO] [2017-01-15 16:00:23 +0100] bar\n"
+        expect(output).to eq "[hanami] [INFO] [2017-01-15 16:00:23 +0100] foo=bar\n"
       end
 
       it 'has key=value format for not string messages' do
@@ -449,9 +560,20 @@ RSpec.describe Hanami::Logger do
         expect(output).to eq "[hanami] [INFO] [2017-01-15 16:00:23 +0100] foo bar\n"
       end
 
+      it 'logs HTTP request' do
+        message = { http: "HTTP/1.1", verb: "GET", status: "200", ip: "::1", path: "/books/23", length: "175", params: {}, elapsed: 0.005829 }
+
+        output =
+          with_captured_stdout do
+            class TestLogger < Hanami::Logger; end
+            TestLogger.new.info(message)
+          end
+        expect(output).to eq "[hanami] [INFO] [2017-01-15 16:00:23 +0100] HTTP/1.1 GET 200 ::1 /books/23 175 {} 0.005829\n"
+      end
+
       it 'displays filtered hash values' do
-        form_params = Hash[
-          form_params: Hash[
+        params = Hash[
+          params: Hash[
             'name' => 'John',
             'password' => '[FILTERED]',
             'password_confirmation' => '[FILTERED]'
@@ -462,7 +584,7 @@ RSpec.describe Hanami::Logger do
 
         output = with_captured_stdout do
           class TestLogger < Hanami::Logger; end
-          TestLogger.new.info(form_params)
+          TestLogger.new.info(params)
         end
 
         expect(output).to eq("[hanami] [INFO] [2017-01-15 16:00:23 +0100] #{expected}\n")
@@ -470,9 +592,9 @@ RSpec.describe Hanami::Logger do
     end
 
     context do
-      let(:form_params) do
+      let(:params) do
         Hash[
-          form_params: Hash[
+          params: Hash[
             'password' => 'password',
             'password_confirmation' => 'password',
             'credit_card' => Hash[
@@ -494,7 +616,7 @@ RSpec.describe Hanami::Logger do
           output = with_captured_stdout do
             class TestLogger < Hanami::Logger; end
             filters = %w[password password_confirmation credit_card user.login]
-            TestLogger.new(filter: filters).info(form_params)
+            TestLogger.new(filter: filters).info(params)
           end
 
           expect(output).to eq("[hanami] [INFO] [2017-01-15 16:00:23 +0100] #{expected}\n")
@@ -507,7 +629,7 @@ RSpec.describe Hanami::Logger do
 
           output = with_captured_stdout do
             class TestLogger < Hanami::Logger; end
-            TestLogger.new.info(form_params)
+            TestLogger.new.info(params)
           end
 
           expect(output).to eq("[hanami] [INFO] [2017-01-15 16:00:23 +0100] #{expected}\n")
@@ -516,29 +638,29 @@ RSpec.describe Hanami::Logger do
     end
   end
 
-  describe Hanami::Logger::Formatter::HashFilter do
+  describe Hanami::Logger::Filter do
     context 'without filters' do
       it "doesn't filter" do
         input = Hash[password: 'azerty']
-        output = described_class.new.filter(input)
+        output = described_class.new.call(input)
         expect(output).to eql(input)
       end
     end
 
     it "doesn't alter the hash keys" do
-      output = described_class.new(%w[password]).filter(Hash["password" => 'azerty', foo: Hash[password: 'bar']])
+      output = described_class.new(%w[password]).call(Hash["password" => 'azerty', foo: Hash[password: 'bar']])
       expect(output).to eql(Hash["password" => '[FILTERED]', foo: Hash[password: '[FILTERED]']])
     end
 
     it 'filters with multiple filters' do
       input = Hash[password: 'azerty', number: '12345']
-      output = described_class.new(%i[password number]).filter(input)
+      output = described_class.new(%i[password number]).call(input)
       expect(output).to eql(Hash[password: '[FILTERED]', number: '[FILTERED]'])
     end
 
     it 'filters with multi-level filter' do
       input = Hash[user: Hash[name: 'foo', password: 'azerty'], password: 'foo']
-      output = described_class.new(%w[user.password]).filter(input)
+      output = described_class.new(%w[user.password]).call(input)
       expect(output).to eql(Hash[user: Hash[name: 'foo', password: '[FILTERED]'], password: 'foo'])
     end
   end
