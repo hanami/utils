@@ -1,4 +1,5 @@
 require 'hanami/utils/string'
+require 'hanami/utils/deprecation'
 
 module Hanami
   module Utils
@@ -110,6 +111,8 @@ module Hanami
       #   # with missing constant
       #   Hanami::Utils::Class.load_from_pattern!('Unknown') # => raises NameError
       def self.load_from_pattern!(pattern, namespace = Object)
+        Deprecation.new('Hanami::Utils::Class.load_from_pattern! is deprecated, please use Hanami::Utils::Class.load! instead')
+
         String.new(pattern).tokenize do |token|
           begin
             return namespace.const_get(token, false)
