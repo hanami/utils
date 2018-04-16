@@ -618,13 +618,6 @@ TEST_SINGULARS = {
   'release'    => 'releases'
 }.merge(TEST_PLURALS)
 
-require 'hanami/utils/inflector'
-Hanami::Utils::Inflector.inflections do
-  exception   'analysis', 'analyses'
-  exception   'alga',     'algae'
-  uncountable 'music', 'butter'
-end
-
 class WrappingHash
   def initialize(hash)
     @hash = hash.to_h

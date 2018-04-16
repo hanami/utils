@@ -1,4 +1,3 @@
-require 'hanami/utils/inflector'
 require 'transproc'
 require 'concurrent/map'
 
@@ -314,46 +313,6 @@ module Hanami
         ::String.new(input.to_s).split(NAMESPACE_SEPARATOR).first
       end
 
-      # Return a pluralized version of self.
-      #
-      # @param input [::String] the input
-      #
-      # @return [::String] the pluralized string.
-      #
-      # @since 1.1.0
-      #
-      # @see Hanami::Utils::Inflector
-      # @deprecated
-      #
-      # @example
-      #   require 'hanami/utils/string'
-      #
-      #   Hanami::Utils::String.pluralize('book') # => 'books'
-      def self.pluralize(input)
-        string = ::String.new(input.to_s)
-        Inflector.pluralize(string)
-      end
-
-      # Return a singularized version of self.
-      #
-      # @param input [::String] the input
-      #
-      # @return [::String] the singularized string.
-      #
-      # @since 1.1.0
-      # @deprecated
-      #
-      # @see Hanami::Utils::Inflector
-      #
-      # @example
-      #   require 'hanami/utils/string'
-      #
-      #   Hanami::Utils::String.singularize('books') # => 'book'
-      def self.singularize(input)
-        string = ::String.new(input.to_s)
-        Inflector.singularize(string)
-      end
-
       # Replace the rightmost match of `pattern` with `replacement`
       #
       # If the pattern cannot be matched, it returns the original string.
@@ -589,32 +548,6 @@ module Hanami
         nil
       end
       # rubocop:enable Metrics/MethodLength
-
-      # Return a pluralized version of self.
-      #
-      # @return [Hanami::Utils::String] the pluralized string.
-      #
-      # @api private
-      # @since 0.4.1
-      # @deprecated
-      #
-      # @see Hanami::Utils::Inflector
-      def pluralize
-        self.class.new Inflector.pluralize(self)
-      end
-
-      # Return a singularized version of self.
-      #
-      # @return [Hanami::Utils::String] the singularized string.
-      #
-      # @api private
-      # @since 0.4.1
-      # @deprecated
-      #
-      # @see Hanami::Utils::Inflector
-      def singularize
-        self.class.new Inflector.singularize(self)
-      end
 
       # Returns the hash of the internal string
       #
