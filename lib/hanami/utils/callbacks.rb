@@ -1,3 +1,5 @@
+require 'concurrent/array'
+
 module Hanami
   module Utils
     # Before and After callbacks
@@ -16,7 +18,7 @@ module Hanami
         #
         # @since 0.2.0
         def initialize
-          @chain = []
+          @chain = Concurrent::Array.new
         end
 
         # Appends the given callbacks to the end of the chain.
