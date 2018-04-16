@@ -1,10 +1,12 @@
-require 'rubygems'
-require 'bundler'
+# frozen_string_literal: true
+
+require "rubygems"
+require "bundler"
 Bundler.setup(:default, :development)
 
-$LOAD_PATH.unshift 'lib'
-require 'hanami/utils'
-require_relative './rspec'
+$LOAD_PATH.unshift "lib"
+require "hanami/utils"
+require_relative "./rspec"
 
 module RSpec
   module Support

@@ -1,4 +1,6 @@
-require 'hanami/utils/kernel'
+# frozen_string_literal: true
+
+require "hanami/utils/kernel"
 
 module Hanami
   module Utils

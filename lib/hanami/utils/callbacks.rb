@@ -1,4 +1,6 @@
-require 'concurrent/array'
+# frozen_string_literal: true
+
+require "concurrent/array"
 
 module Hanami
   module Utils

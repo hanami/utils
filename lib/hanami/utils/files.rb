@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "pathname"
 require "fileutils"
 require "hanami/utils/deprecation"
@@ -294,7 +296,7 @@ module Hanami
         starting = index(content, path, target)
         line     = content[starting]
         size     = line[/\A[[:space:]]*/].bytesize
-        closing  = (" " * size) + (target =~ /{/ ? '}' : 'end')
+        closing  = (" " * size) + (target.match?(/{/) ? "}" : "end")
         ending   = starting + index(content[starting..-1], path, closing)
 
         content.slice!(starting..ending)
