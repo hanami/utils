@@ -1,5 +1,7 @@
-require 'hanami/utils/duplicable'
-require 'transproc'
+# frozen_string_literal: true
+
+require "hanami/utils/duplicable"
+require "transproc"
 
 module Hanami
   module Utils
@@ -468,7 +470,7 @@ module Hanami
 
       # Returns the hash of the internal @hash
       #
-      # @return [Fixnum]
+      # @return [Integer]
       #
       # @since 0.3.0
       def hash

@@ -1,17 +1,19 @@
-require 'hanami/utils/basic_object'
-require 'pp'
+# frozen_string_literal: true
+
+require "hanami/utils/basic_object"
+require "pp"
 
 class TestClass < Hanami::Utils::BasicObject
 end
 
 RSpec.describe Hanami::Utils::BasicObject do
-  describe '#respond_to_missing?' do
-    it 'raises an exception if respond_to? method is not implemented' do
+  describe "#respond_to_missing?" do
+    it "raises an exception if respond_to? method is not implemented" do
       expect { TestClass.new.respond_to?(:no_existing_method) }
         .to raise_error(NotImplementedError)
     end
 
-    it 'returns true given respond_to? method was implemented' do
+    it "returns true given respond_to? method was implemented" do
       TestCase = Class.new(TestClass) do
         def respond_to?(_method_name, _include_all = false)
           true
@@ -22,14 +24,14 @@ RSpec.describe Hanami::Utils::BasicObject do
     end
   end
 
-  describe '#class' do
-    it 'returns TestClass' do
+  describe "#class" do
+    it "returns TestClass" do
       expect(TestClass.new.class).to eq TestClass
     end
   end
 
-  describe '#inspect' do
-    it 'returns the inspect message' do
+  describe "#inspect" do
+    it "returns the inspect message" do
       inspect_msg = TestClass.new.inspect
       expect(inspect_msg).to match(/\A#<TestClass:\w+>\z/)
     end
@@ -37,7 +39,7 @@ RSpec.describe Hanami::Utils::BasicObject do
 
   describe "#pretty_print" do
     # See https://github.com/hanami/hanami/issues/629
-    it 'is pretty printable' do
+    it "is pretty printable" do
       expect { pp TestClass.new }.to output(/TestClass/).to_stdout
     end
 

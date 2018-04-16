@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Hanami
   module Utils
     # BasicObject
@@ -31,7 +33,7 @@ module Hanami
 
       # Alias for __id__
       #
-      # @return [Fixnum] the object id
+      # @return [Integer] the object id
       #
       # @since 0.9.0
       #

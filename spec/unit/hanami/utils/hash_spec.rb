@@ -1,6 +1,8 @@
-require 'bigdecimal'
-require 'ostruct'
-require 'hanami/utils/hash'
+# frozen_string_literal: true
+
+require "bigdecimal"
+require "ostruct"
+require "hanami/utils/hash"
 
 RSpec.describe Hanami::Utils::Hash do
   describe ".symbolize" do
@@ -90,9 +92,9 @@ RSpec.describe Hanami::Utils::Hash do
     end
 
     it "doesn't try to symbolize nested objects" do
-      hash = described_class.deep_symbolize('foo' => ['bar'])
+      hash = described_class.deep_symbolize("foo" => ["bar"])
 
-      expect(hash[:foo]).to eq(['bar'])
+      expect(hash[:foo]).to eq(["bar"])
     end
   end
 
@@ -238,11 +240,11 @@ RSpec.describe Hanami::Utils::Hash do
     end
   end
 
-  describe '#initialize' do
+  describe "#initialize" do
     let(:input_to_hash) do
       Class.new do
         def to_hash
-          Hash[foo: 'bar']
+          Hash[foo: "bar"]
         end
       end.new
     end
@@ -250,37 +252,37 @@ RSpec.describe Hanami::Utils::Hash do
     let(:input_to_h) do
       Class.new do
         def to_h
-          Hash[head: 'tail']
+          Hash[head: "tail"]
         end
       end.new
     end
 
-    it 'holds values passed to the constructor' do
-      hash = Hanami::Utils::Hash.new('foo' => 'bar')
-      expect(hash['foo']).to eq('bar')
+    it "holds values passed to the constructor" do
+      hash = Hanami::Utils::Hash.new("foo" => "bar")
+      expect(hash["foo"]).to eq("bar")
     end
 
-    it 'assigns default via block' do
+    it "assigns default via block" do
       hash = Hanami::Utils::Hash.new { |h, k| h[k] = [] }
-      hash['foo'].push 'bar'
+      hash["foo"].push "bar"
 
-      expect(hash).to eq('foo' => ['bar'])
+      expect(hash).to eq("foo" => ["bar"])
     end
 
-    it 'accepts a Hanami::Utils::Hash' do
-      arg  = Hanami::Utils::Hash.new('foo' => 'bar')
+    it "accepts a Hanami::Utils::Hash" do
+      arg  = Hanami::Utils::Hash.new("foo" => "bar")
       hash = Hanami::Utils::Hash.new(arg)
 
       expect(hash.to_h).to be_kind_of(::Hash)
     end
 
-    it 'accepts object that implements #to_hash' do
+    it "accepts object that implements #to_hash" do
       hash = Hanami::Utils::Hash.new(input_to_hash)
 
       expect(hash.to_h).to eq(input_to_hash.to_hash)
     end
 
-    it 'accepts frozen values' do
+    it "accepts frozen values" do
       expect { Hanami::Utils::Hash.new({}.freeze) }
         .to_not raise_error
     end
@@ -291,42 +293,42 @@ RSpec.describe Hanami::Utils::Hash do
     end
   end
 
-  describe '#symbolize!' do
-    it 'symbolize keys' do
-      hash = Hanami::Utils::Hash.new('fub' => 'baz')
+  describe "#symbolize!" do
+    it "symbolize keys" do
+      hash = Hanami::Utils::Hash.new("fub" => "baz")
       hash.symbolize!
 
-      expect(hash['fub']).to be_nil
-      expect(hash[:fub]).to eq('baz')
+      expect(hash["fub"]).to be_nil
+      expect(hash[:fub]).to eq("baz")
     end
 
-    it 'does not symbolize nested hashes' do
-      hash = Hanami::Utils::Hash.new('nested' => { 'key' => 'value' })
+    it "does not symbolize nested hashes" do
+      hash = Hanami::Utils::Hash.new("nested" => { "key" => "value" })
       hash.symbolize!
 
-      expect(hash[:nested].keys).to eq(['key'])
+      expect(hash[:nested].keys).to eq(["key"])
     end
   end
 
-  describe '#deep_symbolize!' do
-    it 'symbolize keys' do
-      hash = Hanami::Utils::Hash.new('fub' => 'baz')
+  describe "#deep_symbolize!" do
+    it "symbolize keys" do
+      hash = Hanami::Utils::Hash.new("fub" => "baz")
       hash.deep_symbolize!
 
-      expect(hash['fub']).to be_nil
-      expect(hash[:fub]).to eq('baz')
+      expect(hash["fub"]).to be_nil
+      expect(hash[:fub]).to eq("baz")
     end
 
-    it 'symbolizes nested hashes' do
-      hash = Hanami::Utils::Hash.new('nested' => { 'key' => 'value' })
+    it "symbolizes nested hashes" do
+      hash = Hanami::Utils::Hash.new("nested" => { "key" => "value" })
       hash.deep_symbolize!
 
       expect(hash[:nested]).to be_kind_of Hanami::Utils::Hash
-      expect(hash[:nested][:key]).to eq('value')
+      expect(hash[:nested][:key]).to eq("value")
     end
 
-    it 'symbolizes deep nested hashes' do
-      hash = Hanami::Utils::Hash.new('nested1' => { 'nested2' => { 'nested3' => { 'key' => 1 } } })
+    it "symbolizes deep nested hashes" do
+      hash = Hanami::Utils::Hash.new("nested1" => { "nested2" => { "nested3" => { "key" => 1 } } })
       hash.deep_symbolize!
 
       expect(hash.keys).to eq([:nested1])
@@ -343,17 +345,17 @@ RSpec.describe Hanami::Utils::Hash do
       expect(hash3[:key]).to eq(1)
     end
 
-    it 'symbolize nested Hanami::Utils::Hashes' do
-      nested = Hanami::Utils::Hash.new('key' => 'value')
-      hash = Hanami::Utils::Hash.new('nested' => nested)
+    it "symbolize nested Hanami::Utils::Hashes" do
+      nested = Hanami::Utils::Hash.new("key" => "value")
+      hash = Hanami::Utils::Hash.new("nested" => nested)
       hash.deep_symbolize!
 
       expect(hash[:nested]).to be_kind_of Hanami::Utils::Hash
-      expect(hash[:nested][:key]).to eq('value')
+      expect(hash[:nested][:key]).to eq("value")
     end
 
-    it 'symbolize nested object that responds to to_hash' do
-      nested = Hanami::Utils::Hash.new('metadata' => WrappingHash.new('coverage' => 100))
+    it "symbolize nested object that responds to to_hash" do
+      nested = Hanami::Utils::Hash.new("metadata" => WrappingHash.new("coverage" => 100))
       nested.deep_symbolize!
 
       expect(nested[:metadata]).to be_kind_of Hanami::Utils::Hash
@@ -361,45 +363,45 @@ RSpec.describe Hanami::Utils::Hash do
     end
 
     it "doesn't try to symbolize nested objects" do
-      hash = Hanami::Utils::Hash.new('foo' => ['bar'])
+      hash = Hanami::Utils::Hash.new("foo" => ["bar"])
       hash.deep_symbolize!
 
-      expect(hash[:foo]).to eq(['bar'])
+      expect(hash[:foo]).to eq(["bar"])
     end
   end
 
-  describe '#stringify!' do
-    it 'covert keys to strings' do
-      hash = Hanami::Utils::Hash.new(fub: 'baz')
+  describe "#stringify!" do
+    it "covert keys to strings" do
+      hash = Hanami::Utils::Hash.new(fub: "baz")
       hash.stringify!
 
       expect(hash[:fub]).to be_nil
-      expect(hash['fub']).to eq('baz')
+      expect(hash["fub"]).to eq("baz")
     end
 
-    it 'stringifies nested hashes' do
-      hash = Hanami::Utils::Hash.new(nested: { key: 'value' })
+    it "stringifies nested hashes" do
+      hash = Hanami::Utils::Hash.new(nested: { key: "value" })
       hash.stringify!
 
-      expect(hash['nested']).to be_kind_of Hanami::Utils::Hash
-      expect(hash['nested']['key']).to eq('value')
+      expect(hash["nested"]).to be_kind_of Hanami::Utils::Hash
+      expect(hash["nested"]["key"]).to eq("value")
     end
 
-    it 'stringifies nested Hanami::Utils::Hashes' do
-      nested = Hanami::Utils::Hash.new(key: 'value')
+    it "stringifies nested Hanami::Utils::Hashes" do
+      nested = Hanami::Utils::Hash.new(key: "value")
       hash = Hanami::Utils::Hash.new(nested: nested)
       hash.stringify!
 
-      expect(hash['nested']).to be_kind_of Hanami::Utils::Hash
-      expect(hash['nested']['key']).to eq('value')
+      expect(hash["nested"]).to be_kind_of Hanami::Utils::Hash
+      expect(hash["nested"]["key"]).to eq("value")
     end
 
-    it 'stringifies nested object that responds to to_hash' do
+    it "stringifies nested object that responds to to_hash" do
       nested = Hanami::Utils::Hash.new(metadata: WrappingHash.new(coverage: 100))
       nested.stringify!
 
-      expect(nested['metadata']).to be_kind_of Hanami::Utils::Hash
-      expect(nested['metadata']['coverage']).to eq(100)
+      expect(nested["metadata"]).to be_kind_of Hanami::Utils::Hash
+      expect(nested["metadata"]["coverage"]).to eq(100)
     end
   end
 
@@ -429,35 +431,35 @@ RSpec.describe Hanami::Utils::Hash do
     end
   end
 
-  describe '#deep_dup' do
-    it 'returns an instance of Utils::Hash' do
-      duped = Hanami::Utils::Hash.new('foo' => 'bar').deep_dup
+  describe "#deep_dup" do
+    it "returns an instance of Utils::Hash" do
+      duped = Hanami::Utils::Hash.new("foo" => "bar").deep_dup
       expect(duped).to be_kind_of(Hanami::Utils::Hash)
     end
 
-    it 'returns a hash with duplicated values' do
-      hash  = Hanami::Utils::Hash.new('foo' => 'bar', 'baz' => 'x')
+    it "returns a hash with duplicated values" do
+      hash  = Hanami::Utils::Hash.new("foo" => "bar", "baz" => "x")
       duped = hash.deep_dup
 
-      duped['foo'] = nil
-      duped['baz'].upcase!
+      duped["foo"] = nil
+      duped["baz"].upcase!
 
-      expect(hash['foo']).to eq('bar')
-      expect(hash['baz']).to eq('x')
+      expect(hash["foo"]).to eq("bar")
+      expect(hash["baz"]).to eq("x")
     end
 
     it "doesn't try to duplicate value that can't perform this operation" do
       original = {
-        'nil'        => nil,
-        'false'      => false,
-        'true'       => true,
-        'symbol'     => :symbol,
-        'fixnum'     => 23,
-        'bignum'     => 13_289_301_283**2,
-        'float'      => 1.0,
-        'complex'    => Complex(0.3),
-        'bigdecimal' => BigDecimal('12.0001'),
-        'rational'   => Rational(0.3)
+        "nil"        => nil,
+        "false"      => false,
+        "true"       => true,
+        "symbol"     => :symbol,
+        "fixnum"     => 23,
+        "bignum"     => 13_289_301_283**2,
+        "float"      => 1.0,
+        "complex"    => Complex(0.3),
+        "bigdecimal" => BigDecimal("12.0001"),
+        "rational"   => Rational(0.3)
       }
 
       hash  = Hanami::Utils::Hash.new(original)
@@ -467,67 +469,67 @@ RSpec.describe Hanami::Utils::Hash do
       expect(duped.object_id).not_to eq(original.object_id)
     end
 
-    it 'returns a hash with nested duplicated values' do
-      hash  = Hanami::Utils::Hash.new('foo' => { 'bar' => 'baz' }, 'x' => Hanami::Utils::Hash.new('y' => 'z'))
+    it "returns a hash with nested duplicated values" do
+      hash  = Hanami::Utils::Hash.new("foo" => { "bar" => "baz" }, "x" => Hanami::Utils::Hash.new("y" => "z"))
       duped = hash.deep_dup
 
-      duped['foo']['bar'].reverse!
-      duped['x']['y'].upcase!
+      duped["foo"]["bar"].reverse!
+      duped["x"]["y"].upcase!
 
-      expect(hash['foo']['bar']).to eq('baz')
-      expect(hash['x']['y']).to eq('z')
+      expect(hash["foo"]["bar"]).to eq("baz")
+      expect(hash["x"]["y"]).to eq("z")
     end
 
-    it 'preserves original class' do
-      duped = Hanami::Utils::Hash.new('foo' => {}, 'x' => Hanami::Utils::Hash.new).deep_dup
+    it "preserves original class" do
+      duped = Hanami::Utils::Hash.new("foo" => {}, "x" => Hanami::Utils::Hash.new).deep_dup
 
-      expect(duped['foo']).to be_kind_of(::Hash)
-      expect(duped['x']).to be_kind_of(Hanami::Utils::Hash)
+      expect(duped["foo"]).to be_kind_of(::Hash)
+      expect(duped["x"]).to be_kind_of(Hanami::Utils::Hash)
     end
   end
 
-  describe 'hash interface' do
-    it 'returns a new Hanami::Utils::Hash for methods which return a ::Hash' do
-      hash   = Hanami::Utils::Hash.new('a' => 1)
+  describe "hash interface" do
+    it "returns a new Hanami::Utils::Hash for methods which return a ::Hash" do
+      hash   = Hanami::Utils::Hash.new("a" => 1)
       result = hash.clear
 
       expect(hash).to be_empty
       expect(result).to be_kind_of(Hanami::Utils::Hash)
     end
 
-    it 'returns a value that is compliant with ::Hash return value' do
-      hash   = Hanami::Utils::Hash.new('a' => 1)
-      result = hash.assoc('a')
+    it "returns a value that is compliant with ::Hash return value" do
+      hash   = Hanami::Utils::Hash.new("a" => 1)
+      result = hash.assoc("a")
 
-      expect(result).to eq ['a', 1]
+      expect(result).to eq ["a", 1]
     end
 
-    it 'responds to whatever ::Hash responds to' do
-      hash = Hanami::Utils::Hash.new('a' => 1)
+    it "responds to whatever ::Hash responds to" do
+      hash = Hanami::Utils::Hash.new("a" => 1)
 
       expect(hash).to respond_to :rehash
       expect(hash).not_to respond_to :unknown_method
     end
 
-    it 'accepts blocks for methods' do
-      hash   = Hanami::Utils::Hash.new('a' => 1)
-      result = hash.delete_if { |k, _| k == 'a' }
+    it "accepts blocks for methods" do
+      hash   = Hanami::Utils::Hash.new("a" => 1)
+      result = hash.delete_if { |k, _| k == "a" }
 
       expect(result).to be_empty
     end
 
-    describe '#to_h' do
-      it 'returns a ::Hash' do
-        actual = Hanami::Utils::Hash.new('a' => 1).to_h
-        expect(actual).to eq('a' => 1)
+    describe "#to_h" do
+      it "returns a ::Hash" do
+        actual = Hanami::Utils::Hash.new("a" => 1).to_h
+        expect(actual).to eq("a" => 1)
       end
 
-      it 'returns nested ::Hash' do
+      it "returns nested ::Hash" do
         hash = {
           tutorial: {
             instructions: [
-              { title: 'foo',  body: 'bar' },
-              { title: 'hoge', body: 'fuga' }
+              { title: "foo",  body: "bar" },
+              { title: "hoge", body: "fuga" }
             ]
           }
         }
@@ -542,12 +544,12 @@ RSpec.describe Hanami::Utils::Hash do
         expect(actual[:tutorial][:instructions]).to all(be_kind_of(::Hash))
       end
 
-      it 'returns nested ::Hash (when symbolized)' do
+      it "returns nested ::Hash (when symbolized)" do
         hash = {
-          'tutorial' => {
-            'instructions' => [
-              { 'title' => 'foo',  'body' => 'bar' },
-              { 'title' => 'hoge', 'body' => 'fuga' }
+          "tutorial" => {
+            "instructions" => [
+              { "title" => "foo",  "body" => "bar" },
+              { "title" => "hoge", "body" => "fuga" }
             ]
           }
         }
@@ -563,15 +565,15 @@ RSpec.describe Hanami::Utils::Hash do
       end
     end
 
-    it 'prevents information escape' do
-      actual = Hanami::Utils::Hash.new('a' => 1)
+    it "prevents information escape" do
+      actual = Hanami::Utils::Hash.new("a" => 1)
       hash   = actual.to_h
-      hash['b'] = 2
+      hash["b"] = 2
 
-      expect(actual.to_h).to eq('a' => 1)
+      expect(actual.to_h).to eq("a" => 1)
     end
 
-    it 'prevents information escape for nested hash'
+    it "prevents information escape for nested hash"
     # it 'prevents information escape for nested hash' do
     #   actual  = Hanami::Utils::Hash.new({'a' => {'b' => 2}})
     #   hash    = actual.to_h
@@ -581,24 +583,24 @@ RSpec.describe Hanami::Utils::Hash do
     #   expect(actual.to_h).to eq({'a' => {'b' => 2}})
     # end
 
-    it 'serializes nested objects that respond to to_hash' do
+    it "serializes nested objects that respond to to_hash" do
       nested = Hanami::Utils::Hash.new(metadata: WrappingHash.new(coverage: 100))
       expect(nested.to_h).to eq(metadata: { coverage: 100 })
     end
   end
 
-  describe '#to_hash' do
-    it 'returns a ::Hash' do
-      actual = Hanami::Utils::Hash.new('a' => 1).to_hash
-      expect(actual).to eq('a' => 1)
+  describe "#to_hash" do
+    it "returns a ::Hash" do
+      actual = Hanami::Utils::Hash.new("a" => 1).to_hash
+      expect(actual).to eq("a" => 1)
     end
 
-    it 'returns nested ::Hash' do
+    it "returns nested ::Hash" do
       hash = {
         tutorial: {
           instructions: [
-            { title: 'foo',  body: 'bar' },
-            { title: 'hoge', body: 'fuga' }
+            { title: "foo",  body: "bar" },
+            { title: "hoge", body: "fuga" }
           ]
         }
       }
@@ -613,12 +615,12 @@ RSpec.describe Hanami::Utils::Hash do
       expect(actual[:tutorial][:instructions]).to all(be_kind_of(::Hash))
     end
 
-    it 'returns nested ::Hash (when symbolized)' do
+    it "returns nested ::Hash (when symbolized)" do
       hash = {
-        'tutorial' => {
-          'instructions' => [
-            { 'title' => 'foo',  'body' => 'bar' },
-            { 'title' => 'hoge', 'body' => 'fuga' }
+        "tutorial" => {
+          "instructions" => [
+            { "title" => "foo",  "body" => "bar" },
+            { "title" => "hoge", "body" => "fuga" }
           ]
         }
       }
@@ -633,122 +635,115 @@ RSpec.describe Hanami::Utils::Hash do
       expect(actual[:tutorial][:instructions]).to all(be_kind_of(::Hash))
     end
 
-    it 'prevents information escape' do
-      actual = Hanami::Utils::Hash.new('a' => 1)
+    it "prevents information escape" do
+      actual = Hanami::Utils::Hash.new("a" => 1)
       hash   = actual.to_hash
-      hash['b'] = 2
+      hash["b"] = 2
 
-      expect(actual.to_hash).to eq('a' => 1)
+      expect(actual.to_hash).to eq("a" => 1)
     end
   end
 
-  describe '#to_a' do
-    it 'returns an ::Array' do
-      actual = Hanami::Utils::Hash.new('a' => 1).to_a
-      expect(actual).to eq([['a', 1]])
+  describe "#to_a" do
+    it "returns an ::Array" do
+      actual = Hanami::Utils::Hash.new("a" => 1).to_a
+      expect(actual).to eq([["a", 1]])
     end
 
-    it 'prevents information escape' do
-      actual = Hanami::Utils::Hash.new('a' => 1)
+    it "prevents information escape" do
+      actual = Hanami::Utils::Hash.new("a" => 1)
       array  = actual.to_a
-      array.push(['b', 2])
+      array.push(["b", 2])
 
-      expect(actual.to_a).to eq([['a', 1]])
+      expect(actual.to_a).to eq([["a", 1]])
     end
   end
 
-  describe 'equality' do
-    it 'has a working equality' do
-      hash  = Hanami::Utils::Hash.new('a' => 1)
-      other = Hanami::Utils::Hash.new('a' => 1)
+  describe "equality" do
+    it "has a working equality" do
+      hash  = Hanami::Utils::Hash.new("a" => 1)
+      other = Hanami::Utils::Hash.new("a" => 1)
 
       expect(hash == other).to be_truthy
     end
 
-    it 'has a working equality with raw hashes' do
-      hash = Hanami::Utils::Hash.new('a' => 1)
-      expect(hash == { 'a' => 1 }).to be_truthy
+    it "has a working equality with raw hashes" do
+      hash = Hanami::Utils::Hash.new("a" => 1)
+      expect(hash == { "a" => 1 }).to be_truthy
     end
   end
 
-  describe 'case equality' do
-    it 'has a working case equality' do
-      hash  = Hanami::Utils::Hash.new('a' => 1)
-      other = Hanami::Utils::Hash.new('a' => 1)
+  describe "case equality" do
+    it "has a working case equality" do
+      hash  = Hanami::Utils::Hash.new("a" => 1)
+      other = Hanami::Utils::Hash.new("a" => 1)
 
       expect(hash === other).to be_truthy # rubocop:disable Style/CaseEquality
     end
 
-    it 'has a working case equality with raw hashes' do
-      hash = Hanami::Utils::Hash.new('a' => 1)
-      expect(hash === { 'a' => 1 }).to be_truthy # rubocop:disable Style/CaseEquality
+    it "has a working case equality with raw hashes" do
+      hash = Hanami::Utils::Hash.new("a" => 1)
+      expect(hash === { "a" => 1 }).to be_truthy # rubocop:disable Style/CaseEquality
     end
   end
 
-  describe 'value equality' do
-    it 'has a working value equality' do
-      hash  = Hanami::Utils::Hash.new('a' => 1)
-      other = Hanami::Utils::Hash.new('a' => 1)
+  describe "value equality" do
+    it "has a working value equality" do
+      hash  = Hanami::Utils::Hash.new("a" => 1)
+      other = Hanami::Utils::Hash.new("a" => 1)
 
       expect(hash).to eql(other)
     end
 
-    it 'has a working value equality with raw hashes' do
-      hash = Hanami::Utils::Hash.new('a' => 1)
-      expect(hash).to eql('a' => 1)
+    it "has a working value equality with raw hashes" do
+      hash = Hanami::Utils::Hash.new("a" => 1)
+      expect(hash).to eql("a" => 1)
     end
   end
 
-  describe 'identity equality' do
-    it 'has a working identity equality' do
-      hash = Hanami::Utils::Hash.new('a' => 1)
+  describe "identity equality" do
+    it "has a working identity equality" do
+      hash = Hanami::Utils::Hash.new("a" => 1)
       expect(hash).to equal(hash)
     end
 
-    it 'has a working identity equality with raw hashes' do
-      hash = Hanami::Utils::Hash.new('a' => 1)
-      expect(hash).not_to equal('a' => 1)
+    it "has a working identity equality with raw hashes" do
+      hash = Hanami::Utils::Hash.new("a" => 1)
+      expect(hash).not_to equal("a" => 1)
     end
   end
 
-  describe '#hash' do
-    it 'returns the same hash result of ::Hash' do
-      expected = { 'l' => 23 }.hash
-      actual   = Hanami::Utils::Hash.new('l' => 23).hash
+  describe "#hash" do
+    it "returns the same hash result of ::Hash" do
+      expected = { "l" => 23 }.hash
+      actual   = Hanami::Utils::Hash.new("l" => 23).hash
 
       expect(actual).to eq expected
     end
   end
 
-  describe '#inspect' do
-    it 'returns the same output of ::Hash' do
-      expected = { 'l' => 23, l: 23 }.inspect
-      actual   = Hanami::Utils::Hash.new('l' => 23, l: 23).inspect
+  describe "#inspect" do
+    it "returns the same output of ::Hash" do
+      expected = { "l" => 23, l: 23 }.inspect
+      actual   = Hanami::Utils::Hash.new("l" => 23, l: 23).inspect
 
       expect(actual).to eq expected
     end
   end
 
-  describe 'unknown method' do
-    it 'raises error' do
+  describe "unknown method" do
+    it "raises error" do
       begin
-        Hanami::Utils::Hash.new('l' => 23).party!
+        Hanami::Utils::Hash.new("l" => 23).party!
       rescue NoMethodError => e
         expect(e.message).to eq %(undefined method `party!' for {\"l\"=>23}:Hanami::Utils::Hash)
       end
     end
 
     # See: https://github.com/hanami/utils/issues/48
-    it 'returns the correct object when a NoMethodError is raised' do
-      hash = Hanami::Utils::Hash.new('a' => 1)
-
-      if RUBY_VERSION >= '2.4' # rubocop:disable Style/ConditionalAssignment
-        exception_message = "undefined method `foo' for 1:Integer"
-      else
-        exception_message = "undefined method `foo' for 1:Fixnum"
-      end
-
-      expect { hash.all? { |_, v| v.foo } }.to raise_error(NoMethodError, include(exception_message))
+    it "returns the correct object when a NoMethodError is raised" do
+      hash = Hanami::Utils::Hash.new("a" => 1)
+      expect { hash.all? { |_, v| v.foo } }.to raise_error(NoMethodError, include("undefined method `foo' for 1:Integer"))
     end
   end
 end

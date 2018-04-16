@@ -1,5 +1,7 @@
-require 'set'
-require 'hanami/utils/duplicable'
+# frozen_string_literal: true
+
+require "set"
+require "hanami/utils/duplicable"
 
 module Hanami
   module Utils

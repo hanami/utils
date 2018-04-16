@@ -1,4 +1,6 @@
-require 'hanami/utils/string'
+# frozen_string_literal: true
+
+require "hanami/utils/string"
 
 module Hanami
   module Utils
@@ -117,7 +119,7 @@ module Hanami
           end
         end
 
-        full_name = [(namespace == Object ? nil : namespace), pattern].compact.join('::')
+        full_name = [(namespace == Object ? nil : namespace), pattern].compact.join("::")
         raise NameError.new("uninitialized constant #{full_name}")
       end
     end
