@@ -218,4 +218,11 @@ RSpec.describe Hanami::Error do
       expect(subject.code).to eq(:error)
     end
   end
+
+  describe "#backtrace" do
+    it "it returns exception backtrace" do
+      subject = described_class.new(exception = ArgumentError.new)
+      expect(subject.backtrace).to eq(exception.backtrace)
+    end
+  end
 end

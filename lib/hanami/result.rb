@@ -63,5 +63,9 @@ module Hanami
       @code = code
       freeze
     end
+
+    def backtrace
+      exception.backtrace
+    end
   end
 end
