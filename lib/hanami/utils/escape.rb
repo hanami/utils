@@ -421,7 +421,7 @@ module Hanami
         input = encode(input)
         return input if input.is_a?(SafeString)
 
-        result = SafeString.new
+        result = String.new
 
         input.each_char do |chr|
           result << HTML_CHARS.fetch(chr, chr)
@@ -452,7 +452,7 @@ module Hanami
       #   <p><%= Hanami::Utils::Escape.html_attribute('...') %></p>
       def self.html_attribute(input)
         input = encode(input)
-        return input if input.is_a?(SafeString)
+        return input if input.is_a?(String)
 
         result = SafeString.new
 
@@ -510,7 +510,7 @@ module Hanami
         input = encode(input)
         return input if input.is_a?(SafeString)
 
-        SafeString.new(
+        String.new(
           URI::DEFAULT_PARSER.extract(
             URI.decode_www_form_component(input),
             schemes

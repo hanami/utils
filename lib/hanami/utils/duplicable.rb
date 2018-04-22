@@ -59,7 +59,7 @@ module Hanami
       #     when Hanami::Utils::Hash
       #       value.deep_dup
       #     when ::Hash
-      #       Hanami::Utils::Hash.new(value).deep_dup.to_h
+      #       Hanami::Utils::Hash.deep_dup.to_h(value)
       #     end
       #   end
       #
