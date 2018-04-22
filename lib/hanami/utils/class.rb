@@ -110,7 +110,7 @@ module Hanami
       #   # with missing constant
       #   Hanami::Utils::Class.load_from_pattern!('Unknown') # => raises NameError
       def self.load_from_pattern!(pattern, namespace = Object)
-        String.new(pattern).tokenize do |token|
+        String.tokenize(pattern) do |token|
           begin
             return namespace.const_get(token, false)
           rescue NameError # rubocop:disable Lint/HandleExceptions
