@@ -229,17 +229,17 @@ RSpec.describe Hanami::Utils::String do
     end
 
     it 'removes all the upcase characters' do
-      string = String.new('Hanami')
+      string = 'Hanami'
       expect(Hanami::Utils::String.dasherize(string)).to eq('hanami')
     end
 
     it 'transforms camel case class names' do
-      string = String.new('HanamiView')
+      string = 'HanamiView'
       expect(Hanami::Utils::String.dasherize(string)).to eq('hanami-view')
     end
 
     it 'handles acronyms' do
-      string = String.new('APIDoc')
+      string = 'APIDoc'
       expect(Hanami::Utils::String.dasherize(string)).to eq('api-doc')
     end
 
@@ -389,7 +389,7 @@ RSpec.describe Hanami::Utils::String do
     end
 
     it 'accepts Hanami::Utils::String as replacement' do
-      replacement = String.new('#')
+      replacement = '#'
       result      = Hanami::Utils::String.rsub('authors/books/index', %r{/}, replacement)
 
       expect(result).to eq('authors/books#index')

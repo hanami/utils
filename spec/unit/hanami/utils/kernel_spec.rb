@@ -1646,7 +1646,7 @@ RSpec.describe Hanami::Utils::Kernel do
       end
 
       describe 'when "0" is given (Hanami::Utils::String)' do
-        let(:input) { String.new('0') }
+        let(:input) { '0' }
 
         it 'returns false' do
           expect(@result).to eq false
@@ -1654,7 +1654,7 @@ RSpec.describe Hanami::Utils::Kernel do
       end
 
       describe 'when "1" is given (Hanami::Utils::String)' do
-        let(:input) { String.new('1') }
+        let(:input) { '1' }
 
         it 'returns true' do
           expect(@result).to eq true
@@ -1662,7 +1662,7 @@ RSpec.describe Hanami::Utils::Kernel do
       end
 
       describe 'when "foo" is given (Hanami::Utils::String)' do
-        let(:input) { String.new('foo') }
+        let(:input) { 'foo' }
 
         it 'returns false' do
           expect(@result).to eq false

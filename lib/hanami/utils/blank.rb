@@ -16,7 +16,7 @@ module Hanami
       # @example Basic Usage
       #   require 'hanami/utils/blank'
       #
-      #   Hanami::Utils::Blank.blank?(String.new('')) # => true
+      #   Hanami::Utils::Blank.blank?('') # => true
       #   Hanami::Utils::Blank.blank?('  ')                          # => true
       #   Hanami::Utils::Blank.blank?(nil)                           # => true
       #   Hanami::Utils::Blank.blank?(Hash.new({}))   # => true
@@ -51,7 +51,7 @@ module Hanami
       #
       #   Hanami::Utils::Blank.filled?(true)                          # => true
       #   Hanami::Utils::Blank.filled?(1)                             # => true
-      #   Hanami::Utils::Blank.filled?(String.new('')) # => false
+      #   Hanami::Utils::Blank.filled?('') # => false
       #   Hanami::Utils::Blank.filled?('  ')                          # => false
       #   Hanami::Utils::Blank.filled?(nil)                           # => false
       #   Hanami::Utils::Blank.filled?(Hash.new({}))   # => false

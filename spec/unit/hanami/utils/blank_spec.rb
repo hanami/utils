@@ -6,7 +6,7 @@ require 'hanami/utils/blank'
 RSpec.describe Hanami::Utils::Blank do
   describe '.blank?' do
     [nil, false, '', '   ', "  \n\t  \r ", '　', "\u00a0", [], {}, Set.new,
-     Hanami::Utils::Kernel.Boolean(0), String.new(''),
+     Hanami::Utils::Kernel.Boolean(0), '',
      Hash.new({})].each do |v|
        it 'returns true' do
          expect(Hanami::Utils::Blank.blank?(v)).to eq(true)
@@ -14,7 +14,7 @@ RSpec.describe Hanami::Utils::Blank do
      end
 
     [Object.new, true, 0, 1, 'a', :book, DateTime.now, Time.now, Date.new, [nil], { nil => 0 }, Set.new([1]),
-     Hanami::Utils::Kernel.Symbol(:hello), String.new('foo'),
+     Hanami::Utils::Kernel.Symbol(:hello), 'foo',
      Hash.new(foo: :bar)].each do |v|
        it 'returns false' do
          expect(Hanami::Utils::Blank.blank?(v)).to eq(false)
@@ -24,7 +24,7 @@ RSpec.describe Hanami::Utils::Blank do
 
   describe '.filled?' do
     [nil, false, '', '   ', "  \n\t  \r ", '　', "\u00a0", [], {}, Set.new,
-     Hanami::Utils::Kernel.Boolean(0), String.new(''),
+     Hanami::Utils::Kernel.Boolean(0), '',
      Hash.new({})].each do |v|
        it 'returns false' do
          expect(Hanami::Utils::Blank.filled?(v)).to eq(false)
@@ -32,7 +32,7 @@ RSpec.describe Hanami::Utils::Blank do
      end
 
     [Object.new, true, 0, 1, 'a', :book, DateTime.now, Time.now, Date.new, [nil], { nil => 0 }, Set.new([1]),
-     Hanami::Utils::Kernel.Symbol(:hello), String.new('foo'),
+     Hanami::Utils::Kernel.Symbol(:hello), 'foo',
      Hash.new(foo: :bar)].each do |v|
        it 'returns true' do
          expect(Hanami::Utils::Blank.filled?(v)).to eq(true)
