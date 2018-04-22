@@ -7,7 +7,7 @@ module Hanami
     # String on steroids
     #
     # @since 0.1.0
-    module String # rubocop:disable Metrics/ClassLength
+    module String
       # Empty string for #classify
       #
       # @since 0.6.0
@@ -380,99 +380,6 @@ module Hanami
         else
           string
         end
-      end
-
-
-      # Returns the hash of the internal string
-      #
-      # @return [Integer]
-      #
-      # @since 0.3.0
-      def hash
-        @string.hash
-      end
-
-      # Returns a string representation
-      #
-      # @return [::String]
-      #
-      # @since 0.3.0
-      def to_s
-        @string
-      end
-
-      alias to_str to_s
-
-      # Equality
-      #
-      # @return [TrueClass,FalseClass]
-      #
-      # @since 0.3.0
-      def ==(other)
-        to_s == other
-      end
-
-      alias eql? ==
-
-      # Split the string with the given pattern
-      #
-      # @return [Array<::String>]
-      #
-      # @see http://www.ruby-doc.org/core/String.html#method-i-split
-      #
-      # @since 0.3.0
-      def split(pattern, limit = 0)
-        @string.split(pattern, limit)
-      end
-
-      # Replace the given pattern with the given replacement
-      #
-      # @return [::String]
-      #
-      # @see http://www.ruby-doc.org/core/String.html#method-i-gsub
-      #
-      # @since 0.3.0
-      def gsub(pattern, replacement = nil, &blk)
-        if block_given?
-          @string.gsub(pattern, &blk)
-        else
-          @string.gsub(pattern, replacement)
-        end
-      end
-
-      # Iterate through the string, matching the pattern.
-      # Either return all those patterns, or pass them to the block.
-      #
-      # @return [Array<::String>]
-      #
-      # @see http://www.ruby-doc.org/core/String.html#method-i-scan
-      #
-      # @since 0.6.0
-      def scan(pattern, &blk)
-        @string.scan(pattern, &blk)
-      end
-
-
-      # Override Ruby's method_missing in order to provide ::String interface
-      #
-      # @api private
-      # @since 0.3.0
-      #
-      # @raise [NoMethodError] If doesn't respond to the given method
-      def method_missing(method_name, *args, &blk)
-        raise NoMethodError.new(%(undefined method `#{method_name}' for "#{@string}":#{self.class})) unless respond_to?(method_name)
-
-        s = @string.__send__(method_name, *args, &blk)
-        s = self.class.new(s) if s.is_a?(::String)
-        s
-      end
-
-      # Override Ruby's respond_to_missing? in order to support ::String interface
-      #
-      # @api private
-      # @since 0.3.0
-      def respond_to_missing?(method_name, include_private = false)
-        @string.respond_to?(method_name, include_private)
       end
     end
   end
