@@ -16,10 +16,10 @@ module Hanami
       # @example Basic Usage
       #   require 'hanami/utils/blank'
       #
-      #   Hanami::Utils::Blank.blank?(Hanami::Utils::String.new('')) # => true
+      #   Hanami::Utils::Blank.blank?('') # => true
       #   Hanami::Utils::Blank.blank?('  ')                          # => true
       #   Hanami::Utils::Blank.blank?(nil)                           # => true
-      #   Hanami::Utils::Blank.blank?(Hanami::Utils::Hash.new({}))   # => true
+      #   Hanami::Utils::Blank.blank?(Hash.new({}))   # => true
       #   Hanami::Utils::Blank.blank?(true)                          # => false
       #   Hanami::Utils::Blank.blank?(1)                             # => false
       #
@@ -51,10 +51,10 @@ module Hanami
       #
       #   Hanami::Utils::Blank.filled?(true)                          # => true
       #   Hanami::Utils::Blank.filled?(1)                             # => true
-      #   Hanami::Utils::Blank.filled?(Hanami::Utils::String.new('')) # => false
+      #   Hanami::Utils::Blank.filled?('') # => false
       #   Hanami::Utils::Blank.filled?('  ')                          # => false
       #   Hanami::Utils::Blank.filled?(nil)                           # => false
-      #   Hanami::Utils::Blank.filled?(Hanami::Utils::Hash.new({}))   # => false
+      #   Hanami::Utils::Blank.filled?(Hash.new({}))   # => false
       #
       # @param object the argument
       #

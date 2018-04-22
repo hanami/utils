@@ -69,9 +69,9 @@ RSpec.describe Hanami::Utils::Inflector do
         expect(actual).to eq plural
       end
 
-      it %(pluralizes titleized "#{Hanami::Utils::String.new(singular).titleize}" to "#{plural}") do
-        actual = Hanami::Utils::Inflector.pluralize(Hanami::Utils::String.new(singular).titleize)
-        expect(actual).to eq Hanami::Utils::String.new(plural).titleize
+      it %(pluralizes titleized "#{Hanami::Utils::String.titleize(singular)}" to "#{plural}") do
+        actual = Hanami::Utils::Inflector(Hanami::Utils::String.pluralize(singular).titleize)
+        expect(actual).to eq Hanami::Utils::String.titleize(plural)
       end
 
       #     it %(doesn't pluralize "#{ plural }" as it's already plural) do
@@ -79,9 +79,9 @@ RSpec.describe Hanami::Utils::Inflector do
       #       expect(actual).to eq plural
       #     end
 
-      #     it %(doesn't pluralize titleized "#{ Hanami::Utils::String.new(singular).titleize }" as it's already plural) do
-      #       actual = Hanami::Utils::Inflector.pluralize(Hanami::Utils::String.new(plural).titleize)
-      #       expect(actual).to eq Hanami::Utils::String.new(plural).titleize
+      #     it %(doesn't pluralize titleized "#{ Hanami::Utils::String.titleize(singular) }" as it's already plural) do
+      #       actual = Hanami::Utils::Inflector.pluralize(Hanami::Utils::String.titleize(plural))
+      #       expect(actual).to eq Hanami::Utils::String.titleize(plural)
       #     end
     end
   end
@@ -121,9 +121,9 @@ RSpec.describe Hanami::Utils::Inflector do
         expect(actual).to eq singular
       end
 
-      it %(singularizes titleized "#{Hanami::Utils::String.new(plural).titleize}" to "#{singular}") do
-        actual = Hanami::Utils::Inflector.singularize(Hanami::Utils::String.new(plural).titleize)
-        expect(actual).to eq Hanami::Utils::String.new(singular).titleize
+      it %(singularizes titleized "#{Hanami::Utils::String.titleize(plural)}" to "#{singular}") do
+        actual = Hanami::Utils::Inflector.singularize(Hanami::Utils::String.titleize(plural))
+        expect(actual).to eq Hanami::Utils::String.titleize(singular)
       end
 
       # it %(doesn't singularizes "#{ singular }" as it's already singular) do
@@ -131,9 +131,9 @@ RSpec.describe Hanami::Utils::Inflector do
       #   expect(actual).to eq singular
       # end
 
-      # it %(doesn't singularizes titleized "#{ Hanami::Utils::String.new(plural).titleize }" as it's already singular) do
-      #   actual = Hanami::Utils::Inflector.singularize(Hanami::Utils::String.new(singular).titleize)
-      #   expect(actual).to Hanami::Utils::String.new(singular).titleize
+      # it %(doesn't singularizes titleized "#{ Hanami::Utils::String.titleize(plural) }" as it's already singular) do
+      #   actual = Hanami::Utils::Inflector.singularize(Hanami::Utils::String.titleize(singular))
+      #   expect(actual).to Hanami::Utils::String.titleize(singular)
       # end
     end
   end
