@@ -126,5 +126,10 @@ RSpec.describe Hanami::Utils::Class do
     it 'loads class from given string and namespace' do
       expect(Hanami::Utils::Class.load_from_pattern!('(Layer|Layer::)Step', App)).to eq(App::Layer::Step)
     end
+
+    it 'display deprecation message' do
+      expect { Hanami::Utils::Class.load_from_pattern!('(Layer|Layer::)Step', App) }
+        .to output(/Hanami::Utils::Class.load_from_pattern! is deprecated, please use Hanami::Utils::Class.load! instead/).to_stderr
+    end
   end
 end
