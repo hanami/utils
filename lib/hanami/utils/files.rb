@@ -218,11 +218,23 @@ module Hanami
       #
       # @since 1.1.0
       def self.inject_line_before(path, target, contents)
-        content = ::File.readlines(path)
-        i       = index(content, path, target)
+        inject_line_before_impl(path, target, contents, method(:index))
+      end
 
-        content.insert(i, "#{contents}\n")
-        write(path, content)
+      # Inject `contents` in `path` before last `target`.
+      #
+      # @param path [String,Pathname] the path to file
+      # @param target [String,Regexp] the target to replace
+      # @param contents [String] the contents to inject
+      #
+      # @raise [Errno::ENOENT] if the path doesn't exist
+      # @raise [ArgumentError] if `target` cannot be found in `path`
+      #
+      # @see .inject_line_after
+      #
+      # @since 1.1.0
+      def self.inject_line_before_last(path, target, contents)
+        inject_line_before_impl(path, target, contents, method(:rindex))
       end
 
       # Inject `contents` in `path` after `target`.
@@ -238,11 +250,23 @@ module Hanami
       #
       # @since 1.1.0
       def self.inject_line_after(path, target, contents)
-        content = ::File.readlines(path)
-        i       = index(content, path, target)
+        inject_line_after_impl(path, target, contents, method(:index))
+      end
 
-        content.insert(i + 1, "#{contents}\n")
-        write(path, content)
+      # Inject `contents` in `path` after last `target`.
+      #
+      # @param path [String,Pathname] the path to file
+      # @param target [String,Regexp] the target to replace
+      # @param contents [String] the contents to inject
+      #
+      # @raise [Errno::ENOENT] if the path doesn't exist
+      # @raise [ArgumentError] if `target` cannot be found in `path`
+      #
+      # @see .inject_line_before
+      #
+      # @since 1.1.0
+      def self.inject_line_after_last(path, target, contents)
+        inject_line_after_impl(path, target, contents, method(:rindex))
       end
 
       # Removes line from `path`, matching `target`.
@@ -372,8 +396,41 @@ module Hanami
 
       # @since 1.1.0
       # @api private
-      def self.line_number(content, target)
-        content.index do |l|
+      def self.rindex(content, path, target)
+        line_number(content, target, method: content.method(:rindex)) or
+          raise ArgumentError.new("Cannot find `#{target}' inside `#{path}'.")
+      end
+
+      private_class_method :rindex
+
+      # @since 1.1.0
+      # @api private
+      def self.inject_line_before_impl(path, target, contents, method)
+        content = ::File.readlines(path)
+        i       = method.call(content, path, target)
+
+        content.insert(i, "#{contents}\n")
+        write(path, content)
+      end
+
+      private_class_method :inject_line_before_impl
+
+      # @since 1.1.0
+      # @api private
+      def self.inject_line_after_impl(path, target, contents, method)
+        content = ::File.readlines(path)
+        i       = method.call(content, path, target)
+
+        content.insert(i + 1, "#{contents}\n")
+        write(path, content)
+      end
+
+      private_class_method :inject_line_after_impl
+
+      # @since 1.1.0
+      # @api private
+      def self.line_number(content, target, method: content.method(:index))
+        method.call do |l|
           case target
           when ::String
             l.include?(target)
