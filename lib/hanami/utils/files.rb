@@ -215,42 +215,12 @@ module Hanami
       # @raise [ArgumentError] if `target` cannot be found in `path`
       #
       # @see .inject_line_after
+      # @see .inject_line_before_last
+      # @see .inject_line_after_last
       #
       # @since 1.1.0
       def self.inject_line_before(path, target, contents)
-        inject_line_before_impl(path, target, contents, method(:index))
-      end
-
-      # Inject `contents` in `path` before last `target`.
-      #
-      # @param path [String,Pathname] the path to file
-      # @param target [String,Regexp] the target to replace
-      # @param contents [String] the contents to inject
-      #
-      # @raise [Errno::ENOENT] if the path doesn't exist
-      # @raise [ArgumentError] if `target` cannot be found in `path`
-      #
-      # @see .inject_line_after
-      #
-      # @since 1.1.0
-      def self.inject_line_before_last(path, target, contents)
-        inject_line_before_impl(path, target, contents, method(:rindex))
-      end
-
-      # Inject `contents` in `path` after `target`.
-      #
-      # @param path [String,Pathname] the path to file
-      # @param target [String,Regexp] the target to replace
-      # @param contents [String] the contents to inject
-      #
-      # @raise [Errno::ENOENT] if the path doesn't exist
-      # @raise [ArgumentError] if `target` cannot be found in `path`
-      #
-      # @see .inject_line_before
-      #
-      # @since 1.1.0
-      def self.inject_line_after(path, target, contents)
-        inject_line_after_impl(path, target, contents, method(:index))
+        _inject_line_before(path, target, contents, method(:index))
       end
 
       # Inject `contents` in `path` after last `target`.
@@ -263,10 +233,49 @@ module Hanami
       # @raise [ArgumentError] if `target` cannot be found in `path`
       #
       # @see .inject_line_before
+      # @see .inject_line_after
+      # @see .inject_line_after_last
+      #
+      # @since x.x.x
+      def self.inject_line_before_last(path, target, contents)
+        _inject_line_before(path, target, contents, method(:rindex))
+      end
+
+      # Inject `contents` in `path` after `target`.
+      #
+      # @param path [String,Pathname] the path to file
+      # @param target [String,Regexp] the target to replace
+      # @param contents [String] the contents to inject
+      #
+      # @raise [Errno::ENOENT] if the path doesn't exist
+      # @raise [ArgumentError] if `target` cannot be found in `path`
+      #
+      # @see .inject_line_before
+      # @see .inject_line_before_last
+      # @see .inject_line_after_last
       #
       # @since 1.1.0
+      def self.inject_line_after(path, target, contents)
+        _inject_line_after(path, target, contents, method(:index))
+      end
+
+      # Inject `contents` in `path` after last `target`.
+      #
+      # @param path [String,Pathname] the path to file
+      # @param target [String,Regexp] the target to replace
+      # @param contents [String] the contents to inject
+      #
+      # @raise [Errno::ENOENT] if the path doesn't exist
+      # @raise [ArgumentError] if `target` cannot be found in `path`
+      #
+      # @see .inject_line_before
+      # @see .inject_line_after
+      # @see .inject_line_before_last
+      # @see .inject_line_after_last
+      #
+      # @since x.x.x
       def self.inject_line_after_last(path, target, contents)
-        inject_line_after_impl(path, target, contents, method(:rindex))
+        _inject_line_after(path, target, contents, method(:rindex))
       end
 
       # Removes line from `path`, matching `target`.
@@ -394,43 +403,43 @@ module Hanami
 
       private_class_method :index
 
-      # @since 1.1.0
+      # @since x.x.x
       # @api private
       def self.rindex(content, path, target)
-        line_number(content, target, method: content.method(:rindex)) or
+        line_number(content, target, finder: content.method(:rindex)) or
           raise ArgumentError.new("Cannot find `#{target}' inside `#{path}'.")
       end
 
       private_class_method :rindex
 
-      # @since 1.1.0
+      # @since x.x.x
       # @api private
-      def self.inject_line_before_impl(path, target, contents, method)
+      def self._inject_line_before(path, target, contents, finder)
         content = ::File.readlines(path)
-        i       = method.call(content, path, target)
+        i       = finder.call(content, path, target)
 
         content.insert(i, "#{contents}\n")
         write(path, content)
       end
 
-      private_class_method :inject_line_before_impl
+      private_class_method :_inject_line_before
 
-      # @since 1.1.0
+      # @since x.x.x
       # @api private
-      def self.inject_line_after_impl(path, target, contents, method)
+      def self._inject_line_after(path, target, contents, finder)
         content = ::File.readlines(path)
-        i       = method.call(content, path, target)
+        i       = finder.call(content, path, target)
 
         content.insert(i + 1, "#{contents}\n")
         write(path, content)
       end
 
-      private_class_method :inject_line_after_impl
+      private_class_method :_inject_line_after
 
       # @since 1.1.0
       # @api private
-      def self.line_number(content, target, method: content.method(:index))
-        method.call do |l|
+      def self.line_number(content, target, finder: content.method(:index))
+        finder.call do |l|
           case target
           when ::String
             l.include?(target)
