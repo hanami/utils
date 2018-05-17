@@ -37,6 +37,20 @@ module Hanami
     def [](key)
       @data.fetch(key, nil)
     end
+
+    def successful?
+      true
+    end
+
+    def failing?
+      !successful?
+    end
+
+    def to_h
+      @data
+    end
+
+    alias to_hash to_h
   end
 
   # Failing result
@@ -50,6 +64,10 @@ module Hanami
 
     def message
       messages.first
+    end
+
+    def successful?
+      false
     end
   end
 
