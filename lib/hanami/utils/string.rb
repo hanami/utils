@@ -730,7 +730,7 @@ module Hanami
       #
       # @raise [NoMethodError] If doesn't respond to the given method
       def method_missing(method_name, *args, &blk)
-        Hanami::Utils::Deprecation.new('#method_missing is deprecated')
+        Hanami::Utils::Deprecation.new("##{method_name} is deprecated")
         raise NoMethodError.new(%(undefined method `#{method_name}' for "#{@string}":#{self.class})) unless respond_to?(method_name)
 
         s = @string.__send__(method_name, *args, &blk)
