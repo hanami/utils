@@ -533,6 +533,94 @@ RSpec.describe Hanami::Utils::Files do
     end
   end
 
+  describe ".inject_line_before_last" do
+    it "injects line before last target (string)" do
+      path = root.join("inject_before_last_string.rb")
+      content = <<~EOF
+        class InjectBefore
+          def self.call
+          end
+          def self.call
+          end
+        end
+      EOF
+
+      described_class.write(path, content)
+      described_class.inject_line_before_last(path, "call", "  # It performs the operation")
+
+      expected = <<~EOF
+        class InjectBefore
+          def self.call
+          end
+          # It performs the operation
+          def self.call
+          end
+        end
+      EOF
+
+      expect(path).to have_content(expected)
+    end
+
+    it "injects line before last target (regexp)" do
+      path = root.join("inject_before_last_regexp.rb")
+      content = <<~EOF
+        class InjectBefore
+          def self.call
+          end
+          def self.call
+          end
+        end
+      EOF
+
+      described_class.write(path, content)
+      described_class.inject_line_before_last(path, /call/, "  # It performs the operation")
+
+      expected = <<~EOF
+        class InjectBefore
+          def self.call
+          end
+          # It performs the operation
+          def self.call
+          end
+        end
+      EOF
+
+      expect(path).to have_content(expected)
+    end
+
+    it "raises error if target cannot be found in path" do
+      path = root.join("inject_before_last_not_found.rb")
+      content = <<~EOF
+        class InjectBefore
+          def self.call
+          end
+          def self.call
+          end
+        end
+      EOF
+
+      described_class.write(path, content)
+
+      expect { described_class.inject_line_before_last(path, "not existing target", "  # It performs the operation") }.to raise_error do |exception|
+        expect(exception).to be_kind_of(ArgumentError)
+        expect(exception.message).to eq("Cannot find `not existing target' inside `#{path}'.")
+      end
+
+      expect(path).to have_content(content)
+    end
+
+    it "raises error if path doesn't exist" do
+      path = root.join("inject_before_last_no_exist.rb")
+
+      expect { described_class.inject_line_before_last(path, "call", "  # It performs the operation") }.to raise_error do |exception|
+        expect(exception).to be_kind_of(Errno::ENOENT)
+        expect(exception.message).to match("No such file or directory")
+      end
+
+      expect(path).to_not exist
+    end
+  end
+
   describe ".inject_line_after" do
     it "injects line after target (string)" do
       path = root.join("inject_after.rb")
@@ -603,6 +691,94 @@ RSpec.describe Hanami::Utils::Files do
       path = root.join("inject_after_no_exist.rb")
 
       expect { described_class.inject_line_after(path, "call", "    :result") }.to raise_error do |exception|
+        expect(exception).to be_kind_of(Errno::ENOENT)
+        expect(exception.message).to match("No such file or directory")
+      end
+
+      expect(path).to_not exist
+    end
+  end
+
+  describe ".inject_line_after_last" do
+    it "injects line after last target (string)" do
+      path = root.join("inject_after_last.rb")
+      content = <<~EOF
+        class InjectAfter
+          def self.call
+          end
+          def self.call
+          end
+        end
+      EOF
+
+      described_class.write(path, content)
+      described_class.inject_line_after_last(path, "call", "    :result")
+
+      expected = <<~EOF
+        class InjectAfter
+          def self.call
+          end
+          def self.call
+            :result
+          end
+        end
+      EOF
+
+      expect(path).to have_content(expected)
+    end
+
+    it "injects line after last target (regexp)" do
+      path = root.join("inject_after_last.rb")
+      content = <<~EOF
+        class InjectAfter
+          def self.call
+          end
+          def self.call
+          end
+        end
+      EOF
+
+      described_class.write(path, content)
+      described_class.inject_line_after_last(path, /call/, "    :result")
+
+      expected = <<~EOF
+        class InjectAfter
+          def self.call
+          end
+          def self.call
+            :result
+          end
+        end
+      EOF
+
+      expect(path).to have_content(expected)
+    end
+
+    it "raises error if target cannot be found in path" do
+      path = root.join("inject_after_last_not_found.rb")
+      content = <<~EOF
+        class InjectAfter
+          def self.call
+          end
+          def self.call
+          end
+        end
+      EOF
+
+      described_class.write(path, content)
+
+      expect { described_class.inject_line_after_last(path, "not existing target", "    :result") }.to raise_error do |exception|
+        expect(exception).to be_kind_of(ArgumentError)
+        expect(exception.message).to eq("Cannot find `not existing target' inside `#{path}'.")
+      end
+
+      expect(path).to have_content(content)
+    end
+
+    it "raises error if path doesn't exist" do
+      path = root.join("inject_after_last_no_exist.rb")
+
+      expect { described_class.inject_line_after_last(path, "call", "    :result") }.to raise_error do |exception|
         expect(exception).to be_kind_of(Errno::ENOENT)
         expect(exception.message).to match("No such file or directory")
       end

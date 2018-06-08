@@ -1048,7 +1048,7 @@ module Hanami
       end
 
       class << self
-        private :inspect_type_error
+        private :inspect_type_error # rubocop:disable Style/AccessModifierDeclarations
       end
     end
   end
