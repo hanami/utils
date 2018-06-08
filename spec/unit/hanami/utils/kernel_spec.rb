@@ -1491,13 +1491,13 @@ RSpec.describe Hanami::Utils::Kernel do
       end
 
       describe 'when a class is given' do
-        let(:input) { Fixnum } # rubocop:disable Lint/UnifiedInteger
-
         if RUBY_VERSION >= '2.4'
+          let(:input) { Integer }
           it 'returns the string representation' do
             expect(@result).to eq 'Integer'
           end
         else
+          let(:input) { Fixnum } # rubocop:disable Lint/UnifiedInteger
           it 'returns the string representation' do
             expect(@result).to eq 'Fixnum'
           end
