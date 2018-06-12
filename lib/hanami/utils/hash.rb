@@ -8,11 +8,6 @@ module Hanami
     #
     # rubocop:disable ClassLength
     class Hash
-      # @since 0.6.0
-      # @api private
-      #
-      # @see Hanami::Utils::Hash#deep_dup
-      # @see Hanami::Utils::Duplicable
       DUPLICATE_LOGIC = proc do |value|
         case value
         when Hash

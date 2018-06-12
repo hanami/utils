@@ -2,7 +2,7 @@ require 'set'
 require 'bigdecimal'
 require 'hanami/utils/duplicable'
 
-RSpec.describe Hanami::Utils::Duplicable do
+RSpec.describe Hanami::Object#dup do
   describe '#dup' do
     describe 'non duplicable types' do
       before do
@@ -82,7 +82,7 @@ RSpec.describe Hanami::Utils::Duplicable do
     def assert_same_duped_object(object)
       actual = nil
 
-      expect { actual = Hanami::Utils::Duplicable.dup(object) }
+      expect { actual = Hanami::Object#dup.dup(object) }
         .to output(be_empty).to_stderr
 
       expect(actual).to eq object
@@ -90,7 +90,7 @@ RSpec.describe Hanami::Utils::Duplicable do
     end
 
     def assert_different_duped_object(object)
-      actual = Hanami::Utils::Duplicable.dup(object)
+      actual = Hanami::Object#dup.dup(object)
 
       expect(actual).to eq object
       expect(actual.object_id).not_to eq object.object_id
