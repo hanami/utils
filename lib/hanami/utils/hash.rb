@@ -8,15 +8,6 @@ module Hanami
     #
     # rubocop:disable ClassLength
     class Hash
-      DUPLICATE_LOGIC = proc do |value|
-        case value
-        when Hash
-          value.deep_dup
-        when ::Hash
-          Hash.new(value).deep_dup.to_h
-        end
-      end.freeze
-
       extend Transproc::Registry
       import Transproc::HashTransformations
 
@@ -369,7 +360,7 @@ module Hanami
       #   duped['u_hash'].class # => Hanami::Utils::Hash
       def deep_dup
         self.class.new.tap do |result|
-          @hash.each { |k, v| result[k] = Duplicable.dup(v, &DUPLICATE_LOGIC) }
+          @hash.each { |k, v| result[k] = Duplicable.dup(v) }
         end
       end
 
