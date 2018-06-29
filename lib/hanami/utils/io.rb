@@ -32,6 +32,32 @@ module Hanami
       ensure
         $VERBOSE = old_verbose
       end
+
+      # @yield the block of code that generates error output.
+      #
+      # @return [void]
+      #
+      # @since x.x.x
+      #
+      # @example
+      #   require 'hanami/utils/io'
+      #
+      #   class Test
+      #     def speak
+      #       Kernel.warn('hello in here')
+      #     end
+      #   end
+      #
+      #   Hanami::Utils::IO.silence_stderr do
+      #     Test.speak
+      #   end
+      def self.silence_stderr
+        original_stderr = $stderr
+        $stderr = File.open(File::NULL, "w")
+        yield
+      ensure
+        $stderr = original_stderr
+      end
     end
   end
 end
