@@ -574,7 +574,7 @@ module Hanami
       #
       # rubocop:disable Metrics/MethodLength
       def tokenize
-        Hanami::Utils::Deprecation.new("#{self.class}#tokenize is deprecated")
+        Hanami::Utils::Deprecation.new("#{self.class.name}#tokenize is deprecated")
         if match = TOKENIZE_REGEXP.match(@string) # rubocop:disable Lint/AssignmentInCondition
           pre  = match.pre_match
           post = match.post_match
@@ -599,7 +599,7 @@ module Hanami
       #
       # @see Hanami::Utils::Inflector
       def pluralize
-        Hanami::Utils::Deprecation.new("#{self.class}#pluralize is deprecated")
+        Hanami::Utils::Deprecation.new("#{self.class.name}#pluralize is deprecated")
         self.class.new Inflector.pluralize(self)
       end
 
@@ -612,7 +612,7 @@ module Hanami
       #
       # @see Hanami::Utils::Inflector
       def singularize
-        Hanami::Utils::Deprecation.new("#{self.class}#singularize is deprecated")
+        Hanami::Utils::Deprecation.new("#{self.class.name}#singularize is deprecated")
         self.class.new Inflector.singularize(self)
       end
 
@@ -622,7 +622,7 @@ module Hanami
       #
       # @since 0.3.0
       def hash
-        Hanami::Utils::Deprecation.new("#{self.class}#hash is deprecated")
+        Hanami::Utils::Deprecation.new("#{self.class.name}#hash is deprecated")
         @string.hash
       end
 
@@ -632,7 +632,7 @@ module Hanami
       #
       # @since 0.3.0
       def to_s
-        Hanami::Utils::Deprecation.new("#{self.class}#to_s is deprecated")
+        Hanami::Utils::Deprecation.new("#{self.class.name}#to_s is deprecated")
         @string
       end
 
@@ -644,7 +644,7 @@ module Hanami
       #
       # @since 0.3.0
       def ==(other)
-        Hanami::Utils::Deprecation.new("#{self.class}#== is deprecated")
+        Hanami::Utils::Deprecation.new("#{self.class.name}#== is deprecated")
         to_s == other
       end
 
@@ -658,7 +658,7 @@ module Hanami
       #
       # @since 0.3.0
       def split(pattern, limit = 0)
-        Hanami::Utils::Deprecation.new("#{self.class}#split is deprecated")
+        Hanami::Utils::Deprecation.new("#{self.class.name}#split is deprecated")
         @string.split(pattern, limit)
       end
 
@@ -716,7 +716,7 @@ module Hanami
       #   puts result
       #     # => #<Hanami::Utils::String:0x007fdb41232ed0 @string="authors/books#index">
       def rsub(pattern, replacement)
-        Hanami::Utils::Deprecation.new("#{self.class}#rsub is deprecated, please use Hanami::String::Utils.rsub")
+        Hanami::Utils::Deprecation.new("#{self.class.name}#rsub is deprecated, please use #{self.class.name}.rsub")
         if i = rindex(pattern) # rubocop:disable Lint/AssignmentInCondition
           s    = @string.dup
           s[i] = replacement
