@@ -317,6 +317,10 @@ RSpec.describe Hanami::Utils::String do
       expect(result).to be_kind_of(::String)
     end
 
+    def with_silenced_warnings(&blk)
+      Hanami::Utils::IO.silence_warnings(&blk)
+    end
+
     it 'accepts a symbol' do
       result = Hanami::Utils::String.pluralize(@singular.to_sym)
       expect(result).to eq(@plural)
@@ -336,7 +340,7 @@ RSpec.describe Hanami::Utils::String do
     end
 
     it "shows deprecation message" do
-      expect { Hanami::Utils::String.pluralize(@singular.to_sym) }.to output(/self.pluralize is deprecated/).to_stderr
+      expect { Hanami::Utils::String.pluralize(@singular.to_sym) }.to output(/Hanami::Utils::String.pluralize is deprecated/).to_stderr
     end
   end
 
@@ -369,7 +373,7 @@ RSpec.describe Hanami::Utils::String do
     end
 
     it "shows deprecation message" do
-      expect { Hanami::Utils::String.singularize(@plural.to_sym) }.to output(/self.singularize is deprecated/).to_stderr
+      expect { Hanami::Utils::String.singularize(@plural.to_sym) }.to output(/Hanami::Utils::String.singularize is deprecated/).to_stderr
     end
   end
 
@@ -437,7 +441,7 @@ RSpec.describe Hanami::Utils::String do
     end
 
     it "shows deprecation message" do
-      expect { Hanami::Utils::String.new('hanami').titleize }.to output(/#titleize is deprecated, please use self.titleize/).to_stderr
+      expect { Hanami::Utils::String.new('hanami').titleize }.to output(/Hanami::Utils::String#titleize is deprecated, please use Hanami::Utils::String.titleize/).to_stderr
     end
   end
 
@@ -473,7 +477,7 @@ RSpec.describe Hanami::Utils::String do
     end
 
     it "shows deprecation message" do
-      expect { Hanami::Utils::String.new('hanami').capitalize }.to output(/#capitalize is deprecated, please use self.capitalize/).to_stderr
+      expect { Hanami::Utils::String.new('hanami').capitalize }.to output(/Hanami::Utils::String#capitalize is deprecated, please use Hanami::Utils::String.capitalize/).to_stderr
     end
   end
 
@@ -502,7 +506,7 @@ RSpec.describe Hanami::Utils::String do
     end
 
     it "shows deprecation message" do
-      expect { Hanami::Utils::String.new('hanami').classify }.to output(/#classify is deprecated, please use self.classify/).to_stderr
+      expect { Hanami::Utils::String.new('hanami').classify }.to output(/Hanami::Utils::String#classify is deprecated, please use Hanami::Utils::String.classify/).to_stderr
     end
   end
 
@@ -558,7 +562,7 @@ RSpec.describe Hanami::Utils::String do
     end
 
     it "shows deprecation message" do
-      expect { Hanami::Utils::String.new('è vero').underscore }.to output(/#underscore is deprecated, please use self.underscore/).to_stderr
+      expect { Hanami::Utils::String.new('è vero').underscore }.to output(/Hanami::Utils::String#underscore is deprecated, please use Hanami::Utils::String.underscore/).to_stderr
     end
   end
 
@@ -609,7 +613,7 @@ RSpec.describe Hanami::Utils::String do
     end
 
     it "shows deprecation message" do
-      expect { Hanami::Utils::String.new('è vero').dasherize }.to output(/#dasherize is deprecated, please use self.dasherize/).to_stderr
+      expect { Hanami::Utils::String.new('è vero').dasherize }.to output(/Hanami::Utils::String#dasherize is deprecated, please use Hanami::Utils::String.dasherize/).to_stderr
     end
   end
 
@@ -624,7 +628,7 @@ RSpec.describe Hanami::Utils::String do
     end
 
     it "shows deprecation message" do
-      expect { Hanami::Utils::String.new('Hanami::Utils::String').demodulize }.to output(/#demodulize is deprecated, please use self.demodulize/).to_stderr
+      expect { Hanami::Utils::String.new('Hanami::Utils::String').demodulize }.to output(/Hanami::Utils::String#demodulize is deprecated, please use Hanami::Utils::String.demodulize/).to_stderr
     end
   end
 
@@ -639,7 +643,7 @@ RSpec.describe Hanami::Utils::String do
     end
 
     it "shows deprecation message" do
-      expect { Hanami::Utils::String.new('Hanami::Utils::String').namespace }.to output(/#namespace is deprecated, please use self.namespace/).to_stderr
+      expect { Hanami::Utils::String.new('Hanami::Utils::String').namespace }.to output(/Hanami::Utils::String#namespace is deprecated, please use Hanami::Utils::String.namespace/).to_stderr
     end
   end
 
