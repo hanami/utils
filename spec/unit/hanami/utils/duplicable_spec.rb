@@ -1,4 +1,5 @@
 require 'set'
+require 'date'
 require 'bigdecimal'
 require 'hanami/utils/duplicable'
 
