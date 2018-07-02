@@ -18,9 +18,9 @@ Style/DoubleNegation:
 Style/FormatStringToken:
   Exclude:
     - "spec/**/*"
-Style/SpecialGlobalVars:
+Style/MethodMissingSuper:
   Enabled: false
-Style/MethodMissing:
+Style/SpecialGlobalVars:
   Enabled: false
 Style/RescueStandardError:
   Exclude:
