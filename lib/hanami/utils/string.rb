@@ -622,7 +622,6 @@ module Hanami
       #
       # @since 0.3.0
       def hash
-        Hanami::Utils::Deprecation.new("#{self.class.name}#hash is deprecated")
         @string.hash
       end
 
@@ -632,7 +631,6 @@ module Hanami
       #
       # @since 0.3.0
       def to_s
-        Hanami::Utils::Deprecation.new("#{self.class.name}#to_s is deprecated")
         @string
       end
 
@@ -644,7 +642,6 @@ module Hanami
       #
       # @since 0.3.0
       def ==(other)
-        Hanami::Utils::Deprecation.new("#{self.class.name}#== is deprecated")
         to_s == other
       end
 

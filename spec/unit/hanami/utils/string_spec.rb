@@ -859,10 +859,6 @@ RSpec.describe Hanami::Utils::String do
 
         expect(actual).to eq(expected)
       end
-
-      it "shows deprecation message" do
-        expect { Hanami::Utils::String.new('hello').hash }.to output(/Hanami::Utils::String#hash is deprecated/).to_stderr
-      end
     end
   end
 

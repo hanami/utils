@@ -1645,7 +1645,7 @@ RSpec.describe Hanami::Utils::Kernel do
         end
       end
 
-      describe 'when "0" is given (Hanami::Utils::String)' do
+      describe 'when "0" is given (Hanami::Utils::String)', silence_deprecations: true do
         let(:input) { Hanami::Utils::String.new('0') }
 
         it 'returns false' do
@@ -1653,7 +1653,7 @@ RSpec.describe Hanami::Utils::Kernel do
         end
       end
 
-      describe 'when "1" is given (Hanami::Utils::String)' do
+      describe 'when "1" is given (Hanami::Utils::String)', silence_deprecations: true do
         let(:input) { Hanami::Utils::String.new('1') }
 
         it 'returns true' do
@@ -1661,7 +1661,7 @@ RSpec.describe Hanami::Utils::Kernel do
         end
       end
 
-      describe 'when "foo" is given (Hanami::Utils::String)' do
+      describe 'when "foo" is given (Hanami::Utils::String)', silence_deprecations: true do
         let(:input) { Hanami::Utils::String.new('foo') }
 
         it 'returns false' do
