@@ -862,20 +862,6 @@ RSpec.describe Hanami::Utils::Kernel do
       end
     end
 
-    describe 'when a string without numbers is given' do
-      let(:input) { 'home' }
-
-      if RUBY_VERSION.start_with?('2.4')
-        it 'raises error' do
-          expect { Hanami::Utils::Kernel.BigDecimal(input) }.to raise_error(ArgumentError, "invalid value for BigDecimal(): #{input.inspect}")
-        end
-      else
-        it 'returns an BigDecimal' do
-          expect(Hanami::Utils::Kernel.BigDecimal(input)).to eq BigDecimal(0)
-        end
-      end
-    end
-
     describe 'when a string which starts with a big decimal is given' do
       let(:input) { '23.0 street' }
 
@@ -1645,7 +1631,7 @@ RSpec.describe Hanami::Utils::Kernel do
         end
       end
 
-      describe 'when "0" is given (Hanami::Utils::String)' do
+      describe 'when "0" is given (Hanami::Utils::String)', silence_deprecations: true do
         let(:input) { Hanami::Utils::String.new('0') }
 
         it 'returns false' do
@@ -1653,7 +1639,7 @@ RSpec.describe Hanami::Utils::Kernel do
         end
       end
 
-      describe 'when "1" is given (Hanami::Utils::String)' do
+      describe 'when "1" is given (Hanami::Utils::String)', silence_deprecations: true do
         let(:input) { Hanami::Utils::String.new('1') }
 
         it 'returns true' do
@@ -1661,7 +1647,7 @@ RSpec.describe Hanami::Utils::Kernel do
         end
       end
 
-      describe 'when "foo" is given (Hanami::Utils::String)' do
+      describe 'when "foo" is given (Hanami::Utils::String)', silence_deprecations: true do
         let(:input) { Hanami::Utils::String.new('foo') }
 
         it 'returns false' do
