@@ -2,12 +2,18 @@
 set -euo pipefail
 IFS=$'\n\t'
 
+prepare_build() {
+  if [ -d coverage ]; then
+    rm -rf coverage
+  fi
+}
+
 run_code_quality_checks() {
   bundle exec rubocop .
 }
 
 run_unit_tests() {
-  bundle exec rake spec:coverage
+  bundle exec rake spec:unit
 }
 
 run_isolation_tests() {
@@ -26,6 +32,10 @@ run_isolation_tests() {
   done
 }
 
+update_code_coverage() {
+  bundle exec rake codecov:upload
+}
+
 run_isolation_test() {
   local test=$1
 
@@ -41,9 +51,11 @@ run_test() {
 }
 
 main() {
-  run_code_quality_checks &&
+  prepare_build &&
+    run_code_quality_checks &&
     run_unit_tests &&
-    run_isolation_tests
+    run_isolation_tests &&
+    update_code_coverage
 }
 
 main
