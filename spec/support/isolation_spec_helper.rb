@@ -1,10 +1,13 @@
 require 'rubygems'
 require 'bundler'
-Bundler.setup(:default, :development)
+Bundler.setup(:default, :development, :test)
+
+ENV['SIMPLECOV_COMMAND_NAME'] = "Isolation Tests PID #{$$}"
 
 $LOAD_PATH.unshift 'lib'
 require 'hanami/utils'
 require_relative './rspec'
+require_relative './coverage'
 
 module RSpec
   module Support
