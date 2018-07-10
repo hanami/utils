@@ -9,10 +9,18 @@ namespace :spec do
 
     task.pattern = file_list
   end
+end
 
-  task :coverage do
-    ENV['COVERAGE'] = 'true'
-    Rake::Task['spec:unit'].invoke
+namespace :codecov do
+  desc 'Uploads the latest simplecov result set to codecov.io'
+  task :upload do
+    if ENV['CI']
+      require 'simplecov'
+      require 'codecov'
+
+      formatter = SimpleCov::Formatter::Codecov.new
+      formatter.format(SimpleCov::ResultMerger.merged_result)
+    end
   end
 end
 
