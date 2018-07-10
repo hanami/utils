@@ -1,7 +1,6 @@
 require 'hanami/utils/inflector'
 require 'transproc'
 require 'concurrent/map'
-require 'hanami/utils/deprecation'
 
 module Hanami
   module Utils
@@ -331,7 +330,6 @@ module Hanami
       #
       #   Hanami::Utils::String.pluralize('book') # => 'books'
       def self.pluralize(input)
-        Hanami::Utils::Deprecation.new("#{name}.pluralize is deprecated")
         string = ::String.new(input.to_s)
         Inflector.pluralize(string)
       end
@@ -352,7 +350,6 @@ module Hanami
       #
       #   Hanami::Utils::String.singularize('books') # => 'book'
       def self.singularize(input)
-        Hanami::Utils::Deprecation.new("#{name}.singularize is deprecated")
         string = ::String.new(input.to_s)
         Inflector.singularize(string)
       end
@@ -412,7 +409,6 @@ module Hanami
       #   string = Hanami::Utils::String.new 'hanami utils'
       #   string.titleize # => "Hanami Utils"
       def titleize
-        Hanami::Utils::Deprecation.new("#{self.class.name}#titleize is deprecated, please use #{self.class.name}.titleize")
         self.class.new underscore.split(CLASSIFY_SEPARATOR).map(&:capitalize).join(TITLEIZE_SEPARATOR)
       end
 
@@ -441,7 +437,6 @@ module Hanami
       #   string = Hanami::Utils::String.new 'hanami-utils'
       #   string.capitalize # => "Hanami utils"
       def capitalize
-        Hanami::Utils::Deprecation.new("#{self.class.name}#capitalize is deprecated, please use #{self.class.name}.capitalize")
         head, *tail = underscore.split(CLASSIFY_SEPARATOR)
 
         self.class.new(
@@ -461,8 +456,7 @@ module Hanami
       #
       #   string = Hanami::Utils::String.new 'hanami_utils'
       #   string.classify # => 'HanamiUtils'
-      def classify # rubocop:disable Metrics/AbcSize
-        Hanami::Utils::Deprecation.new("#{self.class.name}#classify is deprecated, please use #{self.class.name}.classify")
+      def classify
         words = underscore.split(CLASSIFY_WORD_SEPARATOR).map!(&:capitalize)
         delimiters = underscore.scan(CLASSIFY_WORD_SEPARATOR)
 
@@ -489,7 +483,6 @@ module Hanami
       #   string = Hanami::Utils::String.new 'HanamiUtils'
       #   string.underscore # => 'hanami_utils'
       def underscore
-        Hanami::Utils::Deprecation.new("#{self.class.name}#underscore is deprecated, please use #{self.class.name}.underscore")
         new_string = gsub(NAMESPACE_SEPARATOR, UNDERSCORE_SEPARATOR)
         new_string.gsub!(/([A-Z\d]+)([A-Z][a-z])/, UNDERSCORE_DIVISION_TARGET)
         new_string.gsub!(/([a-z\d])([A-Z])/, UNDERSCORE_DIVISION_TARGET)
@@ -517,7 +510,6 @@ module Hanami
       #   string = Hanami::Utils::String.new 'HanamiUtils'
       #   string.dasherize # => "hanami-utils"
       def dasherize
-        Hanami::Utils::Deprecation.new("#{self.class.name}#dasherize is deprecated, please use #{self.class.name}.dasherize")
         self.class.new underscore.split(CLASSIFY_SEPARATOR).join(DASHERIZE_SEPARATOR)
       end
 
@@ -537,7 +529,6 @@ module Hanami
       #   string = Hanami::Utils::String.new 'String'
       #   string.demodulize # => 'String'
       def demodulize
-        Hanami::Utils::Deprecation.new("#{self.class.name}#demodulize is deprecated, please use #{self.class.name}.demodulize")
         self.class.new split(NAMESPACE_SEPARATOR).last
       end
 
@@ -557,7 +548,6 @@ module Hanami
       #   string = Hanami::Utils::String.new 'String'
       #   string.namespace # => 'String'
       def namespace
-        Hanami::Utils::Deprecation.new("#{self.class.name}#namespace is deprecated, please use #{self.class.name}.namespace")
         self.class.new split(NAMESPACE_SEPARATOR).first
       end
 
@@ -585,7 +575,6 @@ module Hanami
       #
       # rubocop:disable Metrics/MethodLength
       def tokenize
-        Hanami::Utils::Deprecation.new("#{self.class.name}#tokenize is deprecated")
         if match = TOKENIZE_REGEXP.match(@string) # rubocop:disable Lint/AssignmentInCondition
           pre  = match.pre_match
           post = match.post_match
@@ -611,7 +600,6 @@ module Hanami
       #
       # @see Hanami::Utils::Inflector
       def pluralize
-        Hanami::Utils::Deprecation.new("#{self.class.name}#pluralize is deprecated")
         self.class.new Inflector.pluralize(self)
       end
 
@@ -625,7 +613,6 @@ module Hanami
       #
       # @see Hanami::Utils::Inflector
       def singularize
-        Hanami::Utils::Deprecation.new("#{self.class.name}#singularize is deprecated")
         self.class.new Inflector.singularize(self)
       end
 
@@ -672,7 +659,6 @@ module Hanami
       # @since 0.3.0
       # @deprecated
       def split(pattern, limit = 0)
-        Hanami::Utils::Deprecation.new("#{self.class.name}#split is deprecated")
         @string.split(pattern, limit)
       end
 
@@ -685,7 +671,6 @@ module Hanami
       # @since 0.3.0
       # @deprecated
       def gsub(pattern, replacement = nil, &blk)
-        Hanami::Utils::Deprecation.new("#{self.class}#gsub is deprecated")
         if block_given?
           @string.gsub(pattern, &blk)
         else
@@ -703,7 +688,6 @@ module Hanami
       # @since 0.6.0
       # @deprecated
       def scan(pattern, &blk)
-        Hanami::Utils::Deprecation.new("#{self.class}#scan is deprecated")
         @string.scan(pattern, &blk)
       end
 
@@ -733,7 +717,6 @@ module Hanami
       #   puts result
       #     # => #<Hanami::Utils::String:0x007fdb41232ed0 @string="authors/books#index">
       def rsub(pattern, replacement)
-        Hanami::Utils::Deprecation.new("#{self.class.name}#rsub is deprecated, please use #{self.class.name}.rsub")
         if i = rindex(pattern) # rubocop:disable Lint/AssignmentInCondition
           s    = @string.dup
           s[i] = replacement
@@ -750,7 +733,6 @@ module Hanami
       #
       # @raise [NoMethodError] If doesn't respond to the given method
       def method_missing(method_name, *args, &blk)
-        Hanami::Utils::Deprecation.new("#{self.class.name}##{method_name} is deprecated")
         raise NoMethodError.new(%(undefined method `#{method_name}' for "#{@string}":#{self.class})) unless respond_to?(method_name)
 
         s = @string.__send__(method_name, *args, &blk)
@@ -763,7 +745,6 @@ module Hanami
       # @api private
       # @since 0.3.0
       def respond_to_missing?(method_name, include_private = false)
-        Hanami::Utils::Deprecation.new("#{self.class.name}##{method_name} is deprecated")
         @string.respond_to?(method_name, include_private)
       end
     end
