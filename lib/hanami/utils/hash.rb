@@ -217,6 +217,7 @@ module Hanami
       # @return [Hanami::Utils::Hash] self
       #
       # @since 0.1.0
+      # @deprecated
       #
       # @see http://www.ruby-doc.org/core/Hash.html#method-c-5B-5D
       #
@@ -243,6 +244,7 @@ module Hanami
       # @return [Hash] self
       #
       # @since 0.1.0
+      # @deprecated Use {Hanami::Utils::Hash.symbolize}
       #
       # @example
       #   require 'hanami/utils/hash'
@@ -266,6 +268,7 @@ module Hanami
       # @return [Hash] self
       #
       # @since 1.0.0
+      # @deprecated Use {Hanami::Utils::Hash.deep_symbolize}
       #
       # @example
       #   require 'hanami/utils/hash'
@@ -291,6 +294,7 @@ module Hanami
       # @return [Hash] self
       #
       # @since 0.3.2
+      # @deprecated Use {Hanami::Utils::Hash.stringify}
       #
       # @example
       #   require 'hanami/utils/hash'
@@ -316,6 +320,7 @@ module Hanami
       # @return [Hash] a deep duplicated self
       #
       # @since 0.3.1
+      # @deprecated Use {Hanami::Utils::Hash.deep_dup}
       #
       # @example
       #   require 'hanami/utils/hash'
@@ -383,6 +388,7 @@ module Hanami
       # @return [Array] the keys
       #
       # @since 0.3.0
+      # @deprecated
       #
       # @see http://www.ruby-doc.org/core/Hash.html#method-i-keys
       def keys
@@ -397,6 +403,7 @@ module Hanami
       # @return [Object,nil] the value hold by the given key, if present
       #
       # @since 0.3.0
+      # @deprecated
       #
       # @see http://www.ruby-doc.org/core/Hash.html#method-i-keys
       def delete(key)
@@ -410,6 +417,7 @@ module Hanami
       # @return [Object,nil] the correspoding value, if present
       #
       # @since 0.3.0
+      # @deprecated
       #
       # @see http://www.ruby-doc.org/core/Hash.html#method-i-5B-5D
       def [](key)
@@ -422,6 +430,7 @@ module Hanami
       # @param value [Object] the value to assign
       #
       # @since 0.3.0
+      # @deprecated
       #
       # @see http://www.ruby-doc.org/core/Hash.html#method-i-5B-5D-3D
       def []=(key, value)
@@ -433,6 +442,7 @@ module Hanami
       # @return [::Hash] the hash
       #
       # @since 0.3.0
+      # @deprecated
       #
       # @see http://www.ruby-doc.org/core/Hash.html#method-i-to_h
       def to_h
@@ -449,6 +459,7 @@ module Hanami
       # @return [::Array] the array
       #
       # @since 0.3.0
+      # @deprecated
       #
       # @see http://www.ruby-doc.org/core/Hash.html#method-i-to_a
       def to_a
@@ -460,6 +471,7 @@ module Hanami
       # @return [TrueClass,FalseClass]
       #
       # @since 0.3.0
+      # @deprecated
       def ==(other)
         @hash == other.to_h
       end
@@ -471,6 +483,7 @@ module Hanami
       # @return [Fixnum]
       #
       # @since 0.3.0
+      # @deprecated
       def hash
         @hash.hash
       end
@@ -480,6 +493,7 @@ module Hanami
       # @return [String]
       #
       # @since 0.3.0
+      # @deprecated
       def inspect
         @hash.inspect
       end
