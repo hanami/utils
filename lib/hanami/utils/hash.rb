@@ -1,5 +1,4 @@
 require 'hanami/utils/duplicable'
-require 'hanami/utils/deprecation'
 require 'transproc'
 
 module Hanami
@@ -256,7 +255,6 @@ module Hanami
       #   hash.keys    # => [:a, :b]
       #   hash.inspect # => { :a => 23, :b => { 'c' => ["x", "y", "z"] } }
       def symbolize!
-        Hanami::Utils::Deprecation.new("#{self.class.name}#symbolize! is deprecated, please use #{self.class.name}.symbolize")
         keys.each do |k|
           v = delete(k)
           self[k.to_sym] = v
@@ -281,7 +279,6 @@ module Hanami
       #   hash.keys    # => [:a, :b]
       #   hash.inspect # => {:a=>23, :b=>{:c=>["x", "y", "z"]}}
       def deep_symbolize!
-        Hanami::Utils::Deprecation.new("#{self.class.name}#deep_symbolize! is deprecated, please use #{self.class.name}.deep_symbolize")
         keys.each do |k|
           v = delete(k)
           v = self.class.new(v).deep_symbolize! if v.respond_to?(:to_hash)
@@ -308,7 +305,6 @@ module Hanami
       #   hash.keys    # => [:a, :b]
       #   hash.inspect # => {"a"=>23, "b"=>{"c"=>["x", "y", "z"]}}
       def stringify!
-        Hanami::Utils::Deprecation.new("#{self.class.name}#stringify! is deprecated, please use #{self.class.name}.stringify")
         keys.each do |k|
           v = delete(k)
           v = self.class.new(v).stringify! if v.respond_to?(:to_hash)
@@ -382,7 +378,6 @@ module Hanami
       #   # it deeply duplicates Hanami::Utils::Hash, by preserving the class
       #   duped['u_hash'].class # => Hanami::Utils::Hash
       def deep_dup
-        Hanami::Utils::Deprecation.new("#{self.class.name}#deep_dup is deprecated, please use #{self.class.name}.deep_dup")
         self.class.new.tap do |result|
           @hash.each { |k, v| result[k] = Duplicable.dup(v, &DUPLICATE_LOGIC) }
         end
@@ -397,7 +392,6 @@ module Hanami
       #
       # @see http://www.ruby-doc.org/core/Hash.html#method-i-keys
       def keys
-        Hanami::Utils::Deprecation.new("#{self.class.name}#keys is deprecated")
         @hash.keys
       end
 
@@ -413,7 +407,6 @@ module Hanami
       #
       # @see http://www.ruby-doc.org/core/Hash.html#method-i-keys
       def delete(key)
-        Hanami::Utils::Deprecation.new("#{self.class.name}#delete is deprecated")
         @hash.delete(key)
       end
 
@@ -428,7 +421,6 @@ module Hanami
       #
       # @see http://www.ruby-doc.org/core/Hash.html#method-i-5B-5D
       def [](key)
-        Hanami::Utils::Deprecation.new("#{self.class.name}#[] is deprecated")
         @hash[key]
       end
 
@@ -442,7 +434,6 @@ module Hanami
       #
       # @see http://www.ruby-doc.org/core/Hash.html#method-i-5B-5D-3D
       def []=(key, value)
-        Hanami::Utils::Deprecation.new("#{self.class.name}#[]= is deprecated")
         @hash[key] = value
       end
 
@@ -455,7 +446,6 @@ module Hanami
       #
       # @see http://www.ruby-doc.org/core/Hash.html#method-i-to_h
       def to_h
-        Hanami::Utils::Deprecation.new("#{self.class.name}#to_h is deprecated")
         @hash.each_with_object({}) do |(k, v), result|
           v = v.to_h if v.respond_to?(:to_hash)
           result[k] = v
@@ -473,7 +463,6 @@ module Hanami
       #
       # @see http://www.ruby-doc.org/core/Hash.html#method-i-to_a
       def to_a
-        Hanami::Utils::Deprecation.new("#{self.class.name}#to_a is deprecated")
         @hash.to_a
       end
 
@@ -484,7 +473,6 @@ module Hanami
       # @since 0.3.0
       # @deprecated
       def ==(other)
-        Hanami::Utils::Deprecation.new("#{self.class.name}#to_a is deprecated")
         @hash == other.to_h
       end
 
@@ -497,7 +485,6 @@ module Hanami
       # @since 0.3.0
       # @deprecated
       def hash
-        Hanami::Utils::Deprecation.new("#{self.class.name}#to_a is deprecated")
         @hash.hash
       end
 
@@ -508,7 +495,6 @@ module Hanami
       # @since 0.3.0
       # @deprecated
       def inspect
-        Hanami::Utils::Deprecation.new("#{self.class.name}#to_a is deprecated")
         @hash.inspect
       end
 
@@ -519,7 +505,6 @@ module Hanami
       #
       # @raise [NoMethodError] If doesn't respond to the given method
       def method_missing(method_name, *args, &blk)
-        Hanami::Utils::Deprecation.new("#{self.class.name}##{method_name} is deprecated") if respond_to?(method_name)
         raise NoMethodError.new(%(undefined method `#{method_name}' for #{@hash}:#{self.class})) unless respond_to?(method_name)
 
         h = @hash.__send__(method_name, *args, &blk)

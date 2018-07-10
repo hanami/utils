@@ -334,10 +334,6 @@ RSpec.describe Hanami::Utils::Hash do
 
       expect(hash[:nested].keys).to eq(['key'])
     end
-
-    it "prints deprecation warning" do
-      expect { Hanami::Utils::Hash.new('fub' => 'baz').symbolize! }.to output(/Hanami::Utils::Hash#symbolize! is deprecated, please use Hanami::Utils::Hash.symbolize/).to_stderr
-    end
   end
 
   describe '#deep_symbolize!' do
@@ -398,10 +394,6 @@ RSpec.describe Hanami::Utils::Hash do
 
       expect(hash[:foo]).to eq(['bar'])
     end
-
-    it "prints deprecation warning" do
-      expect { Hanami::Utils::Hash.new('foo' => 'bar').deep_symbolize! }.to output(/Hanami::Utils::Hash#deep_symbolize! is deprecated, please use Hanami::Utils::Hash.deep_symbolize/).to_stderr
-    end
   end
 
   describe '#stringify!' do
@@ -436,10 +428,6 @@ RSpec.describe Hanami::Utils::Hash do
 
       expect(nested['metadata']).to be_kind_of Hanami::Utils::Hash
       expect(nested['metadata']['coverage']).to eq(100)
-    end
-
-    it "prints deprecation warning" do
-      expect { Hanami::Utils::Hash.new(foo: 'bar').stringify! }.to output(/Hanami::Utils::Hash#stringify! is deprecated, please use Hanami::Utils::Hash.stringify/).to_stderr
     end
   end
 
@@ -497,10 +485,6 @@ RSpec.describe Hanami::Utils::Hash do
 
       expect(duped['foo']).to be_kind_of(::Hash)
       expect(duped['x']).to be_kind_of(Hanami::Utils::Hash)
-    end
-
-    it "prints deprecation warning" do
-      expect { Hanami::Utils::Hash.new(foo: 'bar').deep_dup }.to output(/Hanami::Utils::Hash#deep_dup is deprecated, please use Hanami::Utils::Hash.deep_dup/).to_stderr
     end
   end
 
