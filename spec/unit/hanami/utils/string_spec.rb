@@ -334,10 +334,6 @@ RSpec.describe Hanami::Utils::String do
       expect(input).to eq(@singular)
       expect(plural_string).to eq(@plural)
     end
-
-    it "shows deprecation message" do
-      expect { Hanami::Utils::String.pluralize(@singular.to_sym) }.to output(/Hanami::Utils::String.pluralize is deprecated/).to_stderr
-    end
   end
 
   describe '.singularize' do
@@ -366,10 +362,6 @@ RSpec.describe Hanami::Utils::String do
 
       expect(singular_string).to eq(@singular)
       expect(input).to eq(@plural)
-    end
-
-    it "shows deprecation message" do
-      expect { Hanami::Utils::String.singularize(@plural.to_sym) }.to output(/Hanami::Utils::String.singularize is deprecated/).to_stderr
     end
   end
 
@@ -437,10 +429,6 @@ RSpec.describe Hanami::Utils::String do
       expect(Hanami::Utils::String.new('hanami’ utils').titleize).to eq('Hanami’ Utils')
       expect(Hanami::Utils::String.new('hanami` utils').titleize).to eq('Hanami` Utils')
     end
-
-    it "shows deprecation message" do
-      expect { Hanami::Utils::String.new('hanami').titleize }.to output(/Hanami::Utils::String#titleize is deprecated, please use Hanami::Utils::String.titleize/).to_stderr
-    end
   end
 
   describe '#capitalize' do
@@ -473,10 +461,6 @@ RSpec.describe Hanami::Utils::String do
       expect(Hanami::Utils::String.new(:hanami_utils).capitalize).to eq('Hanami utils')
       expect(Hanami::Utils::String.new(:'hanami-utils').capitalize).to eq('Hanami utils')
     end
-
-    it "shows deprecation message" do
-      expect { Hanami::Utils::String.new('hanami').capitalize }.to output(/Hanami::Utils::String#capitalize is deprecated, please use Hanami::Utils::String.capitalize/).to_stderr
-    end
   end
 
   describe '#classify' do
@@ -501,10 +485,6 @@ RSpec.describe Hanami::Utils::String do
       expect(Hanami::Utils::String.new(:'hanami-router').classify).to eq('HanamiRouter')
       expect(Hanami::Utils::String.new(:'hanami/router').classify).to eq('Hanami::Router')
       expect(Hanami::Utils::String.new(:'hanami::router').classify).to eq('Hanami::Router')
-    end
-
-    it "shows deprecation message" do
-      expect { Hanami::Utils::String.new('hanami').classify }.to output(/Hanami::Utils::String#classify is deprecated, please use Hanami::Utils::String.classify/).to_stderr
     end
   end
 
@@ -558,10 +538,6 @@ RSpec.describe Hanami::Utils::String do
       string = Hanami::Utils::String.new('è vero')
       expect(string.underscore).to eq('è_vero')
     end
-
-    it "shows deprecation message" do
-      expect { Hanami::Utils::String.new('è vero').underscore }.to output(/Hanami::Utils::String#underscore is deprecated, please use Hanami::Utils::String.underscore/).to_stderr
-    end
   end
 
   describe '#dasherize' do
@@ -609,10 +585,6 @@ RSpec.describe Hanami::Utils::String do
       string = Hanami::Utils::String.new('è vero')
       expect(string.dasherize).to eq('è-vero')
     end
-
-    it "shows deprecation message" do
-      expect { Hanami::Utils::String.new('è vero').dasherize }.to output(/Hanami::Utils::String#dasherize is deprecated, please use Hanami::Utils::String.dasherize/).to_stderr
-    end
   end
 
   describe '#demodulize' do
@@ -624,10 +596,6 @@ RSpec.describe Hanami::Utils::String do
       expect(Hanami::Utils::String.new('String').demodulize).to eq('String')
       expect(Hanami::Utils::String.new('Hanami::Utils::String').demodulize).to eq('String')
     end
-
-    it "shows deprecation message" do
-      expect { Hanami::Utils::String.new('Hanami::Utils::String').demodulize }.to output(/Hanami::Utils::String#demodulize is deprecated, please use Hanami::Utils::String.demodulize/).to_stderr
-    end
   end
 
   describe '#namespace' do
@@ -638,10 +606,6 @@ RSpec.describe Hanami::Utils::String do
     it 'returns the top level module name', silence_deprecations: true do
       expect(Hanami::Utils::String.new('String').namespace).to eq('String')
       expect(Hanami::Utils::String.new('Hanami::Utils::String').namespace).to eq('Hanami')
-    end
-
-    it "shows deprecation message" do
-      expect { Hanami::Utils::String.new('Hanami::Utils::String').namespace }.to output(/Hanami::Utils::String#namespace is deprecated, please use Hanami::Utils::String.namespace/).to_stderr
     end
   end
 
@@ -681,10 +645,6 @@ RSpec.describe Hanami::Utils::String do
       result = Hanami::Utils::String.new('Hanami::(Utils|App)').tokenize {}
       expect(result).to be_nil
     end
-
-    it "shows deprecation message" do
-      expect { Hanami::Utils::String.new('Hanami').tokenize {} }.to output(/Hanami::Utils::String#tokenize is deprecated/).to_stderr
-    end
   end
 
   describe '#pluralize' do
@@ -708,10 +668,6 @@ RSpec.describe Hanami::Utils::String do
       expect(string.pluralize).to eq(@plural)
       expect(string).to eq(@singular)
     end
-
-    it "shows deprecation message" do
-      expect { Hanami::Utils::String.new(@singular).pluralize }.to output(/Hanami::Utils::String#pluralize is deprecated/).to_stderr
-    end
   end
 
   describe '#singularize' do
@@ -734,10 +690,6 @@ RSpec.describe Hanami::Utils::String do
 
       expect(string.singularize).to eq(@singular)
       expect(string).to eq(@plural)
-    end
-
-    it "shows deprecation message" do
-      expect { Hanami::Utils::String.new(@plural).singularize }.to output(/Hanami::Utils::String#singularize is deprecated/).to_stderr
     end
   end
 
@@ -774,10 +726,6 @@ RSpec.describe Hanami::Utils::String do
     it 'returns the initial string no match', silence_deprecations: true do
       result = Hanami::Utils::String.new('index').rsub(%r{/}, '#')
       expect(result).to eq('index')
-    end
-
-    it "shows deprecation message" do
-      expect { Hanami::Utils::String.new("foo").rsub(//, "bar") }.to output(/Hanami::Utils::String#rsub is deprecated, please use Hanami::Utils::String.rsub/).to_stderr
     end
   end
 
