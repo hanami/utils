@@ -8,6 +8,11 @@ prepare_build() {
   fi
 }
 
+print_ruby_version() {
+  echo "Using $(ruby -v)"
+  echo
+}
+
 run_code_quality_checks() {
   bundle exec rubocop .
 }
@@ -52,6 +57,7 @@ run_test() {
 
 main() {
   prepare_build &&
+    print_ruby_version &&
     run_code_quality_checks &&
     run_unit_tests &&
     run_isolation_tests &&
