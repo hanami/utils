@@ -6,7 +6,6 @@ before_script:
 script: ./script/ci
 rvm:
   - 2.4.4
-  - 2.3.7
   - 2.5.1
   - jruby-9.2.0.0
   - ruby-head
