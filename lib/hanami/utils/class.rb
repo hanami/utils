@@ -142,13 +142,13 @@ module Hanami
 
       # Regexp for .tokenize
       #
-      # @since x.x.x
+      # @since 1.3.0
       # @api private
       TOKENIZE_REGEXP = /\((.*)\)/
 
       # Separator for .tokenize
       #
-      # @since x.x.x
+      # @since 1.3.0
       # @api private
       TOKENIZE_SEPARATOR = '|'.freeze
     end

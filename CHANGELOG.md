@@ -1,7 +1,18 @@
 # Hanami::Utils
 Ruby core extentions and class utilities for Hanami
 
-## v1.3.0.beta1 (unreleased)
+## v1.3.0.beta1 - 2018-08-08
+### Added
+- [graywolf] Add `Utils::Files.inject_line_before_last` and `.inject_line_after_last`
+
+### Fixed
+- [graywolf] Don't show `Fixnum` Ruby warning for 2.4+
+
+### Deprecated
+- [Luca Guidi & Marion Schleifer] Deprecate `Utils::String` as Ruby type. Please use `Utils::String` class methods instead of `Utils::String.new("")`.
+- [Luca Guidi & Marion Schleifer] Deprecate `Utils::Hash` as Ruby type. Please use `Utils::Hash` class methods instead of `Utils::Hash.new({})`.
+- [Luca Guidi & Marion Schleifer] Deprecate `Utils::String.pluralize` and `.singularize`.
+- [Semyon Pupkov] Deprecate `Utils::Class.load_from_pattern!`
 
 ## v1.2.0 - 2018-04-11
 

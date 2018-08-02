@@ -219,7 +219,7 @@ module Hanami
       # @see .inject_line_after
       # @see .inject_line_after_last
       #
-      # @since x.x.x
+      # @since 1.3.0
       def self.inject_line_before_last(path, target, contents)
         _inject_line_before(path, target, contents, method(:rindex))
       end
@@ -256,7 +256,7 @@ module Hanami
       # @see .inject_line_before_last
       # @see .inject_line_after_last
       #
-      # @since x.x.x
+      # @since 1.3.0
       def self.inject_line_after_last(path, target, contents)
         _inject_line_after(path, target, contents, method(:rindex))
       end
@@ -386,7 +386,7 @@ module Hanami
 
       private_class_method :index
 
-      # @since x.x.x
+      # @since 1.3.0
       # @api private
       def self.rindex(content, path, target)
         line_number(content, target, finder: content.method(:rindex)) or
@@ -395,7 +395,7 @@ module Hanami
 
       private_class_method :rindex
 
-      # @since x.x.x
+      # @since 1.3.0
       # @api private
       def self._inject_line_before(path, target, contents, finder)
         content = ::File.readlines(path)
@@ -407,7 +407,7 @@ module Hanami
 
       private_class_method :_inject_line_before
 
-      # @since x.x.x
+      # @since 1.3.0
       # @api private
       def self._inject_line_after(path, target, contents, finder)
         content = ::File.readlines(path)
