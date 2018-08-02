@@ -3,6 +3,7 @@ Ruby core extentions and class utilities for Hanami
 
 ## v1.3.0.beta1 - 2018-08-08
 ### Added
+- [Luca Guidi] Official support for JRuby 9.2.0.0
 - [graywolf] Add `Utils::Files.inject_line_before_last` and `.inject_line_after_last`
 
 ### Fixed
