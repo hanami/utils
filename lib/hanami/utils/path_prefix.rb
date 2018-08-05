@@ -6,7 +6,7 @@ module Hanami
     # Prefixed string
     #
     # @since 0.1.0
-    class PathPrefix < Hanami::Utils::String
+    class PathPrefix
       # Path separator
       #
       # @since 0.3.1
@@ -24,7 +24,7 @@ module Hanami
       #
       # @see Hanami::Utils::PathPrefix::DEFAULT_SEPARATOR
       def initialize(string = nil, separator = DEFAULT_SEPARATOR)
-        super(string)
+        @string = string.to_s
         @separator = separator
       end
 
@@ -89,6 +89,37 @@ module Hanami
           result.join(separator), separator
         ).relative!
       end
+
+      # Returns the hash of the internal string
+      #
+      # @return [Integer]
+      #
+      # @since 0.3.0
+      def hash
+        @string.hash
+      end
+
+      # Returns a string representation
+      #
+      # @return [::String]
+      #
+      # @since 0.3.0
+      def to_s
+        @string
+      end
+
+      alias to_str to_s
+
+      # Equality
+      #
+      # @return [TrueClass,FalseClass]
+      #
+      # @since 0.3.0
+      def ==(other)
+        to_s == other
+      end
+
+      alias eql? ==
 
       protected
 

@@ -1631,30 +1631,6 @@ RSpec.describe Hanami::Utils::Kernel do
         end
       end
 
-      describe 'when "0" is given (Hanami::Utils::String)', silence_deprecations: true do
-        let(:input) { Hanami::Utils::String.new('0') }
-
-        it 'returns false' do
-          expect(@result).to eq false
-        end
-      end
-
-      describe 'when "1" is given (Hanami::Utils::String)', silence_deprecations: true do
-        let(:input) { Hanami::Utils::String.new('1') }
-
-        it 'returns true' do
-          expect(@result).to eq true
-        end
-      end
-
-      describe 'when "foo" is given (Hanami::Utils::String)', silence_deprecations: true do
-        let(:input) { Hanami::Utils::String.new('foo') }
-
-        it 'returns false' do
-          expect(@result).to eq false
-        end
-      end
-
       describe 'when an object is given' do
         let(:input) { Object.new }
 
