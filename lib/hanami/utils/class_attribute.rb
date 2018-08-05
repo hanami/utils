@@ -1,5 +1,6 @@
 require 'set'
 require 'hanami/utils/duplicable'
+require 'concurrent/map'
 
 module Hanami
   module Utils
@@ -70,7 +71,9 @@ module Hanami
             attr_accessor(*attributes)
           end
 
-          class_attributes.merge(attributes)
+          attributes.each do |attr|
+            class_attributes.put_if_absent(attr, attr)
+          end
         end
 
         protected
@@ -78,11 +81,11 @@ module Hanami
         # @see Class#inherited
         # @api private
         def inherited(subclass)
-          class_attributes.each do |attr|
-            value = send(attr)
+          class_attributes.each do |key, _|
+            value = send(key)
             value = Duplicable.dup(value)
-            subclass.class_attribute attr
-            subclass.send("#{attr}=", value)
+            subclass.class_attribute key
+            subclass.send("#{key}=", value)
           end
 
           super
@@ -93,7 +96,7 @@ module Hanami
         # Class accessor for class attributes.
         # @api private
         def class_attributes
-          @class_attributes ||= Set.new
+          @class_attributes ||= Concurrent::Map.new
         end
       end
     end

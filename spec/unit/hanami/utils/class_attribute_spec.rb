@@ -144,4 +144,8 @@ RSpec.describe Hanami::Utils::ClassAttribute do
       expect { Class.new(Vehicle) }.not_to output.to_stdout
     end
   end
+
+  it 'class_attributes class variable is a Concurrent::Map instance' do
+    expect(ClassAttributeTest.send(:class_attributes)).to be_a(Concurrent::Map)
+  end
 end
