@@ -382,6 +382,8 @@ module Hanami
           $1 + A
         when /\A(buffal|domin|ech|embarg|her|mosquit|potat|tomat)#{ O }\z/i
           $1 + OES
+        when /\A(.*)(fee)\z/
+          $1 + $2 + S
         when /\A(.*)(?:([^f]))f[e]*\z/
           $1 + $2 + VES
         when /\A(.*)us\z/
