@@ -185,4 +185,13 @@ RSpec.describe Hanami::Utils::PathPrefix do
       end
     end
   end
+
+  describe '#to_sym' do
+    it 'returns a symbol representation' do
+      expected = :hello
+      actual   = Hanami::Utils::PathPrefix.new('hello').to_sym
+
+      expect(actual).to eq expected
+    end
+  end
 end

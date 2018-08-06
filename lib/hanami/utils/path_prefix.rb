@@ -121,6 +121,15 @@ module Hanami
 
       alias eql? ==
 
+      # Returns a symbol representation
+      #
+      # @return [Symbol]
+      #
+      # @since 0.3.0
+      def to_sym
+        @string.to_sym
+      end
+
       protected
 
       # Modifies the path prefix to have a prepended separator.
