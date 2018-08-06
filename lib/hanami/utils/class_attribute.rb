@@ -1,7 +1,3 @@
-require 'set'
-require 'hanami/utils/duplicable'
-require 'concurrent/map'
-
 module Hanami
   module Utils
     # Inheritable class level variable accessors.
@@ -9,6 +5,8 @@ module Hanami
     #
     # @see Hanami::Utils::ClassAttribute::ClassMethods
     module ClassAttribute
+      require "hanami/utils/class_attribute/attributes"
+
       # @api private
       def self.included(base)
         base.extend ClassMethods
@@ -17,6 +15,12 @@ module Hanami
       # @since 0.1.0
       # @api private
       module ClassMethods
+        def self.extended(base)
+          base.class_eval do
+            @__class_attributes = Attributes.new
+          end
+        end
+
         # Defines a class level accessor for the given attribute(s).
         #
         # A value set for a superclass is automatically available by their
@@ -67,12 +71,16 @@ module Hanami
         #   SmallAirplane.engines # => 2
         #   SmallAirplane.wheels  # => 8
         def class_attribute(*attributes)
-          singleton_class.class_eval do
-            attr_accessor(*attributes)
-          end
-
           attributes.each do |attr|
-            class_attributes.put_if_absent(attr, attr)
+            singleton_class.class_eval %(
+              def #{attr}
+                class_attributes[:#{attr}]
+              end
+
+              def #{attr}=(value)
+                class_attributes[:#{attr}] = value
+              end
+            ), __FILE__, __LINE__ - 8
           end
         end
 
@@ -81,11 +89,9 @@ module Hanami
         # @see Class#inherited
         # @api private
         def inherited(subclass)
-          class_attributes.each do |key, _|
-            value = send(key)
-            value = Duplicable.dup(value)
-            subclass.class_attribute key
-            subclass.send("#{key}=", value)
+          ca = class_attributes.dup
+          subclass.class_eval do
+            @__class_attributes = ca
           end
 
           super
@@ -96,7 +102,7 @@ module Hanami
         # Class accessor for class attributes.
         # @api private
         def class_attributes
-          @class_attributes ||= Concurrent::Map.new
+          @__class_attributes
         end
       end
     end

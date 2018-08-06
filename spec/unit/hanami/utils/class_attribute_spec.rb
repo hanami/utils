@@ -4,7 +4,7 @@ RSpec.describe Hanami::Utils::ClassAttribute do
   before do
     class ClassAttributeTest
       include Hanami::Utils::ClassAttribute
-      class_attribute :callbacks, :functions, :values
+      class_attribute :callbacks, :functions, :values, :initial
       self.callbacks = [:a]
       self.values    = [1]
     end
@@ -66,6 +66,10 @@ RSpec.describe Hanami::Utils::ClassAttribute do
       example.run
 
       $DEBUG = @debug
+    end
+
+    it 'the initial value is nil' do
+      expect(ClassAttributeTest.initial).to be(nil)
     end
 
     it 'the value it is inherited by subclasses' do
@@ -146,6 +150,6 @@ RSpec.describe Hanami::Utils::ClassAttribute do
   end
 
   it 'class_attributes class variable is a Concurrent::Map instance' do
-    expect(ClassAttributeTest.send(:class_attributes)).to be_a(Concurrent::Map)
+    expect(ClassAttributeTest.send(:class_attributes)).to be_a(Hanami::Utils::ClassAttribute::Attributes)
   end
 end
