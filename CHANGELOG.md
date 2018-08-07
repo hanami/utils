@@ -8,6 +8,7 @@ Ruby core extentions and class utilities for Hanami
 
 ### Fixed
 - [graywolf] Don't show `Fixnum` Ruby warning for 2.4+
+- [Luca Guidi] Fix pluralization of `"fee"`
 
 ### Deprecated
 - [Luca Guidi & Marion Schleifer] Deprecate `Utils::String` as Ruby type. Please use `Utils::String` class methods instead of `Utils::String.new("")`.
