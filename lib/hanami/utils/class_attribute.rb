@@ -17,7 +17,7 @@ module Hanami
       module ClassMethods
         def self.extended(base)
           base.class_eval do
-            @__class_attributes = Attributes.new
+            @__class_attributes = Attributes.new unless defined?(@__class_attributes)
           end
         end
 

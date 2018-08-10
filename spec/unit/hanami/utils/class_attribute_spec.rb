@@ -40,6 +40,16 @@ RSpec.describe Hanami::Utils::ClassAttribute do
       self.engines = 2
       self.wheels  = 8
     end
+
+    class DoubleInclude
+      include Hanami::Utils::ClassAttribute
+      class_attribute :foo
+      self.foo = 1
+
+      include Hanami::Utils::ClassAttribute
+      class_attribute :bar
+      self.bar = 2
+    end
   end
 
   after do
@@ -49,7 +59,8 @@ RSpec.describe Hanami::Utils::ClassAttribute do
        Vehicle
        Car
        Airplane
-       SmallAirplane].each do |const|
+       SmallAirplane
+       DoubleInclude].each do |const|
          Object.send :remove_const, const
        end
   end
@@ -149,7 +160,11 @@ RSpec.describe Hanami::Utils::ClassAttribute do
     end
   end
 
-  it 'class_attributes class variable is a Concurrent::Map instance' do
+  it "class_attributes class variable is a Concurrent::Map instance" do
     expect(ClassAttributeTest.send(:class_attributes)).to be_a(Hanami::Utils::ClassAttribute::Attributes)
+  end
+
+  it "preserves class attributes if module is included multiple times" do
+    expect(DoubleInclude.foo).to be(1)
   end
 end
