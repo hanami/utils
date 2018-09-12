@@ -97,6 +97,7 @@ module Hanami
       # @api private
       def colorize(message, color:)
         return message if color.nil?
+
         Hanami::Utils::ShellColor.call(message, color: color)
       end
     end
