@@ -79,6 +79,7 @@ module Hanami
       #   path_prefix.relative_join('new', '_').to_s # => 'posts_new'
       def relative_join(strings, separator = @separator)
         raise TypeError if separator.nil?
+
         prefix = @string.gsub(@separator, separator)
         result = [prefix, strings]
         result.flatten!

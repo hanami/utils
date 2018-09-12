@@ -323,6 +323,7 @@ module Hanami
       # @api private
       def self.add_to_inflecto(singular, plural)
         return unless defined? Inflecto
+
         Inflecto.inflections.irregular(singular, plural)
       end
 

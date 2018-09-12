@@ -347,6 +347,7 @@ module Hanami
     # @api private
     def lookup_colorizer(colorizer)
       return NullColorizer.new if colorizer == false
+
       colorizer || (tty? ? Colorizer : NullColorizer).new
     end
 
