@@ -46,6 +46,7 @@ module Hanami
           "`.rewrite' is deprecated, please use `.write'"
         )
         raise Errno::ENOENT unless File.exist?(path)
+
         write(path, *content)
       end
 
