@@ -4,7 +4,7 @@ RSpec.describe Hanami::Utils::QueryString do
   describe ".call" do
     context "when ::Hash" do
       it "serializes input" do
-        expect(described_class.call(foo: "bar")).to eq("foo=bar")
+        expect(described_class.call(foo: "1", bar: nil, baz: "hello")).to eq("foo=1,bar=,baz=hello")
       end
     end
 
