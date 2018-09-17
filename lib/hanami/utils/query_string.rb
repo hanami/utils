@@ -24,7 +24,7 @@ module Hanami
       def self.call(input)
         case input
         when ::Hash
-          input.map { |key, value| "#{key}=#{value}" }.join(HASH_SEPARATOR)
+          input.map { |key, value| "#{key}=#{value.inspect}" }.join(HASH_SEPARATOR)
         else
           input.to_s
         end
