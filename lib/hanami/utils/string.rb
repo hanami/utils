@@ -382,6 +382,25 @@ module Hanami
         end
       end
 
+      # Return `input`, first removing all white-space on both ends of the
+      # string, and then changing remaining consecutive white-space groups into
+      # one space each.
+      #
+      # @param input [::String] the input
+      #
+      # @return [::String] the squished string
+      # @since FIXME: TBD
+      #
+      # @example
+      #   require 'hanami/utils/string'
+      #
+      #   str = "  This\nwas    input with  excess\t\t\twhitespace.      "
+      #   Hanami::Utils::String.squish(str)
+      #     # => 'This was input with excess whitespace.'
+      def self.squish(input)
+        input.gsub(/[[:space:]]+/, " ").strip
+      end
+
       # Initialize the string
       #
       # @param string [::String, Symbol] the value we want to initialize
@@ -701,6 +720,27 @@ module Hanami
         else
           self
         end
+      end
+
+      # Return `input`, first removing all white-space on both ends of the
+      # string, and then changing remaining consecutive white-space groups into
+      # one space each.
+      #
+      # @param input [::String] the input
+      #
+      # @return [::String] the squished string
+      # @since FIXME: TBD
+      #
+      # @example
+      #   require 'hanami/utils/string'
+      #
+      #   str = "  This\nwas    input with  excess\t\t\twhitespace.      "
+      #   input = Hanami::Utils::String.new str
+      #   # ...
+      #   input.squish
+      #     # => 'This was input with excess whitespace.'
+      def squish
+        self.class.squish(self)
       end
 
       # Override Ruby's method_missing in order to provide ::String interface

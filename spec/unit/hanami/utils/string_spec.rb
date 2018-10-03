@@ -406,6 +406,42 @@ RSpec.describe Hanami::Utils::String do
     end
   end
 
+  describe '.squish' do
+    it 'returns an instance of ::String' do
+      expect(Hanami::Utils::String.squish('hanami')).to be_kind_of(::String)
+    end
+
+    it "doesn't mutate input" do
+      input = 'hanami'
+      Hanami::Utils::String.squish(input)
+
+      expect(input).to eq('hanami')
+    end
+
+    it 'removes any leading white-space' do
+      input = '                         Over here!'
+      expect(Hanami::Utils::String.squish(input)).to eq('Over here!')
+    end
+
+    it 'removes any trailing white-space' do
+      input = "Hanami\n\n"
+      expect(Hanami::Utils::String.squish(input)).to eq('Hanami')
+    end
+
+    it 'replaces whitespace characters with a single space' do
+      input = "Testing\tthe\rinput\nstring"
+      expected = 'Testing the input string'
+      expect(Hanami::Utils::String.squish(input)).to eq(expected)
+    end
+
+    it 'combines all cleanup in a single call' do
+      input = %(<span class="foo">           bar\n             Foo       the) \
+        "\n\tbaz</span>"
+      expected = '<span class="foo"> bar Foo the baz</span>'
+      expect(Hanami::Utils::String.squish(input)).to eq(expected)
+    end
+  end
+
   describe '#titleize' do
     it 'returns an instance of Hanami::Utils::String' do
       expect(Hanami::Utils::String.new('hanami').titleize).to be_kind_of(Hanami::Utils::String)
@@ -724,6 +760,38 @@ RSpec.describe Hanami::Utils::String do
     it 'returns the initial string no match' do
       result = Hanami::Utils::String.new('index').rsub(%r{/}, '#')
       expect(result).to eq('index')
+    end
+  end
+
+  describe '#squish' do
+    it "doesn't mutate input" do
+      source_str = "   Marvellous   Madness\n"
+      input = Hanami::Utils::String.new source_str
+      input.squish
+      expect(input).to eq(source_str)
+    end
+
+    it 'removes any leading white-space' do
+      input = Hanami::Utils::String.new '                         Over here!'
+      expect(input.squish.to_s).to eq('Over here!')
+    end
+
+    it 'removes any trailing white-space' do
+      input = "Hanami\n\n"
+      expect(Hanami::Utils::String.squish(input)).to eq('Hanami')
+    end
+
+    it 'replaces whitespace characters with a single space' do
+      input = "Testing\tthe\rinput\nstring"
+      expected = 'Testing the input string'
+      expect(Hanami::Utils::String.squish(input)).to eq(expected)
+    end
+
+    it 'combines all cleanup in a single call' do
+      input = %(<span class="foo">           bar\n             Foo       the) \
+        "\n\tbaz</span>"
+      expected = '<span class="foo"> bar Foo the baz</span>'
+      expect(Hanami::Utils::String.squish(input)).to eq(expected)
     end
   end
 
