@@ -469,6 +469,8 @@ TEST_PLURALS = {
   'half'  => 'halves',
   'scarf' => 'scarves',
   'dwarf' => 'dwarves',
+  # https://github.com/hanami/utils/issues/289
+  'original fee' => 'original fees',
   # vocal + fe => ves
   'knife' => 'knives',
   'life'  => 'lives',
@@ -542,7 +544,9 @@ TEST_PLURALS = {
   # https://github.com/hanami/utils/issues/106
   'album'        => 'albums',
   # https://github.com/hanami/utils/issues/173
-  'kitten'       => 'kittens'
+  'kitten'       => 'kittens',
+  # https://github.com/hanami/utils/issues/289
+  'fee'          => 'fees'
 }.freeze
 
 TEST_SINGULARS = {

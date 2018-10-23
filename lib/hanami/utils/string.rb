@@ -129,8 +129,8 @@ module Hanami
       #   Hanami::Utils::String.transform("Cherry", -> { "blossom" }))
       #     # => ArgumentError: wrong number of arguments (given 1, expected 0)
       #
-      # rubocop:disable Metrics/MethodLength
       # rubocop:disable Metrics/AbcSize
+      # rubocop:disable Metrics/MethodLength
       def self.transform(input, *transformations)
         fn = @__transformations__.fetch_or_store(transformations.hash) do
           compose do |fns|
@@ -150,8 +150,8 @@ module Hanami
 
         fn.call(input)
       end
-      # rubocop:enable Metrics/AbcSize
       # rubocop:enable Metrics/MethodLength
+      # rubocop:enable Metrics/AbcSize
 
       # Extracted from `transproc` source code
       #
@@ -323,6 +323,7 @@ module Hanami
       # @since 1.1.0
       #
       # @see Hanami::Utils::Inflector
+      # @deprecated
       #
       # @example
       #   require 'hanami/utils/string'
@@ -340,6 +341,7 @@ module Hanami
       # @return [::String] the singularized string.
       #
       # @since 1.1.0
+      # @deprecated
       #
       # @see Hanami::Utils::Inflector
       #
@@ -389,6 +391,7 @@ module Hanami
       # @return [Hanami::Utils::String] self
       #
       # @since 0.1.0
+      # @deprecated
       def initialize(string)
         @string = string.to_s
       end
@@ -398,6 +401,7 @@ module Hanami
       # @return [Hanami::Utils::String] the transformed string
       #
       # @since 0.4.0
+      # @deprecated Use {Hanami::Utils::String.titleize}
       #
       # @example
       #   require 'hanami/utils/string'
@@ -413,6 +417,7 @@ module Hanami
       # @return [Hanami::Utils::String] the transformed string
       #
       # @since 0.5.2
+      # @deprecated Use {Hanami::Utils::String.capitalize}
       #
       # @example
       #   require 'hanami/utils/string'
@@ -444,6 +449,7 @@ module Hanami
       # @return [Hanami::Utils::String] the transformed string
       #
       # @since 0.1.0
+      # @deprecated Use {Hanami::Utils::String.classify}
       #
       # @example
       #   require 'hanami/utils/string'
@@ -467,6 +473,7 @@ module Hanami
       # @see https://github.com/rails/rails/blob/feaa6e2048fe86bcf07e967d6e47b865e42e055b/activesupport/lib/active_support/inflector/methods.rb#L90
       #
       # @return [Hanami::Utils::String] the transformed string
+      # @deprecated Use {Hanami::Utils::String.underscore}
       #
       # @since 0.1.0
       #
@@ -489,6 +496,7 @@ module Hanami
       # @return [Hanami::Utils::String] the transformed string
       #
       # @since 0.4.0
+      # @deprecated Use {Hanami::Utils::String.dasherize}
       #
       # @example
       #   require 'hanami/utils/string'
@@ -510,6 +518,7 @@ module Hanami
       # @return [Hanami::Utils::String] the transformed string
       #
       # @since 0.1.0
+      # @deprecated Use {Hanami::Utils::String.demodulize}
       #
       # @example
       #   require 'hanami/utils/string'
@@ -528,6 +537,7 @@ module Hanami
       # @return [Hanami::Utils::String] the transformed string
       #
       # @since 0.1.2
+      # @deprecated Use {Hanami::Utils::String.namespace}
       #
       # @example
       #   require 'hanami/utils/string'
@@ -549,6 +559,7 @@ module Hanami
       # @return [void]
       #
       # @since 0.1.0
+      # @deprecated
       #
       # @example
       #   require 'hanami/utils/string'
@@ -561,7 +572,9 @@ module Hanami
       #   # =>
       #     'Hanami::Utils'
       #     'Hanami::App'
-      def tokenize # rubocop:disable Metrics/MethodLength
+      #
+      # rubocop:disable Metrics/MethodLength
+      def tokenize
         if match = TOKENIZE_REGEXP.match(@string) # rubocop:disable Lint/AssignmentInCondition
           pre  = match.pre_match
           post = match.post_match
@@ -575,6 +588,7 @@ module Hanami
 
         nil
       end
+      # rubocop:enable Metrics/MethodLength
 
       # Return a pluralized version of self.
       #
@@ -582,6 +596,7 @@ module Hanami
       #
       # @api private
       # @since 0.4.1
+      # @deprecated
       #
       # @see Hanami::Utils::Inflector
       def pluralize
@@ -594,6 +609,7 @@ module Hanami
       #
       # @api private
       # @since 0.4.1
+      # @deprecated
       #
       # @see Hanami::Utils::Inflector
       def singularize
@@ -605,6 +621,7 @@ module Hanami
       # @return [Integer]
       #
       # @since 0.3.0
+      # @deprecated
       def hash
         @string.hash
       end
@@ -614,6 +631,7 @@ module Hanami
       # @return [::String]
       #
       # @since 0.3.0
+      # @deprecated
       def to_s
         @string
       end
@@ -625,6 +643,7 @@ module Hanami
       # @return [TrueClass,FalseClass]
       #
       # @since 0.3.0
+      # @deprecated
       def ==(other)
         to_s == other
       end
@@ -638,6 +657,7 @@ module Hanami
       # @see http://www.ruby-doc.org/core/String.html#method-i-split
       #
       # @since 0.3.0
+      # @deprecated
       def split(pattern, limit = 0)
         @string.split(pattern, limit)
       end
@@ -649,6 +669,7 @@ module Hanami
       # @see http://www.ruby-doc.org/core/String.html#method-i-gsub
       #
       # @since 0.3.0
+      # @deprecated
       def gsub(pattern, replacement = nil, &blk)
         if block_given?
           @string.gsub(pattern, &blk)
@@ -665,6 +686,7 @@ module Hanami
       # @see http://www.ruby-doc.org/core/String.html#method-i-scan
       #
       # @since 0.6.0
+      # @deprecated
       def scan(pattern, &blk)
         @string.scan(pattern, &blk)
       end
@@ -681,6 +703,7 @@ module Hanami
       # @return [Hanami::Utils::String] the replaced string
       #
       # @since 0.6.0
+      # @deprecated Use {Hanami::Utils::String.rsub}
       #
       # @example
       #   require 'hanami/utils/string'

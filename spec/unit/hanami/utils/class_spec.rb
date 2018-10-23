@@ -72,59 +72,64 @@ RSpec.describe Hanami::Utils::Class do
   end
 
   describe '.load_from_pattern!' do
-    it 'loads the class within the given namespace' do
+    it 'loads the class within the given namespace', silence_deprecations: true do
       klass = Hanami::Utils::Class.load_from_pattern!('(Hanami|Foo)::Bar')
       expect(klass.new.level).to eq 'nested'
     end
 
-    it 'loads the class within the given namespace, when first namespace does not exist' do
+    it 'loads the class within the given namespace, when first namespace does not exist', silence_deprecations: true do
       klass = Hanami::Utils::Class.load_from_pattern!('(NotExisting|Foo)::Bar')
       expect(klass.new.level).to eq 'nested'
     end
 
-    it 'loads the class within the given namespace when first namespace in pattern is correct one' do
+    it 'loads the class within the given namespace when first namespace in pattern is correct one', silence_deprecations: true do
       klass = Hanami::Utils::Class.load_from_pattern!('(Foo|Hanami)::Bar')
       expect(klass.new.level).to eq 'nested'
     end
 
-    it 'loads the class from the given static string' do
+    it 'loads the class from the given static string', silence_deprecations: true do
       expect(Hanami::Utils::Class.load_from_pattern!('App::Layer::Step')).to eq(App::Layer::Step)
     end
 
-    it 'raises error for missing constant' do
+    it 'raises error for missing constant', silence_deprecations: true do
       expect { Hanami::Utils::Class.load_from_pattern!('MissingConstant') }
         .to raise_error(NameError, 'uninitialized constant MissingConstant')
     end
 
-    it 'raises error for missing constant with multiple alternatives' do
+    it 'raises error for missing constant with multiple alternatives', silence_deprecations: true do
       expect { Hanami::Utils::Class.load_from_pattern!('Missing(Constant|Class)') }
         .to raise_error(NameError, 'uninitialized constant Missing(Constant|Class)')
     end
 
-    it 'raises error with full constant name' do
+    it 'raises error with full constant name', silence_deprecations: true do
       expect { Hanami::Utils::Class.load_from_pattern!('Step', App) }
         .to raise_error(NameError, 'uninitialized constant App::Step')
     end
 
-    it 'raises error with full constant name and multiple alternatives' do
+    it 'raises error with full constant name and multiple alternatives', silence_deprecations: true do
       expect { Hanami::Utils::Class.load_from_pattern!('(Step|Point)', App) }
         .to raise_error(NameError, 'uninitialized constant App::(Step|Point)')
     end
 
-    it 'loads the class from given string, by interpolating tokens' do
+    it 'loads the class from given string, by interpolating tokens', silence_deprecations: true do
       expect(Hanami::Utils::Class.load_from_pattern!('App::Service(::Point|Point)')).to eq(App::Service::Point)
     end
 
-    it 'loads the class from given string, by interpolating string tokens and respecting their order' do
+    it 'loads the class from given string, by interpolating string tokens and respecting their order', silence_deprecations: true do
       expect(Hanami::Utils::Class.load_from_pattern!('App::Service(Point|::Point)')).to eq(App::ServicePoint)
     end
 
-    it 'loads the class from given string, by interpolating tokens and not stopping after first fail' do
+    it 'loads the class from given string, by interpolating tokens and not stopping after first fail', silence_deprecations: true do
       expect(Hanami::Utils::Class.load_from_pattern!('App::(Layer|Layer::)Step')).to eq(App::Layer::Step)
     end
 
-    it 'loads class from given string and namespace' do
+    it 'loads class from given string and namespace', silence_deprecations: true do
       expect(Hanami::Utils::Class.load_from_pattern!('(Layer|Layer::)Step', App)).to eq(App::Layer::Step)
+    end
+
+    it 'display deprecation message' do
+      expect { Hanami::Utils::Class.load_from_pattern!('(Layer|Layer::)Step', App) }
+        .to output(/Hanami::Utils::Class.load_from_pattern! is deprecated, please use Hanami::Utils::Class.load! instead/).to_stderr
     end
   end
 end

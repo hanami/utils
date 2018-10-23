@@ -229,17 +229,17 @@ RSpec.describe Hanami::Utils::String do
     end
 
     it 'removes all the upcase characters' do
-      string = Hanami::Utils::String.new('Hanami')
+      string = 'Hanami'
       expect(Hanami::Utils::String.dasherize(string)).to eq('hanami')
     end
 
     it 'transforms camel case class names' do
-      string = Hanami::Utils::String.new('HanamiView')
+      string = 'HanamiView'
       expect(Hanami::Utils::String.dasherize(string)).to eq('hanami-view')
     end
 
     it 'handles acronyms' do
-      string = Hanami::Utils::String.new('APIDoc')
+      string = 'APIDoc'
       expect(Hanami::Utils::String.dasherize(string)).to eq('api-doc')
     end
 
@@ -312,22 +312,22 @@ RSpec.describe Hanami::Utils::String do
       @singular, @plural = *TEST_PLURALS.to_a.sample
     end
 
-    it 'returns a String instance' do
+    it 'returns a String instance', silence_deprecations: true do
       result = Hanami::Utils::String.pluralize(@singular)
       expect(result).to be_kind_of(::String)
     end
 
-    it 'accepts a symbol' do
+    it 'accepts a symbol', silence_deprecations: true do
       result = Hanami::Utils::String.pluralize(@singular.to_sym)
       expect(result).to eq(@plural)
     end
 
-    it 'pluralizes string' do
+    it 'pluralizes string', silence_deprecations: true do
       result = Hanami::Utils::String.pluralize(@singular)
       expect(result).to eq(@plural)
     end
 
-    it "doesn't mutate input" do
+    it "doesn't mutate input", silence_deprecations: true do
       input = @singular
       plural_string = Hanami::Utils::String.pluralize(input)
 
@@ -341,22 +341,22 @@ RSpec.describe Hanami::Utils::String do
       @singular, @plural = *TEST_SINGULARS.to_a.sample
     end
 
-    it '::String instance' do
+    it '::String instance', silence_deprecations: true do
       result = Hanami::Utils::String.singularize(@plural)
       expect(result).to be_kind_of(::String)
     end
 
-    it 'accepts a symbol' do
+    it 'accepts a symbol', silence_deprecations: true do
       result = Hanami::Utils::String.singularize(@plural.to_sym)
       expect(result).to eq(@singular)
     end
 
-    it 'singularizes string' do
+    it 'singularizes string', silence_deprecations: true do
       result = Hanami::Utils::String.singularize(@plural)
       expect(result).to eq(@singular)
     end
 
-    it "doesn't mutate input" do
+    it "doesn't mutate input", silence_deprecations: true do
       input = @plural
       singular_string = Hanami::Utils::String.singularize(input)
 
@@ -388,7 +388,7 @@ RSpec.describe Hanami::Utils::String do
       expect(result).to eq('authors/books#index')
     end
 
-    it 'accepts Hanami::Utils::String as replacement' do
+    it 'accepts Hanami::Utils::String as replacement', silence_deprecations: true do
       replacement = Hanami::Utils::String.new('#')
       result      = Hanami::Utils::String.rsub('authors/books/index', %r{/}, replacement)
 
@@ -406,18 +406,20 @@ RSpec.describe Hanami::Utils::String do
     end
   end
 
+  # INSTANCE LEVEL INTERFACE
+
   describe '#titleize' do
-    it 'returns an instance of Hanami::Utils::String' do
+    it 'returns an instance of Hanami::Utils::String', silence_deprecations: true do
       expect(Hanami::Utils::String.new('hanami').titleize).to be_kind_of(Hanami::Utils::String)
     end
 
-    it 'does not mutate self' do
+    it 'does not mutate self', silence_deprecations: true do
       string = Hanami::Utils::String.new('hanami')
       string.titleize
       expect(string).to eq('hanami')
     end
 
-    it 'returns an titleized string' do
+    it 'returns an titleized string', silence_deprecations: true do
       expect(Hanami::Utils::String.new('hanami').titleize).to eq('Hanami')
       expect(Hanami::Utils::String.new('HanamiUtils').titleize).to eq('Hanami Utils')
       expect(Hanami::Utils::String.new('hanami utils').titleize).to eq('Hanami Utils')
@@ -430,17 +432,17 @@ RSpec.describe Hanami::Utils::String do
   end
 
   describe '#capitalize' do
-    it 'returns an instance of Hanami::Utils::String' do
+    it 'returns an instance of Hanami::Utils::String', silence_deprecations: true do
       expect(Hanami::Utils::String.new('hanami').capitalize).to be_kind_of(Hanami::Utils::String)
     end
 
-    it "doesn't mutate self" do
+    it "doesn't mutate self", silence_deprecations: true do
       string = Hanami::Utils::String.new('hanami')
       string.capitalize
       expect(string).to eq('hanami')
     end
 
-    it 'returns an capitalized string' do
+    it 'returns an capitalized string', silence_deprecations: true do
       expect(Hanami::Utils::String.new('hanami').capitalize).to eq('Hanami')
       expect(Hanami::Utils::String.new('HanamiUtils').capitalize).to eq('Hanami utils')
       expect(Hanami::Utils::String.new('hanami utils').capitalize).to eq('Hanami utils')
@@ -462,11 +464,11 @@ RSpec.describe Hanami::Utils::String do
   end
 
   describe '#classify' do
-    it 'returns an instance of Hanami::Utils::String' do
+    it 'returns an instance of Hanami::Utils::String', silence_deprecations: true do
       expect(Hanami::Utils::String.new('hanami').classify).to be_kind_of(Hanami::Utils::String)
     end
 
-    it 'returns a classified string' do
+    it 'returns a classified string', silence_deprecations: true do
       expect(Hanami::Utils::String.new('hanami').classify).to eq('Hanami')
       expect(Hanami::Utils::String.new('hanami_router').classify).to eq('HanamiRouter')
       expect(Hanami::Utils::String.new('hanami-router').classify).to eq('HanamiRouter')
@@ -477,7 +479,7 @@ RSpec.describe Hanami::Utils::String do
       expect(Hanami::Utils::String.new('AwesomeProject::Namespace').classify).to eq('AwesomeProject::Namespace')
     end
 
-    it 'returns a classified string from symbol' do
+    it 'returns a classified string from symbol', silence_deprecations: true do
       expect(Hanami::Utils::String.new(:hanami).classify).to eq('Hanami')
       expect(Hanami::Utils::String.new(:hanami_router).classify).to eq('HanamiRouter')
       expect(Hanami::Utils::String.new(:'hanami-router').classify).to eq('HanamiRouter')
@@ -487,121 +489,121 @@ RSpec.describe Hanami::Utils::String do
   end
 
   describe '#underscore' do
-    it 'returns an instance of Hanami::Utils::String' do
+    it 'returns an instance of Hanami::Utils::String', silence_deprecations: true do
       expect(Hanami::Utils::String.new('Hanami').underscore).to be_kind_of(Hanami::Utils::String)
     end
 
-    it 'does not mutate itself' do
+    it 'does not mutate itself', silence_deprecations: true do
       string = Hanami::Utils::String.new('Hanami')
       string.underscore
       expect(string).to eq('Hanami')
     end
 
-    it 'removes all the upcase characters' do
+    it 'removes all the upcase characters', silence_deprecations: true do
       string = Hanami::Utils::String.new('Hanami')
       expect(string.underscore).to eq('hanami')
     end
 
-    it 'transforms camel case class names' do
+    it 'transforms camel case class names', silence_deprecations: true do
       string = Hanami::Utils::String.new('HanamiView')
       expect(string.underscore).to eq('hanami_view')
     end
 
-    it 'substitutes double colons with path separators' do
+    it 'substitutes double colons with path separators', silence_deprecations: true do
       string = Hanami::Utils::String.new('Hanami::Utils::String')
       expect(string.underscore).to eq('hanami/utils/string')
     end
 
-    it 'handles acronyms' do
+    it 'handles acronyms', silence_deprecations: true do
       string = Hanami::Utils::String.new('APIDoc')
       expect(string.underscore).to eq('api_doc')
     end
 
-    it 'handles numbers' do
+    it 'handles numbers', silence_deprecations: true do
       string = Hanami::Utils::String.new('Lucky23Action')
       expect(string.underscore).to eq('lucky23_action')
     end
 
-    it 'handles dashes' do
+    it 'handles dashes', silence_deprecations: true do
       string = Hanami::Utils::String.new('hanami-utils')
       expect(string.underscore).to eq('hanami_utils')
     end
 
-    it 'handles spaces' do
+    it 'handles spaces', silence_deprecations: true do
       string = Hanami::Utils::String.new('Hanami Utils')
       expect(string.underscore).to eq('hanami_utils')
     end
 
-    it 'handles accented letters' do
+    it 'handles accented letters', silence_deprecations: true do
       string = Hanami::Utils::String.new('è vero')
       expect(string.underscore).to eq('è_vero')
     end
   end
 
   describe '#dasherize' do
-    it 'returns an instance of Hanami::Utils::String' do
+    it 'returns an instance of Hanami::Utils::String', silence_deprecations: true do
       expect(Hanami::Utils::String.new('Hanami').dasherize).to be_kind_of(Hanami::Utils::String)
     end
 
-    it 'does not mutate itself' do
+    it 'does not mutate itself', silence_deprecations: true do
       string = Hanami::Utils::String.new('Hanami')
       string.dasherize
       expect(string).to eq('Hanami')
     end
 
-    it 'removes all the upcase characters' do
+    it 'removes all the upcase characters', silence_deprecations: true do
       string = Hanami::Utils::String.new('Hanami')
       expect(string.dasherize).to eq('hanami')
     end
 
-    it 'transforms camel case class names' do
+    it 'transforms camel case class names', silence_deprecations: true do
       string = Hanami::Utils::String.new('HanamiView')
       expect(string.dasherize).to eq('hanami-view')
     end
 
-    it 'handles acronyms' do
+    it 'handles acronyms', silence_deprecations: true do
       string = Hanami::Utils::String.new('APIDoc')
       expect(string.dasherize).to eq('api-doc')
     end
 
-    it 'handles numbers' do
+    it 'handles numbers', silence_deprecations: true do
       string = Hanami::Utils::String.new('Lucky23Action')
       expect(string.dasherize).to eq('lucky23-action')
     end
 
-    it 'handles underscores' do
+    it 'handles underscores', silence_deprecations: true do
       string = Hanami::Utils::String.new('hanami_utils')
       expect(string.dasherize).to eq('hanami-utils')
     end
 
-    it 'handles spaces' do
+    it 'handles spaces', silence_deprecations: true do
       string = Hanami::Utils::String.new('Hanami Utils')
       expect(string.dasherize).to eq('hanami-utils')
     end
 
-    it 'handles accented letters' do
+    it 'handles accented letters', silence_deprecations: true do
       string = Hanami::Utils::String.new('è vero')
       expect(string.dasherize).to eq('è-vero')
     end
   end
 
   describe '#demodulize' do
-    it 'returns an instance of Hanami::Utils::String' do
+    it 'returns an instance of Hanami::Utils::String', silence_deprecations: true do
       expect(Hanami::Utils::String.new('Hanami').demodulize).to be_kind_of(Hanami::Utils::String)
     end
 
-    it 'returns the class name without the namespace' do
+    it 'returns the class name without the namespace', silence_deprecations: true do
       expect(Hanami::Utils::String.new('String').demodulize).to eq('String')
       expect(Hanami::Utils::String.new('Hanami::Utils::String').demodulize).to eq('String')
     end
   end
 
   describe '#namespace' do
-    it 'returns an instance of Hanami::Utils::String' do
+    it 'returns an instance of Hanami::Utils::String', silence_deprecations: true do
       expect(Hanami::Utils::String.new('Hanami').namespace).to be_kind_of(Hanami::Utils::String)
     end
 
-    it 'returns the top level module name' do
+    it 'returns the top level module name', silence_deprecations: true do
       expect(Hanami::Utils::String.new('String').namespace).to eq('String')
       expect(Hanami::Utils::String.new('Hanami::Utils::String').namespace).to eq('Hanami')
     end
@@ -612,7 +614,7 @@ RSpec.describe Hanami::Utils::String do
       @logger = []
     end
 
-    it 'returns an instance of Hanami::Utils::String' do
+    it 'returns an instance of Hanami::Utils::String', silence_deprecations: true do
       string = Hanami::Utils::String.new('Hanami::(Utils|App)')
       string.tokenize do |token|
         @logger.push token
@@ -621,7 +623,7 @@ RSpec.describe Hanami::Utils::String do
       expect(@logger).to all(be_kind_of(Hanami::Utils::String))
     end
 
-    it 'calls the given block for each token occurrence' do
+    it 'calls the given block for each token occurrence', silence_deprecations: true do
       string = Hanami::Utils::String.new('Hanami::(Utils|App)')
       string.tokenize do |token|
         @logger.push token
@@ -630,7 +632,7 @@ RSpec.describe Hanami::Utils::String do
       expect(@logger).to eq(['Hanami::Utils', 'Hanami::App'])
     end
 
-    it 'guarantees the block to be called even when the token conditions are not met' do
+    it 'guarantees the block to be called even when the token conditions are not met', silence_deprecations: true do
       string = Hanami::Utils::String.new('Hanami')
       string.tokenize do |token|
         @logger.push token
@@ -639,7 +641,7 @@ RSpec.describe Hanami::Utils::String do
       expect(@logger).to eq(['Hanami'])
     end
 
-    it 'returns nil' do
+    it 'returns nil', silence_deprecations: true do
       result = Hanami::Utils::String.new('Hanami::(Utils|App)').tokenize {}
       expect(result).to be_nil
     end
@@ -650,17 +652,17 @@ RSpec.describe Hanami::Utils::String do
       @singular, @plural = *TEST_PLURALS.to_a.sample
     end
 
-    it 'returns a Hanami::Utils::String instance' do
+    it 'returns a Hanami::Utils::String instance', silence_deprecations: true do
       result = Hanami::Utils::String.new(@singular).pluralize
       expect(result).to be_kind_of(Hanami::Utils::String)
     end
 
-    it 'pluralizes string' do
+    it 'pluralizes string', silence_deprecations: true do
       result = Hanami::Utils::String.new(@singular).pluralize
       expect(result).to eq(@plural)
     end
 
-    it 'does not modify the original string' do
+    it 'does not modify the original string', silence_deprecations: true do
       string = Hanami::Utils::String.new(@singular)
 
       expect(string.pluralize).to eq(@plural)
@@ -673,17 +675,17 @@ RSpec.describe Hanami::Utils::String do
       @singular, @plural = *TEST_SINGULARS.to_a.sample
     end
 
-    it 'returns a Hanami::Utils::String instance' do
+    it 'returns a Hanami::Utils::String instance', silence_deprecations: true do
       result = Hanami::Utils::String.new(@plural).singularize
       expect(result).to be_kind_of(Hanami::Utils::String)
     end
 
-    it 'singularizes string' do
+    it 'singularizes string', silence_deprecations: true do
       result = Hanami::Utils::String.new(@plural).singularize
       expect(result).to eq(@singular)
     end
 
-    it 'does not modify the original string' do
+    it 'does not modify the original string', silence_deprecations: true do
       string = Hanami::Utils::String.new(@plural)
 
       expect(string.singularize).to eq(@singular)
@@ -692,54 +694,54 @@ RSpec.describe Hanami::Utils::String do
   end
 
   describe '#rsub' do
-    it 'returns a Hanami::Utils::String instance' do
+    it 'returns a Hanami::Utils::String instance', silence_deprecations: true do
       result = Hanami::Utils::String.new('authors/books/index').rsub(//, '')
       expect(result).to be_kind_of(Hanami::Utils::String)
     end
 
-    it 'does not mutate original string' do
+    it 'does not mutate original string', silence_deprecations: true do
       string = Hanami::Utils::String.new('authors/books/index')
       string.rsub(%r{/}, '#')
 
       expect(string).to eq('authors/books/index')
     end
 
-    it 'replaces rightmost instance (regexp)' do
+    it 'replaces rightmost instance (regexp)', silence_deprecations: true do
       result = Hanami::Utils::String.new('authors/books/index').rsub(%r{/}, '#')
       expect(result).to eq('authors/books#index')
     end
 
-    it 'replaces rightmost instance (string)' do
+    it 'replaces rightmost instance (string)', silence_deprecations: true do
       result = Hanami::Utils::String.new('authors/books/index').rsub('/', '#')
       expect(result).to eq('authors/books#index')
     end
 
-    it 'accepts Hanami::Utils::String as replacement' do
+    it 'accepts Hanami::Utils::String as replacement', silence_deprecations: true do
       replacement = Hanami::Utils::String.new('#')
       result      = Hanami::Utils::String.new('authors/books/index').rsub(%r{/}, replacement)
 
       expect(result).to eq('authors/books#index')
     end
 
-    it 'returns the initial string no match' do
+    it 'returns the initial string no match', silence_deprecations: true do
       result = Hanami::Utils::String.new('index').rsub(%r{/}, '#')
       expect(result).to eq('index')
     end
   end
 
   describe 'string interface' do
-    it 'responds to ::String methods and returns a new Hanami::Utils::String' do
+    it 'responds to ::String methods and returns a new Hanami::Utils::String', silence_deprecations: true do
       string = Hanami::Utils::String.new("Hanami\n").chomp
       expect(string).to eq('Hanami')
       expect(string).to be_kind_of Hanami::Utils::String
     end
 
-    it 'responds to ::String methods and only returns a new Hanami::Utils::String when the return value is a string' do
+    it 'responds to ::String methods and only returns a new Hanami::Utils::String when the return value is a string', silence_deprecations: true do
       string = Hanami::Utils::String.new('abcdef')
       expect(string.casecmp('abcde')).to eq(1)
     end
 
-    it 'responds to whatever ::String responds to' do
+    it 'responds to whatever ::String responds to', silence_deprecations: true do
       string = Hanami::Utils::String.new('abcdef')
 
       expect(string).to respond_to :reverse
@@ -747,59 +749,59 @@ RSpec.describe Hanami::Utils::String do
     end
 
     describe 'equality' do
-      it 'has a working equality' do
+      it 'has a working equality', silence_deprecations: true do
         string = Hanami::Utils::String.new('hanami')
         other  = Hanami::Utils::String.new('hanami')
 
         expect(string.==(other)).to be_truthy
       end
 
-      it 'has a working equality with raw strings' do
+      it 'has a working equality with raw strings', silence_deprecations: true do
         string = Hanami::Utils::String.new('hanami')
         expect(string.==('hanami')).to be_truthy
       end
     end
 
     describe 'case equality' do
-      it 'has a working case equality' do
+      it 'has a working case equality', silence_deprecations: true do
         string = Hanami::Utils::String.new('hanami')
         other  = Hanami::Utils::String.new('hanami')
         expect(string.===(other)).to be_truthy # rubocop:disable Style/CaseEquality
       end
 
-      it 'has a working case equality with raw strings' do
+      it 'has a working case equality with raw strings', silence_deprecations: true do
         string = Hanami::Utils::String.new('hanami')
         expect(string.===('hanami')).to be_truthy # rubocop:disable Style/CaseEquality
       end
     end
 
     describe 'value equality' do
-      it 'has a working value equality' do
+      it 'has a working value equality', silence_deprecations: true do
         string = Hanami::Utils::String.new('hanami')
         other  = Hanami::Utils::String.new('hanami')
         expect(string).to eql(other)
       end
 
-      it 'has a working value equality with raw strings' do
+      it 'has a working value equality with raw strings', silence_deprecations: true do
         string = Hanami::Utils::String.new('hanami')
         expect(string).to eql('hanami')
       end
     end
 
     describe 'identity equality' do
-      it 'has a working identity equality' do
+      it 'has a working identity equality', silence_deprecations: true do
         string = Hanami::Utils::String.new('hanami')
         expect(string).to equal(string)
       end
 
-      it 'has a working identity equality with raw strings' do
+      it 'has a working identity equality with raw strings', silence_deprecations: true do
         string = Hanami::Utils::String.new('hanami')
         expect(string).not_to equal('hanami')
       end
     end
 
     describe '#hash' do
-      it 'returns the same hash result of ::String' do
+      it 'returns the same hash result of ::String', silence_deprecations: true do
         expected = 'hello'.hash
         actual   = Hanami::Utils::String.new('hello').hash
 
@@ -809,13 +811,13 @@ RSpec.describe Hanami::Utils::String do
   end
 
   describe 'unknown method' do
-    it 'raises error' do
+    it 'raises error', silence_deprecations: true do
       expect { Hanami::Utils::String.new('one').yay! }
         .to raise_error(NoMethodError, %(undefined method `yay!' for "one":Hanami::Utils::String))
     end
 
     # See: https://github.com/hanami/utils/issues/48
-    it 'returns the correct object when a NoMethodError is raised' do
+    it 'returns the correct object when a NoMethodError is raised', silence_deprecations: true do
       string            = Hanami::Utils::String.new('/path/to/something')
       exception_message = %(undefined method `boom' for "/":String)
 

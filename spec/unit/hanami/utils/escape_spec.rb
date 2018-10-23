@@ -1,5 +1,6 @@
 require 'hanami/utils'
 require 'hanami/utils/escape'
+require 'date'
 
 RSpec.describe Hanami::Utils::Escape do
   let(:mod) { Hanami::Utils::Escape }
