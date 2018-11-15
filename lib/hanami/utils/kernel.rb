@@ -26,7 +26,7 @@ module Hanami
       # @api private
       #
       # @see Hanami::Utils::Kernel.Integer
-      NUMERIC_MATCHER = %r{\A([\d\/\.\+iE]+|NaN|Infinity)\z}
+      NUMERIC_MATCHER = %r{\A([\d\/\.\+iE]+|NaN|Infinity)\z}.freeze
 
       # @since 0.8.0
       # @api private
