@@ -30,7 +30,7 @@ module Hanami
       #
       # @since 0.3.0
       # @api private
-      TOKENIZE_REGEXP     = /\((.*)\)/
+      TOKENIZE_REGEXP     = /\((.*)\)/.freeze
 
       # Separator for #tokenize
       #
@@ -72,7 +72,7 @@ module Hanami
       #
       # @since 0.3.4
       # @api private
-      CLASSIFY_WORD_SEPARATOR = /#{CLASSIFY_SEPARATOR}|#{NAMESPACE_SEPARATOR}|#{UNDERSCORE_SEPARATOR}|#{DASHERIZE_SEPARATOR}/
+      CLASSIFY_WORD_SEPARATOR = /#{CLASSIFY_SEPARATOR}|#{NAMESPACE_SEPARATOR}|#{UNDERSCORE_SEPARATOR}|#{DASHERIZE_SEPARATOR}/.freeze
 
       @__transformations__ = Concurrent::Map.new
 
