@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Hanami - The web, with simplicity
 #
 # @since 0.1.0
@@ -11,11 +13,11 @@ module Hanami
   module Utils
     # @since 0.3.1
     # @api private
-    HANAMI_JRUBY = "java".freeze
+    HANAMI_JRUBY = "java"
 
     # @since 0.3.1
     # @api private
-    HANAMI_RUBINIUS = "rbx".freeze
+    HANAMI_RUBINIUS = "rbx"
 
     # Checks if the current VM is JRuby
     #

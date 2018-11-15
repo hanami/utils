@@ -1,4 +1,6 @@
-TEST_REPLACEMENT_CHAR = "fffd".freeze
+# frozen_string_literal: true
+
+TEST_REPLACEMENT_CHAR = "fffd"
 TEST_INVALID_CHARS    = ((0x0..0x8).to_a + (0x11..0x12).to_a + (0x14..0x1f).to_a).flatten.each_with_object({}) do |char, result|
   char = char.chr(Encoding::UTF_8)
   result[char] = TEST_REPLACEMENT_CHAR

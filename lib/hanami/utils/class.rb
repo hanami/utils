@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "hanami/utils/deprecation"
 
 module Hanami
@@ -150,7 +152,7 @@ module Hanami
       #
       # @since 1.3.0
       # @api private
-      TOKENIZE_SEPARATOR = "|".freeze
+      TOKENIZE_SEPARATOR = "|"
     end
   end
 end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "hanami/utils/basic_object"
 require "hanami/utils/class_attribute"
 require "hanami/utils/hash"

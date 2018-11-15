@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 begin
   require "multi_json"
 rescue LoadError

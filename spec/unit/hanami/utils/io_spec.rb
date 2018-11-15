@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 require "hanami/utils/io"
 
 class IOTest
-  TEST_CONSTANT = "initial".freeze
+  TEST_CONSTANT = "initial"
 end
 
 RSpec.describe Hanami::Utils::IO do
@@ -9,7 +11,7 @@ RSpec.describe Hanami::Utils::IO do
     it "lowers verbosity of stdout" do
       expect do
         Hanami::Utils::IO.silence_warnings do
-          IOTest::TEST_CONSTANT = "redefined".freeze
+          IOTest::TEST_CONSTANT = "redefined"
         end
       end.to output(eq("")).to_stderr
     end

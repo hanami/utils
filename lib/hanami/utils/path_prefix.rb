@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "hanami/utils/string"
 require "hanami/utils/kernel"
 
@@ -11,7 +13,7 @@ module Hanami
       #
       # @since 0.3.1
       # @api private
-      DEFAULT_SEPARATOR = "/".freeze
+      DEFAULT_SEPARATOR = "/"
 
       # Initialize the path prefix
       #

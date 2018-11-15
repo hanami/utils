@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "hanami/logger"
 require "rbconfig"
 require "securerandom"
@@ -486,7 +488,7 @@ RSpec.describe Hanami::Logger do
         end
         expectation = "[hanami] [ERROR] [2017-01-15 16:00:23 +0100] StandardError: foo\n"
         exception.backtrace.each do |line|
-          expectation << "from #{line}\n"
+          expectation += "from #{line}\n"
         end
         expect(output).to eq expectation
       end

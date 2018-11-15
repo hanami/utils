@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "hanami/utils/inflector"
 require "transproc"
 require "concurrent/map"
@@ -12,19 +14,19 @@ module Hanami
       #
       # @since 0.6.0
       # @api private
-      EMPTY_STRING        = "".freeze
+      EMPTY_STRING        = ""
 
       # Separator between Ruby namespaces
       #
       # @since 0.1.0
       # @api private
-      NAMESPACE_SEPARATOR = "::".freeze
+      NAMESPACE_SEPARATOR = "::"
 
       # Separator for #classify
       #
       # @since 0.3.0
       # @api private
-      CLASSIFY_SEPARATOR  = "_".freeze
+      CLASSIFY_SEPARATOR  = "_"
 
       # Regexp for #tokenize
       #
@@ -36,37 +38,37 @@ module Hanami
       #
       # @since 0.3.0
       # @api private
-      TOKENIZE_SEPARATOR  = "|".freeze
+      TOKENIZE_SEPARATOR  = "|"
 
       # Separator for #underscore
       #
       # @since 0.3.0
       # @api private
-      UNDERSCORE_SEPARATOR = "/".freeze
+      UNDERSCORE_SEPARATOR = "/"
 
       # gsub second parameter used in #underscore
       #
       # @since 0.3.0
       # @api private
-      UNDERSCORE_DIVISION_TARGET = '\1_\2'.freeze
+      UNDERSCORE_DIVISION_TARGET = '\1_\2'
 
       # Separator for #titleize
       #
       # @since 0.4.0
       # @api private
-      TITLEIZE_SEPARATOR = " ".freeze
+      TITLEIZE_SEPARATOR = " "
 
       # Separator for #capitalize
       #
       # @since 0.5.2
       # @api private
-      CAPITALIZE_SEPARATOR = " ".freeze
+      CAPITALIZE_SEPARATOR = " "
 
       # Separator for #dasherize
       #
       # @since 0.4.0
       # @api private
-      DASHERIZE_SEPARATOR = "-".freeze
+      DASHERIZE_SEPARATOR = "-"
 
       # Regexp for #classify
       #

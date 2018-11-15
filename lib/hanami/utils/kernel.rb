@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "set"
 require "date"
 require "time"
@@ -30,7 +32,7 @@ module Hanami
 
       # @since 0.8.0
       # @api private
-      BOOLEAN_FALSE_STRING = "0".freeze
+      BOOLEAN_FALSE_STRING = "0"
 
       # @since 0.8.0
       # @api private
