@@ -1,5 +1,5 @@
-require 'hanami/utils/duplicable'
-require 'transproc'
+require "hanami/utils/duplicable"
+require "transproc"
 
 module Hanami
   module Utils

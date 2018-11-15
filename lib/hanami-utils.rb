@@ -1,1 +1,1 @@
-require 'hanami/utils'
+require "hanami/utils"

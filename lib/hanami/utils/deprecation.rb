@@ -1,4 +1,4 @@
-require 'hanami/utils'
+require "hanami/utils"
 
 module Hanami
   module Utils

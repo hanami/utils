@@ -1,4 +1,4 @@
-require 'concurrent/array'
+require "concurrent/array"
 
 module Hanami
   module Utils
