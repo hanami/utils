@@ -250,6 +250,25 @@ RSpec.describe Hanami::Utils::Callbacks::Chain do
     end
   end
 
+  describe "#dup" do
+    let(:action) { Action.new }
+
+    it "duplicates chain" do
+      duplicated = @chain.dup
+
+      @chain.append do
+        logger.push "original chain"
+      end
+
+      duplicated.append do
+        logger.push "duplicated chain"
+      end
+
+      @chain.run(action)
+      expect(action.logger).to eq(["original chain"])
+    end
+  end
+
   describe "#freeze" do
     before do
       @chain.freeze
