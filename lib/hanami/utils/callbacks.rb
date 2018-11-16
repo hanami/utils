@@ -152,6 +152,17 @@ module Hanami
           end
         end
 
+        # Return a duplicate callbacks chain
+        #
+        # @return [Hanami::Utils::Callbacks] the duplicated chain
+        #
+        # @since 2.0.0
+        def dup
+          super.tap do |instance|
+            instance.instance_variable_set(:@chain, instance.chain.dup)
+          end
+        end
+
         # It freezes the object by preventing further modifications.
         #
         # @since 0.2.0
@@ -171,6 +182,10 @@ module Hanami
           super
           @chain.freeze
         end
+
+        protected
+
+        attr_reader :chain
 
         private
 
