@@ -1,8 +1,7 @@
-# Hanami - The web, with simplicity
-#
-
 require 'pathname'
 
+# Hanami - The web, with simplicity
+#
 # @since 0.1.0
 module Hanami
   require 'hanami/utils/version'
