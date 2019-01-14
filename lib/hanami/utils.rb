@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "pathname"
+
 # Hanami - The web, with simplicity
 #
 # @since 0.1.0
