@@ -1,6 +1,15 @@
 # Hanami::Utils
 Ruby core extentions and class utilities for Hanami
 
+## v1.3.1 - 2019-01-17
+### Added
+- [Luca Guidi] Official support for Ruby: MRI 2.6
+- [Luca Guidi] Support `bundler` 2.0+
+
+### Fixed
+- [Alfonso Uceda] Fix `Hash` serialization for `Utils::Logger`
+- [Jeff Dickey] Add missing `pathname` require in `lib/hanami/utils.rb`
+
 ## v1.3.0 - 2018-10-24
 
 ## v1.3.0.beta1 - 2018-08-08
