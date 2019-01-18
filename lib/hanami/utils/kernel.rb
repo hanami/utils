@@ -26,7 +26,7 @@ module Hanami
       # @api private
       #
       # @see Hanami::Utils::Kernel.Integer
-      NUMERIC_MATCHER = %r{\A([\d\/\.\+iE]+|NaN|Infinity)\z}
+      NUMERIC_MATCHER = %r{\A([\d\/\.\+iE]+|NaN|Infinity)\z}.freeze
 
       # @since 0.8.0
       # @api private
@@ -415,18 +415,25 @@ module Hanami
       #   # Missing #respond_to?
       #   input = BasicObject.new
       #   Hanami::Utils::Kernel.BigDecimal(input) # => TypeError
-      def self.BigDecimal(arg)
+      #
+      # rubocop:disable Metrics/MethodLength
+      def self.BigDecimal(arg, precision = ::Float::DIG)
         case arg
+        when NilClass # This is only needed by Ruby 2.6
+          raise TypeError.new "can't convert #{inspect_type_error(arg)}into BigDecimal"
+        when Rational
+          arg.to_d(precision)
         when Numeric
           BigDecimal(arg.to_s)
         when ->(a) { a.respond_to?(:to_d) }
           arg.to_d
         else
-          ::Kernel.BigDecimal(arg)
+          ::Kernel.BigDecimal(arg, precision)
         end
       rescue NoMethodError
         raise TypeError.new "can't convert #{inspect_type_error(arg)}into BigDecimal"
       end
+      # rubocop:enable Metrics/MethodLength
 
       # Coerces the argument to be a Float.
       #

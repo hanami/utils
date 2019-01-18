@@ -470,7 +470,7 @@ RSpec.describe Hanami::Logger do
             class TestLogger < Hanami::Logger; end
             TestLogger.new.info(foo: "bar")
           end
-        expect(output).to eq "[hanami] [INFO] [2017-01-15 16:00:23 +0100] foo=bar\n"
+        expect(output).to eq %([hanami] [INFO] [2017-01-15 16:00:23 +0100] foo="bar"\n)
       end
 
       it 'has key=value format for error messages' do
@@ -548,7 +548,7 @@ RSpec.describe Hanami::Logger do
             class TestLogger < Hanami::Logger; end
             TestLogger.new.info(foo: :bar)
           end
-        expect(output).to eq "[hanami] [INFO] [2017-01-15 16:00:23 +0100] foo=bar\n"
+        expect(output).to eq "[hanami] [INFO] [2017-01-15 16:00:23 +0100] foo=:bar\n"
       end
 
       it 'has key=value format for not string messages' do

@@ -8,6 +8,8 @@ Naming/HeredocDelimiterNaming:
 Naming/MethodName:
   Exclude:
     - "lib/hanami/utils/kernel.rb"
+Layout/AlignHash:
+  Enabled: false
 Style/CommentedKeyword:
   Exclude:
     - "spec/**/*"
