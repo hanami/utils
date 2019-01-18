@@ -353,7 +353,7 @@ module Hanami
         9824 => 'spades',   # black spade suit
         9827 => 'clubs',    # black club suit
         9829 => 'hearts',   # black heart suit
-        9830 => 'diams',    # black diamond suit
+        9830 => 'diams'     # black diamond suit
       }.freeze
 
       # Allowed URL schemes
