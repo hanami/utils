@@ -12,10 +12,6 @@ group :multi_json do
   gem "multi_json", "~> 1.0", require: false
 end
 
-group :inflecto do
-  gem "inflecto", "~> 0.0.2", require: false
-end
-
 gem "gson", ">= 0.6", require: false, platforms: :jruby
 
 gem "rubocop", "~> 0.63.0", require: false

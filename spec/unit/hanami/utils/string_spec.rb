@@ -305,64 +305,6 @@ RSpec.describe Hanami::Utils::String do
     end
   end
 
-  describe ".pluralize" do
-    before do
-      @singular, @plural = *TEST_PLURALS.to_a.sample
-    end
-
-    it "returns a String instance", silence_deprecations: true do
-      result = Hanami::Utils::String.pluralize(@singular)
-      expect(result).to be_kind_of(::String)
-    end
-
-    it "accepts a symbol", silence_deprecations: true do
-      result = Hanami::Utils::String.pluralize(@singular.to_sym)
-      expect(result).to eq(@plural)
-    end
-
-    it "pluralizes string", silence_deprecations: true do
-      result = Hanami::Utils::String.pluralize(@singular)
-      expect(result).to eq(@plural)
-    end
-
-    it "doesn't mutate input", silence_deprecations: true do
-      input = @singular
-      plural_string = Hanami::Utils::String.pluralize(input)
-
-      expect(input).to eq(@singular)
-      expect(plural_string).to eq(@plural)
-    end
-  end
-
-  describe ".singularize" do
-    before do
-      @singular, @plural = *TEST_SINGULARS.to_a.sample
-    end
-
-    it "::String instance", silence_deprecations: true do
-      result = Hanami::Utils::String.singularize(@plural)
-      expect(result).to be_kind_of(::String)
-    end
-
-    it "accepts a symbol", silence_deprecations: true do
-      result = Hanami::Utils::String.singularize(@plural.to_sym)
-      expect(result).to eq(@singular)
-    end
-
-    it "singularizes string", silence_deprecations: true do
-      result = Hanami::Utils::String.singularize(@plural)
-      expect(result).to eq(@singular)
-    end
-
-    it "doesn't mutate input", silence_deprecations: true do
-      input = @plural
-      singular_string = Hanami::Utils::String.singularize(input)
-
-      expect(singular_string).to eq(@singular)
-      expect(input).to eq(@plural)
-    end
-  end
-
   describe ".rsub" do
     it "::String instance" do
       result = Hanami::Utils::String.rsub("authors/books/index", //, "")
@@ -642,52 +584,6 @@ RSpec.describe Hanami::Utils::String do
     it "returns nil", silence_deprecations: true do
       result = Hanami::Utils::String.new("Hanami::(Utils|App)").tokenize {}
       expect(result).to be_nil
-    end
-  end
-
-  describe "#pluralize" do
-    before do
-      @singular, @plural = *TEST_PLURALS.to_a.sample
-    end
-
-    it "returns a Hanami::Utils::String instance", silence_deprecations: true do
-      result = Hanami::Utils::String.new(@singular).pluralize
-      expect(result).to be_kind_of(Hanami::Utils::String)
-    end
-
-    it "pluralizes string", silence_deprecations: true do
-      result = Hanami::Utils::String.new(@singular).pluralize
-      expect(result).to eq(@plural)
-    end
-
-    it "does not modify the original string", silence_deprecations: true do
-      string = Hanami::Utils::String.new(@singular)
-
-      expect(string.pluralize).to eq(@plural)
-      expect(string).to eq(@singular)
-    end
-  end
-
-  describe "#singularize" do
-    before do
-      @singular, @plural = *TEST_SINGULARS.to_a.sample
-    end
-
-    it "returns a Hanami::Utils::String instance", silence_deprecations: true do
-      result = Hanami::Utils::String.new(@plural).singularize
-      expect(result).to be_kind_of(Hanami::Utils::String)
-    end
-
-    it "singularizes string", silence_deprecations: true do
-      result = Hanami::Utils::String.new(@plural).singularize
-      expect(result).to eq(@singular)
-    end
-
-    it "does not modify the original string", silence_deprecations: true do
-      string = Hanami::Utils::String.new(@plural)
-
-      expect(string.singularize).to eq(@singular)
-      expect(string).to eq(@plural)
     end
   end
 
