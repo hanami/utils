@@ -8,7 +8,7 @@ module Hanami
     #
     # @since 1.2.0
     module QueryString
-      # @since x.x.x
+      # @since 1.3.1
       # @api private
       HASH_SEPARATOR = ","
 
