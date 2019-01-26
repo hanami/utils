@@ -735,11 +735,9 @@ RSpec.describe Hanami::Utils::Hash do
 
   describe "unknown method" do
     it "raises error" do
-      begin
-        Hanami::Utils::Hash.new("l" => 23).party!
-      rescue NoMethodError => e
-        expect(e.message).to eq %(undefined method `party!' for {\"l\"=>23}:Hanami::Utils::Hash)
-      end
+      Hanami::Utils::Hash.new("l" => 23).party!
+    rescue NoMethodError => e
+      expect(e.message).to eq %(undefined method `party!' for {\"l\"=>23}:Hanami::Utils::Hash)
     end
 
     # See: https://github.com/hanami/utils/issues/48
