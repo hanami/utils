@@ -312,7 +312,7 @@ module Hanami
         starting = index(content, path, target)
         line     = content[starting]
         size     = line[/\A[[:space:]]*/].bytesize
-        closing  = (" " * size) + (target =~ /{/ ? "}" : "end")
+        closing  = (" " * size) + (/{/.match?(target) ? "}" : "end")
         ending   = starting + index(content[starting..-1], path, closing)
 
         content.slice!(starting..ending)
