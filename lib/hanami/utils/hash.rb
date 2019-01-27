@@ -5,23 +5,9 @@ require "transproc"
 
 module Hanami
   module Utils
-    # Hash on steroids
+    # Hash transformations
     # @since 0.1.0
-    class Hash
-      # @since 0.6.0
-      # @api private
-      #
-      # @see Hanami::Utils::Hash#deep_dup
-      # @see Hanami::Utils::Duplicable
-      DUPLICATE_LOGIC = proc do |value|
-        case value
-        when Hash
-          value.deep_dup
-        when ::Hash
-          Hash.new(value).deep_dup.to_h
-        end
-      end.freeze
-
+    module Hash
       extend Transproc::Registry
       import Transproc::HashTransformations
 
