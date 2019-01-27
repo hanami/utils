@@ -105,16 +105,16 @@ module Hanami
       # @api private
       def _message_hash(message) # rubocop:disable Metrics/MethodLength
         case message
-        when Hash
+        when ::Hash
           @filter.call(message)
         when Exception
-          Hash[
+          ::Hash[
             message:   message.message,
             backtrace: message.backtrace || [],
             error:     message.class
           ]
         else
-          Hash[message: message]
+          ::Hash[message: message]
         end
       end
 
