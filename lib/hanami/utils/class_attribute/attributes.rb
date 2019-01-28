@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require "hanami/utils/duplicable"
 require "concurrent/map"
 
 module Hanami
@@ -34,7 +33,7 @@ module Hanami
         def dup
           attributes = Concurrent::Map.new.tap do |attrs|
             @attributes.each do |key, value|
-              attrs[key.to_sym] = Duplicable.dup(value)
+              attrs[key.to_sym] = value.dup
             end
           end
 

@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require "hanami/utils/duplicable"
 require "transproc"
 
 module Hanami
@@ -150,7 +149,7 @@ module Hanami
                       when ::Hash
                         deep_dup(v)
                       else
-                        Duplicable.dup(v)
+                        v.dup
                       end
         end
       end
