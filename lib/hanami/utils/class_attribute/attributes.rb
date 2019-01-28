@@ -7,28 +7,28 @@ module Hanami
     module ClassAttribute
       # Class attributes set
       #
-      # @since x.x.x
+      # @since 2.0.0
       # @api private
       class Attributes
-        # @since x.x.x
+        # @since 2.0.0
         # @api private
         def initialize(attributes: Concurrent::Map.new)
           @attributes = attributes
         end
 
-        # @since x.x.x
+        # @since 2.0.0
         # @api private
         def []=(key, value)
           @attributes[key.to_sym] = value
         end
 
-        # @since x.x.x
+        # @since 2.0.0
         # @api private
         def [](key)
           @attributes.fetch(key, nil)
         end
 
-        # @since x.x.x
+        # @since 2.0.0
         # @api private
         def dup
           attributes = Concurrent::Map.new.tap do |attrs|

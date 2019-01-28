@@ -79,11 +79,6 @@ Inheritable class attributes. [[API doc](http://www.rubydoc.info/gems/hanami-uti
 
 Deprecate Hanami features. [[API doc](http://www.rubydoc.info/gems/hanami-utils/Hanami/Utils/Deprecation)]
 
-### Hanami::Utils::Duplicable
-
-Safe `#dup` logic for Ruby objects. [[API doc](http://www.rubydoc.info/gems/hanami-utils/Hanami/Utils/Duplicable)]
-
-
 ### Hanami::Utils::Escape
 
 Safe and fast escape for URLs, HTML content and attributes. Based on OWASP/ESAPI code. [[API doc](http://www.rubydoc.info/gems/hanami-utils/Hanami/Utils/Escape)]
@@ -98,15 +93,11 @@ File utilities to manipulate files and directories. [[API doc](http://www.rubydo
 
 ### Hanami::Utils::Hash
 
-Enhanced version of Ruby's `Hash`. [[API doc](http://www.rubydoc.info/gems/hanami-utils/Hanami/Utils/Hash)]
+`Hash` transformations. [[API doc](http://www.rubydoc.info/gems/hanami-utils/Hanami/Utils/Hash)]
 
 ### Hanami::Utils::IO
 
 Silence Ruby warnings. [[API doc](http://www.rubydoc.info/gems/hanami-utils/Hanami/Utils/IO)]
-
-### Hanami::Utils::Inflector
-
-Complete and customizable english inflections (pluralization and singularization). [[API doc](http://www.rubydoc.info/gems/hanami-utils/Hanami/Utils/Inflector)]
 
 ### Hanami::Utils::Json
 

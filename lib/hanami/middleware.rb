@@ -4,7 +4,7 @@ module Hanami
   module Middleware
     # Hanami middleware utils
 
-    # @since x.x.x
+    # @since 2.0.0
     class Error < ::StandardError
     end
   end

@@ -2,8 +2,21 @@
 Ruby core extentions and class utilities for Hanami
 
 ## v2.0.0.alpha1 - 2019-01-30
+### Added
+- [Gustavo Caso] Introduce `Hanami::Middleware` namespace
+- [Luca Guidi] Introduce `Callbacks::Chain#dup`
+
 ### Changed
 - [Luca Guidi] Drop support for Ruby: MRI 2.3, and 2.4.
+- [Luca Guidi] Remove `Utils::Duplicable`
+- [Luca Guidi] Remove `Utils::Inflector`
+- [Luca Guidi] Remove `Utils::String.singularize`, and `.pluralize`
+- [Luca Guidi] Remove `Utils::String#singularize`, and `#pluralize`
+- [Luca Guidi] Remove instance level interface for `Utils::Hash`
+- [Luca Guidi] Transform `Utils::Hash` from class to module
+- [Luca Guidi] Remove `Utils.reload!`
+- [Gustavo Caso] Remove `Utils::File.rewrite`
+- [Vladimir Suvorov] Remove `Utils::Class.load_from_pattern!`
 
 ## v1.3.1 - 2019-01-18
 ### Added
