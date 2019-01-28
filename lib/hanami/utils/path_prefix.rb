@@ -8,7 +8,13 @@ module Hanami
     # Prefixed string
     #
     # @since 0.1.0
-    class PathPrefix < Hanami::Utils::String
+    class PathPrefix
+      # Default value
+      #
+      # @since x.x.x
+      # @api private
+      DEFAULT_VALUE = ""
+
       # Path separator
       #
       # @since 0.3.1
@@ -25,8 +31,8 @@ module Hanami
       # @since 0.1.0
       #
       # @see Hanami::Utils::PathPrefix::DEFAULT_SEPARATOR
-      def initialize(string = nil, separator = DEFAULT_SEPARATOR)
-        super(string)
+      def initialize(string = DEFAULT_VALUE, separator = DEFAULT_SEPARATOR)
+        @string = string
         @separator = separator
       end
 
@@ -93,7 +99,32 @@ module Hanami
         ).relative!
       end
 
+      # Value equality
+      #
+      # @since x.x.x
+      def ==(other)
+        case other
+        when ::String
+          other == string
+        when self.class
+          other.string == string
+        else
+          false
+        end
+      end
+
+      alias eql? ==
+
+      # Hashing
+      #
+      # @since x.x.x
+      def hash
+        string.hash
+      end
+
       protected
+
+      attr_reader :string
 
       # Modifies the path prefix to have a prepended separator.
       #

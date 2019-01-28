@@ -6,7 +6,6 @@ require "time"
 require "pathname"
 require "bigdecimal"
 require "hanami/utils"
-require "hanami/utils/string"
 
 unless defined?(Boolean)
   # Define top level constant Boolean, so it can be easily used by other libraries
@@ -902,7 +901,7 @@ module Hanami
         case arg
         when Numeric
           arg.to_i == BOOLEAN_TRUE_INTEGER
-        when ::String, Utils::String, BOOLEAN_FALSE_STRING
+        when ::String, BOOLEAN_FALSE_STRING
           Boolean(arg.to_i)
         when ->(a) { a.respond_to?(:to_bool) }
           arg.to_bool
