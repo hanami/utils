@@ -25,17 +25,6 @@ module Hanami
       #     "spec/support/fixtures/file_list/ab.rb"
       #   ]
       #
-      # @example multiple directories
-      #   require "hanami/utils/file_list"
-      #
-      #   Hanami::Utils::FileList["spec/support/fixtures/file_list/*.rb", "spec/support/fixtures/file_list/nested/*.rb"]
-      #   # => [
-      #     "spec/support/fixtures/file_list/a.rb",
-      #     "spec/support/fixtures/file_list/aa.rb",
-      #     "spec/support/fixtures/file_list/ab.rb",
-      #     "spec/support/fixtures/file_list/nested/c.rb"
-      #   ]
-      #
       # @example token usage
       #   require "hanami/utils/file_list"
       #
@@ -46,10 +35,7 @@ module Hanami
       #     "spec/support/fixtures/file_list/ab.rb"
       #   ]
       def self.[](*args)
-        directories = *args
-        directories = ::File.join(*args) unless args.any? { |a| a.to_s.include?(::File::SEPARATOR) }
-
-        Dir.glob(directories).sort!
+        Dir.glob(::File.join(*args)).sort!
       end
     end
   end
