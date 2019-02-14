@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "hanami/utils/file_list"
+require "pathname"
 
 RSpec.describe Hanami::Utils::FileList do
   describe ".[]" do
@@ -25,6 +26,15 @@ RSpec.describe Hanami::Utils::FileList do
 
     it "finds files constructing path from directory names" do
       list = Hanami::Utils::FileList["spec", "support", "fixtures", "file_list", "*.rb"]
+      expect(list).to eq [
+        "spec/support/fixtures/file_list/a.rb",
+        "spec/support/fixtures/file_list/aa.rb",
+        "spec/support/fixtures/file_list/ab.rb"
+      ]
+    end
+
+    it "accepts Pathname as argument" do
+      list = Hanami::Utils::FileList[Pathname("spec/support/fixtures/file_list/*.rb")]
       expect(list).to eq [
         "spec/support/fixtures/file_list/a.rb",
         "spec/support/fixtures/file_list/aa.rb",

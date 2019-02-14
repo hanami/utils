@@ -47,7 +47,7 @@ module Hanami
       #   ]
       def self.[](*args)
         directories = *args
-        directories = ::File.join(*args) unless args.any? { |a| a.include?(::File::SEPARATOR) }
+        directories = ::File.join(*args) unless args.any? { |a| a.to_s.include?(::File::SEPARATOR) }
 
         Dir.glob(directories).sort!
       end
