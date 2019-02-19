@@ -14,8 +14,28 @@ module Hanami
       # @since 0.9.0
       #
       # @see https://ruby-doc.org/core/Dir.html#method-c-glob
+      #
+      # @example simple usage
+      #   require "hanami/utils/file_list"
+      #
+      #   Hanami::Utils::FileList["spec/support/fixtures/file_list/*.rb"]
+      #   # => [
+      #     "spec/support/fixtures/file_list/a.rb",
+      #     "spec/support/fixtures/file_list/aa.rb",
+      #     "spec/support/fixtures/file_list/ab.rb"
+      #   ]
+      #
+      # @example token usage
+      #   require "hanami/utils/file_list"
+      #
+      #   Hanami::Utils::FileList["spec", "support", "fixtures", "file_list", "*.rb"]
+      #   # => [
+      #     "spec/support/fixtures/file_list/a.rb",
+      #     "spec/support/fixtures/file_list/aa.rb",
+      #     "spec/support/fixtures/file_list/ab.rb"
+      #   ]
       def self.[](*args)
-        Dir.glob(*args).sort!
+        Dir.glob(::File.join(*args)).sort!
       end
     end
   end
