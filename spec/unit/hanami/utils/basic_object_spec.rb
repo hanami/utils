@@ -50,4 +50,59 @@ RSpec.describe Hanami::Utils::BasicObject do
       expect(printer.output).to match(/\A#<TestClass:\w+>\z/)
     end
   end
+
+  describe '#instance_of?' do
+    subject { object.instance_of?(TestClass) }
+
+    context 'when object is instance of the given class' do
+      let(:object) { TestClass.new }
+
+      it { is_expected.to eq(true) }
+    end
+
+    context 'when object is not instance of the given class' do
+      let(:object) { 'not_test_class' }
+
+      it { is_expected.to eq(false) }
+    end
+  end
+
+  shared_examples 'is_a?' do
+    let(:test_class) { TestClass }
+    subject { eval("object.#{method_name}(test_class)") }
+
+    context 'when object is instance of the given class' do
+      let(:object) { test_class.new }
+
+      it { is_expected.to eq(true) }
+    end
+
+    context 'when object is instance of the subclass' do
+      let(:object) { Class.new(test_class).new }
+
+      it { is_expected.to eq(true) }
+    end
+
+    context 'when object has given module included' do
+      let(:test_class) { Module.new }
+      let(:object) do
+        mdl = test_class
+        Class.new do
+          include mdl
+        end.new
+      end
+
+      it { is_expected.to eq(true) }
+    end
+  end
+
+  describe('#is_a?') do
+    let(:method_name) { 'is_a?' }
+    it_behaves_like 'is_a?'
+  end
+
+  describe('#kind_of?') do
+    let(:method_name) { 'kind_of?' }
+    it_behaves_like 'is_a?'
+  end
 end
