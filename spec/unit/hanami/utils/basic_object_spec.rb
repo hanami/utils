@@ -98,8 +98,11 @@ RSpec.describe Hanami::Utils::BasicObject do
 
   describe '#kind_of?' do
     let(:test_class) { TestClass }
+
+    # rubocop:disable Style/ClassCheck
     subject { object.kind_of?(test_class) }
 
+    # rubocop:enable Style/ClassCheck
     context 'when object is instance of the given class' do
       let(:object) { test_class.new }
 
