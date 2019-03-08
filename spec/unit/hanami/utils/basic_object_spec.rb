@@ -67,9 +67,9 @@ RSpec.describe Hanami::Utils::BasicObject do
     end
   end
 
-  shared_examples 'is_a?' do
+  describe '#is_a?' do
     let(:test_class) { TestClass }
-    subject { eval("object.#{method_name}(test_class)") }
+    subject { object.is_a?(test_class) }
 
     context 'when object is instance of the given class' do
       let(:object) { test_class.new }
@@ -96,13 +96,32 @@ RSpec.describe Hanami::Utils::BasicObject do
     end
   end
 
-  describe('#is_a?') do
-    let(:method_name) { 'is_a?' }
-    it_behaves_like 'is_a?'
-  end
+  describe '#kind_of?' do
+    let(:test_class) { TestClass }
+    subject { object.kind_of?(test_class) }
 
-  describe('#kind_of?') do
-    let(:method_name) { 'kind_of?' }
-    it_behaves_like 'is_a?'
+    context 'when object is instance of the given class' do
+      let(:object) { test_class.new }
+
+      it { is_expected.to eq(true) }
+    end
+
+    context 'when object is instance of the subclass' do
+      let(:object) { Class.new(test_class).new }
+
+      it { is_expected.to eq(true) }
+    end
+
+    context 'when object has given module included' do
+      let(:test_class) { Module.new }
+      let(:object) do
+        mdl = test_class
+        Class.new do
+          include mdl
+        end.new
+      end
+
+      it { is_expected.to eq(true) }
+    end
   end
 end
