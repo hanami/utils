@@ -8,6 +8,10 @@ module Hanami
     #
     # @since 1.2.0
     module QueryString
+      # @since 1.3.1
+      # @api private
+      HASH_SEPARATOR = ","
+
       # Serialize input into a query string
       #
       # @param input [Object] the input
@@ -20,7 +24,7 @@ module Hanami
       def self.call(input)
         case input
         when ::Hash
-          input.to_a.join("=")
+          input.map { |key, value| "#{key}=#{value.inspect}" }.join(HASH_SEPARATOR)
         else
           input.to_s
         end
