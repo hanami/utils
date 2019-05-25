@@ -201,6 +201,11 @@ RSpec.describe Hanami::Utils::String do
       expect(string).to eq('hanami_utils')
     end
 
+    it 'handles dots' do
+      string = Hanami::Utils::String.underscore('hanami.utils')
+      expect(string).to eq('hanami_utils')
+    end
+
     it 'handles accented letters' do
       string = Hanami::Utils::String.underscore('è vero')
       expect(string).to eq('è_vero')
