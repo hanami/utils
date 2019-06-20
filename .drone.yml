@@ -13,4 +13,5 @@ steps:
 
 volumes:
 - name: cache
-  temp: {}
+  host:
+    path: /drone/src
