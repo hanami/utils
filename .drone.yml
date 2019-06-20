@@ -6,7 +6,7 @@ steps:
   image: hanami/ruby-2.6
   volumes:
   - name: cache
-  - path: /drone/src
+  - path: /tmp/cache
   commands:
   - bundle install --jobs=3 --retry=3
   - bundle exec rake
