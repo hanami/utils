@@ -3,15 +3,7 @@ name: default
 
 steps:
 - name: test
-  image: hanami/ruby-2.6
-  volumes:
-  - name: cache
-  - path: /tmp/cache
+  image: ruby:2.6.3
   commands:
   - bundle install --jobs=3 --retry=3
   - bundle exec rake
-
-volumes:
-- name: cache
-  host:
-    path: /drone/src
