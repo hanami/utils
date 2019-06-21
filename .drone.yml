@@ -1,10 +1,86 @@
 kind: pipeline
-name: default
+name: ruby-2-6
+group: build
 
 steps:
-- name: test
+- name: install
   image: ruby:2.6.3
+  volumes:
+  - name: bundle
+    path: /usr/local/bundle
   commands:
+  - ruby -v
   - gem install bundler
   - bundle install --jobs=3 --retry=3
-  - bundle exec rake
+
+- name: unit
+  image: ruby:2.6.3
+  volumes:
+  - name: bundle
+    path: /usr/local/bundle
+  commands:
+  - COVERAGE=true bundle exec rake spec:unit
+
+- name: isolation
+  image: ruby:2.6.3
+  volumes:
+  - name: bundle
+    path: /usr/local/bundle
+  commands:
+  - ./script/test isolation
+
+- name: quality
+  image: ruby:2.6.3
+  volumes:
+  - name: bundle
+    path: /usr/local/bundle
+  commands:
+  - bundle exec rubocop
+
+volumes:
+- name: bundle
+  temp: {}
+
+---
+kind: pipeline
+name: ruby-2-5
+group: build
+
+steps:
+- name: install
+  image: ruby:2.5.5
+  volumes:
+  - name: bundle
+    path: /usr/local/bundle
+  commands:
+  - ruby -v
+  - gem install bundler
+  - bundle install --jobs=3 --retry=3
+
+- name: unit
+  image: ruby:2.5.5
+  volumes:
+  - name: bundle
+    path: /usr/local/bundle
+  commands:
+  - COVERAGE=true bundle exec rake spec:unit
+
+- name: isolation
+  image: ruby:2.5.5
+  volumes:
+  - name: bundle
+    path: /usr/local/bundle
+  commands:
+  - ./script/test isolation
+
+- name: quality
+  image: ruby:2.5.5
+  volumes:
+  - name: bundle
+    path: /usr/local/bundle
+  commands:
+  - bundle exec rubocop
+
+volumes:
+- name: bundle
+  temp: {}
