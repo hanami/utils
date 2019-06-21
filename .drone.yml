@@ -280,7 +280,12 @@ volumes:
 ---
 kind: pipeline
 name: slack
-group: build
+
+clone:
+  disable: true
+
+depends_on:
+  - build
 
 steps:
 - name: slack
