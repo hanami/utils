@@ -296,5 +296,3 @@ steps:
     webhook:
       from_secret: slack
       channel: dev
-    template: >
-      Build {{ build.number }} {{ build.link }} ({{ build.commit }}) of {{ repo.owner }}/{{ repo.name }}@{{ build.branch }} by {{ build.author }} {{#success build.status}}passed{{else}}failed{{/success}} in {{ since build.started }}
