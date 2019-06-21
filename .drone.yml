@@ -276,3 +276,17 @@ steps:
 volumes:
 - name: bundle
   temp: {}
+
+---
+kind: pipeline
+name: slack
+group: build
+
+steps:
+- name: slack
+  image: plugins/slack
+  settings:
+    link_names: true
+    webhook:
+      from_secret: slack
+      channel: dev
