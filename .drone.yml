@@ -296,3 +296,6 @@ steps:
     webhook:
       from_secret: slack
       channel: dev
+  when:
+    event:
+    - push
