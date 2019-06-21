@@ -280,12 +280,13 @@ volumes:
 ---
 kind: pipeline
 name: slack
+group: build
 
 clone:
   disable: true
 
 depends_on:
-  - build
+  - jruby-9-1
 
 steps:
 - name: slack
