@@ -29,34 +29,43 @@ module Hanami
       # rubocop:enable Style/FormatStringToken
       # rubocop:enable Style/FormatString
 
-      # @!method instance_of?(class1)
+      # Determine if self is an instance of given class or module
       #
-      #   Returns true if obj is an instance of the given class.
-      #   @return [TrueClass,FalseClass]
+      # @param [Class,Module] the class of module to verify
       #
-      #   @see http://ruby-doc.org/core/Object.html#method-i-instance_of-3F
+      # @return [TrueClass,FalseClass] the result of the check
+      #
+      # @raise [TypeError] if the given argument is not of the expected types
+      #
+      # @since 1.3.2
+      #
+      # @see http://ruby-doc.org/core/Object.html#method-i-instance_of-3F
       define_method :instance_of?, ::Object.instance_method(:instance_of?)
 
-      # @!method is_a?(class1)
+      # Determine if self is of the type of the object class or module
       #
-      #   Returns true if class is the class of
-      #   obj, or if class is one of the superclasses of
-      #   obj or modules included in obj.
+      # @param [Class,Module] the class of module to verify
       #
-      #   @return [TrueClass,FalseClass]
+      # @return [TrueClass,FalseClass] the result of the check
       #
-      #   @see http://ruby-doc.org/core/Object.html#method-i-is_a-3F
+      # @raise [TypeError] if the given argument is not of the expected types
+      #
+      # @since 1.3.2
+      #
+      # @see http://ruby-doc.org/core/Object.html#method-i-is_a-3F
       define_method :is_a?, ::Object.instance_method(:is_a?)
 
-      # @!method kind_of?(class1)
+      # Determine if self is of the kind of the object class or module
       #
-      #   Returns true if class is the class of
-      #   obj, or if class is one of the superclasses of
-      #   obj or modules included in obj.
+      # @param [Class,Module] the class of module to verify
       #
-      #   @return [TrueClass,FalseClass]
+      # @return [TrueClass,FalseClass] the result of the check
       #
-      #   @see http://ruby-doc.org/core/Object.html#method-i-kind_of-3F
+      # @raise [TypeError] if the given argument is not of the expected types
+      #
+      # @since 1.3.2
+      #
+      # @see http://ruby-doc.org/core/Object.html#method-i-kind_of-3F
       define_method :kind_of?, ::Object.instance_method(:kind_of?)
 
       # Alias for __id__

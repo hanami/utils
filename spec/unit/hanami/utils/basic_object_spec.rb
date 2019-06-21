@@ -52,79 +52,113 @@ RSpec.describe Hanami::Utils::BasicObject do
   end
 
   describe '#instance_of?' do
-    subject { object.instance_of?(TestClass) }
+    subject { TestClass.new }
 
     context 'when object is instance of the given class' do
-      let(:object) { TestClass.new }
-
-      it { is_expected.to eq(true) }
+      it 'returns true' do
+        expect(subject.instance_of?(TestClass)).to be(true)
+      end
     end
 
     context 'when object is not instance of the given class' do
-      let(:object) { 'not_test_class' }
+      it 'returns false' do
+        expect(subject.instance_of?(::String)).to be(false)
+      end
+    end
 
-      it { is_expected.to eq(false) }
+    context 'when given argument is not a class or module' do
+      it 'raises error' do
+        expect { subject.instance_of?("foo") }.to raise_error(TypeError)
+      end
     end
   end
 
   describe '#is_a?' do
+    subject { TestClass.new }
     let(:test_class) { TestClass }
-    subject { object.is_a?(test_class) }
 
     context 'when object is instance of the given class' do
-      let(:object) { test_class.new }
+      it 'returns true' do
+        expect(subject.is_a?(TestClass)).to be(true)
+      end
+    end
 
-      it { is_expected.to eq(true) }
+    context 'when object is not instance of the given class' do
+      it 'returns false' do
+        expect(subject.is_a?(::String)).to be(false)
+      end
+    end
+
+    context 'when given argument is not a class or module' do
+      it 'raises error' do
+        expect { subject.is_a?("foo") }.to raise_error(TypeError)
+      end
     end
 
     context 'when object is instance of the subclass' do
-      let(:object) { Class.new(test_class).new }
+      subject { Class.new(TestClass).new }
 
-      it { is_expected.to eq(true) }
+      it 'returns true' do
+        expect(subject.is_a?(TestClass)).to be(true)
+      end
     end
 
     context 'when object has given module included' do
-      let(:test_class) { Module.new }
-      let(:object) do
-        mdl = test_class
-        Class.new do
-          include mdl
-        end.new
+      subject do
+        m = mod
+        Class.new { include m }.new
       end
 
-      it { is_expected.to eq(true) }
+      let(:mod) { Module.new }
+
+      it 'returns true' do
+        expect(subject.is_a?(mod)).to be(true)
+      end
     end
   end
 
+  # rubocop:disable Style/ClassCheck
   describe '#kind_of?' do
-    let(:test_class) { TestClass }
-
-    # rubocop:disable Style/ClassCheck
-    subject { object.kind_of?(test_class) }
-
-    # rubocop:enable Style/ClassCheck
     context 'when object is instance of the given class' do
-      let(:object) { test_class.new }
+      subject { TestClass.new }
 
-      it { is_expected.to eq(true) }
+      it 'returns true' do
+        expect(subject.kind_of?(TestClass)).to be(true)
+      end
     end
 
     context 'when object is instance of the subclass' do
-      let(:object) { Class.new(test_class).new }
+      subject { Class.new(TestClass).new }
 
-      it { is_expected.to eq(true) }
+      it 'returns true' do
+        expect(subject.kind_of?(TestClass)).to be(true)
+      end
+    end
+
+    context 'when object is not instance of the given class' do
+      it 'returns false' do
+        expect(subject.kind_of?(::String)).to be(false)
+      end
+    end
+
+    context 'when given argument is not a class or module' do
+      it 'raises error' do
+        expect { subject.kind_of?("foo") }.to raise_error(TypeError)
+      end
     end
 
     context 'when object has given module included' do
-      let(:test_class) { Module.new }
-      let(:object) do
-        mdl = test_class
-        Class.new do
-          include mdl
-        end.new
+      subject do
+        m = mod
+        Class.new { include m }.new
       end
 
-      it { is_expected.to eq(true) }
+      let(:mod) { Module.new }
+
+      it 'returns true' do
+        expect(subject.kind_of?(mod)).to be(true)
+      end
     end
   end
+  # rubocop:enable Style/ClassCheck
 end
