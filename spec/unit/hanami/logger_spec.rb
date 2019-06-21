@@ -516,6 +516,8 @@ RSpec.describe Hanami::Logger do
 
         it 'colorizes when for tty by default (i.e. when colorizer: nil)' do
           stdout = IO.new($stdout.fileno)
+          skip unless stdout.tty?
+
           expect(stdout).to receive(:write).with(
             "[\e[34mhanami\e[0m] [\e[35mINFO\e[0m] [\e[36m2017-01-15 16:00:23 +0100\e[0m] foo\n"
           )
@@ -525,6 +527,8 @@ RSpec.describe Hanami::Logger do
 
         it 'colorizes for tty when colorizer: nil' do
           stdout = IO.new($stdout.fileno)
+          skip unless stdout.tty?
+
           expect(stdout).to receive(:write).with(
             "[\e[34mhanami\e[0m] [\e[35mINFO\e[0m] [\e[36m2017-01-15 16:00:23 +0100\e[0m] foo\n"
           )
