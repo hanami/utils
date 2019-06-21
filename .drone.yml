@@ -79,11 +79,15 @@ steps:
 
 - name: quality
   image: ruby:2.5
+  environment:
+    CODECOV_TOKEN:
+      from_secret: codecov
   volumes:
   - name: bundle
     path: /usr/local/bundle
   commands:
   - bundle exec rubocop
+  - CI=true bundle exec rake codecov:upload
 
 volumes:
 - name: bundle
@@ -123,11 +127,15 @@ steps:
 
 - name: quality
   image: ruby:2.4
+  environment:
+    CODECOV_TOKEN:
+      from_secret: codecov
   volumes:
   - name: bundle
     path: /usr/local/bundle
   commands:
   - bundle exec rubocop
+  - CI=true bundle exec rake codecov:upload
 
 volumes:
 - name: bundle
@@ -167,11 +175,15 @@ steps:
 
 - name: quality
   image: ruby:2.3
+  environment:
+    CODECOV_TOKEN:
+      from_secret: codecov
   volumes:
   - name: bundle
     path: /usr/local/bundle
   commands:
   - bundle exec rubocop
+  - CI=true bundle exec rake codecov:upload
 
 volumes:
 - name: bundle
@@ -203,11 +215,15 @@ steps:
 
 - name: quality
   image: jruby:9.2
+  environment:
+    CODECOV_TOKEN:
+      from_secret: codecov
   volumes:
   - name: bundle
     path: /usr/local/bundle
   commands:
   - bundle exec rubocop
+  - CI=true bundle exec rake codecov:upload
 
 volumes:
 - name: bundle
@@ -247,11 +263,15 @@ steps:
 
 - name: quality
   image: jruby:9.1
+  environment:
+    CODECOV_TOKEN:
+      from_secret: codecov
   volumes:
   - name: bundle
     path: /usr/local/bundle
   commands:
   - bundle exec rubocop
+  - CI=true bundle exec rake codecov:upload
 
 volumes:
 - name: bundle
