@@ -22,14 +22,8 @@ end
 
 RSpec.describe Hanami::Utils::Deprecation do
   it 'prints a deprecation warning for direct call' do
-    stack = if Hanami::Utils.jruby?
-              "#{__FILE__}:31:in `block in (root)'"
-            else
-              "#{__FILE__}:31:in `block (3 levels) in <top (required)>'"
-            end
-
     expect { DeprecationTest.new.old_method }
-      .to output(include("old_method is deprecated, please use new_method - called from: #{stack}.")).to_stderr
+      .to output(include("old_method is deprecated, please use new_method - called from: #{__FILE__}:25")).to_stderr
   end
 
   it 'prints a deprecation warning for nested call' do
