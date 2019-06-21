@@ -204,6 +204,7 @@ steps:
     path: /usr/local/bundle
   commands:
   - ./script/test isolation
+  err_ignore: true
 
 - name: quality
   image: jruby:9.2.7.0
