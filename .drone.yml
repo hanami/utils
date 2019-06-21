@@ -31,11 +31,15 @@ steps:
 
 - name: quality
   image: ruby:2.6
+  environment:
+    CODECOV_TOKEN:
+      from_secret: codecov
   volumes:
   - name: bundle
     path: /usr/local/bundle
   commands:
   - bundle exec rubocop
+  - CI=true bundle exec rake codecov:upload
 
 volumes:
 - name: bundle
