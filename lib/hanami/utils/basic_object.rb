@@ -29,6 +29,36 @@ module Hanami
       # rubocop:enable Style/FormatStringToken
       # rubocop:enable Style/FormatString
 
+      # @!method instance_of?(class1)
+      #
+      #   Returns true if obj is an instance of the given class.
+      #   @return [TrueClass,FalseClass]
+      #
+      #   @see http://ruby-doc.org/core/Object.html#method-i-instance_of-3F
+      define_method :instance_of?, ::Object.instance_method(:instance_of?)
+
+      # @!method is_a?(class1)
+      #
+      #   Returns true if class is the class of
+      #   obj, or if class is one of the superclasses of
+      #   obj or modules included in obj.
+      #
+      #   @return [TrueClass,FalseClass]
+      #
+      #   @see http://ruby-doc.org/core/Object.html#method-i-is_a-3F
+      define_method :is_a?, ::Object.instance_method(:is_a?)
+
+      # @!method kind_of?(class1)
+      #
+      #   Returns true if class is the class of
+      #   obj, or if class is one of the superclasses of
+      #   obj or modules included in obj.
+      #
+      #   @return [TrueClass,FalseClass]
+      #
+      #   @see http://ruby-doc.org/core/Object.html#method-i-kind_of-3F
+      define_method :kind_of?, ::Object.instance_method(:kind_of?)
+
       # Alias for __id__
       #
       # @return [Fixnum] the object id

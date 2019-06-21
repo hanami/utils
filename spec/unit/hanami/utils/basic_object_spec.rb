@@ -50,4 +50,81 @@ RSpec.describe Hanami::Utils::BasicObject do
       expect(printer.output).to match(/\A#<TestClass:\w+>\z/)
     end
   end
+
+  describe '#instance_of?' do
+    subject { object.instance_of?(TestClass) }
+
+    context 'when object is instance of the given class' do
+      let(:object) { TestClass.new }
+
+      it { is_expected.to eq(true) }
+    end
+
+    context 'when object is not instance of the given class' do
+      let(:object) { 'not_test_class' }
+
+      it { is_expected.to eq(false) }
+    end
+  end
+
+  describe '#is_a?' do
+    let(:test_class) { TestClass }
+    subject { object.is_a?(test_class) }
+
+    context 'when object is instance of the given class' do
+      let(:object) { test_class.new }
+
+      it { is_expected.to eq(true) }
+    end
+
+    context 'when object is instance of the subclass' do
+      let(:object) { Class.new(test_class).new }
+
+      it { is_expected.to eq(true) }
+    end
+
+    context 'when object has given module included' do
+      let(:test_class) { Module.new }
+      let(:object) do
+        mdl = test_class
+        Class.new do
+          include mdl
+        end.new
+      end
+
+      it { is_expected.to eq(true) }
+    end
+  end
+
+  describe '#kind_of?' do
+    let(:test_class) { TestClass }
+
+    # rubocop:disable Style/ClassCheck
+    subject { object.kind_of?(test_class) }
+
+    # rubocop:enable Style/ClassCheck
+    context 'when object is instance of the given class' do
+      let(:object) { test_class.new }
+
+      it { is_expected.to eq(true) }
+    end
+
+    context 'when object is instance of the subclass' do
+      let(:object) { Class.new(test_class).new }
+
+      it { is_expected.to eq(true) }
+    end
+
+    context 'when object has given module included' do
+      let(:test_class) { Module.new }
+      let(:object) do
+        mdl = test_class
+        Class.new do
+          include mdl
+        end.new
+      end
+
+      it { is_expected.to eq(true) }
+    end
+  end
 end
