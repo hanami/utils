@@ -29,9 +29,11 @@ module Hanami
       # rubocop:enable Style/FormatStringToken
       # rubocop:enable Style/FormatString
 
+      # @!macro [attach] instance_of?(class)
+      #
       # Determine if self is an instance of given class or module
       #
-      # @param [Class,Module] the class of module to verify
+      # @param class [Class,Module] the class of module to verify
       #
       # @return [TrueClass,FalseClass] the result of the check
       #
@@ -42,9 +44,11 @@ module Hanami
       # @see http://ruby-doc.org/core/Object.html#method-i-instance_of-3F
       define_method :instance_of?, ::Object.instance_method(:instance_of?)
 
+      # @!macro [attach] is_a?(class)
+      #
       # Determine if self is of the type of the object class or module
       #
-      # @param [Class,Module] the class of module to verify
+      # @param class [Class,Module] the class of module to verify
       #
       # @return [TrueClass,FalseClass] the result of the check
       #
@@ -55,9 +59,11 @@ module Hanami
       # @see http://ruby-doc.org/core/Object.html#method-i-is_a-3F
       define_method :is_a?, ::Object.instance_method(:is_a?)
 
+      # @!macro [attach] kind_of?(class)
+      #
       # Determine if self is of the kind of the object class or module
       #
-      # @param [Class,Module] the class of module to verify
+      # @param class [Class,Module] the class of module to verify
       #
       # @return [TrueClass,FalseClass] the result of the check
       #
