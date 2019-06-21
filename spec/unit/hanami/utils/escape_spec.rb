@@ -120,7 +120,7 @@ RSpec.describe Hanami::Utils::Escape do
 
       # rubocop:disable Style/AsciiComments
       # 'тест' means test in russian
-      string   = "тест".dup.force_encoding("ASCII-8BIT") # rubocop:disable Performance/UnfreezeString
+      string   = "тест".dup.force_encoding("ASCII-8BIT")
       encoding = string.encoding
 
       result = mod.html(string)
@@ -365,7 +365,12 @@ RSpec.describe Hanami::Utils::Escape do
             end
 
             it "escapes a Time" do
-              time_string = Hanami::Utils.jruby? ? "2016-01-27 12:00:00 UTC" : "2016-01-27 12:00:00 +0000"
+              time_string = if Hanami::Utils.jruby? && JRUBY_VERSION.match(/\A9\.1/)
+                              "2016-01-27 12:00:00 UTC"
+                            else
+                              "2016-01-27 12:00:00 +0000"
+                            end
+
               result = mod.html(Time.new(2016, 0o1, 27, 12, 0, 0, 0))
               expect(result).to eq time_string
             end
