@@ -481,7 +481,7 @@ RSpec.describe Hanami::Logger do
           class TestLogger < Hanami::Logger; end
           begin
             raise StandardError.new("foo")
-          rescue => e
+          rescue => e # rubocop:disable Naming/RescuedExceptionsVariableName
             exception = e
           end
           TestLogger.new.error(exception)

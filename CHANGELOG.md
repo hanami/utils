@@ -18,6 +18,10 @@ Ruby core extentions and class utilities for Hanami
 - [Gustavo Caso] Remove `Utils::File.rewrite`
 - [Vladimir Suvorov] Remove `Utils::Class.load_from_pattern!`
 
+## v1.3.2 - 2019-06-21
+### Added
+- [Vladislav Yashin & Luca Guidi] Added `Utils::BasicObject#instance_of?`, `#is_a?`, and `#kind_of`
+
 ## v1.3.1 - 2019-01-18
 ### Added
 - [Luca Guidi] Official support for Ruby: MRI 2.6
