@@ -735,8 +735,8 @@ RSpec.describe Hanami::Utils::Hash do
     it 'raises error' do
       begin
         Hanami::Utils::Hash.new('l' => 23).party!
-      rescue NoMethodError => e
-        expect(e.message).to eq %(undefined method `party!' for {\"l\"=>23}:Hanami::Utils::Hash)
+      rescue NoMethodError => exception
+        expect(exception.message).to eq %(undefined method `party!' for {\"l\"=>23}:Hanami::Utils::Hash)
       end
     end
 

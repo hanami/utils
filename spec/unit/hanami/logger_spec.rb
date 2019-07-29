@@ -474,18 +474,18 @@ RSpec.describe Hanami::Logger do
       end
 
       it 'has key=value format for error messages' do
-        exception = nil
+        exc = nil
         output = with_captured_stdout do
           class TestLogger < Hanami::Logger; end
           begin
             raise StandardError.new('foo')
-          rescue => e
-            exception = e
+          rescue => exception
+            exc = exception
           end
-          TestLogger.new.error(exception)
+          TestLogger.new.error(exc)
         end
         expectation = "[hanami] [ERROR] [2017-01-15 16:00:23 +0100] StandardError: foo\n"
-        exception.backtrace.each do |line|
+        exc.backtrace.each do |line|
           expectation << "from #{line}\n"
         end
         expect(output).to eq expectation
