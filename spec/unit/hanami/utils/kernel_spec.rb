@@ -265,8 +265,8 @@ RSpec.describe Hanami::Utils::Kernel do
         it 'returns informations about the failure' do
           begin
             Hanami::Utils::Kernel.Set(input)
-          rescue => e
-            expect(e.message).to match "can't convert into Set"
+          rescue => exception
+            expect(exception.message).to match "can't convert into Set"
           end
         end
       end
@@ -373,8 +373,8 @@ RSpec.describe Hanami::Utils::Kernel do
         it 'returns useful informations about the failure' do
           begin
             Hanami::Utils::Kernel.Hash(input)
-          rescue => e
-            expect(e.message).to eq "can't convert into Hash"
+          rescue => exception
+            expect(exception.message).to eq "can't convert into Hash"
           end
         end
       end
@@ -609,8 +609,8 @@ RSpec.describe Hanami::Utils::Kernel do
         it 'returns useful informations about the failure' do
           begin
             Hanami::Utils::Kernel.Integer(input)
-          rescue => e
-            expect(e.message).to eq "can't convert into Integer"
+          rescue => exception
+            expect(exception.message).to eq "can't convert into Integer"
           end
         end
       end
@@ -625,8 +625,8 @@ RSpec.describe Hanami::Utils::Kernel do
         it 'returns useful informations about the failure' do
           begin
             Hanami::Utils::Kernel.Integer(input)
-          rescue => e
-            expect(e.message).to eq "can't convert #{input.inspect} into Integer"
+          rescue => exception
+            expect(exception.message).to eq "can't convert #{input.inspect} into Integer"
           end
         end
       end
@@ -649,8 +649,8 @@ RSpec.describe Hanami::Utils::Kernel do
         it 'returns useful informations about the failure' do
           begin
             Hanami::Utils::Kernel.Integer(input)
-          rescue => e
-            expect(e.message).to eq "can't convert #{input.inspect} into Integer"
+          rescue => exception
+            expect(exception.message).to eq "can't convert #{input.inspect} into Integer"
           end
         end
       end
@@ -665,8 +665,8 @@ RSpec.describe Hanami::Utils::Kernel do
         it 'returns useful informations about the failure' do
           begin
             Hanami::Utils::Kernel.Integer(input)
-          rescue => e
-            expect(e.message).to eq "can't convert #{input.inspect} into Integer"
+          rescue => exception
+            expect(exception.message).to eq "can't convert #{input.inspect} into Integer"
           end
         end
       end
@@ -681,8 +681,8 @@ RSpec.describe Hanami::Utils::Kernel do
         it 'returns useful informations about the failure' do
           begin
             Hanami::Utils::Kernel.Integer(input)
-          rescue => e
-            expect(e.message).to eq "can't convert #{input.inspect} into Integer"
+          rescue => exception
+            expect(exception.message).to eq "can't convert #{input.inspect} into Integer"
           end
         end
       end
@@ -948,8 +948,8 @@ RSpec.describe Hanami::Utils::Kernel do
         it 'returns useful informations about the failure' do
           begin
             Hanami::Utils::Kernel.BigDecimal(input)
-          rescue => e
-            expect(e.message).to eq "can't convert into BigDecimal"
+          rescue => exception
+            expect(exception.message).to eq "can't convert into BigDecimal"
           end
         end
       end
@@ -1183,8 +1183,8 @@ RSpec.describe Hanami::Utils::Kernel do
         it 'returns useful informations about the failure' do
           begin
             Hanami::Utils::Kernel.Float(input)
-          rescue => e
-            expect(e.message).to eq "can't convert into Float"
+          rescue => exception
+            expect(exception.message).to eq "can't convert into Float"
           end
         end
       end
@@ -1207,8 +1207,8 @@ RSpec.describe Hanami::Utils::Kernel do
         it 'returns useful informations about the failure' do
           begin
             Hanami::Utils::Kernel.Float(input)
-          rescue => e
-            expect(e.message).to eq "can't convert #{input.inspect} into Float"
+          rescue => exception
+            expect(exception.message).to eq "can't convert #{input.inspect} into Float"
           end
         end
       end
@@ -1223,8 +1223,8 @@ RSpec.describe Hanami::Utils::Kernel do
         it 'returns useful informations about the failure' do
           begin
             Hanami::Utils::Kernel.Float(input)
-          rescue => e
-            expect(e.message).to eq "can't convert #{input.inspect} into Float"
+          rescue => exception
+            expect(exception.message).to eq "can't convert #{input.inspect} into Float"
           end
         end
       end
@@ -1684,8 +1684,8 @@ RSpec.describe Hanami::Utils::Kernel do
         it 'returns useful informations about the failure' do
           begin
             Hanami::Utils::Kernel.Boolean(input)
-          rescue => e
-            expect(e.message).to eq "can't convert into Boolean"
+          rescue => exception
+            expect(exception.message).to eq "can't convert into Boolean"
           end
         end
       end
@@ -1777,8 +1777,8 @@ RSpec.describe Hanami::Utils::Kernel do
         it 'returns useful informations about the failure' do
           begin
             Hanami::Utils::Kernel.Date(input)
-          rescue => e
-            expect(e.message).to eq "can't convert #{input.inspect} into Date"
+          rescue => exception
+            expect(exception.message).to eq "can't convert #{input.inspect} into Date"
           end
         end
       end
@@ -1793,8 +1793,8 @@ RSpec.describe Hanami::Utils::Kernel do
         it 'returns useful informations about the failure' do
           begin
             Hanami::Utils::Kernel.Date(input)
-          rescue => e
-            expect(e.message).to eq "can't convert #{input.inspect} into Date"
+          rescue => exception
+            expect(exception.message).to eq "can't convert #{input.inspect} into Date"
           end
         end
       end
@@ -1809,8 +1809,8 @@ RSpec.describe Hanami::Utils::Kernel do
         it 'returns useful informations about the failure' do
           begin
             Hanami::Utils::Kernel.Date(input)
-          rescue => e
-            expect(e.message).to eq "can't convert #{input.inspect} into Date"
+          rescue => exception
+            expect(exception.message).to eq "can't convert #{input.inspect} into Date"
           end
         end
       end
@@ -1825,8 +1825,8 @@ RSpec.describe Hanami::Utils::Kernel do
         it 'returns useful informations about the failure' do
           begin
             Hanami::Utils::Kernel.Date(input)
-          rescue => e
-            expect(e.message).to eq "can't convert #{input.inspect} into Date"
+          rescue => exception
+            expect(exception.message).to eq "can't convert #{input.inspect} into Date"
           end
         end
       end
@@ -1841,8 +1841,8 @@ RSpec.describe Hanami::Utils::Kernel do
         it 'returns useful informations about the failure' do
           begin
             Hanami::Utils::Kernel.Date(input)
-          rescue => e
-            expect(e.message).to eq "can't convert #{input.inspect} into Date"
+          rescue => exception
+            expect(exception.message).to eq "can't convert #{input.inspect} into Date"
           end
         end
       end
@@ -1857,8 +1857,8 @@ RSpec.describe Hanami::Utils::Kernel do
         it 'returns useful informations about the failure' do
           begin
             Hanami::Utils::Kernel.Date(input)
-          rescue => e
-            expect(e.message).to eq "can't convert #{input.inspect} into Date"
+          rescue => exception
+            expect(exception.message).to eq "can't convert #{input.inspect} into Date"
           end
         end
       end
@@ -1873,8 +1873,8 @@ RSpec.describe Hanami::Utils::Kernel do
         it 'returns useful informations about the failure' do
           begin
             Hanami::Utils::Kernel.Date(input)
-          rescue => e
-            expect(e.message).to eq "can't convert #{input.inspect} into Date"
+          rescue => exception
+            expect(exception.message).to eq "can't convert #{input.inspect} into Date"
           end
         end
       end
@@ -1889,8 +1889,8 @@ RSpec.describe Hanami::Utils::Kernel do
         it 'returns useful informations about the failure' do
           begin
             Hanami::Utils::Kernel.Date(input)
-          rescue => e
-            expect(e.message).to eq "can't convert into Date"
+          rescue => exception
+            expect(exception.message).to eq "can't convert into Date"
           end
         end
       end
@@ -1905,8 +1905,8 @@ RSpec.describe Hanami::Utils::Kernel do
         it 'returns useful informations about the failure' do
           begin
             Hanami::Utils::Kernel.Date(input)
-          rescue => e
-            expect(e.message).to eq "can't convert into Date"
+          rescue => exception
+            expect(exception.message).to eq "can't convert into Date"
           end
         end
       end
@@ -2022,8 +2022,8 @@ RSpec.describe Hanami::Utils::Kernel do
         it 'returns useful informations about the failure' do
           begin
             Hanami::Utils::Kernel.DateTime(input)
-          rescue => e
-            expect(e.message).to eq "can't convert #{input.inspect} into DateTime"
+          rescue => exception
+            expect(exception.message).to eq "can't convert #{input.inspect} into DateTime"
           end
         end
       end
@@ -2038,8 +2038,8 @@ RSpec.describe Hanami::Utils::Kernel do
         it 'returns useful informations about the failure' do
           begin
             Hanami::Utils::Kernel.DateTime(input)
-          rescue => e
-            expect(e.message).to eq "can't convert #{input.inspect} into DateTime"
+          rescue => exception
+            expect(exception.message).to eq "can't convert #{input.inspect} into DateTime"
           end
         end
       end
@@ -2054,8 +2054,8 @@ RSpec.describe Hanami::Utils::Kernel do
         it 'returns useful informations about the failure' do
           begin
             Hanami::Utils::Kernel.DateTime(input)
-          rescue => e
-            expect(e.message).to eq "can't convert #{input.inspect} into DateTime"
+          rescue => exception
+            expect(exception.message).to eq "can't convert #{input.inspect} into DateTime"
           end
         end
       end
@@ -2070,8 +2070,8 @@ RSpec.describe Hanami::Utils::Kernel do
         it 'returns useful informations about the failure' do
           begin
             Hanami::Utils::Kernel.DateTime(input)
-          rescue => e
-            expect(e.message).to eq "can't convert #{input.inspect} into DateTime"
+          rescue => exception
+            expect(exception.message).to eq "can't convert #{input.inspect} into DateTime"
           end
         end
       end
@@ -2086,8 +2086,8 @@ RSpec.describe Hanami::Utils::Kernel do
         it 'returns useful informations about the failure' do
           begin
             Hanami::Utils::Kernel.DateTime(input)
-          rescue => e
-            expect(e.message).to eq "can't convert into DateTime"
+          rescue => exception
+            expect(exception.message).to eq "can't convert into DateTime"
           end
         end
       end
@@ -2102,8 +2102,8 @@ RSpec.describe Hanami::Utils::Kernel do
         it 'returns useful informations about the failure' do
           begin
             Hanami::Utils::Kernel.DateTime(input)
-          rescue => e
-            expect(e.message).to eq "can't convert into DateTime"
+          rescue => exception
+            expect(exception.message).to eq "can't convert into DateTime"
           end
         end
       end
@@ -2219,8 +2219,8 @@ RSpec.describe Hanami::Utils::Kernel do
         it 'returns useful informations about the failure' do
           begin
             Hanami::Utils::Kernel.Time(input)
-          rescue => e
-            expect(e.message).to eq "can't convert #{input.inspect} into Time"
+          rescue => exception
+            expect(exception.message).to eq "can't convert #{input.inspect} into Time"
           end
         end
       end
@@ -2235,8 +2235,8 @@ RSpec.describe Hanami::Utils::Kernel do
         it 'returns useful informations about the failure' do
           begin
             Hanami::Utils::Kernel.Time(input)
-          rescue => e
-            expect(e.message).to eq "can't convert #{input.inspect} into Time"
+          rescue => exception
+            expect(exception.message).to eq "can't convert #{input.inspect} into Time"
           end
         end
       end
@@ -2251,8 +2251,8 @@ RSpec.describe Hanami::Utils::Kernel do
         it 'returns useful informations about the failure' do
           begin
             Hanami::Utils::Kernel.Time(input)
-          rescue => e
-            expect(e.message).to eq "can't convert #{input.inspect} into Time"
+          rescue => exception
+            expect(exception.message).to eq "can't convert #{input.inspect} into Time"
           end
         end
       end
@@ -2267,8 +2267,8 @@ RSpec.describe Hanami::Utils::Kernel do
         it 'returns useful informations about the failure' do
           begin
             Hanami::Utils::Kernel.Time(input)
-          rescue => e
-            expect(e.message).to eq "can't convert #{input.inspect} into Time"
+          rescue => exception
+            expect(exception.message).to eq "can't convert #{input.inspect} into Time"
           end
         end
       end
@@ -2283,8 +2283,8 @@ RSpec.describe Hanami::Utils::Kernel do
         it 'returns useful informations about the failure' do
           begin
             Hanami::Utils::Kernel.Time(input)
-          rescue => e
-            expect(e.message).to eq "can't convert into Time"
+          rescue => exception
+            expect(exception.message).to eq "can't convert into Time"
           end
         end
       end
@@ -2299,8 +2299,8 @@ RSpec.describe Hanami::Utils::Kernel do
         it 'returns useful informations about the failure' do
           begin
             Hanami::Utils::Kernel.Time(input)
-          rescue => e
-            expect(e.message).to eq "can't convert into Time"
+          rescue => exception
+            expect(exception.message).to eq "can't convert into Time"
           end
         end
       end
@@ -2430,8 +2430,8 @@ RSpec.describe Hanami::Utils::Kernel do
         it 'returns useful informations about the failure' do
           begin
             Hanami::Utils::Kernel.Pathname(input)
-          rescue => e
-            expect(e.message).to eq "can't convert into Pathname"
+          rescue => exception
+            expect(exception.message).to eq "can't convert into Pathname"
           end
         end
       end
@@ -2554,8 +2554,8 @@ RSpec.describe Hanami::Utils::Kernel do
         it 'returns useful informations about the failure' do
           begin
             Hanami::Utils::Kernel.Symbol(input)
-          rescue => e
-            expect(e.message).to eq "can't convert into Symbol"
+          rescue => exception
+            expect(exception.message).to eq "can't convert into Symbol"
           end
         end
       end
