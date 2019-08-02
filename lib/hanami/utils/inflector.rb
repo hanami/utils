@@ -373,15 +373,15 @@ module Hanami
           $1 + IES
         when /\A(.*)(ex|ix)\z/
           $1 + ICES
-        when /\A(.*)(eau|#{ EAUX })\z/
+        when /\A(.*)(eau|#{EAUX})\z/
           $1 + EAUX
         when /\A(.*)x\z/
           $1 + XES
         when /\A(.*)ma\z/
           string + TA
-        when /\A(.*)(um|#{ A })\z/
+        when /\A(.*)(um|#{A})\z/
           $1 + A
-        when /\A(buffal|domin|ech|embarg|her|mosquit|potat|tomat)#{ O }\z/i
+        when /\A(buffal|domin|ech|embarg|her|mosquit|potat|tomat)#{O}\z/i
           $1 + OES
         when /\A(.*)(fee)\z/
           $1 + $2 + S
