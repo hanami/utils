@@ -352,6 +352,11 @@ RSpec.describe Hanami::Utils::String do
       expect(result).to eq(@singular)
     end
 
+    it 'singularizes a composed string', silence_deprecations: true do
+      result = Hanami::Utils::String.singularize("control_exercises")
+      expect(result).to eq("control_exercise")
+    end
+
     it "doesn't mutate input", silence_deprecations: true do
       input = @plural
       singular_string = Hanami::Utils::String.singularize(input)

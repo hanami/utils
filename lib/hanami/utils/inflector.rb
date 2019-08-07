@@ -27,17 +27,31 @@ module Hanami
         # @since 0.6.0
         # @api private
         def ===(other)
-          key = other.downcase
+          key = if other.downcase =~ /_(\w*)\z/
+            $1
+          else
+            other.downcase
+          end
           @rules.key?(key) || @rules.value?(key)
         end
 
         # @since 0.6.0
         # @api private
         def apply(string)
-          key    = string.downcase
+          key = if string.downcase =~ /_(\w*)\z/
+            $1
+          else
+            string.downcase
+          end
           result = @rules[key] || @rules.rassoc(key).last
 
-          string[0] + result[1..-1]
+          prefix = if key == string.downcase
+            string[0]
+          else
+            string[0..string.index(key)]
+          end
+
+          prefix + result[1..-1]
         end
       end
 
