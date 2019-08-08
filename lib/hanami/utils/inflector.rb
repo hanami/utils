@@ -27,31 +27,31 @@ module Hanami
         # @since 0.6.0
         # @api private
         def ===(other)
-          key = if other.downcase =~ /_(\w*)\z/
-            $1
-          else
-            other.downcase
-          end
+          key = last_alpha(other)
           @rules.key?(key) || @rules.value?(key)
         end
 
         # @since 0.6.0
         # @api private
         def apply(string)
-          key = if string.downcase =~ /_(\w*)\z/
-            $1
-          else
-            string.downcase
-          end
+          key = last_alpha(string)
           result = @rules[key] || @rules.rassoc(key).last
 
           prefix = if key == string.downcase
-            string[0]
-          else
-            string[0..string.index(key)]
-          end
+                     string[0]
+                   else
+                     string[0..string.index(key)]
+                   end
 
           prefix + result[1..-1]
+        end
+
+        def last_alpha(string)
+          if string.downcase =~ /_([[:alpha:]]*)\z/
+            Regexp.last_match(1)
+          else
+            string.downcase
+          end
         end
       end
 
