@@ -46,6 +46,8 @@ module Hanami
           prefix + result[1..-1]
         end
 
+        private
+
         def last_alpha(string)
           if string.downcase =~ /_([[:alpha:]]*)\z/
             Regexp.last_match(1)
