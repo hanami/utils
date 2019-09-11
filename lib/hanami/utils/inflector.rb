@@ -48,6 +48,8 @@ module Hanami
 
         private
 
+        # @since 1.3.3
+        # @api private
         def extract_last_alphanumeric_token(string)
           if string.downcase =~ /_([[:alpha:]]*)\z/
             Regexp.last_match(1)
