@@ -1,6 +1,10 @@
 # Hanami::Utils
 Ruby core extentions and class utilities for Hanami
 
+## v1.3.3 - 2019-09-13
+### Fixed
+- [Mauro Morales] Ensure `Utils::Inflector.pluralize` and `.singularize` to work with words that contain an underscore (`_`)
+
 ## v1.3.2 - 2019-06-21
 ### Added
 - [Vladislav Yashin & Luca Guidi] Added `Utils::BasicObject#instance_of?`, `#is_a?`, and `#kind_of`
