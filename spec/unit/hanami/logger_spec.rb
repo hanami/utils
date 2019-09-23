@@ -1,6 +1,7 @@
 require 'hanami/logger'
 require 'rbconfig'
 require 'securerandom'
+require 'tempfile'
 
 RSpec.describe Hanami::Logger do
   before do
@@ -666,6 +667,16 @@ RSpec.describe Hanami::Logger do
       input = Hash[user: Hash[name: 'foo', password: 'azerty'], password: 'foo']
       output = described_class.new(%w[user.password]).call(input)
       expect(output).to eql(Hash[user: Hash[name: 'foo', password: '[FILTERED]'], password: 'foo'])
+    end
+
+    context 'when input has Tempfile' do
+      it 'filters with out errors with closed stream' do
+        tempfile = Tempfile.new('filter_test')
+        tempfile.close!
+        input = Hash[password: 'password', file: tempfile]
+        output = described_class.new(%i[password file]).call(input)
+        expect(output).to eql(Hash[password: '[FILTERED]', file: '[FILTERED]'])
+      end
     end
   end
 end
