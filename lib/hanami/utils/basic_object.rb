@@ -4,6 +4,23 @@ module Hanami
     #
     # @since 0.3.5
     class BasicObject < ::BasicObject
+      # Lookup constants at the top-level namespace, if they are missing in the
+      # current context.
+      #
+      # @param name [Symbol] the constant name
+      #
+      # @return [Object, Module] the constant
+      #
+      # @raises [NameError] if the constant cannot be found
+      #
+      # @since x.x.x
+      # @api private
+      #
+      # @see https://ruby-doc.org/core/Module.html#method-i-const_missing
+      def self.const_missing(name)
+        ::Object.const_get(name)
+      end
+
       # Return the class for debugging purposes.
       #
       # @since 0.3.5
