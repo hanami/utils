@@ -12,14 +12,12 @@ rvm:
   - jruby-9.1.9.0
   - ruby-head
   - jruby-head
-  - truffleruby
 
 matrix:
   allow_failures:
     - rvm: ruby-head
     - rvm: jruby-head
     - rvm: jruby-9.1.9.0
-    - rvm: truffleruby
 
 notifications:
   webhooks:
