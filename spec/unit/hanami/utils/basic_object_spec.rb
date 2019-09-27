@@ -1,10 +1,32 @@
 require 'hanami/utils/basic_object'
 require 'pp'
 
+class ExternalTestClass
+end
+
 class TestClass < Hanami::Utils::BasicObject
+  class InternalTestClass
+  end
+
+  def internal
+    InternalTestClass
+  end
+
+  def external
+    ExternalTestClass
+  end
 end
 
 RSpec.describe Hanami::Utils::BasicObject do
+  describe '.const_missing' do
+    subject { TestClass.new }
+
+    it 'lookups constants at the top-level namespace' do
+      expect(subject.internal).to eq(TestClass::InternalTestClass)
+      expect(subject.external).to eq(ExternalTestClass)
+    end
+  end
+
   describe '#respond_to_missing?' do
     it 'raises an exception if respond_to? method is not implemented' do
       expect { TestClass.new.respond_to?(:no_existing_method) }
