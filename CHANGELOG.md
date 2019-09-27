@@ -1,6 +1,10 @@
 # Hanami::Utils
 Ruby core extentions and class utilities for Hanami
 
+## v1.3.4 - 2019-09-27
+### Added
+- [Luca Guidi] Let `Utils::BasicObject` to lookup constants at the top-level namespace
+
 ## v1.3.3 - 2019-09-13
 ### Fixed
 - [Mauro Morales] Ensure `Utils::Inflector.pluralize` and `.singularize` to work with words that contain an underscore (`_`)

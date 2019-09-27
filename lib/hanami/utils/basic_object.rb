@@ -11,9 +11,9 @@ module Hanami
       #
       # @return [Object, Module] the constant
       #
-      # @raises [NameError] if the constant cannot be found
+      # @raise [NameError] if the constant cannot be found
       #
-      # @since x.x.x
+      # @since 1.3.4
       # @api private
       #
       # @see https://ruby-doc.org/core/Module.html#method-i-const_missing
