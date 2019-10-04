@@ -27,17 +27,35 @@ module Hanami
         # @since 0.6.0
         # @api private
         def ===(other)
-          key = other.downcase
+          key = extract_last_alphanumeric_token(other)
           @rules.key?(key) || @rules.value?(key)
         end
 
         # @since 0.6.0
         # @api private
         def apply(string)
-          key    = string.downcase
+          key = extract_last_alphanumeric_token(string)
           result = @rules[key] || @rules.rassoc(key).last
 
-          string[0] + result[1..-1]
+          prefix = if key == string.downcase
+                     string[0]
+                   else
+                     string[0..string.index(key)]
+                   end
+
+          prefix + result[1..-1]
+        end
+
+        private
+
+        # @since 1.3.3
+        # @api private
+        def extract_last_alphanumeric_token(string)
+          if string.downcase =~ /_([[:alpha:]]*)\z/
+            Regexp.last_match(1)
+          else
+            string.downcase
+          end
         end
       end
 
