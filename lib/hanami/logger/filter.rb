@@ -42,7 +42,7 @@ module Hanami
       # @api private
       def _key_paths(hash, base = nil)
         hash.inject([]) do |results, (k, v)|
-          results + (v.respond_to?(:each) ? _key_paths(v, _build_path(base, k)) : [_build_path(base, k)])
+          results + (v.is_a?(Enumerable) && !v.is_a?(File) ? _key_paths(v, _build_path(base, k)) : [_build_path(base, k)])
         end
       end
 
