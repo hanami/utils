@@ -42,7 +42,7 @@ module Hanami
       # @api private
       def _key_paths(hash, base = nil)
         hash.inject([]) do |results, (k, v)|
-          results + (v.is_a?(Enumerable) && !v.is_a?(File) ? _key_paths(v, _build_path(base, k)) : [_build_path(base, k)])
+          results + (_key_paths?(v) ? _key_paths(v, _build_path(base, k)) : [_build_path(base, k)])
         end
       end
 
@@ -62,6 +62,17 @@ module Hanami
           search_in = search_in[correct_key]
           res + [correct_key]
         end
+      end
+
+      # Check if the given value can be iterated (`Enumerable`) and that isn't a `File`.
+      # This is useful to detect closed `Tempfiles`.
+      #
+      # @since x.x.x
+      # @api private
+      #
+      # @see https://github.com/hanami/utils/pull/342
+      def _key_paths?(value)
+        value.is_a?(Enumerable) && !value.is_a?(File)
       end
     end
   end
