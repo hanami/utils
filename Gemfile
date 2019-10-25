@@ -18,3 +18,4 @@ gem 'gson', '>= 0.6', require: false, platforms: :jruby
 
 gem 'rubocop', '~> 0.75.0', require: false
 gem 'codecov', require: false, group: :test
+gem 'simplecov', '<= 0.17.0', require: false, group: :test
