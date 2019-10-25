@@ -67,7 +67,7 @@ module Hanami
       # Check if the given value can be iterated (`Enumerable`) and that isn't a `File`.
       # This is useful to detect closed `Tempfiles`.
       #
-      # @since x.x.x
+      # @since 1.3.5
       # @api private
       #
       # @see https://github.com/hanami/utils/pull/342
