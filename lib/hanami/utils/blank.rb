@@ -11,7 +11,7 @@ module Hanami
       # @api private
       STRING_MATCHER = /\A[[:space:]]*\z/.freeze
 
-      # Checks object is blank
+      # Checks if object is blank
       #
       # @example Basic Usage
       #   require 'hanami/utils/blank'
@@ -25,7 +25,7 @@ module Hanami
       #
       # @param object the argument
       #
-      # @return [TrueClass,FalseClass]
+      # @return [TrueClass,FalseClass] info, whether object is blank
       #
       # @since 0.8.0
       # @api private
@@ -44,7 +44,7 @@ module Hanami
         end
       end
 
-      # Checks object is filled
+      # Checks if object is filled
       #
       # @example Basic Usage
       #   require 'hanami/utils/blank'
@@ -58,7 +58,7 @@ module Hanami
       #
       # @param object the argument
       #
-      # @return [TrueClass,FalseClass]
+      # @return [TrueClass,FalseClass] whether the objevt is filled
       #
       # @since 1.0.0
       # @api private

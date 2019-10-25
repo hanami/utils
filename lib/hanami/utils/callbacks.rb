@@ -10,7 +10,7 @@ module Hanami
       # @since 0.1.0
       # @private
       class Chain
-        # Return a new chain
+        # Returns a new chain
         #
         # @return [Hanami::Utils::Callbacks::Chain]
         #
