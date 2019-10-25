@@ -6,7 +6,7 @@ module Hanami
     # Hash on steroids
     # @since 0.1.0
     #
-    # rubocop:disable ClassLength
+    # rubocop:disable Metrics/ClassLength
     class Hash
       # @since 0.6.0
       # @api private
@@ -520,6 +520,6 @@ module Hanami
         @hash.respond_to?(method_name, include_private)
       end
     end
-    # rubocop:enable ClassLength
+    # rubocop:enable Metrics/ClassLength
   end
 end
