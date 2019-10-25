@@ -58,7 +58,7 @@ module Hanami
       #
       # @param object the argument
       #
-      # @return [TrueClass,FalseClass] whether the objevt is filled
+      # @return [TrueClass,FalseClass] whether the object is filled
       #
       # @since 1.0.0
       # @api private
