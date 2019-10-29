@@ -121,15 +121,15 @@ module Hanami
         end
       end
 
-      # Shallow duplicates hash values
+      # Deep duplicates hash values
       #
-      # The output of this function is a shallow duplicate of the input.
+      # The output of this function is a deep duplicate of the input.
       # Any further modification on the input, won't be reflected on the output
       # and viceversa.
       #
       # @param input [::Hash] the input
       #
-      # @return [::Hash] the shallow duplicate of input
+      # @return [::Hash] the deep duplicate of input
       #
       # @since 1.0.1
       #
