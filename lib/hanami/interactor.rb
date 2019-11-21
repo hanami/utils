@@ -40,7 +40,7 @@ module Hanami
         @success = true
       end
 
-      # Check if the current status is successful
+      # Checks if the current status is successful
       #
       # @return [TrueClass,FalseClass] the result of the check
       #
@@ -52,7 +52,7 @@ module Hanami
       # @since 0.3.5
       alias success? successful?
 
-      # Check if the current status is not successful
+      # Checks if the current status is not successful
       #
       # @return [TrueClass,FalseClass] the result of the check
       #
@@ -61,7 +61,7 @@ module Hanami
         !successful?
       end
 
-      # Force the status to be a failure
+      # Forces the status to be a failure
       #
       # @since 0.3.5
       def fail!
@@ -104,7 +104,7 @@ module Hanami
         errors.first
       end
 
-      # Prepare the result before to be returned
+      # Prepares the result before to be returned
       #
       # @param payload [Hash] an updated payload
       #
@@ -377,7 +377,7 @@ module Hanami
 
     private
 
-    # Check if proceed with <tt>#call</tt> invokation.
+    # Checks if proceed with <tt>#call</tt> invocation.
     # By default it returns <tt>true</tt>.
     #
     # Developers can override it.
@@ -389,7 +389,7 @@ module Hanami
       true
     end
 
-    # Fail and interrupt the current flow.
+    # Fails and interrupts the current flow.
     #
     # @since 0.3.5
     #
@@ -428,7 +428,7 @@ module Hanami
       throw :fail
     end
 
-    # Log an error without interrupting the flow.
+    # Logs an error without interrupting the flow.
     #
     # When used, the returned result won't be successful.
     #
@@ -483,7 +483,7 @@ module Hanami
       false
     end
 
-    # Log an error AND interrupting the flow.
+    # Logs an error and interrupts the flow.
     #
     # When used, the returned result won't be successful.
     #
@@ -579,7 +579,7 @@ module Hanami
       end
     end
 
-    # Expose local instance variables into the returning value of <tt>#call</tt>
+    # Exposes local instance variables into the returning value of <tt>#call</tt>
     #
     # @param instance_variable_names [Symbol,Array<Symbol>] one or more instance
     #   variable names
@@ -588,7 +588,7 @@ module Hanami
     #
     # @see Hanami::Interactor::Result
     #
-    # @example Expose instance variable
+    # @example Exposes instance variable
     #
     #   class Signup
     #     include Hanami::Interactor

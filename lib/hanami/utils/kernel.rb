@@ -7,7 +7,7 @@ require 'hanami/utils'
 require 'hanami/utils/string'
 
 unless defined?(Boolean)
-  # Define top level constant Boolean, so it can be easily used by other libraries
+  # Defines top level constant Boolean, so it can be easily used by other libraries
   # in coercions DSLs
   #
   # @since 0.3.0
@@ -1021,7 +1021,7 @@ module Hanami
         raise TypeError.new "can't convert #{inspect_type_error(arg)}into Symbol"
       end
 
-      # Check if the given argument is a string representation of a number
+      # Checks if the given argument is a string representation of a number
       #
       # @param arg [Object] the input
       #

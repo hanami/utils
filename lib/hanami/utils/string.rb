@@ -79,7 +79,7 @@ module Hanami
       extend Transproc::Registry
       extend Transproc::Composer
 
-      # Apply the given transformation(s) to `input`
+      # Applies the given transformation(s) to `input`
       #
       # It performs a pipeline of transformations, by applying the given functions from `Hanami::Utils::String` and `::String`.
       # The transformations are applied in the given order.
@@ -164,7 +164,7 @@ module Hanami
         binding.instance_exec(value, &fun)
       end
 
-      # Return a titleized version of the string
+      # Returns a titleized version of the string
       #
       # @param input [::String] the input
       #
@@ -181,7 +181,7 @@ module Hanami
         underscore(string).split(CLASSIFY_SEPARATOR).map(&:capitalize).join(TITLEIZE_SEPARATOR)
       end
 
-      # Return a capitalized version of the string
+      # Returns a capitalized version of the string
       #
       # @param input [::String] the input
       #
@@ -208,7 +208,7 @@ module Hanami
         tail.unshift(head.capitalize).join(CAPITALIZE_SEPARATOR)
       end
 
-      # Return a CamelCase version of the string
+      # Returns a CamelCase version of the string
       #
       # @param input [::String] the input
       #
@@ -232,7 +232,7 @@ module Hanami
         words.zip(delimiters).join
       end
 
-      # Return a downcased and underscore separated version of the string
+      # Returns a downcased and underscore separated version of the string
       #
       # Revised version of `ActiveSupport::Inflector.underscore` implementation
       # @see https://github.com/rails/rails/blob/feaa6e2048fe86bcf07e967d6e47b865e42e055b/activesupport/lib/active_support/inflector/methods.rb#L90
@@ -257,7 +257,7 @@ module Hanami
         string.downcase
       end
 
-      # Return a downcased and dash separated version of the string
+      # Returns a downcased and dash separated version of the string
       #
       # @param input [::String] the input
       #
@@ -278,7 +278,7 @@ module Hanami
         underscore(string).split(CLASSIFY_SEPARATOR).join(DASHERIZE_SEPARATOR)
       end
 
-      # Return the string without the Ruby namespace of the class
+      # Returns the string without the Ruby namespace of the class
       #
       # @param input [::String] the input
       #
@@ -296,7 +296,7 @@ module Hanami
         ::String.new(input.to_s).split(NAMESPACE_SEPARATOR).last
       end
 
-      # Return the top level namespace name
+      # Returns the top level namespace name
       #
       # @param input [::String] the input
       #
@@ -314,7 +314,7 @@ module Hanami
         ::String.new(input.to_s).split(NAMESPACE_SEPARATOR).first
       end
 
-      # Return a pluralized version of self.
+      # Returns a pluralized version of self.
       #
       # @param input [::String] the input
       #
@@ -334,7 +334,7 @@ module Hanami
         Inflector.pluralize(string)
       end
 
-      # Return a singularized version of self.
+      # Returns a singularized version of self.
       #
       # @param input [::String] the input
       #
@@ -354,7 +354,7 @@ module Hanami
         Inflector.singularize(string)
       end
 
-      # Replace the rightmost match of `pattern` with `replacement`
+      # Replaces the rightmost match of `pattern` with `replacement`
       #
       # If the pattern cannot be matched, it returns the original string.
       #
@@ -396,7 +396,7 @@ module Hanami
         @string = string.to_s
       end
 
-      # Return a titleized version of the string
+      # Returns a titleized version of the string
       #
       # @return [Hanami::Utils::String] the transformed string
       #
@@ -412,7 +412,7 @@ module Hanami
         self.class.new underscore.split(CLASSIFY_SEPARATOR).map(&:capitalize).join(TITLEIZE_SEPARATOR)
       end
 
-      # Return a capitalized version of the string
+      # Returns a capitalized version of the string
       #
       # @return [Hanami::Utils::String] the transformed string
       #
@@ -444,7 +444,7 @@ module Hanami
         )
       end
 
-      # Return a CamelCase version of the string
+      # Returns a CamelCase version of the string
       #
       # @return [Hanami::Utils::String] the transformed string
       #
@@ -467,7 +467,7 @@ module Hanami
         self.class.new words.zip(delimiters).join
       end
 
-      # Return a downcased and underscore separated version of the string
+      # Returns a downcased and underscore separated version of the string
       #
       # Revised version of `ActiveSupport::Inflector.underscore` implementation
       # @see https://github.com/rails/rails/blob/feaa6e2048fe86bcf07e967d6e47b865e42e055b/activesupport/lib/active_support/inflector/methods.rb#L90
@@ -491,7 +491,7 @@ module Hanami
         self.class.new new_string
       end
 
-      # Return a downcased and dash separated version of the string
+      # Returns a downcased and dash separated version of the string
       #
       # @return [Hanami::Utils::String] the transformed string
       #
@@ -513,7 +513,7 @@ module Hanami
         self.class.new underscore.split(CLASSIFY_SEPARATOR).join(DASHERIZE_SEPARATOR)
       end
 
-      # Return the string without the Ruby namespace of the class
+      # Returns the string without the Ruby namespace of the class
       #
       # @return [Hanami::Utils::String] the transformed string
       #
@@ -532,7 +532,7 @@ module Hanami
         self.class.new split(NAMESPACE_SEPARATOR).last
       end
 
-      # Return the top level namespace name
+      # Returns the top level namespace name
       #
       # @return [Hanami::Utils::String] the transformed string
       #
@@ -590,7 +590,7 @@ module Hanami
       end
       # rubocop:enable Metrics/MethodLength
 
-      # Return a pluralized version of self.
+      # Returns a pluralized version of self.
       #
       # @return [Hanami::Utils::String] the pluralized string.
       #
@@ -603,7 +603,7 @@ module Hanami
         self.class.new Inflector.pluralize(self)
       end
 
-      # Return a singularized version of self.
+      # Returns a singularized version of self.
       #
       # @return [Hanami::Utils::String] the singularized string.
       #
@@ -650,7 +650,7 @@ module Hanami
 
       alias eql? ==
 
-      # Split the string with the given pattern
+      # Splits the string with the given pattern
       #
       # @return [Array<::String>]
       #
@@ -662,7 +662,7 @@ module Hanami
         @string.split(pattern, limit)
       end
 
-      # Replace the given pattern with the given replacement
+      # Replaces the given pattern with the given replacement
       #
       # @return [::String]
       #
@@ -678,7 +678,7 @@ module Hanami
         end
       end
 
-      # Iterate through the string, matching the pattern.
+      # Iterates through the string, matching the pattern.
       # Either return all those patterns, or pass them to the block.
       #
       # @return [Array<::String>]
@@ -691,7 +691,7 @@ module Hanami
         @string.scan(pattern, &blk)
       end
 
-      # Replace the rightmost match of `pattern` with `replacement`
+      # Replaces the rightmost match of `pattern` with `replacement`
       #
       # If the pattern cannot be matched, it returns the original string.
       #
@@ -726,7 +726,7 @@ module Hanami
         end
       end
 
-      # Override Ruby's method_missing in order to provide ::String interface
+      # Overrides Ruby's method_missing in order to provide ::String interface
       #
       # @api private
       # @since 0.3.0
@@ -740,7 +740,7 @@ module Hanami
         s
       end
 
-      # Override Ruby's respond_to_missing? in order to support ::String interface
+      # Overrides Ruby's respond_to_missing? in order to support ::String interface
       #
       # @api private
       # @since 0.3.0

@@ -47,7 +47,7 @@ module Hanami
         self[:symbolize_keys].call(input)
       end
 
-      # Deep symbolize the given hash
+      # Performs deep symbolize on the given hash
       #
       # @param input [::Hash] the input
       #
@@ -69,7 +69,7 @@ module Hanami
         self[:deep_symbolize_keys].call(input)
       end
 
-      # Stringify the given hash
+      # Stringifies the given hash
       #
       # @param input [::Hash] the input
       #
@@ -89,7 +89,7 @@ module Hanami
         self[:stringify_keys].call(input)
       end
 
-      # Deeply stringify the given hash
+      # Deeply stringifies the given hash
       #
       # @param input [::Hash] the input
       #
@@ -121,15 +121,15 @@ module Hanami
         end
       end
 
-      # Deep duplicate hash values
+      # Deep duplicates hash values
       #
-      # The output of this function is a shallow duplicate of the input.
+      # The output of this function is a deep duplicate of the input.
       # Any further modification on the input, won't be reflected on the output
       # and viceversa.
       #
       # @param input [::Hash] the input
       #
-      # @return [::Hash] the shallow duplicate of input
+      # @return [::Hash] the deep duplicate of input
       #
       # @since 1.0.1
       #
@@ -169,7 +169,7 @@ module Hanami
         end
       end
 
-      # Deep serialize given object into a `Hash`
+      # Deep serializes given object into a `Hash`
       #
       # Please note that the returning `Hash` will use symbols as keys.
       #
@@ -239,7 +239,7 @@ module Hanami
         @hash.default_proc = blk if blk
       end
 
-      # Convert in-place all the keys to Symbol instances.
+      # Converts in-place all the keys to Symbol instances.
       #
       # @return [Hash] self
       #
@@ -263,7 +263,7 @@ module Hanami
         self
       end
 
-      # Convert in-place all the keys to Symbol instances, nested hashes are converted too.
+      # Converts in-place all the keys to Symbol instances, nested hashes are converted too.
       #
       # @return [Hash] self
       #
@@ -289,7 +289,7 @@ module Hanami
         self
       end
 
-      # Convert in-place all the keys to Symbol instances, nested hashes are converted too.
+      # Converts in-place all the keys to Symbol instances, nested hashes are converted too.
       #
       # @return [Hash] self
       #
@@ -315,7 +315,7 @@ module Hanami
         self
       end
 
-      # Return a deep copy of the current Hanami::Utils::Hash
+      # Returns a deep copy of the current Hanami::Utils::Hash
       #
       # @return [Hash] a deep duplicated self
       #
@@ -498,7 +498,7 @@ module Hanami
         @hash.inspect
       end
 
-      # Override Ruby's method_missing in order to provide ::Hash interface
+      # Overrides Ruby's method_missing in order to provide ::Hash interface
       #
       # @api private
       # @since 0.3.0
@@ -512,7 +512,7 @@ module Hanami
         h
       end
 
-      # Override Ruby's respond_to_missing? in order to support ::Hash interface
+      # Overrides Ruby's respond_to_missing? in order to support ::Hash interface
       #
       # @api private
       # @since 0.3.0

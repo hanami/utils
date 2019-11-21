@@ -4,7 +4,7 @@ module Hanami
     #
     # @since 0.3.5
     class BasicObject < ::BasicObject
-      # Lookup constants at the top-level namespace, if they are missing in the
+      # Lookups constants at the top-level namespace, if they are missing in the
       # current context.
       #
       # @param name [Symbol] the constant name
@@ -21,7 +21,7 @@ module Hanami
         ::Object.const_get(name)
       end
 
-      # Return the class for debugging purposes.
+      # Returns the class for debugging purposes.
       #
       # @since 0.3.5
       #
@@ -48,7 +48,7 @@ module Hanami
 
       # @!macro [attach] instance_of?(class)
       #
-      # Determine if self is an instance of given class or module
+      # Determines if self is an instance of given class or module
       #
       # @param class [Class,Module] the class of module to verify
       #
@@ -63,7 +63,7 @@ module Hanami
 
       # @!macro [attach] is_a?(class)
       #
-      # Determine if self is of the type of the object class or module
+      # Determines if self is of the type of the object class or module
       #
       # @param class [Class,Module] the class of module to verify
       #
@@ -78,7 +78,7 @@ module Hanami
 
       # @!macro [attach] kind_of?(class)
       #
-      # Determine if self is of the kind of the object class or module
+      # Determines if self is of the kind of the object class or module
       #
       # @param class [Class,Module] the class of module to verify
       #
