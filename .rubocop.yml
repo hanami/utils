@@ -5,6 +5,7 @@ inherit_from:
 AllCops:
   Exclude:
     - "tmp/**/*"
+    - "vendor/**/*"
 Naming/HeredocDelimiterNaming:
   Exclude:
     - "spec/**/*"
