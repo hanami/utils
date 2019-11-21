@@ -397,7 +397,7 @@ module Hanami
         end
       end
 
-      # Escape HTML contents
+      # Escapes HTML contents
       #
       # This MUST be used only for tag contents.
       # Please use `html_attribute` for escaping HTML attributes.
@@ -430,7 +430,7 @@ module Hanami
         result
       end
 
-      # Escape HTML attributes
+      # Escapes HTML attributes
       #
       # This can be used both for HTML attributes and contents.
       # Please note that this is more computational expensive.
@@ -463,7 +463,7 @@ module Hanami
         result
       end
 
-      # Escape URL for HTML attributes (href, src, etc..).
+      # Escapes URL for HTML attributes (href, src, etc..).
       #
       # It extracts from the given input the first valid URL that matches the
       # whitelisted schemes (default: http, https and mailto).
@@ -521,7 +521,7 @@ module Hanami
       class << self
         private
 
-        # Encode the given string into UTF-8
+        # Encodes the given string into UTF-8
         #
         # @param input [String] the input
         #

@@ -12,7 +12,7 @@ module Hanami
       # @api private
       HASH_SEPARATOR = ","
 
-      # Serialize input into a query string
+      # Serializes input into a query string
       #
       # @param input [Object] the input
       #

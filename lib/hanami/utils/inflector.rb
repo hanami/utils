@@ -314,7 +314,7 @@ module Hanami
         class_eval(&blk)
       end
 
-      # Add a custom inflection exception
+      # Adds a custom inflection exception
       #
       # @param [String] singular form
       # @param [String] plural form
@@ -345,7 +345,7 @@ module Hanami
         Inflecto.inflections.irregular(singular, plural)
       end
 
-      # Add an uncountable word
+      # Adds an uncountable word
       #
       # @param [Array<String>] words
       #
@@ -366,7 +366,7 @@ module Hanami
         end
       end
 
-      # Pluralize the given string
+      # Pluralizes the given string
       #
       # @param string [String] a string to pluralize
       #
@@ -424,7 +424,7 @@ module Hanami
       # rubocop:enable Metrics/CyclomaticComplexity
       # rubocop:enable Metrics/MethodLength
 
-      # Singularize the given string
+      # Singularizes the given string
       #
       # @param string [String] a string to singularize
       #
