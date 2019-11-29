@@ -279,7 +279,7 @@ module Hanami
     #   logger.info "Hello World"
     #
     #   # => {"app":"Hanami","severity":"DEBUG","time":"2017-03-30T13:57:59Z","message":"Hello World"}
-    # rubocop:disable Lint/HandleExceptions
+    # rubocop:disable Lint/SuppressedException
     # rubocop:disable Metrics/ParameterLists
     def initialize(application_name = nil, *args, stream: $stdout, level: DEBUG, formatter: nil, filter: [], colorizer: nil)
       begin
@@ -296,7 +296,7 @@ module Hanami
     end
 
     # rubocop:enable Metrics/ParameterLists
-    # rubocop:enable Lint/HandleExceptions
+    # rubocop:enable Lint/SuppressedException
 
     # Returns the current application name, this is used for tagging purposes
     #

@@ -115,7 +115,7 @@ module Hanami
         tokenize(pattern) do |token|
           begin
             return namespace.const_get(token, false)
-          rescue NameError # rubocop:disable Lint/HandleExceptions
+          rescue NameError # rubocop:disable Lint/SuppressedException
           end
         end
 
