@@ -1,4 +1,52 @@
 kind: pipeline
+name: ruby-2-7
+group: build
+
+steps:
+- name: install
+  image: ruby:2.7
+  volumes:
+  - name: bundle
+    path: /usr/local/bundle
+  commands:
+  - ruby -v
+  - gem install bundler
+  - bundle install --jobs=3 --retry=3
+
+- name: unit
+  image: ruby:2.7
+  volumes:
+  - name: bundle
+    path: /usr/local/bundle
+  commands:
+  - COVERAGE=true bundle exec rake spec:unit
+
+- name: isolation
+  image: ruby:2.7
+  volumes:
+  - name: bundle
+    path: /usr/local/bundle
+  commands:
+  - ./script/test isolation
+
+- name: quality
+  image: ruby:2.7
+  environment:
+    CODECOV_TOKEN:
+      from_secret: codecov
+  volumes:
+  - name: bundle
+    path: /usr/local/bundle
+  commands:
+  - bundle exec rubocop
+  - CI=true bundle exec rake codecov:upload
+
+volumes:
+- name: bundle
+  temp: {}
+
+---
+kind: pipeline
 name: ruby-2-6
 group: build
 
@@ -196,7 +244,7 @@ group: build
 
 steps:
 - name: install
-  image: jruby:9.2
+  image: hanami/jruby-9.2
   volumes:
   - name: bundle
     path: /usr/local/bundle
@@ -206,7 +254,7 @@ steps:
   - bundle install --jobs=3 --retry=3
 
 - name: unit
-  image: jruby:9.2
+  image: hanami/jruby-9.2
   volumes:
   - name: bundle
     path: /usr/local/bundle
@@ -214,7 +262,7 @@ steps:
   - COVERAGE=true bundle exec rake spec:unit
 
 - name: quality
-  image: jruby:9.2
+  image: hanami/jruby-9.2
   environment:
     CODECOV_TOKEN:
       from_secret: codecov
@@ -236,7 +284,7 @@ group: build
 
 steps:
 - name: install
-  image: jruby:9.1
+  image: hanami/jruby-9.1
   volumes:
   - name: bundle
     path: /usr/local/bundle
@@ -246,7 +294,7 @@ steps:
   - bundle install --jobs=3 --retry=3
 
 - name: unit
-  image: jruby:9.1
+  image: hanami/jruby-9.1
   volumes:
   - name: bundle
     path: /usr/local/bundle
@@ -254,7 +302,7 @@ steps:
   - COVERAGE=true bundle exec rake spec:unit
 
 - name: isolation
-  image: jruby:9.1
+  image: hanami/jruby-9.1
   volumes:
   - name: bundle
     path: /usr/local/bundle
@@ -262,7 +310,7 @@ steps:
   - ./script/test isolation
 
 - name: quality
-  image: jruby:9.1
+  image: hanami/jruby-9.1
   environment:
     CODECOV_TOKEN:
       from_secret: codecov

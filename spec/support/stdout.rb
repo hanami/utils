@@ -1,3 +1,5 @@
+require 'stringio'
+
 module RSpec
   module Support
     module Stdout
