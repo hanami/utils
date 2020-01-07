@@ -163,7 +163,7 @@ module Hanami
         mkdir_p(path)
 
         content = ::File.readlines(path)
-        content << "\n" unless content.last.end_with?("\n")
+        content << "\n" if content.any? && !content.last.end_with?("\n")
         content << "#{contents}\n"
 
         write(path, content)
