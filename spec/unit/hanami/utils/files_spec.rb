@@ -246,6 +246,19 @@ RSpec.describe Hanami::Utils::Files do
       expect(path).to have_content(expected)
     end
 
+    # https://github.com/hanami/utils/issues/348
+    it "adds a line at the top of a file that doesn't end with a newline" do
+      path = root.join("unshift_missing_newline.rb")
+      content = "get '/tires', to: 'sunshine#index'"
+
+      described_class.write(path, content)
+      described_class.unshift(path, "root to: 'home#index'")
+
+      expected = "root to: 'home#index'\nget '/tires', to: 'sunshine#index'"
+
+      expect(path).to have_content(expected)
+    end
+
     it "raises error if path doesn't exist" do
       path = root.join("unshift_no_exist.rb")
 
@@ -279,10 +292,40 @@ RSpec.describe Hanami::Utils::Files do
       expect(path).to have_content(expected)
     end
 
+    # https://github.com/hanami/utils/issues/348
+    it "adds a line at the bottom of a file that doesn't end with a newline" do
+      path = root.join("append_missing_newline.rb")
+      content = "root to: 'home#index'"
+
+      described_class.write(path, content)
+      described_class.append(path, "get '/tires', to: 'sunshine#index'")
+
+      expected = <<~EOF
+        root to: 'home#index'
+        get '/tires', to: 'sunshine#index'
+      EOF
+
+      expect(path).to have_content(expected)
+    end
+
+    it "adds a line to empty file" do
+      path = root.join("append_empty_file.rb")
+      content = ""
+
+      described_class.write(path, content)
+      described_class.append(path, "get '/tires', to: 'sunshine#index'")
+
+      expected = <<~EOF
+        get '/tires', to: 'sunshine#index'
+      EOF
+
+      expect(path).to have_content(expected)
+    end
+
     it "raises error if path doesn't exist" do
       path = root.join("append_no_exist.rb")
 
-      expect { described_class.unshift(path, "\n Foo.register Append") }.to raise_error do |exception|
+      expect { described_class.append(path, "\n Foo.register Append") }.to raise_error do |exception|
         expect(exception).to be_kind_of(Errno::ENOENT)
         expect(exception.message).to match("No such file or directory")
       end

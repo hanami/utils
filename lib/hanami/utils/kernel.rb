@@ -7,7 +7,7 @@ require 'hanami/utils'
 require 'hanami/utils/string'
 
 unless defined?(Boolean)
-  # Define top level constant Boolean, so it can be easily used by other libraries
+  # Defines top level constant Boolean, so it can be easily used by other libraries
   # in coercions DSLs
   #
   # @since 0.3.0
@@ -1021,7 +1021,7 @@ module Hanami
         raise TypeError.new "can't convert #{inspect_type_error(arg)}into Symbol"
       end
 
-      # Check if the given argument is a string representation of a number
+      # Checks if the given argument is a string representation of a number
       #
       # @param arg [Object] the input
       #
@@ -1042,11 +1042,11 @@ module Hanami
       # @since 0.4.3
       # @api private
       def self.inspect_type_error(arg)
-        (arg.respond_to?(:inspect) ? arg.inspect : arg.to_s) << ' '
+        (arg.respond_to?(:inspect) ? arg.inspect : arg.to_s) + ' '
       rescue NoMethodError
         # missing the #respond_to? method, fall back to returning the class' name
         begin
-          arg.class.name << ' instance '
+          arg.class.name + ' instance '
         rescue NoMethodError
           # missing the #class method, can't fall back to anything better than nothing
           # Callers will have to guess from their code

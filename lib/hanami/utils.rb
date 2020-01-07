@@ -21,7 +21,7 @@ module Hanami
 
     # Checks if the current VM is JRuby
     #
-    # @return [TrueClass,FalseClass] return if the VM is JRuby or not
+    # @return [TrueClass,FalseClass] info whether the VM is JRuby or not
     #
     # @since 0.3.1
     # @api private
@@ -31,7 +31,7 @@ module Hanami
 
     # Checks if the current VM is Rubinius
     #
-    # @return [TrueClass,FalseClass] return if the VM is Rubinius or not
+    # @return [TrueClass,FalseClass] info whether the VM is Rubinius or not
     #
     # @since 0.3.1
     # @api private
@@ -39,7 +39,7 @@ module Hanami
       RUBY_ENGINE == HANAMI_RUBINIUS
     end
 
-    # Recursively require Ruby files under the given directory.
+    # Recursively requires Ruby files under the given directory.
     #
     # If the directory is relative, it implies it's the path from current directory.
     # If the directory is absolute, it uses as it is.
@@ -54,7 +54,7 @@ module Hanami
       for_each_file_in(directory) { |file| require_relative(file) }
     end
 
-    # Recursively reload Ruby files under the given directory.
+    # Recursively reloads Ruby files under the given directory.
     #
     # If the directory is relative, it implies it's the path from current directory.
     # If the directory is absolute, it uses as it is.

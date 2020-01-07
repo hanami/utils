@@ -16,5 +16,5 @@ end
 
 gem 'gson', '>= 0.6', require: false, platforms: :jruby
 
-gem 'rubocop', '~> 0.75.0', require: false
+gem 'rubocop', '~> 0.79.0', require: false
 gem 'codecov', require: false, group: :test

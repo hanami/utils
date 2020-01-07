@@ -2,13 +2,17 @@
 # alphabetically
 inherit_from:
   - https://raw.githubusercontent.com/hanami/devtools/master/.rubocop.yml
+AllCops:
+  Exclude:
+    - "tmp/**/*"
+    - "vendor/**/*"
 Naming/HeredocDelimiterNaming:
   Exclude:
     - "spec/**/*"
 Naming/MethodName:
   Exclude:
     - "lib/hanami/utils/kernel.rb"
-Layout/AlignHash:
+Layout/HashAlignment:
   Enabled: false
 Style/CommentedKeyword:
   Exclude:

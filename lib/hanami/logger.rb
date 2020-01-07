@@ -7,7 +7,7 @@ require "hanami/utils/files"
 module Hanami
   # Hanami logger
   #
-  # Implement with the same interface of Ruby std lib `Logger`.
+  # Implementation with the same interface of Ruby std lib `Logger`.
   # It uses `STDOUT`, `STDERR`, file name or open file as output stream.
   #
   #
@@ -16,7 +16,7 @@ module Hanami
   #
   # This is useful for auto-tagging the output. Eg (`app=Booshelf`).
   #
-  # When used stand alone (eg. `Hanami::Logger.info`), it tags lines with `app=Shared`.
+  # When used standalone (eg. `Hanami::Logger.info`), it tags lines with `app=Shared`.
   #
   #
   # The available severity levels are the same of `Logger`:
@@ -30,7 +30,7 @@ module Hanami
   #
   # Those levels are available both as class and instance methods.
   #
-  # Also Hanami::Logger support different formatters. Now available only two:
+  # Also Hanami::Logger supports different formatters. Now available only two:
   #
   #   * Formatter (default)
   #   * JSONFormatter
@@ -279,7 +279,7 @@ module Hanami
     #   logger.info "Hello World"
     #
     #   # => {"app":"Hanami","severity":"DEBUG","time":"2017-03-30T13:57:59Z","message":"Hello World"}
-    # rubocop:disable Lint/HandleExceptions
+    # rubocop:disable Lint/SuppressedException
     # rubocop:disable Metrics/ParameterLists
     def initialize(application_name = nil, *args, stream: $stdout, level: DEBUG, formatter: nil, filter: [], colorizer: nil)
       begin
@@ -296,7 +296,7 @@ module Hanami
     end
 
     # rubocop:enable Metrics/ParameterLists
-    # rubocop:enable Lint/HandleExceptions
+    # rubocop:enable Lint/SuppressedException
 
     # Returns the current application name, this is used for tagging purposes
     #
@@ -313,7 +313,7 @@ module Hanami
       super _level(value)
     end
 
-    # Close the logging stream if this stream isn't an STDOUT
+    # Closes the logging stream if this stream isn't an STDOUT
     #
     # @since 0.8.0
     def close

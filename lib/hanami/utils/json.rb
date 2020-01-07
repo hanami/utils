@@ -41,7 +41,7 @@ module Hanami
       end
       # rubocop:enable Style/ClassVars
 
-      # Parse the given JSON paylod
+      # Parses the given JSON paylod
       #
       # @param payload [String] a JSON payload
       #

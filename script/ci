@@ -14,7 +14,9 @@ print_ruby_version() {
 }
 
 run_code_quality_checks() {
-  bundle exec rubocop .
+  local config="$(pwd)/.rubocop.yml"
+
+  bundle exec rubocop --config=$config
 }
 
 run_unit_tests() {
