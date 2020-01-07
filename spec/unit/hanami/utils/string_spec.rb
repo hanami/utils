@@ -308,6 +308,7 @@ RSpec.describe Hanami::Utils::String do
   describe ".rsub" do
     it "::String instance" do
       result = Hanami::Utils::String.rsub("authors/books/index", //, "")
+
       expect(result).to be_kind_of(::String)
     end
 

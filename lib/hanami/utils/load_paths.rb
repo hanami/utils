@@ -50,7 +50,7 @@ module Hanami
         @paths = original.instance_variable_get(:@paths).dup
       end
 
-      # Iterates thru the collection and yields the given block.
+      # Iterates through the collection and yields the given block.
       # It skips duplications and raises an error in case one of the paths
       # doesn't exist.
       #
@@ -158,7 +158,7 @@ module Hanami
 
       private
 
-      # Allow subclasses to define their own policy to discover the realpath
+      # Allows subclasses to define their own policy to discover the realpath
       # of the given path.
       #
       # @since 0.2.0

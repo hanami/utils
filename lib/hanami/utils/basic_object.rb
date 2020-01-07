@@ -6,7 +6,24 @@ module Hanami
     #
     # @since 0.3.5
     class BasicObject < ::BasicObject
-      # Return the class for debugging purposes.
+      # Lookups constants at the top-level namespace, if they are missing in the
+      # current context.
+      #
+      # @param name [Symbol] the constant name
+      #
+      # @return [Object, Module] the constant
+      #
+      # @raise [NameError] if the constant cannot be found
+      #
+      # @since 1.3.4
+      # @api private
+      #
+      # @see https://ruby-doc.org/core/Module.html#method-i-const_missing
+      def self.const_missing(name)
+        ::Object.const_get(name)
+      end
+
+      # Returns the class for debugging purposes.
       #
       # @since 0.3.5
       #
@@ -33,7 +50,7 @@ module Hanami
 
       # @!macro [attach] instance_of?(class)
       #
-      # Determine if self is an instance of given class or module
+      # Determines if self is an instance of given class or module
       #
       # @param class [Class,Module] the class of module to verify
       #
@@ -48,7 +65,7 @@ module Hanami
 
       # @!macro [attach] is_a?(class)
       #
-      # Determine if self is of the type of the object class or module
+      # Determines if self is of the type of the object class or module
       #
       # @param class [Class,Module] the class of module to verify
       #
@@ -63,7 +80,7 @@ module Hanami
 
       # @!macro [attach] kind_of?(class)
       #
-      # Determine if self is of the kind of the object class or module
+      # Determines if self is of the kind of the object class or module
       #
       # @param class [Class,Module] the class of module to verify
       #

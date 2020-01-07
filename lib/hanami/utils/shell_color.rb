@@ -18,7 +18,7 @@ module Hanami
         end
       end
 
-      # Escape codes for terminals to output strings in colors
+      # Escapes codes for terminals to output strings in colors
       #
       # @since 1.2.0
       # @api private
@@ -33,7 +33,7 @@ module Hanami
         gray:    37,
       ].freeze
 
-      # Colorize output
+      # Colorizes output
       # 8 colors available: black, red, green, yellow, blue, magenta, cyan, and gray
       #
       # @param input [#to_s] the string to colorize

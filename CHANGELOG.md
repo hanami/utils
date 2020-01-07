@@ -18,6 +18,26 @@ Ruby core extentions and class utilities for Hanami
 - [Gustavo Caso] Remove `Utils::File.rewrite`
 - [Vladimir Suvorov] Remove `Utils::Class.load_from_pattern!`
 
+## v1.3.6 - 2020-01-07
+### Added
+- [Luca Guidi] Official support for Ruby: MRI 2.7
+
+### Fixed
+- [ippachi] `Utils::Files.append`: don't check breakline if file is empty
+
+## v1.3.5 - 2019-10-25
+### Fixed
+- [Ivan Kabluchkov] Ensure `Hanami::Logger` filters to not crash when logger stream is a closed tempfile
+- [Luca Guidi] Ensure `Utils::Files.append` to append contents properly when existing file doesn't end with a newline
+
+## v1.3.4 - 2019-09-27
+### Added
+- [Luca Guidi] Let `Utils::BasicObject` to lookup constants at the top-level namespace
+
+## v1.3.3 - 2019-09-13
+### Fixed
+- [Mauro Morales] Ensure `Utils::Inflector.pluralize` and `.singularize` to work with words that contain an underscore (`_`)
+
 ## v1.3.2 - 2019-06-21
 ### Added
 - [Vladislav Yashin & Luca Guidi] Added `Utils::BasicObject#instance_of?`, `#is_a?`, and `#kind_of`
