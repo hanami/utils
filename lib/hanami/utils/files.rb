@@ -163,7 +163,7 @@ module Hanami
         mkdir_p(path)
 
         content = ::File.readlines(path)
-        content << "\n" unless content.last.end_with?("\n")
+        content << "\n" if _append_newline?(content)
         content << "#{contents}\n"
 
         write(path, content)
@@ -452,6 +452,16 @@ module Hanami
       end
 
       private_class_method :line_number
+
+      # @since 1.3.6
+      # @api private
+      def self._append_newline?(content)
+        return false if content.empty?
+
+        !content.last.end_with?("\n")
+      end
+
+      private_class_method :_append_newline?
     end
   end
 end

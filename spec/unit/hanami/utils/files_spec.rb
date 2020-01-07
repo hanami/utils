@@ -308,6 +308,20 @@ RSpec.describe Hanami::Utils::Files do
       expect(path).to have_content(expected)
     end
 
+    it "adds a line to empty file" do
+      path = root.join("append_empty_file.rb")
+      content = ""
+
+      described_class.write(path, content)
+      described_class.append(path, "get '/tires', to: 'sunshine#index'")
+
+      expected = <<~EOF
+        get '/tires', to: 'sunshine#index'
+      EOF
+
+      expect(path).to have_content(expected)
+    end
+
     it "raises error if path doesn't exist" do
       path = root.join("append_no_exist.rb")
 
