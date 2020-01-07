@@ -12,7 +12,7 @@ Naming/HeredocDelimiterNaming:
 Naming/MethodName:
   Exclude:
     - "lib/hanami/utils/kernel.rb"
-Layout/AlignHash:
+Layout/HashAlignment:
   Enabled: false
 Style/CommentedKeyword:
   Exclude:

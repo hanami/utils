@@ -1,6 +1,13 @@
 # Hanami::Utils
 Ruby core extentions and class utilities for Hanami
 
+## v1.3.6 - 2020-01-07
+### Added
+- [Luca Guidi] Official support for Ruby: MRI 2.7
+
+### Fixed
+- [ippachi] `Utils::Files.append`: don't check breakline if file is empty
+
 ## v1.3.5 - 2019-10-25
 ### Fixed
 - [Ivan Kabluchkov] Ensure `Hanami::Logger` filters to not crash when logger stream is a closed tempfile
