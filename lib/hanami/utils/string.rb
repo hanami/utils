@@ -1,6 +1,7 @@
-require 'hanami/utils/inflector'
-require 'transproc'
-require 'concurrent/map'
+# frozen_string_literal: true
+
+require "transproc"
+require "concurrent/map"
 
 module Hanami
   module Utils
@@ -12,19 +13,19 @@ module Hanami
       #
       # @since 0.6.0
       # @api private
-      EMPTY_STRING        = ''.freeze
+      EMPTY_STRING        = ""
 
       # Separator between Ruby namespaces
       #
       # @since 0.1.0
       # @api private
-      NAMESPACE_SEPARATOR = '::'.freeze
+      NAMESPACE_SEPARATOR = "::"
 
       # Separator for #classify
       #
       # @since 0.3.0
       # @api private
-      CLASSIFY_SEPARATOR  = '_'.freeze
+      CLASSIFY_SEPARATOR  = "_"
 
       # Regexp for #tokenize
       #
@@ -36,37 +37,37 @@ module Hanami
       #
       # @since 0.3.0
       # @api private
-      TOKENIZE_SEPARATOR  = '|'.freeze
+      TOKENIZE_SEPARATOR  = "|"
 
       # Separator for #underscore
       #
       # @since 0.3.0
       # @api private
-      UNDERSCORE_SEPARATOR = '/'.freeze
+      UNDERSCORE_SEPARATOR = "/"
 
       # gsub second parameter used in #underscore
       #
       # @since 0.3.0
       # @api private
-      UNDERSCORE_DIVISION_TARGET = '\1_\2'.freeze
+      UNDERSCORE_DIVISION_TARGET = '\1_\2'
 
       # Separator for #titleize
       #
       # @since 0.4.0
       # @api private
-      TITLEIZE_SEPARATOR = ' '.freeze
+      TITLEIZE_SEPARATOR = " "
 
       # Separator for #capitalize
       #
       # @since 0.5.2
       # @api private
-      CAPITALIZE_SEPARATOR = ' '.freeze
+      CAPITALIZE_SEPARATOR = " "
 
       # Separator for #dasherize
       #
       # @since 0.4.0
       # @api private
-      DASHERIZE_SEPARATOR = '-'.freeze
+      DASHERIZE_SEPARATOR = "-"
 
       # Regexp for #classify
       #
@@ -314,47 +315,7 @@ module Hanami
         ::String.new(input.to_s).split(NAMESPACE_SEPARATOR).first
       end
 
-      # Returns a pluralized version of self.
-      #
-      # @param input [::String] the input
-      #
-      # @return [::String] the pluralized string.
-      #
-      # @since 1.1.0
-      #
-      # @see Hanami::Utils::Inflector
-      # @deprecated
-      #
-      # @example
-      #   require 'hanami/utils/string'
-      #
-      #   Hanami::Utils::String.pluralize('book') # => 'books'
-      def self.pluralize(input)
-        string = ::String.new(input.to_s)
-        Inflector.pluralize(string)
-      end
-
-      # Returns a singularized version of self.
-      #
-      # @param input [::String] the input
-      #
-      # @return [::String] the singularized string.
-      #
-      # @since 1.1.0
-      # @deprecated
-      #
-      # @see Hanami::Utils::Inflector
-      #
-      # @example
-      #   require 'hanami/utils/string'
-      #
-      #   Hanami::Utils::String.singularize('books') # => 'book'
-      def self.singularize(input)
-        string = ::String.new(input.to_s)
-        Inflector.singularize(string)
-      end
-
-      # Replaces the rightmost match of `pattern` with `replacement`
+      # Replace the rightmost match of `pattern` with `replacement`
       #
       # If the pattern cannot be matched, it returns the original string.
       #
@@ -589,32 +550,6 @@ module Hanami
         nil
       end
       # rubocop:enable Metrics/MethodLength
-
-      # Returns a pluralized version of self.
-      #
-      # @return [Hanami::Utils::String] the pluralized string.
-      #
-      # @api private
-      # @since 0.4.1
-      # @deprecated
-      #
-      # @see Hanami::Utils::Inflector
-      def pluralize
-        self.class.new Inflector.pluralize(self)
-      end
-
-      # Returns a singularized version of self.
-      #
-      # @return [Hanami::Utils::String] the singularized string.
-      #
-      # @api private
-      # @since 0.4.1
-      # @deprecated
-      #
-      # @see Hanami::Utils::Inflector
-      def singularize
-        self.class.new Inflector.singularize(self)
-      end
 
       # Returns the hash of the internal string
       #

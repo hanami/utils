@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "pathname"
 require "fileutils"
 require "hanami/utils/deprecation"
@@ -30,24 +32,6 @@ module Hanami
       def self.write(path, *content)
         mkdir_p(path)
         open(path, ::File::CREAT | ::File::WRONLY | ::File::TRUNC, *content) # rubocop:disable Security/Open - this isn't a call to `::Kernel.open`, but to `self.open`
-      end
-
-      # Rewrites the contents of an existing file.
-      # If the path already exists, it replaces the contents.
-      #
-      # @param path [String,Pathname] the path to file
-      # @param content [String, Array<String>] the content to write
-      #
-      # @raise [Errno::ENOENT] if the path doesn't exist
-      #
-      # @since 1.1.0
-      def self.rewrite(path, *content)
-        Hanami::Utils::Deprecation.new(
-          "`.rewrite' is deprecated, please use `.write'"
-        )
-        raise Errno::ENOENT unless File.exist?(path)
-
-        write(path, *content)
       end
 
       # Copies source into destination.
@@ -329,7 +313,7 @@ module Hanami
         starting = index(content, path, target)
         line     = content[starting]
         size     = line[/\A[[:space:]]*/].bytesize
-        closing  = (" " * size) + (target =~ /{/ ? '}' : 'end')
+        closing  = (" " * size) + (/{/.match?(target) ? "}" : "end")
         ending   = starting + index(content[starting..-1], path, closing)
 
         content.slice!(starting..ending)

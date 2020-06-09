@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Hanami
   module Utils
     # Checks for blank
@@ -19,7 +21,6 @@ module Hanami
       #   Hanami::Utils::Blank.blank?(Hanami::Utils::String.new('')) # => true
       #   Hanami::Utils::Blank.blank?('  ')                          # => true
       #   Hanami::Utils::Blank.blank?(nil)                           # => true
-      #   Hanami::Utils::Blank.blank?(Hanami::Utils::Hash.new({}))   # => true
       #   Hanami::Utils::Blank.blank?(true)                          # => false
       #   Hanami::Utils::Blank.blank?(1)                             # => false
       #
@@ -33,7 +34,7 @@ module Hanami
         case object
         when String, ::String
           STRING_MATCHER === object # rubocop:disable Style/CaseEquality
-        when Hash, ::Hash, ::Array
+        when ::Hash, ::Array
           object.empty?
         when TrueClass, Numeric
           false
@@ -54,7 +55,6 @@ module Hanami
       #   Hanami::Utils::Blank.filled?(Hanami::Utils::String.new('')) # => false
       #   Hanami::Utils::Blank.filled?('  ')                          # => false
       #   Hanami::Utils::Blank.filled?(nil)                           # => false
-      #   Hanami::Utils::Blank.filled?(Hanami::Utils::Hash.new({}))   # => false
       #
       # @param object the argument
       #

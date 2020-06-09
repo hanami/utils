@@ -1,6 +1,8 @@
-require 'hanami/utils/basic_object'
-require 'hanami/utils/class_attribute'
-require 'hanami/utils/hash'
+# frozen_string_literal: true
+
+require "hanami/utils/basic_object"
+require "hanami/utils/class_attribute"
+require "hanami/utils/hash"
 
 module Hanami
   # Hanami Interactor
@@ -546,7 +548,7 @@ module Hanami
     # @since 0.5.0
     # @api private
     def _exposures
-      Hash[].tap do |result|
+      ::Hash[].tap do |result|
         self.class.exposures.each do |name, ivar|
           result[name] = instance_variable_defined?(ivar) ? instance_variable_get(ivar) : nil
         end

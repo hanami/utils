@@ -1,10 +1,12 @@
-require 'hanami/utils/class_attribute'
+# frozen_string_literal: true
+
+require "hanami/utils/class_attribute"
 
 RSpec.describe Hanami::Utils::ClassAttribute do
   before do
     class ClassAttributeTest
       include Hanami::Utils::ClassAttribute
-      class_attribute :callbacks, :functions, :values
+      class_attribute :callbacks, :functions, :values, :initial
       self.callbacks = [:a]
       self.values    = [1]
     end
@@ -40,6 +42,16 @@ RSpec.describe Hanami::Utils::ClassAttribute do
       self.engines = 2
       self.wheels  = 8
     end
+
+    class DoubleInclude
+      include Hanami::Utils::ClassAttribute
+      class_attribute :foo
+      self.foo = 1
+
+      include Hanami::Utils::ClassAttribute
+      class_attribute :bar
+      self.bar = 2
+    end
   end
 
   after do
@@ -49,16 +61,17 @@ RSpec.describe Hanami::Utils::ClassAttribute do
        Vehicle
        Car
        Airplane
-       SmallAirplane].each do |const|
+       SmallAirplane
+       DoubleInclude].each do |const|
          Object.send :remove_const, const
        end
   end
 
-  it 'sets the given value' do
+  it "sets the given value" do
     expect(ClassAttributeTest.callbacks).to eq([:a])
   end
 
-  describe 'inheritance' do
+  describe "inheritance" do
     around do |example|
       @debug = $DEBUG
       $DEBUG = true
@@ -68,21 +81,25 @@ RSpec.describe Hanami::Utils::ClassAttribute do
       $DEBUG = @debug
     end
 
-    it 'the value it is inherited by subclasses' do
+    it "the initial value is nil" do
+      expect(ClassAttributeTest.initial).to be(nil)
+    end
+
+    it "the value it is inherited by subclasses" do
       expect(SubclassAttributeTest.callbacks).to eq([:a])
     end
 
-    it 'if the superclass value changes it does not affects subclasses' do
+    it "if the superclass value changes it does not affects subclasses" do
       ClassAttributeTest.functions = [:y]
       expect(SubclassAttributeTest.functions).to eq(%i[x y])
     end
 
-    it 'if the subclass value changes it does not affects superclass' do
+    it "if the subclass value changes it does not affects superclass" do
       SubclassAttributeTest.values = [3, 2]
       expect(ClassAttributeTest.values).to eq([1])
     end
 
-    describe 'when the subclass is defined in a different namespace' do
+    describe "when the subclass is defined in a different namespace" do
       before do
         module Lts
           module Routing
@@ -105,7 +122,7 @@ RSpec.describe Hanami::Utils::ClassAttribute do
         end
       end
 
-      it 'refers to the superclass value' do
+      it "refers to the superclass value" do
         expect(Lts::Routing::Resources::New.verb).to eq :get
       end
     end
@@ -117,16 +134,16 @@ RSpec.describe Hanami::Utils::ClassAttribute do
     #    expect(SubSubclassAttributeTest.values).to eq(values)
     # end
 
-    it 'if the subclass defines an attribute it should not be available for the superclass' do
+    it "if the subclass defines an attribute it should not be available for the superclass" do
       $DEBUG = @debug
       expect { ClassAttributeTest.subattribute }.to raise_error(NoMethodError)
     end
 
-    it 'if the subclass defines an attribute it should be available for its subclasses' do
+    it "if the subclass defines an attribute it should be available for its subclasses" do
       expect(SubSubclassAttributeTest.subattribute).to eq 42
     end
 
-    it 'preserves values within the inheritance chain' do
+    it "preserves values within the inheritance chain" do
       expect(Vehicle.engines).to eq 0
       expect(Vehicle.wheels).to eq  0
 
@@ -143,5 +160,13 @@ RSpec.describe Hanami::Utils::ClassAttribute do
     it "doesn't print warnings when it gets inherited" do
       expect { Class.new(Vehicle) }.not_to output.to_stdout
     end
+  end
+
+  it "class_attributes class variable is a Concurrent::Map instance" do
+    expect(ClassAttributeTest.send(:class_attributes)).to be_a(Hanami::Utils::ClassAttribute::Attributes)
+  end
+
+  it "preserves class attributes if module is included multiple times" do
+    expect(DoubleInclude.foo).to be(1)
   end
 end
