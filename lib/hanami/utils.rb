@@ -71,7 +71,7 @@ module Hanami
     # @since 1.0.0
     # @api private
     def self.for_each_file_in(directory, &blk)
-      directory = directory.to_s.gsub(%r{(\/|\\)}, File::SEPARATOR)
+      directory = directory.to_s.gsub(%r{(/|\\)}, File::SEPARATOR)
       directory = Pathname.new(Dir.pwd).join(directory).to_s
       directory = File.join(directory, "**", "*.rb") unless directory =~ /(\*\*)/
 

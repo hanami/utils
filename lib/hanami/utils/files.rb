@@ -314,7 +314,7 @@ module Hanami
         line     = content[starting]
         size     = line[/\A[[:space:]]*/].bytesize
         closing  = (" " * size) + (/{/.match?(target) ? "}" : "end")
-        ending   = starting + index(content[starting..-1], path, closing)
+        ending   = starting + index(content[starting..], path, closing)
 
         content.slice!(starting..ending)
         write(path, content)
