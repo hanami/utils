@@ -28,7 +28,7 @@ module Hanami
       # @api private
       #
       # @see Hanami::Utils::Kernel.Integer
-      NUMERIC_MATCHER = %r{\A([\d\/\.\+iE]+|NaN|Infinity)\z}.freeze
+      NUMERIC_MATCHER = %r{\A([\d/.+iE]+|NaN|Infinity)\z}.freeze
 
       # @since 0.8.0
       # @api private
@@ -1057,7 +1057,7 @@ module Hanami
       end
 
       class << self
-        private :inspect_type_error # rubocop:disable Style/AccessModifierDeclarations
+        private :inspect_type_error
       end
     end
   end
