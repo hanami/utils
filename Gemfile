@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 gemspec
 
 unless ENV['CI']
-  gem 'byebug', require: false, platforms: :mri if RUBY_VERSION >= '2.2.0'
+  gem 'byebug', require: false, platforms: :mri if RUBY_VERSION >= '2.3.0'
   gem 'yard',   require: false
 end
 
@@ -15,6 +15,4 @@ group :inflecto do
 end
 
 gem 'gson', '>= 0.6', require: false, platforms: :jruby
-
-gem 'rubocop', '~> 0.80.0', require: false
 gem 'codecov', require: false, group: :test
