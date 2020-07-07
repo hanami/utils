@@ -144,13 +144,13 @@ module Hanami
       #   input
       #     # => {"a"=>{"b"=>{"c"=>[1,2,3,4]}}}
       def self.deep_dup(input)
-        input.each_with_object({}) do |(k, v), result|
-          result[k] = case v
-                      when ::Hash
-                        deep_dup(v)
-                      else
-                        v.dup
-                      end
+        input.transform_values do |v|
+          case v
+          when ::Hash
+            deep_dup(v)
+          else
+            v.dup
+          end
         end
       end
 
