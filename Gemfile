@@ -12,6 +12,5 @@ group :multi_json do
   gem "multi_json", "~> 1.0", require: false
 end
 
-gem "gson", ">= 0.6", require: false, platforms: :jruby
-
 gem "codecov", require: false, group: :test
+gem "gson", ">= 0.6", require: false, platforms: :jruby
