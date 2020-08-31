@@ -294,13 +294,13 @@ class CreateUser
   expose :user
 
   def call(**params)
-    build_user(params)
+    build_user(**params)
     persist
   end
 
   private
 
-  def build_user(params)
+  def build_user(**params)
     @user = User.new(params)
   end
 

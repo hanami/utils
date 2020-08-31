@@ -355,7 +355,15 @@ module Hanami
       #   Signup.new.call # => NoMethodError
       def call(*args)
         @__result = ::Hanami::Interactor::Result.new
-        _call(*args) { super }
+        _call(*args) do
+          if method(:call).super_method.parameters.last[0] == :keyrest &&
+             args.last.respond_to?(:to_hash)
+            kwargs = args.pop
+            super(*args, **kwargs)
+          else
+            super(*args)
+          end
+        end
       end
 
       private
