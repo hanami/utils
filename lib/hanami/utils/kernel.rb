@@ -738,7 +738,8 @@ module Hanami
       #   require 'hanami/utils/kernel'
       #
       #   Hanami::Utils::Kernel.DateTime(3483943)
-      #     # => Time.at(3483943).to_datetime #<DateTime: 1970-02-10T08:45:43+01:00 ((2440628j,27943s,0n),+3600s,2299161j)>
+      #     # => Time.at(3483943).to_datetime
+      #     # #<DateTime: 1970-02-10T08:45:43+01:00 ((2440628j,27943s,0n),+3600s,2299161j)>
       #
       #   Hanami::Utils::Kernel.DateTime(DateTime.now)
       #     # => #<DateTime: 2014-04-18T09:33:49+02:00 ((2456766j,27229s,690849000n),+7200s,2299161j)>

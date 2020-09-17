@@ -74,7 +74,7 @@ module Hanami
       #
       # @since 0.3.4
       # @api private
-      CLASSIFY_WORD_SEPARATOR = /#{CLASSIFY_SEPARATOR}|#{NAMESPACE_SEPARATOR}|#{UNDERSCORE_SEPARATOR}|#{DASHERIZE_SEPARATOR}/.freeze
+      CLASSIFY_WORD_SEPARATOR = /#{CLASSIFY_SEPARATOR}|#{NAMESPACE_SEPARATOR}|#{UNDERSCORE_SEPARATOR}|#{DASHERIZE_SEPARATOR}/.freeze # rubocop:disable Layout/LineLength
 
       @__transformations__ = Concurrent::Map.new
 
@@ -83,7 +83,8 @@ module Hanami
 
       # Applies the given transformation(s) to `input`
       #
-      # It performs a pipeline of transformations, by applying the given functions from `Hanami::Utils::String` and `::String`.
+      # It performs a pipeline of transformations, by applying the given
+      # functions from `Hanami::Utils::String` and `::String`.
       # The transformations are applied in the given order.
       #
       # It doesn't mutate the input, unless you use destructive methods from `::String`
@@ -144,7 +145,8 @@ module Hanami
                      elsif input.respond_to?(transformation)
                        t(:bind, input, ->(i) { i.public_send(transformation, *args) })
                      else
-                       raise NoMethodError.new(%(undefined method `#{transformation.inspect}' for #{input.inspect}:#{input.class}))
+                       raise NoMethodError.new(%(undefined method `#{transformation.inspect}' for \
+                                               #{input.inspect}:#{input.class}))
                      end
             end
           end
@@ -735,7 +737,9 @@ module Hanami
       #
       # @raise [NoMethodError] If doesn't respond to the given method
       def method_missing(method_name, *args, &blk)
-        raise NoMethodError.new(%(undefined method `#{method_name}' for "#{@string}":#{self.class})) unless respond_to?(method_name)
+        unless respond_to?(method_name)
+          raise NoMethodError.new(%(undefined method `#{method_name}' for "#{@string}":#{self.class}))
+        end
 
         s = @string.__send__(method_name, *args, &blk)
         s = self.class.new(s) if s.is_a?(::String)

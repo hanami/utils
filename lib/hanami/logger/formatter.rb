@@ -121,7 +121,7 @@ module Hanami
       # @since 0.8.0
       # @api private
       def _format(hash)
-        "#{_line_front_matter(hash.delete(:app), hash.delete(:severity), hash.delete(:time))}#{SEPARATOR}#{_format_message(hash)}"
+        "#{_line_front_matter(hash.delete(:app), hash.delete(:severity), hash.delete(:time))}#{SEPARATOR}#{_format_message(hash)}" # rubocop:disable Layout/LineLength
       end
 
       # @since 1.2.0

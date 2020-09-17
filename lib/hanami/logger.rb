@@ -281,7 +281,7 @@ module Hanami
     #   # => {"app":"Hanami","severity":"DEBUG","time":"2017-03-30T13:57:59Z","message":"Hello World"}
     # rubocop:disable Lint/SuppressedException
     # rubocop:disable Metrics/ParameterLists
-    def initialize(application_name = nil, *args, stream: $stdout, level: DEBUG, formatter: nil, filter: [], colorizer: nil)
+    def initialize(application_name = nil, *args, stream: $stdout, level: DEBUG, formatter: nil, filter: [], colorizer: nil) # rubocop:disable Layout/LineLength
       begin
         Utils::Files.mkdir_p(stream)
       rescue TypeError

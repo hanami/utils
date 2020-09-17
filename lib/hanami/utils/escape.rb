@@ -370,8 +370,10 @@ module Hanami
       #
       # It's marked with this special class for two reasons:
       #
-      #   * Don't double escape the same string (this is for `Hanami::Helpers` compatibility)
-      #   * Leave open the possibility to developers to mark a string as safe with an higher API (eg. `#raw` in `Hanami::View` or `Hanami::Helpers`)
+      #   * Don't double escape the same string (this is for `Hanami::Helpers`
+      #     compatibility)
+      #   * Leave open the possibility to developers to mark a string as safe
+      #     with an higher API (eg. `#raw` in `Hanami::View` or `Hanami::Helpers`)
       #
       # @since 0.4.0
       # @api private

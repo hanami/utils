@@ -507,7 +507,9 @@ module Hanami
       #
       # @raise [NoMethodError] If doesn't respond to the given method
       def method_missing(method_name, *args, &blk)
-        raise NoMethodError.new(%(undefined method `#{method_name}' for #{@hash}:#{self.class})) unless respond_to?(method_name)
+        unless respond_to?(method_name)
+          raise NoMethodError.new(%(undefined method `#{method_name}' for #{@hash}:#{self.class}))
+        end
 
         h = @hash.__send__(method_name, *args, &blk)
         h = self.class.new(h) if h.is_a?(::Hash)
