@@ -19,14 +19,14 @@ RSpec.describe Hanami::Utils::Hash do
     end
 
     it "doesn't mutate original input" do
-      input = { "fub" => "baz" }
+      input = {"fub" => "baz"}
       described_class.symbolize(input)
 
       expect(input).to eq("fub" => "baz")
     end
 
     it "doesn't symbolizes nested hashes" do
-      hash = described_class.symbolize("nested" => { "key" => "value" })
+      hash = described_class.symbolize("nested" => {"key" => "value"})
 
       expect(hash[:nested].keys).to eq(["key"])
     end
@@ -47,21 +47,21 @@ RSpec.describe Hanami::Utils::Hash do
     end
 
     it "doesn't mutate original input" do
-      input = { "nested" => { "key" => "value" } }
+      input = {"nested" => {"key" => "value"}}
       described_class.deep_symbolize(input)
 
-      expect(input).to eq("nested" => { "key" => "value" })
+      expect(input).to eq("nested" => {"key" => "value"})
     end
 
     it "symbolizes nested hashes" do
-      hash = described_class.deep_symbolize("nested" => { "key" => "value" })
+      hash = described_class.deep_symbolize("nested" => {"key" => "value"})
 
       expect(hash[:nested]).to be_kind_of(::Hash)
       expect(hash[:nested][:key]).to eq("value")
     end
 
     it "symbolizes deep nested hashes" do
-      hash = described_class.deep_symbolize("nested1" => { "nested2" => { "nested3" => { "key" => 1 } } })
+      hash = described_class.deep_symbolize("nested1" => {"nested2" => {"nested3" => {"key" => 1}}})
 
       expect(hash.keys).to eq([:nested1])
 
@@ -81,8 +81,8 @@ RSpec.describe Hanami::Utils::Hash do
     end
 
     it "symbolizes arrays of hashes" do
-      hash = described_class.deep_symbolize("books" => [{ "title" => "Hello Ruby" }, { "title" => "Hello Hanami" }])
-      expect(hash).to eq(books: [{ title: "Hello Ruby" }, { title: "Hello Hanami" }])
+      hash = described_class.deep_symbolize("books" => [{"title" => "Hello Ruby"}, {"title" => "Hello Hanami"}])
+      expect(hash).to eq(books: [{title: "Hello Ruby"}, {title: "Hello Hanami"}])
     end
 
     it "does't symbolize nested object that responds to to_hash" do
@@ -113,21 +113,21 @@ RSpec.describe Hanami::Utils::Hash do
     end
 
     it "doesn't mutate original input" do
-      input = { nested: { key: "value" } }
+      input = {nested: {key: "value"}}
       described_class.deep_stringify(input)
 
-      expect(input).to eq(nested: { key: "value" })
+      expect(input).to eq(nested: {key: "value"})
     end
 
     it "stringifies nested hashes" do
-      hash = described_class.deep_stringify(nested: { key: "value" })
+      hash = described_class.deep_stringify(nested: {key: "value"})
 
       expect(hash["nested"]).to be_kind_of(::Hash)
       expect(hash["nested"]["key"]).to eq("value")
     end
 
     it "stringifies deep nested hashes" do
-      hash = described_class.deep_stringify(nested1: { nested2: { nested3: { key: 1 } } })
+      hash = described_class.deep_stringify(nested1: {nested2: {nested3: {key: 1}}})
 
       expect(hash.keys).to eq(["nested1"])
 
@@ -147,8 +147,8 @@ RSpec.describe Hanami::Utils::Hash do
     end
 
     it "stringifies arrays of hashes" do
-      hash = described_class.deep_stringify(books: [{ title: "Hello Ruby" }, { title: "Hello Hanami" }])
-      expect(hash).to eq("books" => [{ "title" => "Hello Ruby" }, { "title" => "Hello Hanami" }])
+      hash = described_class.deep_stringify(books: [{title: "Hello Ruby"}, {title: "Hello Hanami"}])
+      expect(hash).to eq("books" => [{"title" => "Hello Ruby"}, {"title" => "Hello Hanami"}])
     end
 
     it "does't stringify nested object that responds to to_hash" do
@@ -172,7 +172,7 @@ RSpec.describe Hanami::Utils::Hash do
     end
 
     it "duplicates string values" do
-      input  = { "a" => "hello" }
+      input  = {"a" => "hello"}
       result = described_class.deep_dup(input)
 
       result["a"] << " world"
@@ -181,7 +181,7 @@ RSpec.describe Hanami::Utils::Hash do
     end
 
     it "duplicates array values" do
-      input  = { "a" => [1, 2, 3] }
+      input  = {"a" => [1, 2, 3]}
       result = described_class.deep_dup(input)
 
       result["a"] << 4
@@ -190,7 +190,7 @@ RSpec.describe Hanami::Utils::Hash do
     end
 
     it "duplicates hash values" do
-      input  = { "a" => { "b" => 2 } }
+      input  = {"a" => {"b" => 2}}
       result = described_class.deep_dup(input)
 
       result["a"]["c"] = 3
@@ -199,12 +199,12 @@ RSpec.describe Hanami::Utils::Hash do
     end
 
     it "duplicates nested hashes" do
-      input  = { "a" => { "b" => { "c" => 3 } } }
+      input  = {"a" => {"b" => {"c" => 3}}}
       result = described_class.deep_dup(input)
 
       result["a"].delete("b")
 
-      expect(input).to eq("a" => { "b" => { "c" => 3 } })
+      expect(input).to eq("a" => {"b" => {"c" => 3}})
     end
   end
 
@@ -224,7 +224,7 @@ RSpec.describe Hanami::Utils::Hash do
     end
 
     it "deeply serializes input" do
-      expected = { foo: "bar", baz: [{ hello: "world" }] }
+      expected = {foo: "bar", baz: [{hello: "world"}]}
       actual = described_class.deep_serialize(input)
 
       expect(actual).to eq(expected)
@@ -254,14 +254,14 @@ RSpec.describe Hanami::Utils::Hash do
     end
 
     it "doesn't mutate original input" do
-      input = { "fub" => "baz" }
+      input = {"fub" => "baz"}
       described_class.stringify(input)
 
       expect(input).to eq("fub" => "baz")
     end
 
     it "doesn't stringify nested hashes" do
-      hash = described_class.stringify("nested" => { key: "value" })
+      hash = described_class.stringify("nested" => {key: "value"})
       expect(hash["nested"].keys).to eq([:key])
     end
   end
@@ -331,7 +331,7 @@ RSpec.describe Hanami::Utils::Hash do
     end
 
     it "does not symbolize nested hashes", silence_deprecations: true do
-      hash = Hanami::Utils::Hash.new("nested" => { "key" => "value" })
+      hash = Hanami::Utils::Hash.new("nested" => {"key" => "value"})
       hash.symbolize!
 
       expect(hash[:nested].keys).to eq(["key"])
@@ -348,7 +348,7 @@ RSpec.describe Hanami::Utils::Hash do
     end
 
     it "symbolizes nested hashes", silence_deprecations: true do
-      hash = Hanami::Utils::Hash.new("nested" => { "key" => "value" })
+      hash = Hanami::Utils::Hash.new("nested" => {"key" => "value"})
       hash.deep_symbolize!
 
       expect(hash[:nested]).to be_kind_of Hanami::Utils::Hash
@@ -356,7 +356,7 @@ RSpec.describe Hanami::Utils::Hash do
     end
 
     it "symbolizes deep nested hashes", silence_deprecations: true do
-      hash = Hanami::Utils::Hash.new("nested1" => { "nested2" => { "nested3" => { "key" => 1 } } })
+      hash = Hanami::Utils::Hash.new("nested1" => {"nested2" => {"nested3" => {"key" => 1}}})
       hash.deep_symbolize!
 
       expect(hash.keys).to eq([:nested1])
@@ -408,7 +408,7 @@ RSpec.describe Hanami::Utils::Hash do
     end
 
     it "stringifies nested hashes", silence_deprecations: true do
-      hash = Hanami::Utils::Hash.new(nested: { key: "value" })
+      hash = Hanami::Utils::Hash.new(nested: {key: "value"})
       hash.stringify!
 
       expect(hash["nested"]).to be_kind_of Hanami::Utils::Hash
@@ -472,7 +472,7 @@ RSpec.describe Hanami::Utils::Hash do
     end
 
     it "returns a hash with nested duplicated values", silence_deprecations: true do
-      hash  = Hanami::Utils::Hash.new("foo" => { "bar" => "baz" }, "x" => Hanami::Utils::Hash.new("y" => "z"))
+      hash  = Hanami::Utils::Hash.new("foo" => {"bar" => "baz"}, "x" => Hanami::Utils::Hash.new("y" => "z"))
       duped = hash.deep_dup
 
       duped["foo"]["bar"].reverse!
@@ -530,8 +530,8 @@ RSpec.describe Hanami::Utils::Hash do
         hash = {
           tutorial: {
             instructions: [
-              { title: "foo",  body: "bar" },
-              { title: "hoge", body: "fuga" }
+              {title: "foo",  body: "bar"},
+              {title: "hoge", body: "fuga"}
             ]
           }
         }
@@ -550,8 +550,8 @@ RSpec.describe Hanami::Utils::Hash do
         hash = {
           "tutorial" => {
             "instructions" => [
-              { "title" => "foo",  "body" => "bar" },
-              { "title" => "hoge", "body" => "fuga" }
+              {"title" => "foo",  "body" => "bar"},
+              {"title" => "hoge", "body" => "fuga"}
             ]
           }
         }
@@ -587,7 +587,7 @@ RSpec.describe Hanami::Utils::Hash do
 
     it "serializes nested objects that respond to to_hash", silence_deprecations: true do
       nested = Hanami::Utils::Hash.new(metadata: WrappingHash.new(coverage: 100))
-      expect(nested.to_h).to eq(metadata: { coverage: 100 })
+      expect(nested.to_h).to eq(metadata: {coverage: 100})
     end
   end
 
@@ -601,8 +601,8 @@ RSpec.describe Hanami::Utils::Hash do
       hash = {
         tutorial: {
           instructions: [
-            { title: "foo",  body: "bar" },
-            { title: "hoge", body: "fuga" }
+            {title: "foo",  body: "bar"},
+            {title: "hoge", body: "fuga"}
           ]
         }
       }
@@ -621,8 +621,8 @@ RSpec.describe Hanami::Utils::Hash do
       hash = {
         "tutorial" => {
           "instructions" => [
-            { "title" => "foo",  "body" => "bar" },
-            { "title" => "hoge", "body" => "fuga" }
+            {"title" => "foo",  "body" => "bar"},
+            {"title" => "hoge", "body" => "fuga"}
           ]
         }
       }
@@ -671,7 +671,7 @@ RSpec.describe Hanami::Utils::Hash do
 
     it "has a working equality with raw hashes", silence_deprecations: true do
       hash = Hanami::Utils::Hash.new("a" => 1)
-      expect(hash == { "a" => 1 }).to be_truthy
+      expect(hash == {"a" => 1}).to be_truthy
     end
   end
 
@@ -685,7 +685,7 @@ RSpec.describe Hanami::Utils::Hash do
 
     it "has a working case equality with raw hashes", silence_deprecations: true do
       hash = Hanami::Utils::Hash.new("a" => 1)
-      expect(hash === { "a" => 1 }).to be_truthy # rubocop:disable Style/CaseEquality
+      expect(hash === {"a" => 1}).to be_truthy # rubocop:disable Style/CaseEquality
     end
   end
 
@@ -717,7 +717,7 @@ RSpec.describe Hanami::Utils::Hash do
 
   describe "#hash" do
     it "returns the same hash result of ::Hash", silence_deprecations: true do
-      expected = { "l" => 23 }.hash
+      expected = {"l" => 23}.hash
       actual   = Hanami::Utils::Hash.new("l" => 23).hash
 
       expect(actual).to eq expected
@@ -726,7 +726,7 @@ RSpec.describe Hanami::Utils::Hash do
 
   describe "#inspect", silence_deprecations: true do
     it "returns the same output of ::Hash" do
-      expected = { "l" => 23, l: 23 }.inspect
+      expected = {"l" => 23, l: 23}.inspect
       actual   = Hanami::Utils::Hash.new("l" => 23, l: 23).inspect
 
       expect(actual).to eq expected

@@ -183,7 +183,7 @@ RSpec.describe Hanami::Logger do
 
               it "uses custom colors" do
                 output = with_tty do
-                  logger = Hanami::Logger.new(colorizer: Hanami::Logger::Colorizer.new(colors: { app: :red }))
+                  logger = Hanami::Logger.new(colorizer: Hanami::Logger::Colorizer.new(colors: {app: :red}))
                   logger.info("hello")
                 end
 
@@ -568,7 +568,7 @@ RSpec.describe Hanami::Logger do
       end
 
       it "logs HTTP request" do
-        message = { http: "HTTP/1.1", verb: "GET", status: "200", ip: "::1", path: "/books/23", length: "175", params: {}, elapsed: 0.005829 }
+        message = {http: "HTTP/1.1", verb: "GET", status: "200", ip: "::1", path: "/books/23", length: "175", params: {}, elapsed: 0.005829}
 
         output =
           with_captured_stdout do
