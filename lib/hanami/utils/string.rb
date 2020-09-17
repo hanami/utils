@@ -143,8 +143,7 @@ module Hanami
                      elsif input.respond_to?(transformation)
                        t(:bind, input, ->(i) { i.public_send(transformation, *args) })
                      else
-                       raise NoMethodError.new(%(undefined method `#{transformation.inspect}' for \
-                                               #{input.inspect}:#{input.class}))
+                       raise NoMethodError.new(%(undefined method `#{transformation.inspect}' for #{input.inspect}:#{input.class})) # rubocop:disable Layout/LineLength
                      end
             end
           end

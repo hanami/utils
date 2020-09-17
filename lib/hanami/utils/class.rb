@@ -112,8 +112,7 @@ module Hanami
       #   # with missing constant
       #   Hanami::Utils::Class.load_from_pattern!('Unknown') # => raises NameError
       def self.load_from_pattern!(pattern, namespace = Object)
-        Deprecation.new("Hanami::Utils::Class.load_from_pattern! is deprecated, \
-                        please use Hanami::Utils::Class.load! instead")
+        Deprecation.new("Hanami::Utils::Class.load_from_pattern! is deprecated, please use Hanami::Utils::Class.load! instead") # rubocop:disable Layout/LineLength
 
         tokenize(pattern) do |token|
           begin
