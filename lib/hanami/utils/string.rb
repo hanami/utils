@@ -9,7 +9,7 @@ module Hanami
     # String on steroids
     #
     # @since 0.1.0
-    class String # rubocop:disable Metrics/ClassLength
+    class String
       # Empty string for #classify
       #
       # @since 0.6.0
@@ -132,8 +132,6 @@ module Hanami
       #   Hanami::Utils::String.transform("Cherry", -> { "blossom" }))
       #     # => ArgumentError: wrong number of arguments (given 1, expected 0)
       #
-      # rubocop:disable Metrics/AbcSize
-      # rubocop:disable Metrics/MethodLength
       def self.transform(input, *transformations)
         fn = @__transformations__.fetch_or_store(transformations.hash) do
           compose do |fns|
@@ -154,8 +152,6 @@ module Hanami
 
         fn.call(input)
       end
-      # rubocop:enable Metrics/MethodLength
-      # rubocop:enable Metrics/AbcSize
 
       # Extracted from `transproc` source code
       #
@@ -379,7 +375,7 @@ module Hanami
       #     # => 'authors/books#index'
       def self.rsub(input, pattern, replacement)
         string = ::String.new(input.to_s)
-        if i = string.rindex(pattern) # rubocop:disable Lint/AssignmentInCondition
+        if i = string.rindex(pattern)
           s = string.dup
           s[i] = replacement
           s
@@ -577,9 +573,8 @@ module Hanami
       #     'Hanami::Utils'
       #     'Hanami::App'
       #
-      # rubocop:disable Metrics/MethodLength
       def tokenize
-        if match = TOKENIZE_REGEXP.match(@string) # rubocop:disable Lint/AssignmentInCondition
+        if match = TOKENIZE_REGEXP.match(@string)
           pre  = match.pre_match
           post = match.post_match
           tokens = match[1].split(TOKENIZE_SEPARATOR)
@@ -592,7 +587,6 @@ module Hanami
 
         nil
       end
-      # rubocop:enable Metrics/MethodLength
 
       # Returns a pluralized version of self.
       #
@@ -721,7 +715,7 @@ module Hanami
       #   puts result
       #     # => #<Hanami::Utils::String:0x007fdb41232ed0 @string="authors/books#index">
       def rsub(pattern, replacement)
-        if i = rindex(pattern) # rubocop:disable Lint/AssignmentInCondition
+        if i = rindex(pattern)
           s    = @string.dup
           s[i] = replacement
           self.class.new s

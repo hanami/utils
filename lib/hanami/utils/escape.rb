@@ -39,7 +39,7 @@ module Hanami
       # @since 0.4.0
       # @api private
       HEX_CODES = (0..255).each_with_object({}) do |c, codes|
-        if (c >= 0x30 && c <= 0x39) || (c >= 0x41 && c <= 0x5A) || (c >= 0x61 && c <= 0x7A) # rubocop:disable Style/ConditionalAssignment
+        if (c >= 0x30 && c <= 0x39) || (c >= 0x41 && c <= 0x5A) || (c >= 0x61 && c <= 0x7A)
           codes[c] = nil
         else
           codes[c] = c.to_s(HEX_BASE)
@@ -559,7 +559,7 @@ module Hanami
 
           hex = REPLACEMENT_HEX if NON_PRINTABLE_CHARS[code]
 
-          if entity = HTML_ENTITIES[code] # rubocop:disable Lint/AssignmentInCondition
+          if entity = HTML_ENTITIES[code]
             "&#{entity};"
           else
             "&#x#{hex};"

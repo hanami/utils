@@ -8,7 +8,6 @@ module Hanami
     # Hash on steroids
     # @since 0.1.0
     #
-    # rubocop:disable Metrics/ClassLength
     class Hash
       # @since 0.6.0
       # @api private
@@ -107,7 +106,7 @@ module Hanami
       #
       #   hash.class
       #     # => Hash
-      def self.deep_stringify(input) # rubocop:disable Metrics/MethodLength
+      def self.deep_stringify(input)
         input.each_with_object({}) do |(key, value), output|
           output[key.to_s] =
             case value
@@ -195,7 +194,7 @@ module Hanami
       #
       #   Hanami::Utils::Hash.deep_serialize(input)
       #     # => {:foo=>"bar", :baz=>[{:hello=>"world"}]}
-      def self.deep_serialize(input) # rubocop:disable Metrics/MethodLength
+      def self.deep_serialize(input)
         input.to_hash.each_with_object({}) do |(key, value), output|
           output[key.to_sym] =
             case value
@@ -524,6 +523,5 @@ module Hanami
         @hash.respond_to?(method_name, include_private)
       end
     end
-    # rubocop:enable Metrics/ClassLength
   end
 end

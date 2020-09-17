@@ -103,7 +103,7 @@ module Hanami
 
       # @since 0.8.0
       # @api private
-      def _message_hash(message) # rubocop:disable Metrics/MethodLength
+      def _message_hash(message)
         case message
         when Hash
           @filter.call(message)

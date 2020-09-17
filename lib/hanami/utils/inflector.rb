@@ -379,7 +379,6 @@ module Hanami
       #
       # rubocop:disable Metrics/AbcSize
       # rubocop:disable Metrics/CyclomaticComplexity
-      # rubocop:disable Metrics/MethodLength
       # rubocop:disable Style/PerlBackrefs
       def self.pluralize(string)
         return string if string.nil? || string =~ Utils::Blank::STRING_MATCHER
@@ -424,7 +423,6 @@ module Hanami
       # rubocop:enable Style/PerlBackrefs
       # rubocop:enable Metrics/AbcSize
       # rubocop:enable Metrics/CyclomaticComplexity
-      # rubocop:enable Metrics/MethodLength
 
       # Singularizes the given string
       #
@@ -437,7 +435,6 @@ module Hanami
       #
       # rubocop:disable Metrics/AbcSize
       # rubocop:disable Metrics/CyclomaticComplexity
-      # rubocop:disable Metrics/MethodLength
       # rubocop:disable Metrics/PerceivedComplexity
       # rubocop:disable Style/PerlBackrefs
       def self.singularize(string)
@@ -489,7 +486,7 @@ module Hanami
       # rubocop:enable Style/PerlBackrefs
       # rubocop:enable Metrics/AbcSize
       # rubocop:enable Metrics/CyclomaticComplexity
-      # rubocop:enable Metrics/MethodLength
+
       # rubocop:enable Metrics/PerceivedComplexity
     end
   end
