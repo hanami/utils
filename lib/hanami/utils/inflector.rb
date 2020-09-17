@@ -63,147 +63,147 @@ module Hanami
 
       # @since 0.4.1
       # @api private
-      A    = "a".freeze
+      A    = "a"
 
       # @since 0.4.1
       # @api private
-      CH   = "ch".freeze
+      CH   = "ch"
 
       # @since 0.4.1
       # @api private
-      CHES = "ches".freeze
+      CHES = "ches"
 
       # @since 0.4.1
       # @api private
-      EAUX = "eaux".freeze
+      EAUX = "eaux"
 
       # @since 0.6.0
       # @api private
-      ES   = "es".freeze
+      ES   = "es"
 
       # @since 0.4.1
       # @api private
-      F    = "f".freeze
+      F    = "f"
 
       # @since 0.4.1
       # @api private
-      I    = "i".freeze
+      I    = "i"
 
       # @since 0.4.1
       # @api private
-      ICE  = "ice".freeze
+      ICE  = "ice"
 
       # @since 0.4.1
       # @api private
-      ICES = "ices".freeze
+      ICES = "ices"
 
       # @since 0.4.1
       # @api private
-      IDES = "ides".freeze
+      IDES = "ides"
 
       # @since 0.4.1
       # @api private
-      IES  = "ies".freeze
+      IES  = "ies"
 
       # @since 0.4.1
       # @api private
-      IFE  = "ife".freeze
+      IFE  = "ife"
 
       # @since 0.4.1
       # @api private
-      IS   = "is".freeze
+      IS   = "is"
 
       # @since 0.4.1
       # @api private
-      IVES = "ives".freeze
+      IVES = "ives"
 
       # @since 0.4.1
       # @api private
-      MA   = "ma".freeze
+      MA   = "ma"
 
       # @since 0.4.1
       # @api private
-      MATA = "mata".freeze
+      MATA = "mata"
 
       # @since 0.4.1
       # @api private
-      MEN  = "men".freeze
+      MEN  = "men"
 
       # @since 0.4.1
       # @api private
-      MINA = "mina".freeze
+      MINA = "mina"
 
       # @since 0.6.0
       # @api private
-      NA   = "na".freeze
+      NA   = "na"
 
       # @since 0.6.0
       # @api private
-      NON  = "non".freeze
+      NON  = "non"
 
       # @since 0.4.1
       # @api private
-      O    = "o".freeze
+      O    = "o"
 
       # @since 0.4.1
       # @api private
-      OES  = "oes".freeze
+      OES  = "oes"
 
       # @since 0.4.1
       # @api private
-      OUSE = "ouse".freeze
+      OUSE = "ouse"
 
       # @since 0.4.1
       # @api private
-      RSE = "rse".freeze
+      RSE = "rse"
 
       # @since 0.4.1
       # @api private
-      RSES = "rses".freeze
+      RSES = "rses"
 
       # @since 0.4.1
       # @api private
-      S    = "s".freeze
+      S    = "s"
 
       # @since 0.4.1
       # @api private
-      SES  = "ses".freeze
+      SES  = "ses"
 
       # @since 0.4.1
       # @api private
-      SSES = "sses".freeze
+      SSES = "sses"
 
       # @since 0.6.0
       # @api private
-      TA   = "ta".freeze
+      TA   = "ta"
 
       # @since 0.4.1
       # @api private
-      UM   = "um".freeze
+      UM   = "um"
 
       # @since 0.4.1
       # @api private
-      US   = "us".freeze
+      US   = "us"
 
       # @since 0.4.1
       # @api private
-      USES = "uses".freeze
+      USES = "uses"
 
       # @since 0.4.1
       # @api private
-      VES  = "ves".freeze
+      VES  = "ves"
 
       # @since 0.4.1
       # @api private
-      X    = "x".freeze
+      X    = "x"
 
       # @since 0.4.1
       # @api private
-      XES  = "xes".freeze
+      XES  = "xes"
 
       # @since 0.4.1
       # @api private
-      Y    = "y".freeze
+      Y    = "y"
 
       include Utils::ClassAttribute
 

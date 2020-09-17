@@ -32,7 +32,7 @@ module Hanami
       #
       # @since 0.4.0
       # @api private
-      REPLACEMENT_HEX = "fffd".freeze
+      REPLACEMENT_HEX = "fffd"
 
       # Low hex codes lookup table
       #
