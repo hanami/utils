@@ -454,7 +454,7 @@ module Hanami
         end
       end
 
-      alias to_hash to_h
+      alias_method :to_hash, :to_h
 
       # Converts into a nested array of [ key, value ] arrays.
       #
@@ -478,7 +478,7 @@ module Hanami
         @hash == other.to_h
       end
 
-      alias eql? ==
+      alias_method :eql?, :==
 
       # Returns the hash of the internal @hash
       #

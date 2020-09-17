@@ -638,7 +638,7 @@ module Hanami
         @string
       end
 
-      alias to_str to_s
+      alias_method :to_str, :to_s
 
       # Equality
       #
@@ -650,7 +650,7 @@ module Hanami
         to_s == other
       end
 
-      alias eql? ==
+      alias_method :eql?, :==
 
       # Splits the string with the given pattern
       #

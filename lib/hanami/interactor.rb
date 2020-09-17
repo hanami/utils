@@ -52,7 +52,7 @@ module Hanami
       end
 
       # @since 0.3.5
-      alias success? successful?
+      alias_method :success?, :successful?
 
       # Checks if the current status is not successful
       #
