@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require "hanami/logger"
 require "rbconfig"
 require "securerandom"

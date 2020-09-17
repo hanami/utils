@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 if ENV["COVERALL"]
   require "coveralls"
   Coveralls.wear!

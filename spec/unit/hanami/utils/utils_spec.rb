@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 RSpec.describe Hanami::Utils do
   describe ".jruby?" do
     it "introspects the current platform" do

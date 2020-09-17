@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require_relative __dir__ + "../../../../support/isolation_spec_helper"
 
 RSpec.describe "Hanami::Utils.reload!" do
