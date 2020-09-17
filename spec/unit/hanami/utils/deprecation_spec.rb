@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require "hanami/utils/deprecation"
 
 class DeprecationTest
@@ -23,11 +24,11 @@ end
 RSpec.describe Hanami::Utils::Deprecation do
   it "prints a deprecation warning for direct call" do
     expect { DeprecationTest.new.old_method }
-      .to output(include("old_method is deprecated, please use new_method - called from: #{__FILE__}:25")).to_stderr
+      .to output(include("old_method is deprecated, please use new_method - called from: #{__FILE__}:26")).to_stderr
   end
 
   it "prints a deprecation warning for nested call" do
     expect { DeprecationWrapperTest.new.run }
-      .to output(include("old_method is deprecated, please use new_method - called from: #{__FILE__}:19:in `run'.")).to_stderr
+      .to output(include("old_method is deprecated, please use new_method - called from: #{__FILE__}:20:in `run'.")).to_stderr
   end
 end

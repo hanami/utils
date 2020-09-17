@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require "hanami/utils"
 require "hanami/utils/escape"
 require "date"
@@ -118,7 +119,7 @@ RSpec.describe Hanami::Utils::Escape do
 
       # rubocop:disable Style/AsciiComments
       # 'тест' means test in russian
-      string   = "тест".force_encoding("ASCII-8BIT")
+      string   = "тест".dup.force_encoding("ASCII-8BIT")
       encoding = string.encoding
 
       result = mod.html(string)

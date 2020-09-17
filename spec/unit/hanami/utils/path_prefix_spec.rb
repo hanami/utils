@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require "hanami/utils/path_prefix"
 
 RSpec.describe Hanami::Utils::PathPrefix do

@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require_relative __dir__ + "../../../../../support/isolation_spec_helper"
 Bundler.require(:default, :development)
 require "hanami/utils/inflector"

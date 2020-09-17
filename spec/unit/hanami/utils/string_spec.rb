@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require "hanami/utils/string"
 
 RSpec.describe Hanami::Utils::String do

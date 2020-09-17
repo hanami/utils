@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require "hanami/utils/file_list"
 
 RSpec.describe Hanami::Utils::FileList do
