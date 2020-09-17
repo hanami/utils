@@ -1,7 +1,7 @@
 begin
-  require 'multi_json'
+  require "multi_json"
 rescue LoadError
-  require 'json'
+  require "json"
 end
 
 module Hanami

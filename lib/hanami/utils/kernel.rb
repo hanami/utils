@@ -1,10 +1,10 @@
-require 'set'
-require 'date'
-require 'time'
-require 'pathname'
-require 'bigdecimal'
-require 'hanami/utils'
-require 'hanami/utils/string'
+require "set"
+require "date"
+require "time"
+require "pathname"
+require "bigdecimal"
+require "hanami/utils"
+require "hanami/utils/string"
 
 unless defined?(Boolean)
   # Defines top level constant Boolean, so it can be easily used by other libraries
@@ -30,7 +30,7 @@ module Hanami
 
       # @since 0.8.0
       # @api private
-      BOOLEAN_FALSE_STRING = '0'.freeze
+      BOOLEAN_FALSE_STRING = "0".freeze
 
       # @since 0.8.0
       # @api private
@@ -1012,7 +1012,7 @@ module Hanami
       #   Hanami::Utils::Kernel.Symbol(input) # => TypeError
       def self.Symbol(arg)
         case arg
-        when '' then raise TypeError.new "can't convert #{inspect_type_error(arg)}into Symbol"
+        when "" then raise TypeError.new "can't convert #{inspect_type_error(arg)}into Symbol"
         when ->(a) { a.respond_to?(:to_sym) } then arg.to_sym
         else
           raise TypeError.new "can't convert #{inspect_type_error(arg)}into Symbol"
@@ -1042,11 +1042,11 @@ module Hanami
       # @since 0.4.3
       # @api private
       def self.inspect_type_error(arg)
-        (arg.respond_to?(:inspect) ? arg.inspect : arg.to_s) + ' '
+        (arg.respond_to?(:inspect) ? arg.inspect : arg.to_s) + " "
       rescue NoMethodError
         # missing the #respond_to? method, fall back to returning the class' name
         begin
-          arg.class.name + ' instance '
+          arg.class.name + " instance "
         rescue NoMethodError
           # missing the #class method, can't fall back to anything better than nothing
           # Callers will have to guess from their code

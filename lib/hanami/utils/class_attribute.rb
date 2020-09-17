@@ -1,5 +1,5 @@
-require 'set'
-require 'hanami/utils/duplicable'
+require "set"
+require "hanami/utils/duplicable"
 
 module Hanami
   module Utils
