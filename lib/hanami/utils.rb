@@ -1,11 +1,13 @@
-require 'pathname'
+# frozen_string_literal: true
+
+require "pathname"
 
 # Hanami - The web, with simplicity
 #
 # @since 0.1.0
 module Hanami
-  require 'hanami/utils/version'
-  require 'hanami/utils/file_list'
+  require "hanami/utils/version"
+  require "hanami/utils/file_list"
 
   # Ruby core extentions and Hanami utilities
   #
@@ -13,11 +15,11 @@ module Hanami
   module Utils
     # @since 0.3.1
     # @api private
-    HANAMI_JRUBY = 'java'.freeze
+    HANAMI_JRUBY = "java"
 
     # @since 0.3.1
     # @api private
-    HANAMI_RUBINIUS = 'rbx'.freeze
+    HANAMI_RUBINIUS = "rbx"
 
     # Checks if the current VM is JRuby
     #
@@ -87,7 +89,7 @@ module Hanami
     def self.for_each_file_in(directory, &blk)
       directory = directory.to_s.gsub(%r{(\/|\\)}, File::SEPARATOR)
       directory = Pathname.new(Dir.pwd).join(directory).to_s
-      directory = File.join(directory, '**', '*.rb') unless directory =~ /(\*\*)/
+      directory = File.join(directory, "**", "*.rb") unless directory =~ /(\*\*)/
 
       FileList[directory].each(&blk)
     end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Hanami
   module Utils
     # BasicObject
@@ -38,13 +40,11 @@ module Hanami
       #
       # @see http://ruby-doc.org/core/Object.html#method-i-inspect
       #
-      # rubocop:disable Style/FormatString
       # rubocop:disable Style/FormatStringToken
       def inspect
         "#<#{self.class}:#{'0x0000%x' % (__id__ << 1)}#{__inspect}>"
       end
       # rubocop:enable Style/FormatStringToken
-      # rubocop:enable Style/FormatString
 
       # @!macro [attach] instance_of?(class)
       #

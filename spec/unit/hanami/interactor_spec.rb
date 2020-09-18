@@ -1,4 +1,6 @@
-require 'hanami/interactor'
+# frozen_string_literal: true
+
+require "hanami/interactor"
 
 class LegacyInteractorWithoutInitialize
   include Hanami::Interactor
@@ -53,7 +55,7 @@ class User
   end
 
   def to_hash
-    { name: name }
+    {name: name}
   end
 end
 
@@ -140,12 +142,12 @@ class LegacyErrorInteractor
 
   def prepare!
     @operations << __method__
-    error 'There was an error while preparing data.'
+    error "There was an error while preparing data."
   end
 
   def persist!
     @operations << __method__
-    error 'There was an error while persisting data.'
+    error "There was an error while persisting data."
   end
 
   def log!
@@ -168,12 +170,12 @@ class ErrorInteractor
 
   def prepare!
     @operations << __method__
-    error 'There was an error while preparing data.'
+    error "There was an error while preparing data."
   end
 
   def persist!
     @operations << __method__
-    error 'There was an error while persisting data.'
+    error "There was an error while persisting data."
   end
 
   def log!
@@ -198,12 +200,12 @@ class LegacyErrorBangInteractor
 
   def persist!
     @operations << __method__
-    error! 'There was an error while persisting data.'
+    error! "There was an error while persisting data."
   end
 
   def sync!
     @operations << __method__
-    error 'There was an error while syncing data.'
+    error "There was an error while syncing data."
   end
 end
 
@@ -221,12 +223,12 @@ class ErrorBangInteractor
 
   def persist!
     @operations << __method__
-    error! 'There was an error while persisting data.'
+    error! "There was an error while persisting data."
   end
 
   def sync!
     @operations << __method__
-    error 'There was an error while syncing data.'
+    error "There was an error while syncing data."
   end
 end
 
@@ -253,7 +255,7 @@ class PublishVideo
   expose :video_name
 
   def call(*)
-    @video_name = 'H2G2'
+    @video_name = "H2G2"
   end
 
   def valid?(*)
@@ -322,13 +324,13 @@ class UpdateUser < CreateUser
 end
 
 RSpec.describe Hanami::Interactor do
-  describe 'interactor interface' do
-    it 'includes the correct interface' do
+  describe "interactor interface" do
+    it "includes the correct interface" do
       expect(LegacySignup.ancestors).to include(Hanami::Interactor::LegacyInterface)
       expect(Signup.ancestors).to include(Hanami::Interactor::Interface)
     end
 
-    it 'does not include the other interface' do
+    it "does not include the other interface" do
       expect(LegacySignup.ancestors).not_to include(Hanami::Interactor::Interface)
       expect(Signup.ancestors).not_to include(Hanami::Interactor::LegacyInterface)
     end
@@ -337,47 +339,47 @@ RSpec.describe Hanami::Interactor do
       expect { InteractorWithoutCall.new.call }.to raise_error NoMethodError
     end
 
-    it 'lets .method_added open to overrides' do
+    it "lets .method_added open to overrides" do
       expect(InteractorWithMethodAdded.ancestors).to include(InteractorWithMethodAdded::MethodAdded)
     end
   end
 
-  describe 'legacy interface' do
-    describe '#initialize' do
+  describe "legacy interface" do
+    describe "#initialize" do
       it "works when it isn't overridden" do
         LegacyInteractorWithoutInitialize.new
       end
 
-      it 'allows to override it' do
+      it "allows to override it" do
         LegacySignup.new({})
       end
     end
 
-    describe '#call' do
-      it 'returns a result' do
-        result = LegacySignup.new(name: 'Luca').call
+    describe "#call" do
+      it "returns a result" do
+        result = LegacySignup.new(name: "Luca").call
         expect(result.class).to eq Hanami::Interactor::Result
       end
 
-      it 'is successful by default' do
-        result = LegacySignup.new(name: 'Luca').call
+      it "is successful by default" do
+        result = LegacySignup.new(name: "Luca").call
         expect(result).to be_successful
       end
 
-      it 'returns the payload' do
-        result = LegacySignup.new(name: 'Luca').call
+      it "returns the payload" do
+        result = LegacySignup.new(name: "Luca").call
 
-        expect(result.user.name).to eq 'Luca'
-        expect(result.params).to eq(name: 'Luca')
+        expect(result.user.name).to eq "Luca"
+        expect(result.params).to eq(name: "Luca")
       end
 
       it "doesn't include private ivars" do
-        result = LegacySignup.new(name: 'Luca').call
+        result = LegacySignup.new(name: "Luca").call
 
         expect { result.__foo }.to raise_error NoMethodError
       end
 
-      it 'exposes a convenient API for handling failures' do
+      it "exposes a convenient API for handling failures" do
         result = LegacySignup.new({}).call
         expect(result).to be_failure
       end
@@ -387,35 +389,35 @@ RSpec.describe Hanami::Interactor do
         expect(result).to be_failure
       end
 
-      describe 'inheritance' do
-        it 'is successful for super class' do
-          result = LegacyCreateUser.new(name: 'L').call
+      describe "inheritance" do
+        it "is successful for super class" do
+          result = LegacyCreateUser.new(name: "L").call
 
           expect(result).to be_successful
-          expect(result.user.name).to eq 'L'
+          expect(result.user.name).to eq "L"
         end
 
-        it 'is successful for sub class' do
-          user   = User.new(name: 'L')
-          result = LegacyUpdateUser.new(user, name: 'MG').call
+        it "is successful for sub class" do
+          user   = User.new(name: "L")
+          result = LegacyUpdateUser.new(user, name: "MG").call
 
           expect(result).to be_successful
-          expect(result.user.name).to eq 'MG'
+          expect(result.user.name).to eq "MG"
         end
       end
     end
 
-    describe '#error' do
+    describe "#error" do
       it "isn't successful" do
         result = LegacyErrorInteractor.new.call
         expect(result).to be_failure
       end
 
-      it 'accumulates errors' do
+      it "accumulates errors" do
         result = LegacyErrorInteractor.new.call
         expect(result.errors).to eq [
-          'There was an error while preparing data.',
-          'There was an error while persisting data.'
+          "There was an error while preparing data.",
+          "There was an error while persisting data."
         ]
       end
 
@@ -425,68 +427,68 @@ RSpec.describe Hanami::Interactor do
       end
 
       # See https://github.com/hanami/utils/issues/69
-      it 'returns false as control flow for caller' do
+      it "returns false as control flow for caller" do
         interactor = LegacyPublishVideo.new
         expect(interactor).not_to be_valid
       end
     end
 
-    describe '#error!' do
+    describe "#error!" do
       it "isn't successful" do
         result = LegacyErrorBangInteractor.new.call
         expect(result).to be_failure
       end
 
-      it 'stops at the first error' do
+      it "stops at the first error" do
         result = LegacyErrorBangInteractor.new.call
         expect(result.errors).to eq [
-          'There was an error while persisting data.'
+          "There was an error while persisting data."
         ]
       end
 
-      it 'interrupts the flow' do
+      it "interrupts the flow" do
         result = LegacyErrorBangInteractor.new.call
         expect(result.operations).to eq [:persist!]
       end
     end
   end
 
-  describe 'new interface' do
-    describe '#initialize' do
+  describe "new interface" do
+    describe "#initialize" do
       it "works when it isn't overridden" do
         InteractorWithoutInitialize.new.call
       end
 
-      it 'allows to override it' do
+      it "allows to override it" do
         Signup.new.call
       end
     end
 
-    describe '#call' do
-      it 'returns a result' do
-        result = Signup.new.call(name: 'Luca')
+    describe "#call" do
+      it "returns a result" do
+        result = Signup.new.call(name: "Luca")
         expect(result.class).to eq Hanami::Interactor::Result
       end
 
-      it 'is successful by default' do
-        result = Signup.new.call(name: 'Luca')
+      it "is successful by default" do
+        result = Signup.new.call(name: "Luca")
         expect(result).to be_successful
       end
 
-      it 'returns the payload' do
-        result = Signup.new.call(name: 'Luca')
+      it "returns the payload" do
+        result = Signup.new.call(name: "Luca")
 
-        expect(result.user.name).to eq 'Luca'
-        expect(result.params).to eq(name: 'Luca')
+        expect(result.user.name).to eq "Luca"
+        expect(result.params).to eq(name: "Luca")
       end
 
       it "doesn't include private ivars" do
-        result = Signup.new.call(name: 'Luca')
+        result = Signup.new.call(name: "Luca")
 
         expect { result.force_failure }.to raise_error NoMethodError
       end
 
-      it 'exposes a convenient API for handling failures' do
+      it "exposes a convenient API for handling failures" do
         result = Signup.new.call
         expect(result).to be_failure
       end
@@ -500,58 +502,58 @@ RSpec.describe Hanami::Interactor do
         expect { InteractorWithoutCall.new.call }.to raise_error NoMethodError
       end
 
-      it 'handles args and kwargs' do
-        result = ComplexCall.new.call('foo', 'bar', baz: 'baz', buzz: 'buzz')
+      it "handles args and kwargs" do
+        result = ComplexCall.new.call("foo", "bar", baz: "baz", buzz: "buzz")
         expect(result.args).to eql(%w[foo bar])
-        expect(result.kwargs).to eql(Hash[baz: 'baz', buzz: 'buzz'])
+        expect(result.kwargs).to eql(Hash[baz: "baz", buzz: "buzz"])
       end
 
-      it 'handles args without kwargs' do
-        result = CallWithoutKwargs.new.call('foo', 'bar')
+      it "handles args without kwargs" do
+        result = CallWithoutKwargs.new.call("foo", "bar")
         expect(result.args).to eql(%w[foo bar])
       end
 
-      it 'handles kwargs without args' do
-        result = ComplexCall.new.call(baz: 'baz', buzz: 'buzz')
+      it "handles kwargs without args" do
+        result = ComplexCall.new.call(baz: "baz", buzz: "buzz")
         expect(result.args).to eql(Array[])
-        expect(result.kwargs).to eql(Hash[baz: 'baz', buzz: 'buzz'])
+        expect(result.kwargs).to eql(Hash[baz: "baz", buzz: "buzz"])
       end
 
-      it 'handles args with to_hash method' do
-        user = User.new(name: 'Luca')
+      it "handles args with to_hash method" do
+        user = User.new(name: "Luca")
         result = CallWithoutKwargs.new.call(user)
         expect(result.args).to eql(Array[user])
       end
 
-      describe 'inheritance' do
-        it 'is successful for super class' do
-          result = CreateUser.new.call(name: 'L')
+      describe "inheritance" do
+        it "is successful for super class" do
+          result = CreateUser.new.call(name: "L")
 
           expect(result).to be_successful
-          expect(result.user.name).to eq 'L'
+          expect(result.user.name).to eq "L"
         end
 
-        it 'is successful for sub class' do
-          user   = User.new(name: 'L')
-          result = UpdateUser.new.call(user: user, name: 'MG')
+        it "is successful for sub class" do
+          user   = User.new(name: "L")
+          result = UpdateUser.new.call(user: user, name: "MG")
 
           expect(result).to be_successful
-          expect(result.user.name).to eq 'MG'
+          expect(result.user.name).to eq "MG"
         end
       end
     end
 
-    describe '#error' do
+    describe "#error" do
       it "isn't successful" do
         result = ErrorInteractor.new.call
         expect(result).to be_failure
       end
 
-      it 'accumulates errors' do
+      it "accumulates errors" do
         result = ErrorInteractor.new.call
         expect(result.errors).to eq [
-          'There was an error while preparing data.',
-          'There was an error while persisting data.'
+          "There was an error while preparing data.",
+          "There was an error while persisting data."
         ]
       end
 
@@ -561,27 +563,27 @@ RSpec.describe Hanami::Interactor do
       end
 
       # See https://github.com/hanami/utils/issues/69
-      it 'returns false as control flow for caller' do
+      it "returns false as control flow for caller" do
         result = PublishVideo.new.call
         expect(result).not_to be_successful
         expect(result.video_name).to be_nil
       end
     end
 
-    describe '#error!' do
+    describe "#error!" do
       it "isn't successful" do
         result = ErrorBangInteractor.new.call
         expect(result).to be_failure
       end
 
-      it 'stops at the first error' do
+      it "stops at the first error" do
         result = ErrorBangInteractor.new.call
         expect(result.errors).to eq [
-          'There was an error while persisting data.'
+          "There was an error while persisting data."
         ]
       end
 
-      it 'interrupts the flow' do
+      it "interrupts the flow" do
         result = ErrorBangInteractor.new.call
         expect(result.operations).to eq [:persist!]
       end
@@ -590,34 +592,34 @@ RSpec.describe Hanami::Interactor do
 end
 
 RSpec.describe Hanami::Interactor::Result do
-  describe '#initialize' do
-    it 'allows to skip payload' do
+  describe "#initialize" do
+    it "allows to skip payload" do
       Hanami::Interactor::Result.new
     end
 
-    it 'accepts a payload' do
-      result = Hanami::Interactor::Result.new(foo: 'bar')
-      expect(result.foo).to eq 'bar'
+    it "accepts a payload" do
+      result = Hanami::Interactor::Result.new(foo: "bar")
+      expect(result.foo).to eq "bar"
     end
   end
 
-  describe '#successful?' do
-    it 'is successful by default' do
+  describe "#successful?" do
+    it "is successful by default" do
       result = Hanami::Interactor::Result.new
       expect(result).to be_successful
     end
 
-    describe 'when it has errors' do
+    describe "when it has errors" do
       it "isn't successful" do
         result = Hanami::Interactor::Result.new
-        result.add_error 'There was a problem'
+        result.add_error "There was a problem"
         expect(result).to be_failure
       end
     end
   end
 
-  describe '#fail!' do
-    it 'causes a failure' do
+  describe "#fail!" do
+    it "causes a failure" do
       result = Hanami::Interactor::Result.new
       result.fail!
 
@@ -625,120 +627,120 @@ RSpec.describe Hanami::Interactor::Result do
     end
   end
 
-  describe '#prepare!' do
-    it 'merges the current payload' do
-      result = Hanami::Interactor::Result.new(foo: 'bar')
+  describe "#prepare!" do
+    it "merges the current payload" do
+      result = Hanami::Interactor::Result.new(foo: "bar")
       result.prepare!(foo: 23)
 
       expect(result.foo).to eq 23
     end
 
-    it 'returns self' do
-      result = Hanami::Interactor::Result.new(foo: 'bar')
+    it "returns self" do
+      result = Hanami::Interactor::Result.new(foo: "bar")
       returning = result.prepare!(foo: 23)
 
       expect(returning).to eq result
     end
   end
 
-  describe '#errors' do
-    it 'empty by default' do
+  describe "#errors" do
+    it "empty by default" do
       result = Hanami::Interactor::Result.new
       expect(result.errors).to be_empty
     end
 
-    it 'returns all the errors' do
+    it "returns all the errors" do
       result = Hanami::Interactor::Result.new
-      result.add_error ['Error 1', 'Error 2']
+      result.add_error ["Error 1", "Error 2"]
 
-      expect(result.errors).to eq ['Error 1', 'Error 2']
+      expect(result.errors).to eq ["Error 1", "Error 2"]
     end
 
-    it 'prevents information escape' do
+    it "prevents information escape" do
       result = Hanami::Interactor::Result.new
-      result.add_error ['Error 1', 'Error 2']
+      result.add_error ["Error 1", "Error 2"]
 
       result.errors.clear
 
-      expect(result.errors).to eq ['Error 1', 'Error 2']
+      expect(result.errors).to eq ["Error 1", "Error 2"]
     end
   end
 
-  describe '#error' do
-    it 'nil by default' do
+  describe "#error" do
+    it "nil by default" do
       result = Hanami::Interactor::Result.new
       expect(result.error).to be_nil
     end
 
-    it 'returns only the first error' do
+    it "returns only the first error" do
       result = Hanami::Interactor::Result.new
-      result.add_error ['Error 1', 'Error 2']
+      result.add_error ["Error 1", "Error 2"]
 
-      expect(result.error).to eq 'Error 1'
+      expect(result.error).to eq "Error 1"
     end
   end
 
-  describe '#respond_to?' do
-    it 'returns true for concrete methods' do
+  describe "#respond_to?" do
+    it "returns true for concrete methods" do
       result = Hanami::Interactor::Result.new
 
       expect(result).to respond_to(:successful?)
-      expect(result).to respond_to('successful?')
+      expect(result).to respond_to("successful?")
 
       expect(result).to respond_to(:failure?)
-      expect(result).to respond_to('failure?')
+      expect(result).to respond_to("failure?")
     end
 
-    it 'returns true for methods derived from payload' do
+    it "returns true for methods derived from payload" do
       result = Hanami::Interactor::Result.new(foo: 1)
 
       expect(result).to respond_to(:foo)
-      expect(result).to respond_to('foo')
+      expect(result).to respond_to("foo")
     end
 
-    it 'returns true for methods derived from merged payload' do
+    it "returns true for methods derived from merged payload" do
       result = Hanami::Interactor::Result.new
       result.prepare!(bar: 2)
 
       expect(result).to respond_to(:bar)
-      expect(result).to respond_to('bar')
+      expect(result).to respond_to("bar")
     end
   end
 
-  describe '#inspect' do
+  describe "#inspect" do
     let(:result) { Hanami::Interactor::Result.new(id: 23, user: User.new) }
 
-    it 'reports the class name and the object_id' do
+    it "reports the class name and the object_id" do
       expect(result.inspect).to match %(#<Hanami::Interactor::Result)
     end
 
-    it 'reports the object_id' do
-      object_id = format('%x', (result.__id__ << 1))
+    it "reports the object_id" do
+      object_id = format("%x", (result.__id__ << 1))
       expect(result.inspect).to match object_id
     end
 
-    it 'reports @success' do
+    it "reports @success" do
       expect(result.inspect).to match %(@success=true)
     end
 
-    it 'reports @payload' do
+    it "reports @payload" do
       expect(result.inspect).to match %(@payload={:id=>23, :user=>#<User:)
     end
   end
 
-  describe 'payload' do
-    it 'returns all the values passed in the payload' do
+  describe "payload" do
+    it "returns all the values passed in the payload" do
       result = Hanami::Interactor::Result.new(a: 1, b: 2)
       expect(result.a).to eq 1
       expect(result.b).to eq 2
     end
 
-    it 'returns hash values passed in the payload' do
-      result = Hanami::Interactor::Result.new(a: { 100 => 3 })
+    it "returns hash values passed in the payload" do
+      result = Hanami::Interactor::Result.new(a: {100 => 3})
       expect(result.a).to eq(100 => 3)
     end
 
-    it 'returns all the values after a merge' do
+    it "returns all the values after a merge" do
       result = Hanami::Interactor::Result.new(a: 1, b: 2)
       result.prepare!(a: 23, c: 3)
 
@@ -748,16 +750,16 @@ RSpec.describe Hanami::Interactor::Result do
     end
 
     it "doesn't ignore forwarded messages" do
-      result = Hanami::Interactor::Result.new(params: { name: 'Luca' })
-      expect(result.params[:name]).to eq 'Luca'
+      result = Hanami::Interactor::Result.new(params: {name: "Luca"})
+      expect(result.params[:name]).to eq "Luca"
     end
 
-    it 'raises an error when unknown message is passed' do
+    it "raises an error when unknown message is passed" do
       result = Hanami::Interactor::Result.new
       expect { result.unknown }.to raise_error NoMethodError
     end
 
-    it 'raises an error when unknown message is passed with args' do
+    it "raises an error when unknown message is passed with args" do
       result = Hanami::Interactor::Result.new
       expect { result.unknown(:foo) }.to raise_error NoMethodError
     end

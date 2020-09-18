@@ -1,6 +1,8 @@
-require 'hanami/utils/basic_object'
-require 'hanami/utils/class_attribute'
-require 'hanami/utils/hash'
+# frozen_string_literal: true
+
+require "hanami/utils/basic_object"
+require "hanami/utils/class_attribute"
+require "hanami/utils/hash"
 
 module Hanami
   # Hanami Interactor
@@ -50,7 +52,7 @@ module Hanami
       end
 
       # @since 0.3.5
-      alias success? successful?
+      alias_method :success?, :successful?
 
       # Checks if the current status is not successful
       #

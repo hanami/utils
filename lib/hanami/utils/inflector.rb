@@ -1,5 +1,7 @@
-require 'hanami/utils/class_attribute'
-require 'hanami/utils/blank'
+# frozen_string_literal: true
+
+require "hanami/utils/class_attribute"
+require "hanami/utils/blank"
 
 module Hanami
   module Utils
@@ -61,147 +63,147 @@ module Hanami
 
       # @since 0.4.1
       # @api private
-      A    = 'a'.freeze
+      A    = "a"
 
       # @since 0.4.1
       # @api private
-      CH   = 'ch'.freeze
+      CH   = "ch"
 
       # @since 0.4.1
       # @api private
-      CHES = 'ches'.freeze
+      CHES = "ches"
 
       # @since 0.4.1
       # @api private
-      EAUX = 'eaux'.freeze
+      EAUX = "eaux"
 
       # @since 0.6.0
       # @api private
-      ES   = 'es'.freeze
+      ES   = "es"
 
       # @since 0.4.1
       # @api private
-      F    = 'f'.freeze
+      F    = "f"
 
       # @since 0.4.1
       # @api private
-      I    = 'i'.freeze
+      I    = "i"
 
       # @since 0.4.1
       # @api private
-      ICE  = 'ice'.freeze
+      ICE  = "ice"
 
       # @since 0.4.1
       # @api private
-      ICES = 'ices'.freeze
+      ICES = "ices"
 
       # @since 0.4.1
       # @api private
-      IDES = 'ides'.freeze
+      IDES = "ides"
 
       # @since 0.4.1
       # @api private
-      IES  = 'ies'.freeze
+      IES  = "ies"
 
       # @since 0.4.1
       # @api private
-      IFE  = 'ife'.freeze
+      IFE  = "ife"
 
       # @since 0.4.1
       # @api private
-      IS   = 'is'.freeze
+      IS   = "is"
 
       # @since 0.4.1
       # @api private
-      IVES = 'ives'.freeze
+      IVES = "ives"
 
       # @since 0.4.1
       # @api private
-      MA   = 'ma'.freeze
+      MA   = "ma"
 
       # @since 0.4.1
       # @api private
-      MATA = 'mata'.freeze
+      MATA = "mata"
 
       # @since 0.4.1
       # @api private
-      MEN  = 'men'.freeze
+      MEN  = "men"
 
       # @since 0.4.1
       # @api private
-      MINA = 'mina'.freeze
+      MINA = "mina"
 
       # @since 0.6.0
       # @api private
-      NA   = 'na'.freeze
+      NA   = "na"
 
       # @since 0.6.0
       # @api private
-      NON  = 'non'.freeze
+      NON  = "non"
 
       # @since 0.4.1
       # @api private
-      O    = 'o'.freeze
+      O    = "o"
 
       # @since 0.4.1
       # @api private
-      OES  = 'oes'.freeze
+      OES  = "oes"
 
       # @since 0.4.1
       # @api private
-      OUSE = 'ouse'.freeze
+      OUSE = "ouse"
 
       # @since 0.4.1
       # @api private
-      RSE = 'rse'.freeze
+      RSE = "rse"
 
       # @since 0.4.1
       # @api private
-      RSES = 'rses'.freeze
+      RSES = "rses"
 
       # @since 0.4.1
       # @api private
-      S    = 's'.freeze
+      S    = "s"
 
       # @since 0.4.1
       # @api private
-      SES  = 'ses'.freeze
+      SES  = "ses"
 
       # @since 0.4.1
       # @api private
-      SSES = 'sses'.freeze
+      SSES = "sses"
 
       # @since 0.6.0
       # @api private
-      TA   = 'ta'.freeze
+      TA   = "ta"
 
       # @since 0.4.1
       # @api private
-      UM   = 'um'.freeze
+      UM   = "um"
 
       # @since 0.4.1
       # @api private
-      US   = 'us'.freeze
+      US   = "us"
 
       # @since 0.4.1
       # @api private
-      USES = 'uses'.freeze
+      USES = "uses"
 
       # @since 0.4.1
       # @api private
-      VES  = 'ves'.freeze
+      VES  = "ves"
 
       # @since 0.4.1
       # @api private
-      X    = 'x'.freeze
+      X    = "x"
 
       # @since 0.4.1
       # @api private
-      XES  = 'xes'.freeze
+      XES  = "xes"
 
       # @since 0.4.1
       # @api private
-      Y    = 'y'.freeze
+      Y    = "y"
 
       include Utils::ClassAttribute
 
@@ -212,40 +214,40 @@ module Hanami
       class_attribute :plurals
       self.plurals = IrregularRules.new(
         # irregular
-        'cactus'      => 'cacti',
-        'child'       => 'children',
-        'corpus'      => 'corpora',
-        'foot'        => 'feet',
-        'genus'       => 'genera',
-        'goose'       => 'geese',
-        'louse'       => 'lice',
-        'man'         => 'men',
-        'mouse'       => 'mice',
-        'ox'          => 'oxen',
-        'person'      => 'people',
-        'quiz'        => 'quizzes',
-        'sex'         => 'sexes',
-        'testis'      => 'testes',
-        'tooth'       => 'teeth',
-        'woman'       => 'women',
+        "cactus"      => "cacti",
+        "child"       => "children",
+        "corpus"      => "corpora",
+        "foot"        => "feet",
+        "genus"       => "genera",
+        "goose"       => "geese",
+        "louse"       => "lice",
+        "man"         => "men",
+        "mouse"       => "mice",
+        "ox"          => "oxen",
+        "person"      => "people",
+        "quiz"        => "quizzes",
+        "sex"         => "sexes",
+        "testis"      => "testes",
+        "tooth"       => "teeth",
+        "woman"       => "women",
         # uncountable
-        'deer'        => 'deer',
-        'equipment'   => 'equipment',
-        'fish'        => 'fish',
-        'information' => 'information',
-        'means'       => 'means',
-        'money'       => 'money',
-        'news'        => 'news',
-        'offspring'   => 'offspring',
-        'rice'        => 'rice',
-        'series'      => 'series',
-        'sheep'       => 'sheep',
-        'species'     => 'species',
-        'police'      => 'police',
+        "deer"        => "deer",
+        "equipment"   => "equipment",
+        "fish"        => "fish",
+        "information" => "information",
+        "means"       => "means",
+        "money"       => "money",
+        "news"        => "news",
+        "offspring"   => "offspring",
+        "rice"        => "rice",
+        "series"      => "series",
+        "sheep"       => "sheep",
+        "species"     => "species",
+        "police"      => "police",
         # regressions
         # https://github.com/hanami/utils/issues/106
-        'album'       => 'albums',
-        'area'        => 'areas'
+        "album"       => "albums",
+        "area"        => "areas"
       )
 
       # Irregular rules for singulars
@@ -255,42 +257,42 @@ module Hanami
       class_attribute :singulars
       self.singulars = IrregularRules.new(
         # irregular
-        'cacti'    => 'cactus',
-        'children' => 'child',
-        'corpora'  => 'corpus',
-        'feet'     => 'foot',
-        'genera'   => 'genus',
-        'geese'    => 'goose',
-        'lice'     => 'louse',
-        'men'      => 'man',
-        'mice'     => 'mouse',
-        'oxen'     => 'ox',
-        'people'   => 'person',
-        'quizzes'  => 'quiz',
-        'sexes'    => 'sex',
-        'testes'   => 'testis',
-        'teeth'    => 'tooth',
-        'women'    => 'woman',
+        "cacti"    => "cactus",
+        "children" => "child",
+        "corpora"  => "corpus",
+        "feet"     => "foot",
+        "genera"   => "genus",
+        "geese"    => "goose",
+        "lice"     => "louse",
+        "men"      => "man",
+        "mice"     => "mouse",
+        "oxen"     => "ox",
+        "people"   => "person",
+        "quizzes"  => "quiz",
+        "sexes"    => "sex",
+        "testes"   => "testis",
+        "teeth"    => "tooth",
+        "women"    => "woman",
         # uncountable
-        'deer'        => 'deer',
-        'equipment'   => 'equipment',
-        'fish'        => 'fish',
-        'information' => 'information',
-        'means'       => 'means',
-        'money'       => 'money',
-        'news'        => 'news',
-        'offspring'   => 'offspring',
-        'rice'        => 'rice',
-        'series'      => 'series',
-        'sheep'       => 'sheep',
-        'species'     => 'species',
-        'police'      => 'police',
+        "deer"        => "deer",
+        "equipment"   => "equipment",
+        "fish"        => "fish",
+        "information" => "information",
+        "means"       => "means",
+        "money"       => "money",
+        "news"        => "news",
+        "offspring"   => "offspring",
+        "rice"        => "rice",
+        "series"      => "series",
+        "sheep"       => "sheep",
+        "species"     => "species",
+        "police"      => "police",
         # fallback
-        'areas'       => 'area',
-        'hives'       => 'hive',
-        'phases'      => 'phase',
-        'exercises'   => 'exercise',
-        'releases'    => 'release'
+        "areas"       => "area",
+        "hives"       => "hive",
+        "phases"      => "phase",
+        "exercises"   => "exercise",
+        "releases"    => "release"
       )
 
       # Block for custom inflection rules.
@@ -377,7 +379,6 @@ module Hanami
       #
       # rubocop:disable Metrics/AbcSize
       # rubocop:disable Metrics/CyclomaticComplexity
-      # rubocop:disable Metrics/MethodLength
       # rubocop:disable Style/PerlBackrefs
       def self.pluralize(string)
         return string if string.nil? || string =~ Utils::Blank::STRING_MATCHER
@@ -422,7 +423,6 @@ module Hanami
       # rubocop:enable Style/PerlBackrefs
       # rubocop:enable Metrics/AbcSize
       # rubocop:enable Metrics/CyclomaticComplexity
-      # rubocop:enable Metrics/MethodLength
 
       # Singularizes the given string
       #
@@ -435,7 +435,6 @@ module Hanami
       #
       # rubocop:disable Metrics/AbcSize
       # rubocop:disable Metrics/CyclomaticComplexity
-      # rubocop:disable Metrics/MethodLength
       # rubocop:disable Metrics/PerceivedComplexity
       # rubocop:disable Style/PerlBackrefs
       def self.singularize(string)
@@ -487,7 +486,7 @@ module Hanami
       # rubocop:enable Style/PerlBackrefs
       # rubocop:enable Metrics/AbcSize
       # rubocop:enable Metrics/CyclomaticComplexity
-      # rubocop:enable Metrics/MethodLength
+
       # rubocop:enable Metrics/PerceivedComplexity
     end
   end
