@@ -1402,7 +1402,7 @@ RSpec.describe Hanami::Utils::Kernel do
       end
 
       describe "when an hash is given" do
-        let(:input) { { a: 1, "b" => 2 } }
+        let(:input) { {a: 1, "b" => 2} }
 
         it "returns the string representation" do
           expect(@result).to eq '{:a=>1, "b"=>2}'

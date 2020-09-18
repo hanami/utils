@@ -736,7 +736,7 @@ RSpec.describe Hanami::Interactor::Result do
     end
 
     it "returns hash values passed in the payload" do
-      result = Hanami::Interactor::Result.new(a: { 100 => 3 })
+      result = Hanami::Interactor::Result.new(a: {100 => 3})
       expect(result.a).to eq(100 => 3)
     end
 
@@ -750,7 +750,7 @@ RSpec.describe Hanami::Interactor::Result do
     end
 
     it "doesn't ignore forwarded messages" do
-      result = Hanami::Interactor::Result.new(params: { name: "Luca" })
+      result = Hanami::Interactor::Result.new(params: {name: "Luca"})
       expect(result.params[:name]).to eq "Luca"
     end
 
