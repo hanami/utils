@@ -183,7 +183,7 @@ RSpec.describe Hanami::Logger do
 
               it "uses custom colors" do
                 output = with_tty do
-                  logger = Hanami::Logger.new(colorizer: Hanami::Logger::Colorizer.new(colors: { app: :red }))
+                  logger = Hanami::Logger.new(colorizer: Hanami::Logger::Colorizer.new(colors: {app: :red}))
                   logger.info("hello")
                 end
 
@@ -587,7 +587,7 @@ RSpec.describe Hanami::Logger do
           ]
         ]
 
-        expected = "{\"name\"=>\"John\", \"password\"=>\"[FILTERED]\", \"password_confirmation\"=>\"[FILTERED]\"}"
+        expected = '{"name"=>"John", "password"=>"[FILTERED]", "password_confirmation"=>"[FILTERED]"}'
 
         output = with_captured_stdout do
           class TestLogger < Hanami::Logger; end

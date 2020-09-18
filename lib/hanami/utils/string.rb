@@ -8,7 +8,7 @@ module Hanami
     # String on steroids
     #
     # @since 0.1.0
-    class String # rubocop:disable Metrics/ClassLength
+    class String
       # Empty string for #classify
       #
       # @since 0.6.0
@@ -73,7 +73,7 @@ module Hanami
       #
       # @since 0.3.4
       # @api private
-      CLASSIFY_WORD_SEPARATOR = /#{CLASSIFY_SEPARATOR}|#{NAMESPACE_SEPARATOR}|#{UNDERSCORE_SEPARATOR}|#{DASHERIZE_SEPARATOR}/.freeze
+      CLASSIFY_WORD_SEPARATOR = /#{CLASSIFY_SEPARATOR}|#{NAMESPACE_SEPARATOR}|#{UNDERSCORE_SEPARATOR}|#{DASHERIZE_SEPARATOR}/.freeze # rubocop:disable Layout/LineLength
 
       @__transformations__ = Concurrent::Map.new
 
@@ -82,7 +82,8 @@ module Hanami
 
       # Applies the given transformation(s) to `input`
       #
-      # It performs a pipeline of transformations, by applying the given functions from `Hanami::Utils::String` and `::String`.
+      # It performs a pipeline of transformations, by applying the given
+      # functions from `Hanami::Utils::String` and `::String`.
       # The transformations are applied in the given order.
       #
       # It doesn't mutate the input, unless you use destructive methods from `::String`
@@ -130,8 +131,6 @@ module Hanami
       #   Hanami::Utils::String.transform("Cherry", -> { "blossom" }))
       #     # => ArgumentError: wrong number of arguments (given 1, expected 0)
       #
-      # rubocop:disable Metrics/AbcSize
-      # rubocop:disable Metrics/MethodLength
       def self.transform(input, *transformations)
         fn = @__transformations__.fetch_or_store(transformations.hash) do
           compose do |fns|
@@ -143,7 +142,7 @@ module Hanami
                      elsif input.respond_to?(transformation)
                        t(:bind, input, ->(i) { i.public_send(transformation, *args) })
                      else
-                       raise NoMethodError.new(%(undefined method `#{transformation.inspect}' for #{input.inspect}:#{input.class}))
+                       raise NoMethodError.new(%(undefined method `#{transformation.inspect}' for #{input.inspect}:#{input.class})) # rubocop:disable Layout/LineLength
                      end
             end
           end
@@ -151,8 +150,6 @@ module Hanami
 
         fn.call(input)
       end
-      # rubocop:enable Metrics/MethodLength
-      # rubocop:enable Metrics/AbcSize
 
       # Extracted from `transproc` source code
       #
@@ -336,7 +333,7 @@ module Hanami
       #     # => 'authors/books#index'
       def self.rsub(input, pattern, replacement)
         string = ::String.new(input.to_s)
-        if i = string.rindex(pattern) # rubocop:disable Lint/AssignmentInCondition
+        if i = string.rindex(pattern)
           s = string.dup
           s[i] = replacement
           s
@@ -534,9 +531,8 @@ module Hanami
       #     'Hanami::Utils'
       #     'Hanami::App'
       #
-      # rubocop:disable Metrics/MethodLength
       def tokenize
-        if match = TOKENIZE_REGEXP.match(@string) # rubocop:disable Lint/AssignmentInCondition
+        if match = TOKENIZE_REGEXP.match(@string)
           pre  = match.pre_match
           post = match.post_match
           tokens = match[1].split(TOKENIZE_SEPARATOR)
@@ -549,7 +545,6 @@ module Hanami
 
         nil
       end
-      # rubocop:enable Metrics/MethodLength
 
       # Returns the hash of the internal string
       #
@@ -571,7 +566,7 @@ module Hanami
         @string
       end
 
-      alias to_str to_s
+      alias_method :to_str, :to_s
 
       # Equality
       #
@@ -583,7 +578,7 @@ module Hanami
         to_s == other
       end
 
-      alias eql? ==
+      alias_method :eql?, :==
 
       # Splits the string with the given pattern
       #
@@ -652,7 +647,7 @@ module Hanami
       #   puts result
       #     # => #<Hanami::Utils::String:0x007fdb41232ed0 @string="authors/books#index">
       def rsub(pattern, replacement)
-        if i = rindex(pattern) # rubocop:disable Lint/AssignmentInCondition
+        if i = rindex(pattern)
           s    = @string.dup
           s[i] = replacement
           self.class.new s
@@ -668,7 +663,9 @@ module Hanami
       #
       # @raise [NoMethodError] If doesn't respond to the given method
       def method_missing(method_name, *args, &blk)
-        raise NoMethodError.new(%(undefined method `#{method_name}' for "#{@string}":#{self.class})) unless respond_to?(method_name)
+        unless respond_to?(method_name)
+          raise NoMethodError.new(%(undefined method `#{method_name}' for "#{@string}":#{self.class}))
+        end
 
         s = @string.__send__(method_name, *args, &blk)
         s = self.class.new(s) if s.is_a?(::String)

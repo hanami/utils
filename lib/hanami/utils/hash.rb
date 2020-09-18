@@ -90,7 +90,7 @@ module Hanami
       #
       #   hash.class
       #     # => Hash
-      def self.deep_stringify(input) # rubocop:disable Metrics/MethodLength
+      def self.deep_stringify(input)
         input.each_with_object({}) do |(key, value), output|
           output[key.to_s] =
             case value
@@ -178,7 +178,7 @@ module Hanami
       #
       #   Hanami::Utils::Hash.deep_serialize(input)
       #     # => {:foo=>"bar", :baz=>[{:hello=>"world"}]}
-      def self.deep_serialize(input) # rubocop:disable Metrics/MethodLength
+      def self.deep_serialize(input)
         input.to_hash.each_with_object({}) do |(key, value), output|
           output[key.to_sym] =
             case value

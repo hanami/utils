@@ -55,7 +55,7 @@ class User
   end
 
   def to_hash
-    { name: name }
+    {name: name}
   end
 end
 

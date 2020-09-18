@@ -117,7 +117,7 @@ module Hanami
         self
       end
 
-      alias << push
+      alias_method :<<, :push
 
       # It freezes the object by preventing further modifications.
       #

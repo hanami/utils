@@ -30,7 +30,7 @@ module Hanami
       #
       # @since 0.8.0
       # @api private
-      def self.blank?(object) # rubocop:disable Metrics/MethodLength
+      def self.blank?(object)
         case object
         when String, ::String
           STRING_MATCHER === object # rubocop:disable Style/CaseEquality

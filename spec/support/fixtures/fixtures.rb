@@ -269,5 +269,5 @@ class WrappingHash
   def to_hash
     @hash
   end
-  alias to_h to_hash
+  alias_method :to_h, :to_hash
 end

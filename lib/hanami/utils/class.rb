@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require "hanami/utils/deprecation"
-
 module Hanami
   module Utils
     # Class utilities
@@ -76,7 +74,7 @@ module Hanami
 
       # rubocop:disable Metrics/MethodLength
       def self.tokenize(pattern)
-        if match = TOKENIZE_REGEXP.match(pattern) # rubocop:disable Lint/AssignmentInCondition
+        if match = TOKENIZE_REGEXP.match(pattern)
           pre  = match.pre_match
           post = match.post_match
           tokens = match[1].split(TOKENIZE_SEPARATOR)
@@ -89,7 +87,6 @@ module Hanami
 
         nil
       end
-      # rubocop:enable Metrics/MethodLength
 
       # Regexp for .tokenize
       #

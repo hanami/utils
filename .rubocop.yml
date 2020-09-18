@@ -10,6 +10,10 @@ Naming/MethodName:
     - "lib/hanami/utils/kernel.rb"
 Layout/HashAlignment:
   Enabled: false
+Layout/LineLength:
+  Exclude:
+    - "lib/hanami/utils/escape.rb"
+    - "spec/**/*"
 Style/CommentedKeyword:
   Exclude:
     - "spec/**/*"

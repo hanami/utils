@@ -327,7 +327,7 @@ module Hanami
       #   # big complex represented as a string
       #   input = Complex(2, 3)
       #   Hanami::Utils::Kernel.Integer(input) # => TypeError
-      def self.Integer(arg) # rubocop:disable Metrics/MethodLength
+      def self.Integer(arg)
         super(arg)
       rescue ArgumentError, TypeError, NoMethodError
         begin
@@ -418,7 +418,6 @@ module Hanami
       #   input = BasicObject.new
       #   Hanami::Utils::Kernel.BigDecimal(input) # => TypeError
       #
-      # rubocop:disable Metrics/MethodLength
       def self.BigDecimal(arg, precision = ::Float::DIG)
         case arg
         when NilClass # This is only needed by Ruby 2.6
@@ -435,7 +434,6 @@ module Hanami
       rescue NoMethodError
         raise TypeError.new "can't convert #{inspect_type_error(arg)}into BigDecimal"
       end
-      # rubocop:enable Metrics/MethodLength
 
       # Coerces the argument to be a Float.
       #
@@ -549,7 +547,7 @@ module Hanami
       #   # big complex represented as a string
       #   input = Complex(2, 3)
       #   Hanami::Utils::Kernel.Float(input) # => TypeError
-      def self.Float(arg) # rubocop:disable Metrics/MethodLength
+      def self.Float(arg)
         super(arg)
       rescue ArgumentError, TypeError
         begin
@@ -738,7 +736,8 @@ module Hanami
       #   require 'hanami/utils/kernel'
       #
       #   Hanami::Utils::Kernel.DateTime(3483943)
-      #     # => Time.at(3483943).to_datetime #<DateTime: 1970-02-10T08:45:43+01:00 ((2440628j,27943s,0n),+3600s,2299161j)>
+      #     # => Time.at(3483943).to_datetime
+      #     # #<DateTime: 1970-02-10T08:45:43+01:00 ((2440628j,27943s,0n),+3600s,2299161j)>
       #
       #   Hanami::Utils::Kernel.DateTime(DateTime.now)
       #     # => #<DateTime: 2014-04-18T09:33:49+02:00 ((2456766j,27229s,690849000n),+7200s,2299161j)>
@@ -898,7 +897,7 @@ module Hanami
       #   # Missing #respond_to?
       #   input = BasicObject.new
       #   Hanami::Utils::Kernel.Boolean(input) # => TypeError
-      def self.Boolean(arg) # rubocop:disable Metrics/MethodLength
+      def self.Boolean(arg)
         case arg
         when Numeric
           arg.to_i == BOOLEAN_TRUE_INTEGER
