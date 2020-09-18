@@ -1,5 +1,7 @@
-require 'hanami/utils/string'
-require 'hanami/utils/kernel'
+# frozen_string_literal: true
+
+require "hanami/utils/string"
+require "hanami/utils/kernel"
 
 module Hanami
   module Utils
@@ -11,7 +13,7 @@ module Hanami
       #
       # @since 0.3.1
       # @api private
-      DEFAULT_SEPARATOR = '/'.freeze
+      DEFAULT_SEPARATOR = "/"
 
       # Initialize the path prefix
       #
@@ -133,7 +135,7 @@ module Hanami
       # @see #relative
       def relative!
         @string.gsub!(/(?<!:)#{separator * 2}/, separator)
-        @string[/\A#{separator}|^/] = ''
+        @string[/\A#{separator}|^/] = ""
 
         self
       end
