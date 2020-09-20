@@ -317,7 +317,7 @@ module Hanami
     #
     # @since 0.8.0
     def close
-      super unless [STDOUT, $stdout].include?(@stream)
+      super unless [STDOUT, $stdout].include?(@stream) # rubocop:disable Style/GlobalStdStream
     end
 
     private
