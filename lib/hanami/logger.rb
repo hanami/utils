@@ -132,11 +132,11 @@ module Hanami
     # @since 0.8.0
     # @api private
     LEVELS = ::Hash[
-      "debug"   => DEBUG,
-      "info"    => INFO,
-      "warn"    => WARN,
-      "error"   => ERROR,
-      "fatal"   => FATAL,
+      "debug" => DEBUG,
+      "info" => INFO,
+      "warn" => WARN,
+      "error" => ERROR,
+      "fatal" => FATAL,
       "unknown" => UNKNOWN
     ].freeze
 

@@ -19,14 +19,14 @@ module Hanami
       # @api private
       #
       # @see Hanami::Interactor::Result#respond_to_missing?
-      METHODS = ::Hash[initialize:  true,
-                       success?:    true,
+      METHODS = ::Hash[initialize: true,
+                       success?: true,
                        successful?: true,
-                       failure?:    true,
-                       fail!:       true,
-                       prepare!:    true,
-                       errors:      true,
-                       error:       true].freeze
+                       failure?: true,
+                       fail!: true,
+                       prepare!: true,
+                       errors: true,
+                       error: true].freeze
 
       # Initialize a new result
       #

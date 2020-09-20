@@ -71,7 +71,7 @@ class LegacySignup
 
   def call
     @user.persist!
-  rescue
+  rescue StandardError
     fail!
   end
 
@@ -94,7 +94,7 @@ class Signup
     @params = params
     @user = User.new(params)
     @user.persist!
-  rescue
+  rescue StandardError
     fail!
   end
 
@@ -715,7 +715,7 @@ RSpec.describe Hanami::Interactor::Result do
     end
 
     it "reports the object_id" do
-      object_id = format("%x", (result.__id__ << 1))
+      object_id = format("%x", (result.__id__ << 1)) # rubocop:disable Style/FormatStringToken
       expect(result.inspect).to match object_id
     end
 
