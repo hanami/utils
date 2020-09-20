@@ -1,7 +1,7 @@
 # Please keep AllCops, Bundler, Style, Metrics groups and then order cops
 # alphabetically
 inherit_from:
-  - https://raw.githubusercontent.com/hanami/devtools/5b29f678fd2a95372b3619967859f8936028276e/.rubocop-unstable.yml
+  - https://raw.githubusercontent.com/hanami/devtools/b4810722882f15c2f05fe515369eceaede842995/.rubocop-unstable.yml
 Naming/HeredocDelimiterNaming:
   Exclude:
     - "spec/**/*"
