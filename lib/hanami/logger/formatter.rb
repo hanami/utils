@@ -109,9 +109,9 @@ module Hanami
           @filter.call(message)
         when Exception
           ::Hash[
-            message:   message.message,
+            message: message.message,
             backtrace: message.backtrace || [],
-            error:     message.class
+            error: message.class
           ]
         else
           ::Hash[message: message]

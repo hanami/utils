@@ -23,14 +23,14 @@ module Hanami
       # @since 1.2.0
       # @api private
       COLORS = ::Hash[
-        black:   30,
-        red:     31,
-        green:   32,
-        yellow:  33,
-        blue:    34,
+        black: 30,
+        red: 31,
+        green: 32,
+        yellow: 33,
+        blue: 34,
         magenta: 35,
-        cyan:    36,
-        gray:    37,
+        cyan: 36,
+        gray: 37,
       ].freeze
 
       # Colorizes output

@@ -12,7 +12,7 @@ RSpec.describe Hanami::Utils::Escape do
 
     string = begin
       test_string.encode(encoding)
-    rescue
+    rescue StandardError
       nil
     end
 
