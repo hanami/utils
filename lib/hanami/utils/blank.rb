@@ -33,7 +33,7 @@ module Hanami
       def self.blank?(object)
         case object
         when String, ::String
-          STRING_MATCHER === object # rubocop:disable Style/CaseEquality
+          STRING_MATCHER === object
         when ::Hash, ::Array
           object.empty?
         when TrueClass, Numeric

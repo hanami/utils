@@ -11,10 +11,10 @@ RSpec.describe Hanami::Utils::Escape do
     test_string = "<script>".encode(Encoding::UTF_8)
 
     string = begin
-               test_string.encode(encoding)
-             rescue StandardError
-               nil
-             end
+      test_string.encode(encoding)
+    rescue StandardError
+      nil
+    end
 
     result << encoding if !string.nil? && string != test_string
   end
@@ -117,7 +117,6 @@ RSpec.describe Hanami::Utils::Escape do
 
     it "escapes word with different encoding" do
       skip "There is no ASCII-8BIT encoding" unless Encoding.name_list.include?("ASCII-8BIT")
-      # rubocop:disable Style/AsciiComments
       # 'тест' means test in russian
       string   = "тест".dup.force_encoding("ASCII-8BIT")
       encoding = string.encoding

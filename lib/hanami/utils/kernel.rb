@@ -1043,11 +1043,11 @@ module Hanami
       # @since 0.4.3
       # @api private
       def self.inspect_type_error(arg)
-        (arg.respond_to?(:inspect) ? arg.inspect : arg.to_s) + " "
+        "#{(arg.respond_to?(:inspect) ? arg.inspect : arg.to_s)} "
       rescue NoMethodError
         # missing the #respond_to? method, fall back to returning the class' name
         begin
-          arg.class.name + " instance "
+          "#{arg.class.name} instance "
         rescue NoMethodError
           # missing the #class method, can't fall back to anything better than nothing
           # Callers will have to guess from their code

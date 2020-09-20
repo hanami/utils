@@ -1,7 +1,7 @@
 # Please keep AllCops, Bundler, Style, Metrics groups and then order cops
 # alphabetically
 inherit_from:
-  - https://raw.githubusercontent.com/hanami/devtools/75ff2ed92fbefd1b3b382206d5840bf925cbbdd1/.rubocop-unstable.yml
+  - https://raw.githubusercontent.com/hanami/devtools/master/.rubocop-unstable.yml
 Layout/LineLength:
   Exclude:
     - "lib/hanami/utils/escape.rb"
