@@ -80,9 +80,9 @@ RSpec.describe Hanami::Logger do
 
         Hash[
           Pathname.new(Dir.pwd).join("tmp", "logfile.log").to_s => "absolute path (string)",
-          Pathname.new("tmp").join("logfile.log").to_s          => "relative path (string)",
-          Pathname.new(Dir.pwd).join("tmp", "logfile.log")      => "absolute path (pathname)",
-          Pathname.new("tmp").join("logfile.log")               => "relative path (pathname)",
+          Pathname.new("tmp").join("logfile.log").to_s => "relative path (string)",
+          Pathname.new(Dir.pwd).join("tmp", "logfile.log") => "absolute path (pathname)",
+          Pathname.new("tmp").join("logfile.log") => "relative path (pathname)",
         ].each do |dev, desc|
           describe "when #{desc}" do
             let(:stream) { dev }
@@ -482,7 +482,7 @@ RSpec.describe Hanami::Logger do
           class TestLogger < Hanami::Logger; end
           begin
             raise StandardError.new("foo")
-          rescue => exception
+          rescue StandardError => exception
             exc = exception
           end
           TestLogger.new.error(exc)
@@ -568,7 +568,7 @@ RSpec.describe Hanami::Logger do
       end
 
       it "logs HTTP request" do
-        message = { http: "HTTP/1.1", verb: "GET", status: "200", ip: "::1", path: "/books/23", length: "175", params: {}, elapsed: 0.005829 }
+        message = {http: "HTTP/1.1", verb: "GET", status: "200", ip: "::1", path: "/books/23", length: "175", params: {}, elapsed: 0.005829}
 
         output =
           with_captured_stdout do
@@ -610,7 +610,7 @@ RSpec.describe Hanami::Logger do
             ],
             "user" => Hash[
               "login" => "John",
-              "name"  => "John"
+              "name" => "John"
             ]
           ]
         ]
