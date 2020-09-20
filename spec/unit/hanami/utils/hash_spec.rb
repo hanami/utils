@@ -452,16 +452,16 @@ RSpec.describe Hanami::Utils::Hash do
 
     it "doesn't try to duplicate value that can't perform this operation", silence_deprecations: true do
       original = {
-        "nil"        => nil,
-        "false"      => false,
-        "true"       => true,
-        "symbol"     => :symbol,
-        "fixnum"     => 23,
-        "bignum"     => 13_289_301_283**2,
-        "float"      => 1.0,
-        "complex"    => Complex(0.3),
+        "nil" => nil,
+        "false" => false,
+        "true" => true,
+        "symbol" => :symbol,
+        "fixnum" => 23,
+        "bignum" => 13_289_301_283**2,
+        "float" => 1.0,
+        "complex" => Complex(0.3),
         "bigdecimal" => BigDecimal("12.0001"),
-        "rational"   => Rational(0.3)
+        "rational" => Rational(0.3)
       }
 
       hash  = Hanami::Utils::Hash.new(original)
