@@ -14,7 +14,7 @@ RSpec.describe Hanami::Utils::Escape do
                test_string.encode(encoding)
              rescue
                nil
-             end
+    end
 
     result << encoding if !string.nil? && string != test_string
   end
