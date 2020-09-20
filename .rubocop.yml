@@ -17,6 +17,8 @@ Layout/LineLength:
 Lint/ConstantDefinitionInBlock:
   Exclude:
     - "spec/**/*"
+Lint/MissingSuper:
+  Enabled: false
 Style/CommentedKeyword:
   Exclude:
     - "spec/**/*"
