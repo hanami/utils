@@ -72,7 +72,6 @@ module Hanami
         load!(name, namespace) if namespace.const_defined?(name.to_s, false)
       end
 
-      # rubocop:disable Metrics/MethodLength
       def self.tokenize(pattern)
         if match = TOKENIZE_REGEXP.match(pattern)
           pre  = match.pre_match
