@@ -11,9 +11,9 @@ RSpec.describe Hanami::Utils::Escape do
     test_string = "<script>".encode(Encoding::UTF_8)
 
     string = begin
-               test_string.encode(encoding)
-             rescue
-               nil
+      test_string.encode(encoding)
+    rescue
+      nil
     end
 
     result << encoding if !string.nil? && string != test_string
