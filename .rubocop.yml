@@ -27,6 +27,8 @@ Style/DoubleNegation:
 Style/FormatStringToken:
   Exclude:
     - "spec/**/*"
+Style/OptionalBooleanParameter:
+  Enabled: false
 Style/SpecialGlobalVars:
   Enabled: false
 Style/RescueStandardError:
