@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "transproc"
+require "dry-transformer"
 require "concurrent/map"
 
 module Hanami
@@ -77,8 +77,7 @@ module Hanami
 
       @__transformations__ = Concurrent::Map.new
 
-      extend Transproc::Registry
-      extend Transproc::Composer
+      extend Dry::Transformer::Registry
 
       # Applies the given transformation(s) to `input`
       #
@@ -133,33 +132,26 @@ module Hanami
       #
       def self.transform(input, *transformations)
         fn = @__transformations__.fetch_or_store(transformations.hash) do
-          compose do |fns|
-            transformations.each do |transformation, *args|
-              fns << if transformation.is_a?(Proc)
-                       transformation
-                     elsif contain?(transformation)
-                       self[transformation, *args]
-                     elsif input.respond_to?(transformation)
-                       t(:bind, input, ->(i) { i.public_send(transformation, *args) })
-                     else
-                       raise NoMethodError.new(%(undefined method `#{transformation.inspect}' for #{input.inspect}:#{input.class})) # rubocop:disable Layout/LineLength
-                     end
-            end
+          fns = Dry::Transformer::Function.new(->(object) { object })
+
+          transformations.each do |transformation, *args|
+            fns = fns.compose(
+              if transformation.is_a?(Proc)
+                transformation
+              elsif contain?(transformation)
+                self[transformation, *args]
+              elsif input.respond_to?(transformation)
+                ->(i) { i.public_send(transformation, *args) }
+              else
+                raise NoMethodError.new(%(undefined method `#{transformation.inspect}' for #{input.inspect}:#{input.class})) # rubocop:disable Layout/LineLength
+              end
+            )
           end
+
+          fns
         end
 
         fn.call(input)
-      end
-
-      # Extracted from `transproc` source code
-      #
-      # `transproc` is Copyright 2014 by Piotr Solnica (piotr.solnica@gmail.com),
-      # released under the MIT License
-      #
-      # @since 1.1.0
-      # @api private
-      def self.bind(value, binding, fun)
-        binding.instance_exec(value, &fun)
       end
 
       # Returns a titleized version of the string
