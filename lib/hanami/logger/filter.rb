@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require "hanami/utils/hash"
 require "logger"
 
 module Hanami
@@ -11,26 +12,26 @@ module Hanami
     class Filter
       # @since 1.1.0
       # @api private
-      def initialize(filters = [])
+
+      DEFAULT_MASK = '[FILTERED]'.freeze
+
+      def initialize(filters = [], mask: DEFAULT_MASK)
         @filters = filters
+        @mask = mask
       end
 
       # @since 1.1.0
       # @api private
-      def call(hash)
-        _filtered_keys(hash).each do |key|
-          *keys, last = _actual_keys(hash, key.split("."))
-          keys.inject(hash, :fetch)[last] = "[FILTERED]"
-        end
-
-        hash
+      def call(params)
+        _filter(_copy_params(params))
       end
 
       private
 
       # @since 1.1.0
       # @api private
-      attr_reader :filters
+      attr_reader :filters,
+                  :mask
 
       # @since 1.1.0
       # @api private
@@ -73,6 +74,32 @@ module Hanami
       # @see https://github.com/hanami/utils/pull/342
       def _key_paths?(value)
         value.is_a?(Enumerable) && !value.is_a?(File)
+      end
+
+      def _copy_params(params)
+        case params
+        when Hash
+          Utils::Hash.deep_dup(params)
+        when Array
+          params.map{ |hash| Utils::Hash.deep_dup(hash) }
+        end
+      end
+
+      def _filter_hash(hash)
+        _filtered_keys(hash).each do |key|
+          *keys, last = _actual_keys(hash, key.split("."))
+          keys.inject(hash, :fetch)[last] = mask
+        end
+        hash
+      end
+
+      def _filter(params)
+        case params
+        when Hash
+          _filter_hash(params)
+        when Array
+          params.map{ |hash| _filter_hash(hash) }
+        end
       end
     end
   end
