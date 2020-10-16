@@ -660,15 +660,15 @@ RSpec.describe Hanami::Logger do
     end
 
     it "doesn't mutate the input hash" do
-      input = Hash["password" => "azerty", foo: Hash[password: "bar"]]
+      input = Hash[password: "azerty", foo: Hash[password: "bar"]]
       described_class.new(%w[password]).call(input)
-      expect(input).to eql(Hash["password" => "azerty", foo: Hash[password: "bar"]])
+      expect(input).to eql(Hash[password: "azerty", foo: Hash[password: "bar"]])
     end
 
     it "doesn't mutate the input array" do
-      input = Array[Hash["password" => "azerty", foo: Hash[password: "bar"]]]
+      input = Array[Hash[password: "azerty", foo: Hash[password: "bar"]]]
       described_class.new(%w[password]).call(input)
-      expect(input).to eql(Array[Hash["password" => "azerty", foo: Hash[password: "bar"]]])
+      expect(input).to eql(Array[Hash[password: "azerty", foo: Hash[password: "bar"]]])
     end
 
     it "filters an array of hash" do
@@ -700,10 +700,10 @@ RSpec.describe Hanami::Logger do
     end
 
     context "when input has Tempfile" do
-      let(:tempfile) { Tempfile.new("filter_test") }
-      after { tempfile.close! }
-
       it "filters without errors with closed stream" do
+        tempfile = Tempfile.new("filter_test")
+        tempfile.close!
+
         input = Hash[password: "password", file: tempfile]
         output = described_class.new(%i[password file]).call(input)
         expect(output).to eql(Hash[password: "[FILTERED]", file: "[FILTERED]"])

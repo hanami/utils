@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require "hanami/utils/hash"
 require "logger"
 
 module Hanami
@@ -76,15 +75,34 @@ module Hanami
         value.is_a?(Enumerable) && !value.is_a?(File)
       end
 
+      # @since 1.3.x
+      # @api private
+      def _deep_dup(hash)
+        hash.map do |key, value|
+          [
+            key,
+            if value.is_a?(Hash)
+              _deep_dup(value)
+            else
+              _key_paths?(value) ? value.dup : value
+            end
+          ]
+        end.to_h
+      end
+
+      # @since 1.3.x
+      # @api private
       def _copy_params(params)
         case params
         when Hash
-          Utils::Hash.deep_dup(params)
+          _deep_dup(params)
         when Array
-          params.map{ |hash| Utils::Hash.deep_dup(hash) }
+          params.map { |hash| _deep_dup(hash) }
         end
       end
 
+      # @since 1.3.x
+      # @api private
       def _filter_hash(hash)
         _filtered_keys(hash).each do |key|
           *keys, last = _actual_keys(hash, key.split("."))
@@ -93,12 +111,14 @@ module Hanami
         hash
       end
 
+      # @since 1.3.x
+      # @api private
       def _filter(params)
         case params
         when Hash
           _filter_hash(params)
         when Array
-          params.map{ |hash| _filter_hash(hash) }
+          params.map { |hash| _filter_hash(hash) }
         end
       end
     end
