@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "pathname"
 require "fileutils"
 require "hanami/utils/deprecation"
@@ -324,12 +326,12 @@ module Hanami
       #
       #   # class App
       #   # end
-      def self.remove_block(path, target) # rubocop:disable Metrics/AbcSize
+      def self.remove_block(path, target)
         content  = ::File.readlines(path)
         starting = index(content, path, target)
         line     = content[starting]
         size     = line[/\A[[:space:]]*/].bytesize
-        closing  = (" " * size) + (target =~ /{/ ? '}' : 'end')
+        closing  = (" " * size) + (target =~ /{/ ? "}" : "end")
         ending   = starting + index(content[starting..-1], path, closing)
 
         content.slice!(starting..ending)

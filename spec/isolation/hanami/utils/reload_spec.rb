@@ -1,6 +1,8 @@
-require_relative __dir__ + '../../../../support/isolation_spec_helper'
+# frozen_string_literal: true
 
-RSpec.describe 'Hanami::Utils.reload!' do
+require_relative __dir__ + "../../../../support/isolation_spec_helper"
+
+RSpec.describe "Hanami::Utils.reload!" do
   before do
     FileUtils.rm_rf(root) if root.exist?
     root.mkpath
@@ -10,10 +12,10 @@ RSpec.describe 'Hanami::Utils.reload!' do
     FileUtils.rm_rf(root.parent)
   end
 
-  let(:root) { Pathname.new(Dir.pwd).join('tmp', 'reload') }
+  let(:root) { Pathname.new(Dir.pwd).join("tmp", "reload") }
 
-  it 'reloads the files set of files' do
-    File.open(root.join('user.rb'), 'w+') do |f|
+  it "reloads the files set of files" do
+    File.open(root.join("user.rb"), "w+") do |f|
       f.write <<-EOF
         class User
           def greet
@@ -26,7 +28,7 @@ RSpec.describe 'Hanami::Utils.reload!' do
     Hanami::Utils.reload!(root)
     expect(User.new.greet).to eq "Hi"
 
-    File.open(root.join('user.rb'), 'w+') do |f|
+    File.open(root.join("user.rb"), "w+") do |f|
       f.write <<-EOF
         class User
           def greet

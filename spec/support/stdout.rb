@@ -1,4 +1,6 @@
-require 'stringio'
+# frozen_string_literal: true
+
+require "stringio"
 
 module RSpec
   module Support

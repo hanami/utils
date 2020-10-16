@@ -1,4 +1,6 @@
-require 'hanami/utils/kernel'
+# frozen_string_literal: true
+
+require "hanami/utils/kernel"
 
 module Hanami
   module Utils
@@ -115,7 +117,7 @@ module Hanami
         self
       end
 
-      alias << push
+      alias_method :<<, :push
 
       # It freezes the object by preventing further modifications.
       #

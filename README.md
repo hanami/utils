@@ -5,7 +5,6 @@ Ruby core extensions and class utilities for [Hanami](http://hanamirb.org)
 ## Status
 
 [![Gem Version](https://badge.fury.io/rb/hanami-utils.svg)](https://badge.fury.io/rb/hanami-utils)
-[![Build Status](https://ci.hanamirb.org/api/badges/hanami/utils/status.svg)](https://ci.hanamirb.org/hanami/utils)
 [![CircleCI](https://circleci.com/gh/hanami/utils/tree/master.svg?style=svg)](https://circleci.com/gh/hanami/utils/tree/master)
 [![Test Coverage](https://codecov.io/gh/hanami/utils/branch/master/graph/badge.svg)](https://codecov.io/gh/hanami/utils)
 [![Depfu](https://badges.depfu.com/badges/a8545fb67cf32a2c75b6227bc0821027/overview.svg)](https://depfu.com/github/hanami/utils?project=Bundler)
@@ -150,6 +149,6 @@ __Hanami::Utils__ uses [Semantic Versioning 2.0.0](http://semver.org)
 
 ## Copyright
 
-Copyright © 2014-2017 Luca Guidi – Released under MIT License
+Copyright © 2014-2020 Luca Guidi – Released under MIT License
 
 This project was formerly known as Lotus (`lotus-utils`).
