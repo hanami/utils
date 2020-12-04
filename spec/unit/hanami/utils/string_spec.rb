@@ -349,28 +349,6 @@ RSpec.describe Hanami::Utils::String do
 
   # INSTANCE LEVEL INTERFACE
 
-  describe "#demodulize" do
-    it "returns an instance of Hanami::Utils::String", silence_deprecations: true do
-      expect(Hanami::Utils::String.new("Hanami").demodulize).to be_kind_of(Hanami::Utils::String)
-    end
-
-    it "returns the class name without the namespace", silence_deprecations: true do
-      expect(Hanami::Utils::String.new("String").demodulize).to eq("String")
-      expect(Hanami::Utils::String.new("Hanami::Utils::String").demodulize).to eq("String")
-    end
-  end
-
-  describe "#namespace" do
-    it "returns an instance of Hanami::Utils::String", silence_deprecations: true do
-      expect(Hanami::Utils::String.new("Hanami").namespace).to be_kind_of(Hanami::Utils::String)
-    end
-
-    it "returns the top level module name", silence_deprecations: true do
-      expect(Hanami::Utils::String.new("String").namespace).to eq("String")
-      expect(Hanami::Utils::String.new("Hanami::Utils::String").namespace).to eq("Hanami")
-    end
-  end
-
   describe "#tokenize" do
     before do
       @logger = []

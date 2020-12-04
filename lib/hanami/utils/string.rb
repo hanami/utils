@@ -346,25 +346,6 @@ module Hanami
         @string = string.to_s
       end
 
-      # Returns the string without the Ruby namespace of the class
-      #
-      # @return [Hanami::Utils::String] the transformed string
-      #
-      # @since 0.1.0
-      # @deprecated Use {Hanami::Utils::String.demodulize}
-      #
-      # @example
-      #   require 'hanami/utils/string'
-      #
-      #   string = Hanami::Utils::String.new 'Hanami::Utils::String'
-      #   string.demodulize # => 'String'
-      #
-      #   string = Hanami::Utils::String.new 'String'
-      #   string.demodulize # => 'String'
-      def demodulize
-        self.class.new split(NAMESPACE_SEPARATOR).last
-      end
-
       # Returns the top level namespace name
       #
       # @return [Hanami::Utils::String] the transformed string
