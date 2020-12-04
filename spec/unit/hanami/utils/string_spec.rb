@@ -349,29 +349,6 @@ RSpec.describe Hanami::Utils::String do
 
   # INSTANCE LEVEL INTERFACE
 
-  describe "#titleize" do
-    it "returns an instance of Hanami::Utils::String", silence_deprecations: true do
-      expect(Hanami::Utils::String.new("hanami").titleize).to be_kind_of(Hanami::Utils::String)
-    end
-
-    it "does not mutate self", silence_deprecations: true do
-      string = Hanami::Utils::String.new("hanami")
-      string.titleize
-      expect(string).to eq("hanami")
-    end
-
-    it "returns an titleized string", silence_deprecations: true do
-      expect(Hanami::Utils::String.new("hanami").titleize).to eq("Hanami")
-      expect(Hanami::Utils::String.new("HanamiUtils").titleize).to eq("Hanami Utils")
-      expect(Hanami::Utils::String.new("hanami utils").titleize).to eq("Hanami Utils")
-      expect(Hanami::Utils::String.new("hanami_utils").titleize).to eq("Hanami Utils")
-      expect(Hanami::Utils::String.new("hanami-utils").titleize).to eq("Hanami Utils")
-      expect(Hanami::Utils::String.new("hanami' utils").titleize).to eq("Hanami' Utils")
-      expect(Hanami::Utils::String.new("hanami’ utils").titleize).to eq("Hanami’ Utils")
-      expect(Hanami::Utils::String.new("hanami` utils").titleize).to eq("Hanami` Utils")
-    end
-  end
-
   describe "#capitalize" do
     it "returns an instance of Hanami::Utils::String", silence_deprecations: true do
       expect(Hanami::Utils::String.new("hanami").capitalize).to be_kind_of(Hanami::Utils::String)

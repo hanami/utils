@@ -346,22 +346,6 @@ module Hanami
         @string = string.to_s
       end
 
-      # Returns a titleized version of the string
-      #
-      # @return [Hanami::Utils::String] the transformed string
-      #
-      # @since 0.4.0
-      # @deprecated Use {Hanami::Utils::String.titleize}
-      #
-      # @example
-      #   require 'hanami/utils/string'
-      #
-      #   string = Hanami::Utils::String.new 'hanami utils'
-      #   string.titleize # => "Hanami Utils"
-      def titleize
-        self.class.new underscore.split(CLASSIFY_SEPARATOR).map(&:capitalize).join(TITLEIZE_SEPARATOR)
-      end
-
       # Returns a capitalized version of the string
       #
       # @return [Hanami::Utils::String] the transformed string
