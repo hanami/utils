@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require "hanami/utils/string"
 require "hanami/utils/kernel"
 
 module Hanami
@@ -8,7 +7,7 @@ module Hanami
     # Prefixed string
     #
     # @since 0.1.0
-    class PathPrefix < Hanami::Utils::String
+    class PathPrefix
       # Path separator
       #
       # @since 0.3.1
