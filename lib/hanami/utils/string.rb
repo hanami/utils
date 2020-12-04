@@ -421,41 +421,6 @@ module Hanami
         @string.scan(pattern, &blk)
       end
 
-      # Replaces the rightmost match of `pattern` with `replacement`
-      #
-      # If the pattern cannot be matched, it returns the original string.
-      #
-      # This method does NOT mutate the original string.
-      #
-      # @param pattern [Regexp, String] the pattern to find
-      # @param replacement [String, Hanami::Utils::String] the string to replace
-      #
-      # @return [Hanami::Utils::String] the replaced string
-      #
-      # @since 0.6.0
-      # @deprecated Use {Hanami::Utils::String.rsub}
-      #
-      # @example
-      #   require 'hanami/utils/string'
-      #
-      #   string = Hanami::Utils::String.new('authors/books/index')
-      #   result = string.rsub(/\//, '#')
-      #
-      #   puts string
-      #     # => #<Hanami::Utils::String:0x007fdb41233ad8 @string="authors/books/index">
-      #
-      #   puts result
-      #     # => #<Hanami::Utils::String:0x007fdb41232ed0 @string="authors/books#index">
-      def rsub(pattern, replacement)
-        if i = rindex(pattern)
-          s    = @string.dup
-          s[i] = replacement
-          self.class.new s
-        else
-          self
-        end
-      end
-
       # Overrides Ruby's method_missing in order to provide ::String interface
       #
       # @api private

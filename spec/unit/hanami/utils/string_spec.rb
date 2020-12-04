@@ -349,42 +349,6 @@ RSpec.describe Hanami::Utils::String do
 
   # INSTANCE LEVEL INTERFACE
 
-  describe "#rsub" do
-    it "returns a Hanami::Utils::String instance", silence_deprecations: true do
-      result = Hanami::Utils::String.new("authors/books/index").rsub(//, "")
-      expect(result).to be_kind_of(Hanami::Utils::String)
-    end
-
-    it "does not mutate original string", silence_deprecations: true do
-      string = Hanami::Utils::String.new("authors/books/index")
-      string.rsub(%r{/}, "#")
-
-      expect(string).to eq("authors/books/index")
-    end
-
-    it "replaces rightmost instance (regexp)", silence_deprecations: true do
-      result = Hanami::Utils::String.new("authors/books/index").rsub(%r{/}, "#")
-      expect(result).to eq("authors/books#index")
-    end
-
-    it "replaces rightmost instance (string)", silence_deprecations: true do
-      result = Hanami::Utils::String.new("authors/books/index").rsub("/", "#")
-      expect(result).to eq("authors/books#index")
-    end
-
-    it "accepts Hanami::Utils::String as replacement", silence_deprecations: true do
-      replacement = Hanami::Utils::String.new("#")
-      result      = Hanami::Utils::String.new("authors/books/index").rsub(%r{/}, replacement)
-
-      expect(result).to eq("authors/books#index")
-    end
-
-    it "returns the initial string no match", silence_deprecations: true do
-      result = Hanami::Utils::String.new("index").rsub(%r{/}, "#")
-      expect(result).to eq("index")
-    end
-  end
-
   describe "string interface" do
     it "responds to ::String methods and returns a new Hanami::Utils::String", silence_deprecations: true do
       string = Hanami::Utils::String.new("Hanami\n").chomp
