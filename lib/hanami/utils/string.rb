@@ -5,7 +5,7 @@ require "concurrent/map"
 
 module Hanami
   module Utils
-    # String on steroids
+    # String utilities
     #
     # @since 0.1.0
     module String
