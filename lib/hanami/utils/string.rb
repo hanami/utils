@@ -346,43 +346,6 @@ module Hanami
         @string = string.to_s
       end
 
-      # It iterates through the tokens and calls the given block.
-      # A token is a substring wrapped by `()` and separated by `|`.
-      #
-      # @yield the block that is called for each token.
-      #
-      # @return [void]
-      #
-      # @since 0.1.0
-      # @deprecated
-      #
-      # @example
-      #   require 'hanami/utils/string'
-      #
-      #   string = Hanami::Utils::String.new 'Hanami::(Utils|App)'
-      #   string.tokenize do |token|
-      #     puts token
-      #   end
-      #
-      #   # =>
-      #     'Hanami::Utils'
-      #     'Hanami::App'
-      #
-      def tokenize
-        if match = TOKENIZE_REGEXP.match(@string)
-          pre  = match.pre_match
-          post = match.post_match
-          tokens = match[1].split(TOKENIZE_SEPARATOR)
-          tokens.each do |token|
-            yield(self.class.new("#{pre}#{token}#{post}"))
-          end
-        else
-          yield(self.class.new(@string))
-        end
-
-        nil
-      end
-
       # Returns the hash of the internal string
       #
       # @return [Integer]

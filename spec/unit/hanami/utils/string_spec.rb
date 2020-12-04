@@ -349,44 +349,6 @@ RSpec.describe Hanami::Utils::String do
 
   # INSTANCE LEVEL INTERFACE
 
-  describe "#tokenize" do
-    before do
-      @logger = []
-    end
-
-    it "returns an instance of Hanami::Utils::String", silence_deprecations: true do
-      string = Hanami::Utils::String.new("Hanami::(Utils|App)")
-      string.tokenize do |token|
-        @logger.push token
-      end
-
-      expect(@logger).to all(be_kind_of(Hanami::Utils::String))
-    end
-
-    it "calls the given block for each token occurrence", silence_deprecations: true do
-      string = Hanami::Utils::String.new("Hanami::(Utils|App)")
-      string.tokenize do |token|
-        @logger.push token
-      end
-
-      expect(@logger).to eq(["Hanami::Utils", "Hanami::App"])
-    end
-
-    it "guarantees the block to be called even when the token conditions are not met", silence_deprecations: true do
-      string = Hanami::Utils::String.new("Hanami")
-      string.tokenize do |token|
-        @logger.push token
-      end
-
-      expect(@logger).to eq(["Hanami"])
-    end
-
-    it "returns nil", silence_deprecations: true do
-      result = Hanami::Utils::String.new("Hanami::(Utils|App)").tokenize {}
-      expect(result).to be_nil
-    end
-  end
-
   describe "#rsub" do
     it "returns a Hanami::Utils::String instance", silence_deprecations: true do
       result = Hanami::Utils::String.new("authors/books/index").rsub(//, "")
