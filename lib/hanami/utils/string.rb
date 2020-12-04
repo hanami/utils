@@ -346,25 +346,6 @@ module Hanami
         @string = string.to_s
       end
 
-      # Returns the top level namespace name
-      #
-      # @return [Hanami::Utils::String] the transformed string
-      #
-      # @since 0.1.2
-      # @deprecated Use {Hanami::Utils::String.namespace}
-      #
-      # @example
-      #   require 'hanami/utils/string'
-      #
-      #   string = Hanami::Utils::String.new 'Hanami::Utils::String'
-      #   string.namespace # => 'Hanami'
-      #
-      #   string = Hanami::Utils::String.new 'String'
-      #   string.namespace # => 'String'
-      def namespace
-        self.class.new split(NAMESPACE_SEPARATOR).first
-      end
-
       # It iterates through the tokens and calls the given block.
       # A token is a substring wrapped by `()` and separated by `|`.
       #
