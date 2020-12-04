@@ -350,12 +350,6 @@ RSpec.describe Hanami::Utils::String do
   # INSTANCE LEVEL INTERFACE
 
   describe "string interface" do
-    it "responds to ::String methods and returns a new Hanami::Utils::String", silence_deprecations: true do
-      string = Hanami::Utils::String.new("Hanami\n").chomp
-      expect(string).to eq("Hanami")
-      expect(string).to be_kind_of Hanami::Utils::String
-    end
-
     it "responds to ::String methods and only returns a new Hanami::Utils::String when the return value is a string", silence_deprecations: true do
       string = Hanami::Utils::String.new("abcdef")
       expect(string.casecmp("abcde")).to eq(1)
@@ -366,46 +360,6 @@ RSpec.describe Hanami::Utils::String do
 
       expect(string).to respond_to :reverse
       expect(string).not_to respond_to :unknown_method
-    end
-
-    describe "equality" do
-      it "has a working equality", silence_deprecations: true do
-        string = Hanami::Utils::String.new("hanami")
-        other  = Hanami::Utils::String.new("hanami")
-
-        expect(string.==(other)).to be_truthy
-      end
-
-      it "has a working equality with raw strings", silence_deprecations: true do
-        string = Hanami::Utils::String.new("hanami")
-        expect(string.==("hanami")).to be_truthy
-      end
-    end
-
-    describe "case equality" do
-      it "has a working case equality", silence_deprecations: true do
-        string = Hanami::Utils::String.new("hanami")
-        other  = Hanami::Utils::String.new("hanami")
-        expect(string.===(other)).to be_truthy # rubocop:disable Style/CaseEquality
-      end
-
-      it "has a working case equality with raw strings", silence_deprecations: true do
-        string = Hanami::Utils::String.new("hanami")
-        expect(string.===("hanami")).to be_truthy # rubocop:disable Style/CaseEquality
-      end
-    end
-
-    describe "value equality" do
-      it "has a working value equality", silence_deprecations: true do
-        string = Hanami::Utils::String.new("hanami")
-        other  = Hanami::Utils::String.new("hanami")
-        expect(string).to eql(other)
-      end
-
-      it "has a working value equality with raw strings", silence_deprecations: true do
-        string = Hanami::Utils::String.new("hanami")
-        expect(string).to eql("hanami")
-      end
     end
 
     describe "identity equality" do

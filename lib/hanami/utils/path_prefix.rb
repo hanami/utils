@@ -97,10 +97,21 @@ module Hanami
       #
       # @return [Integer]
       #
-      # @since 2.0.0
+      # @since 0.3.0
       def hash
         @string.hash
       end
+
+      # Equality
+      #
+      # @return [TrueClass,FalseClass]
+      #
+      # @since 0.3.0
+      def ==(other)
+        to_s == other
+      end
+
+      alias_method :eql?, :==
 
       protected
 

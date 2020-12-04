@@ -358,18 +358,6 @@ module Hanami
 
       alias_method :to_str, :to_s
 
-      # Equality
-      #
-      # @return [TrueClass,FalseClass]
-      #
-      # @since 0.3.0
-      # @deprecated
-      def ==(other)
-        to_s == other
-      end
-
-      alias_method :eql?, :==
-
       # Overrides Ruby's method_missing in order to provide ::String interface
       #
       # @api private
