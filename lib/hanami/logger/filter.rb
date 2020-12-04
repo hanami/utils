@@ -9,26 +9,19 @@ module Hanami
     # @since 1.1.0
     # @api private
     class Filter
+      # @since x.x.x
+      # @api private
       FILTERED_VALUE = "[FILTERED]"
 
-      # @since 1.1.0
-      # @api private
-      def initialize(filters = [])
+      def initialize(filters = [], mask: FILTERED_VALUE)
         @filters = filters
+        @mask = mask
       end
 
       # @since 1.1.0
       # @api private
-      def call(original_hash)
-        filtered_hash = _filtered_keys(original_hash).each_with_object({}) do |key, memo|
-          *keys, last = _actual_keys(original_hash, key.split("."))
-
-          keys.inject(memo) do |hash, k|
-            hash[k] ||= {}
-          end[last] = FILTERED_VALUE
-        end
-
-        _deep_merge(original_hash, filtered_hash)
+      def call(params)
+        _filter(_copy_params(params))
       end
 
       private
@@ -36,6 +29,10 @@ module Hanami
       # @since 1.1.0
       # @api private
       attr_reader :filters
+
+      # @since x.x.x
+      # @api private
+      attr_reader :mask
 
       # This is a simple deep merge to merge the original input
       # with the filtered hash which contains '[FILTERED]' string.
@@ -97,6 +94,53 @@ module Hanami
       # @see https://github.com/hanami/utils/pull/342
       def _key_paths?(value)
         value.is_a?(Enumerable) && !value.is_a?(File)
+      end
+
+      # @since x.x.x
+      # @api private
+      def _deep_dup(hash)
+        hash.map do |key, value|
+          [
+            key,
+            if value.is_a?(Hash)
+              _deep_dup(value)
+            else
+              _key_paths?(value) ? value.dup : value
+            end
+          ]
+        end.to_h
+      end
+
+      # @since x.x.x
+      # @api private
+      def _copy_params(params)
+        case params
+        when Hash
+          _deep_dup(params)
+        when Array
+          params.map { |hash| _deep_dup(hash) }
+        end
+      end
+
+      # @since x.x.x
+      # @api private
+      def _filter_hash(hash)
+        _filtered_keys(hash).each do |key|
+          *keys, last = _actual_keys(hash, key.split("."))
+          keys.inject(hash, :fetch)[last] = mask
+        end
+        hash
+      end
+
+      # @since x.x.x
+      # @api private
+      def _filter(params)
+        case params
+        when Hash
+          _filter_hash(params)
+        when Array
+          params.map { |hash| _filter_hash(hash) }
+        end
       end
     end
   end
