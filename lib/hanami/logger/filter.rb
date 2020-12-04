@@ -9,12 +9,11 @@ module Hanami
     # @since 1.1.0
     # @api private
     class Filter
-      # @since 1.1.0
+      # @since x.x.x
       # @api private
+      FILTERED_VALUE = "[FILTERED]"
 
-      DEFAULT_MASK = '[FILTERED]'.freeze
-
-      def initialize(filters = [], mask: DEFAULT_MASK)
+      def initialize(filters = [], mask: FILTERED_VALUE)
         @filters = filters
         @mask = mask
       end
@@ -29,8 +28,30 @@ module Hanami
 
       # @since 1.1.0
       # @api private
-      attr_reader :filters,
-                  :mask
+      attr_reader :filters
+
+      # @since x.x.x
+      # @api private
+      attr_reader :mask
+
+      # This is a simple deep merge to merge the original input
+      # with the filtered hash which contains '[FILTERED]' string.
+      #
+      # It only deep-merges if the conflict values are both hashes.
+      #
+      # @since x.x.x
+      # @api private
+      def _deep_merge(original_hash, filtered_hash)
+        original_hash.merge(filtered_hash) do |_key, original_item, filtered_item|
+          if original_item.is_a?(Hash) && filtered_item.is_a?(Hash)
+            _deep_merge(original_item, filtered_item)
+          elsif filtered_item == FILTERED_VALUE
+            filtered_item
+          else
+            original_item
+          end
+        end
+      end
 
       # @since 1.1.0
       # @api private
@@ -75,7 +96,7 @@ module Hanami
         value.is_a?(Enumerable) && !value.is_a?(File)
       end
 
-      # @since 1.3.x
+      # @since x.x.x
       # @api private
       def _deep_dup(hash)
         hash.map do |key, value|
@@ -90,7 +111,7 @@ module Hanami
         end.to_h
       end
 
-      # @since 1.3.x
+      # @since x.x.x
       # @api private
       def _copy_params(params)
         case params
@@ -101,7 +122,7 @@ module Hanami
         end
       end
 
-      # @since 1.3.x
+      # @since x.x.x
       # @api private
       def _filter_hash(hash)
         _filtered_keys(hash).each do |key|
@@ -111,7 +132,7 @@ module Hanami
         hash
       end
 
-      # @since 1.3.x
+      # @since x.x.x
       # @api private
       def _filter(params)
         case params

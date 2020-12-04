@@ -627,6 +627,9 @@ RSpec.describe Hanami::Logger do
           end
 
           expect(output).to eq("[hanami] [INFO] [2017-01-15 16:00:23 +0100] #{expected}\n")
+
+          expect(params[:params]['password']).to eq 'password'
+          expect(params[:params]['password_confirmation']).to eq 'password'
         end
       end
 
