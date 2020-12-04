@@ -1,14 +1,14 @@
 # frozen_string_literal: true
 
-require "transproc"
+require "dry-transformer"
 
 module Hanami
   module Utils
     # Hash transformations
     # @since 0.1.0
     module Hash
-      extend Transproc::Registry
-      import Transproc::HashTransformations
+      extend Dry::Transformer::Registry
+      import Dry::Transformer::HashTransformations
 
       # Symbolize the given hash
       #
@@ -91,19 +91,7 @@ module Hanami
       #   hash.class
       #     # => Hash
       def self.deep_stringify(input)
-        input.each_with_object({}) do |(key, value), output|
-          output[key.to_s] =
-            case value
-            when ::Hash
-              deep_stringify(value)
-            when Array
-              value.map do |item|
-                item.is_a?(::Hash) ? deep_stringify(item) : item
-              end
-            else
-              value
-            end
-        end
+        self[:deep_stringify_keys].call(input)
       end
 
       # Deep duplicates hash values
