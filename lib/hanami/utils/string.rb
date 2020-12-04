@@ -370,18 +370,6 @@ module Hanami
 
       alias_method :eql?, :==
 
-      # Splits the string with the given pattern
-      #
-      # @return [Array<::String>]
-      #
-      # @see http://www.ruby-doc.org/core/String.html#method-i-split
-      #
-      # @since 0.3.0
-      # @deprecated
-      def split(pattern, limit = 0)
-        @string.split(pattern, limit)
-      end
-
       # Replaces the given pattern with the given replacement
       #
       # @return [::String]
