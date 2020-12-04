@@ -1,6 +1,8 @@
-require 'hanami/utils/basic_object'
-require 'hanami/utils/class_attribute'
-require 'hanami/utils/hash'
+# frozen_string_literal: true
+
+require "hanami/utils/basic_object"
+require "hanami/utils/class_attribute"
+require "hanami/utils/hash"
 
 module Hanami
   # Hanami Interactor
@@ -17,14 +19,14 @@ module Hanami
       # @api private
       #
       # @see Hanami::Interactor::Result#respond_to_missing?
-      METHODS = ::Hash[initialize:  true,
-                       success?:    true,
+      METHODS = ::Hash[initialize: true,
+                       success?: true,
                        successful?: true,
-                       failure?:    true,
-                       fail!:       true,
-                       prepare!:    true,
-                       errors:      true,
-                       error:       true].freeze
+                       failure?: true,
+                       fail!: true,
+                       prepare!: true,
+                       errors: true,
+                       error: true].freeze
 
       # Initialize a new result
       #
@@ -50,7 +52,7 @@ module Hanami
       end
 
       # @since 0.3.5
-      alias success? successful?
+      alias_method :success?, :successful?
 
       # Checks if the current status is not successful
       #

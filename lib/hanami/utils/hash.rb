@@ -1,12 +1,13 @@
-require 'hanami/utils/duplicable'
-require 'transproc'
+# frozen_string_literal: true
+
+require "hanami/utils/duplicable"
+require "transproc"
 
 module Hanami
   module Utils
     # Hash on steroids
     # @since 0.1.0
     #
-    # rubocop:disable Metrics/ClassLength
     class Hash
       # @since 0.6.0
       # @api private
@@ -105,7 +106,7 @@ module Hanami
       #
       #   hash.class
       #     # => Hash
-      def self.deep_stringify(input) # rubocop:disable Metrics/MethodLength
+      def self.deep_stringify(input)
         input.each_with_object({}) do |(key, value), output|
           output[key.to_s] =
             case value
@@ -193,7 +194,7 @@ module Hanami
       #
       #   Hanami::Utils::Hash.deep_serialize(input)
       #     # => {:foo=>"bar", :baz=>[{:hello=>"world"}]}
-      def self.deep_serialize(input) # rubocop:disable Metrics/MethodLength
+      def self.deep_serialize(input)
         input.to_hash.each_with_object({}) do |(key, value), output|
           output[key.to_sym] =
             case value
@@ -452,7 +453,7 @@ module Hanami
         end
       end
 
-      alias to_hash to_h
+      alias_method :to_hash, :to_h
 
       # Converts into a nested array of [ key, value ] arrays.
       #
@@ -476,7 +477,7 @@ module Hanami
         @hash == other.to_h
       end
 
-      alias eql? ==
+      alias_method :eql?, :==
 
       # Returns the hash of the internal @hash
       #
@@ -505,7 +506,9 @@ module Hanami
       #
       # @raise [NoMethodError] If doesn't respond to the given method
       def method_missing(method_name, *args, &blk)
-        raise NoMethodError.new(%(undefined method `#{method_name}' for #{@hash}:#{self.class})) unless respond_to?(method_name)
+        unless respond_to?(method_name)
+          raise NoMethodError.new(%(undefined method `#{method_name}' for #{@hash}:#{self.class}))
+        end
 
         h = @hash.__send__(method_name, *args, &blk)
         h = self.class.new(h) if h.is_a?(::Hash)
@@ -520,6 +523,5 @@ module Hanami
         @hash.respond_to?(method_name, include_private)
       end
     end
-    # rubocop:enable Metrics/ClassLength
   end
 end
