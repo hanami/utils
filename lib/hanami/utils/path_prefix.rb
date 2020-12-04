@@ -102,6 +102,17 @@ module Hanami
         @string.hash
       end
 
+      # Returns a string representation
+      #
+      # @return [::String]
+      #
+      # @since 0.3.0
+      def to_s
+        @string
+      end
+
+      alias_method :to_str, :to_s
+
       # Equality
       #
       # @return [TrueClass,FalseClass]

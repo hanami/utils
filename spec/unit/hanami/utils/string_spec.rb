@@ -329,7 +329,7 @@ RSpec.describe Hanami::Utils::String do
       expect(result).to eq("authors/books#index")
     end
 
-    it "accepts Hanami::Utils::String as replacement", silence_deprecations: true do
+    xit "accepts Hanami::Utils::String as replacement", silence_deprecations: true do
       replacement = Hanami::Utils::String.new("#")
       result      = Hanami::Utils::String.rsub("authors/books/index", %r{/}, replacement)
 

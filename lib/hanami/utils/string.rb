@@ -346,18 +346,6 @@ module Hanami
         @string = string.to_s
       end
 
-      # Returns a string representation
-      #
-      # @return [::String]
-      #
-      # @since 0.3.0
-      # @deprecated
-      def to_s
-        @string
-      end
-
-      alias_method :to_str, :to_s
-
       # Overrides Ruby's method_missing in order to provide ::String interface
       #
       # @api private
