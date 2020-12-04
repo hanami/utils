@@ -627,6 +627,9 @@ RSpec.describe Hanami::Logger do
           end
 
           expect(output).to eq("[hanami] [INFO] [2017-01-15 16:00:23 +0100] #{expected}\n")
+
+          expect(params[:params]['password']).to eq 'password'
+          expect(params[:params]['password_confirmation']).to eq 'password'
         end
       end
 
@@ -672,7 +675,7 @@ RSpec.describe Hanami::Logger do
     end
 
     context "when input has Tempfile" do
-      it "filters with out errors with closed stream" do
+      it "filters without errors with closed stream" do
         tempfile = Tempfile.new("filter_test")
         tempfile.close!
         input = Hash[password: "password", file: tempfile]

@@ -9,6 +9,8 @@ module Hanami
     # @since 1.1.0
     # @api private
     class Filter
+      FILTERED_VALUE = "[FILTERED]"
+
       # @since 1.1.0
       # @api private
       def initialize(filters = [])
@@ -17,13 +19,16 @@ module Hanami
 
       # @since 1.1.0
       # @api private
-      def call(hash)
-        _filtered_keys(hash).each do |key|
-          *keys, last = _actual_keys(hash, key.split("."))
-          keys.inject(hash, :fetch)[last] = "[FILTERED]"
+      def call(original_hash)
+        filtered_hash = _filtered_keys(original_hash).each_with_object({}) do |key, memo|
+          *keys, last = _actual_keys(original_hash, key.split("."))
+
+          keys.inject(memo) do |hash, k|
+            hash[k] ||= {}
+          end[last] = FILTERED_VALUE
         end
 
-        hash
+        _deep_merge(original_hash, filtered_hash)
       end
 
       private
@@ -31,6 +36,25 @@ module Hanami
       # @since 1.1.0
       # @api private
       attr_reader :filters
+
+      # This is a simple deep merge to merge the original input
+      # with the filtered hash which contains '[FILTERED]' string.
+      #
+      # It only deep-merges if the conflict values are both hashes.
+      #
+      # @since x.x.x
+      # @api private
+      def _deep_merge(original_hash, filtered_hash)
+        original_hash.merge(filtered_hash) do |_key, original_item, filtered_item|
+          if original_item.is_a?(Hash) && filtered_item.is_a?(Hash)
+            _deep_merge(original_item, filtered_item)
+          elsif filtered_item == FILTERED_VALUE
+            filtered_item
+          else
+            original_item
+          end
+        end
+      end
 
       # @since 1.1.0
       # @api private
