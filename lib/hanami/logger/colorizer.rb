@@ -14,9 +14,9 @@ module Hanami
       # @api private
       def call(app, severity, datetime, _progname)
         ::Hash[
-          app:      app,
+          app: app,
           severity: severity,
-          time:     datetime,
+          time: datetime,
         ]
       end
     end
@@ -44,9 +44,9 @@ module Hanami
       # @return [::Hash] an Hash containing the keys `:app`, `:severity`, and `:time`
       def call(app, severity, datetime, _progname)
         ::Hash[
-          app:      app(app),
+          app: app(app),
           severity: severity(severity),
-          time:     datetime(datetime),
+          time: datetime(datetime),
         ]
       end
 
@@ -57,18 +57,18 @@ module Hanami
       # @since 1.2.0
       # @api private
       COLORS = ::Hash[
-        app:      :blue,
+        app: :blue,
         datetime: :cyan,
       ].freeze
 
       # @since 1.2.0
       # @api private
       LEVELS = ::Hash[
-        Hanami::Logger::DEBUG   => :cyan,
-        Hanami::Logger::INFO    => :magenta,
-        Hanami::Logger::WARN    => :yellow,
-        Hanami::Logger::ERROR   => :red,
-        Hanami::Logger::FATAL   => :red,
+        Hanami::Logger::DEBUG => :cyan,
+        Hanami::Logger::INFO => :magenta,
+        Hanami::Logger::WARN => :yellow,
+        Hanami::Logger::ERROR => :red,
+        Hanami::Logger::FATAL => :red,
         Hanami::Logger::UNKNOWN => :blue,
       ].freeze
 

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Hanami
   module Utils
     # Before and After callbacks
@@ -248,7 +250,9 @@ module Hanami
       end
 
       # Method callback
-      # It wraps a symbol or a string representing a method name that is implemented by the context within it will be called.
+      #
+      # It wraps a symbol or a string representing a method name that is
+      # implemented by the context within it will be called.
       #
       # @since 0.1.0
       # @api private

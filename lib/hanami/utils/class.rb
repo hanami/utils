@@ -1,4 +1,6 @@
-require 'hanami/utils/deprecation'
+# frozen_string_literal: true
+
+require "hanami/utils/deprecation"
 
 module Hanami
   module Utils
@@ -110,7 +112,7 @@ module Hanami
       #   # with missing constant
       #   Hanami::Utils::Class.load_from_pattern!('Unknown') # => raises NameError
       def self.load_from_pattern!(pattern, namespace = Object)
-        Deprecation.new('Hanami::Utils::Class.load_from_pattern! is deprecated, please use Hanami::Utils::Class.load! instead')
+        Deprecation.new("Hanami::Utils::Class.load_from_pattern! is deprecated, please use Hanami::Utils::Class.load! instead") # rubocop:disable Layout/LineLength
 
         tokenize(pattern) do |token|
           begin
@@ -119,13 +121,12 @@ module Hanami
           end
         end
 
-        full_name = [(namespace == Object ? nil : namespace), pattern].compact.join('::')
+        full_name = [(namespace == Object ? nil : namespace), pattern].compact.join("::")
         raise NameError.new("uninitialized constant #{full_name}")
       end
 
-      # rubocop:disable Metrics/MethodLength
       def self.tokenize(pattern)
-        if match = TOKENIZE_REGEXP.match(pattern) # rubocop:disable Lint/AssignmentInCondition
+        if match = TOKENIZE_REGEXP.match(pattern)
           pre  = match.pre_match
           post = match.post_match
           tokens = match[1].split(TOKENIZE_SEPARATOR)
@@ -138,7 +139,6 @@ module Hanami
 
         nil
       end
-      # rubocop:enable Metrics/MethodLength
 
       # Regexp for .tokenize
       #
@@ -150,7 +150,7 @@ module Hanami
       #
       # @since 1.3.0
       # @api private
-      TOKENIZE_SEPARATOR = '|'.freeze
+      TOKENIZE_SEPARATOR = "|"
     end
   end
 end
