@@ -419,15 +419,6 @@ RSpec.describe Hanami::Utils::String do
         expect(string).not_to equal("hanami")
       end
     end
-
-    describe "#hash" do
-      it "returns the same hash result of ::String", silence_deprecations: true do
-        expected = "hello".hash
-        actual   = Hanami::Utils::String.new("hello").hash
-
-        expect(actual).to eq(expected)
-      end
-    end
   end
 
   describe "unknown method" do

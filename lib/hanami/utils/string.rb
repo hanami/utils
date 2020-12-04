@@ -346,16 +346,6 @@ module Hanami
         @string = string.to_s
       end
 
-      # Returns the hash of the internal string
-      #
-      # @return [Integer]
-      #
-      # @since 0.3.0
-      # @deprecated
-      def hash
-        @string.hash
-      end
-
       # Returns a string representation
       #
       # @return [::String]

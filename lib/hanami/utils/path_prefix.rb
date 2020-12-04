@@ -93,6 +93,15 @@ module Hanami
         ).relative!
       end
 
+      # Returns the hash of the internal string
+      #
+      # @return [Integer]
+      #
+      # @since 2.0.0
+      def hash
+        @string.hash
+      end
+
       protected
 
       # Modifies the path prefix to have a prepended separator.
