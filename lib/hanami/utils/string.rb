@@ -346,52 +346,6 @@ module Hanami
         @string = string.to_s
       end
 
-      # Returns a downcased and underscore separated version of the string
-      #
-      # Revised version of `ActiveSupport::Inflector.underscore` implementation
-      # @see https://github.com/rails/rails/blob/feaa6e2048fe86bcf07e967d6e47b865e42e055b/activesupport/lib/active_support/inflector/methods.rb#L90
-      #
-      # @return [Hanami::Utils::String] the transformed string
-      # @deprecated Use {Hanami::Utils::String.underscore}
-      #
-      # @since 0.1.0
-      #
-      # @example
-      #   require 'hanami/utils/string'
-      #
-      #   string = Hanami::Utils::String.new 'HanamiUtils'
-      #   string.underscore # => 'hanami_utils'
-      def underscore
-        new_string = gsub(NAMESPACE_SEPARATOR, UNDERSCORE_SEPARATOR)
-        new_string.gsub!(/([A-Z\d]+)([A-Z][a-z])/, UNDERSCORE_DIVISION_TARGET)
-        new_string.gsub!(/([a-z\d])([A-Z])/, UNDERSCORE_DIVISION_TARGET)
-        new_string.gsub!(/[[:space:]]|-/, UNDERSCORE_DIVISION_TARGET)
-        new_string.downcase!
-        self.class.new new_string
-      end
-
-      # Returns a downcased and dash separated version of the string
-      #
-      # @return [Hanami::Utils::String] the transformed string
-      #
-      # @since 0.4.0
-      # @deprecated Use {Hanami::Utils::String.dasherize}
-      #
-      # @example
-      #   require 'hanami/utils/string'
-      #
-      #   string = Hanami::Utils::String.new 'Hanami Utils'
-      #   string.dasherize # => 'hanami-utils'
-      #
-      #   string = Hanami::Utils::String.new 'hanami_utils'
-      #   string.dasherize # => 'hanami-utils'
-      #
-      #   string = Hanami::Utils::String.new 'HanamiUtils'
-      #   string.dasherize # => "hanami-utils"
-      def dasherize
-        self.class.new underscore.split(CLASSIFY_SEPARATOR).join(DASHERIZE_SEPARATOR)
-      end
-
       # Returns the string without the Ruby namespace of the class
       #
       # @return [Hanami::Utils::String] the transformed string
