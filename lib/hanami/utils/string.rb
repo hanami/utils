@@ -370,19 +370,6 @@ module Hanami
 
       alias_method :eql?, :==
 
-      # Iterates through the string, matching the pattern.
-      # Either return all those patterns, or pass them to the block.
-      #
-      # @return [Array<::String>]
-      #
-      # @see http://www.ruby-doc.org/core/String.html#method-i-scan
-      #
-      # @since 0.6.0
-      # @deprecated
-      def scan(pattern, &blk)
-        @string.scan(pattern, &blk)
-      end
-
       # Overrides Ruby's method_missing in order to provide ::String interface
       #
       # @api private
