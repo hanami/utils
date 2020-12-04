@@ -349,38 +349,6 @@ RSpec.describe Hanami::Utils::String do
 
   # INSTANCE LEVEL INTERFACE
 
-  describe "#capitalize" do
-    it "returns an instance of Hanami::Utils::String", silence_deprecations: true do
-      expect(Hanami::Utils::String.new("hanami").capitalize).to be_kind_of(Hanami::Utils::String)
-    end
-
-    it "doesn't mutate self", silence_deprecations: true do
-      string = Hanami::Utils::String.new("hanami")
-      string.capitalize
-      expect(string).to eq("hanami")
-    end
-
-    it "returns an capitalized string", silence_deprecations: true do
-      expect(Hanami::Utils::String.new("hanami").capitalize).to eq("Hanami")
-      expect(Hanami::Utils::String.new("HanamiUtils").capitalize).to eq("Hanami utils")
-      expect(Hanami::Utils::String.new("hanami utils").capitalize).to eq("Hanami utils")
-      expect(Hanami::Utils::String.new("hanami_utils").capitalize).to eq("Hanami utils")
-      expect(Hanami::Utils::String.new("hanami-utils").capitalize).to eq("Hanami utils")
-      expect(Hanami::Utils::String.new("hanami' utils").capitalize).to eq("Hanami' utils")
-      expect(Hanami::Utils::String.new("hanami’ utils").capitalize).to eq("Hanami’ utils")
-      expect(Hanami::Utils::String.new("hanami` utils").capitalize).to eq("Hanami` utils")
-      expect(Hanami::Utils::String.new("OneTwoThree").capitalize).to eq("One two three")
-      expect(Hanami::Utils::String.new("one Two three").capitalize).to eq("One two three")
-      expect(Hanami::Utils::String.new("one_two_three").capitalize).to eq("One two three")
-      expect(Hanami::Utils::String.new("one-two-three").capitalize).to eq("One two three")
-
-      expect(Hanami::Utils::String.new(:HanamiUtils).capitalize).to eq("Hanami utils")
-      expect(Hanami::Utils::String.new(:'hanami utils').capitalize).to eq("Hanami utils")
-      expect(Hanami::Utils::String.new(:hanami_utils).capitalize).to eq("Hanami utils")
-      expect(Hanami::Utils::String.new(:'hanami-utils').capitalize).to eq("Hanami utils")
-    end
-  end
-
   describe "#classify" do
     it "returns an instance of Hanami::Utils::String", silence_deprecations: true do
       expect(Hanami::Utils::String.new("hanami").classify).to be_kind_of(Hanami::Utils::String)

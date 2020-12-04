@@ -346,38 +346,6 @@ module Hanami
         @string = string.to_s
       end
 
-      # Returns a capitalized version of the string
-      #
-      # @return [Hanami::Utils::String] the transformed string
-      #
-      # @since 0.5.2
-      # @deprecated Use {Hanami::Utils::String.capitalize}
-      #
-      # @example
-      #   require 'hanami/utils/string'
-      #
-      #   string = Hanami::Utils::String.new 'hanami'
-      #   string.capitalize # => "Hanami"
-      #
-      #   string = Hanami::Utils::String.new 'hanami utils'
-      #   string.capitalize # => "Hanami utils"
-      #
-      #   string = Hanami::Utils::String.new 'Hanami Utils'
-      #   string.capitalize # => "Hanami utils"
-      #
-      #   string = Hanami::Utils::String.new 'hanami_utils'
-      #   string.capitalize # => "Hanami utils"
-      #
-      #   string = Hanami::Utils::String.new 'hanami-utils'
-      #   string.capitalize # => "Hanami utils"
-      def capitalize
-        head, *tail = underscore.split(CLASSIFY_SEPARATOR)
-
-        self.class.new(
-          tail.unshift(head.capitalize).join(CAPITALIZE_SEPARATOR)
-        )
-      end
-
       # Returns a CamelCase version of the string
       #
       # @return [Hanami::Utils::String] the transformed string
