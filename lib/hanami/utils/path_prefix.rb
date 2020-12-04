@@ -26,7 +26,7 @@ module Hanami
       #
       # @see Hanami::Utils::PathPrefix::DEFAULT_SEPARATOR
       def initialize(string = nil, separator = DEFAULT_SEPARATOR)
-        super(string)
+        @string = string.to_s
         @separator = separator
       end
 
