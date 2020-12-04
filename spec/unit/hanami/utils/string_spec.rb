@@ -329,13 +329,6 @@ RSpec.describe Hanami::Utils::String do
       expect(result).to eq("authors/books#index")
     end
 
-    xit "accepts Hanami::Utils::String as replacement", silence_deprecations: true do
-      replacement = Hanami::Utils::String.new("#")
-      result      = Hanami::Utils::String.rsub("authors/books/index", %r{/}, replacement)
-
-      expect(result).to eq("authors/books#index")
-    end
-
     it "returns the initial string no match" do
       result = Hanami::Utils::String.rsub("index", %r{/}, "#")
       expect(result).to eq("index")
@@ -344,50 +337,6 @@ RSpec.describe Hanami::Utils::String do
     it "returns accepts a symbol initial string no match" do
       result = Hanami::Utils::String.rsub(:'authors/books/index', %r{/}, "#")
       expect(result).to eq("authors/books#index")
-    end
-  end
-
-  # INSTANCE LEVEL INTERFACE
-
-  describe "string interface" do
-    it "responds to ::String methods and only returns a new Hanami::Utils::String when the return value is a string", silence_deprecations: true do
-      string = Hanami::Utils::String.new("abcdef")
-      expect(string.casecmp("abcde")).to eq(1)
-    end
-
-    it "responds to whatever ::String responds to", silence_deprecations: true do
-      string = Hanami::Utils::String.new("abcdef")
-
-      expect(string).to respond_to :reverse
-      expect(string).not_to respond_to :unknown_method
-    end
-
-    describe "identity equality" do
-      it "has a working identity equality", silence_deprecations: true do
-        string = Hanami::Utils::String.new("hanami")
-        expect(string).to equal(string)
-      end
-
-      it "has a working identity equality with raw strings", silence_deprecations: true do
-        string = Hanami::Utils::String.new("hanami")
-        expect(string).not_to equal("hanami")
-      end
-    end
-  end
-
-  describe "unknown method" do
-    it "raises error", silence_deprecations: true do
-      expect { Hanami::Utils::String.new("one").yay! }
-        .to raise_error(NoMethodError, %(undefined method `yay!' for "one":Hanami::Utils::String))
-    end
-
-    # See: https://github.com/hanami/utils/issues/48
-    it "returns the correct object when a NoMethodError is raised", silence_deprecations: true do
-      string            = Hanami::Utils::String.new("/path/to/something")
-      exception_message = %(undefined method `boom' for "/":String)
-
-      expect { string.gsub(%r{/}, &:boom) }
-        .to raise_error(NoMethodError, exception_message)
     end
   end
 end

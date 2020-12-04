@@ -333,42 +333,6 @@ module Hanami
           string
         end
       end
-
-      # Initialize the string
-      #
-      # @param string [::String, Symbol] the value we want to initialize
-      #
-      # @return [Hanami::Utils::String] self
-      #
-      # @since 0.1.0
-      # @deprecated
-      def initialize(string)
-        @string = string.to_s
-      end
-
-      # Overrides Ruby's method_missing in order to provide ::String interface
-      #
-      # @api private
-      # @since 0.3.0
-      #
-      # @raise [NoMethodError] If doesn't respond to the given method
-      def method_missing(method_name, *args, &blk)
-        unless respond_to?(method_name)
-          raise NoMethodError.new(%(undefined method `#{method_name}' for "#{@string}":#{self.class}))
-        end
-
-        s = @string.__send__(method_name, *args, &blk)
-        s = self.class.new(s) if s.is_a?(::String)
-        s
-      end
-
-      # Overrides Ruby's respond_to_missing? in order to support ::String interface
-      #
-      # @api private
-      # @since 0.3.0
-      def respond_to_missing?(method_name, include_private = false)
-        @string.respond_to?(method_name, include_private)
-      end
     end
   end
 end
