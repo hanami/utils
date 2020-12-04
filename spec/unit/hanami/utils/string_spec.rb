@@ -349,31 +349,6 @@ RSpec.describe Hanami::Utils::String do
 
   # INSTANCE LEVEL INTERFACE
 
-  describe "#classify" do
-    it "returns an instance of Hanami::Utils::String", silence_deprecations: true do
-      expect(Hanami::Utils::String.new("hanami").classify).to be_kind_of(Hanami::Utils::String)
-    end
-
-    it "returns a classified string", silence_deprecations: true do
-      expect(Hanami::Utils::String.new("hanami").classify).to eq("Hanami")
-      expect(Hanami::Utils::String.new("hanami_router").classify).to eq("HanamiRouter")
-      expect(Hanami::Utils::String.new("hanami-router").classify).to eq("HanamiRouter")
-      expect(Hanami::Utils::String.new("hanami/router").classify).to eq("Hanami::Router")
-      expect(Hanami::Utils::String.new("hanami::router").classify).to eq("Hanami::Router")
-      expect(Hanami::Utils::String.new("hanami::router/base_object").classify).to eq("Hanami::Router::BaseObject")
-      expect(Hanami::Utils::String.new("AwesomeProject").classify).to eq("AwesomeProject")
-      expect(Hanami::Utils::String.new("AwesomeProject::Namespace").classify).to eq("AwesomeProject::Namespace")
-    end
-
-    it "returns a classified string from symbol", silence_deprecations: true do
-      expect(Hanami::Utils::String.new(:hanami).classify).to eq("Hanami")
-      expect(Hanami::Utils::String.new(:hanami_router).classify).to eq("HanamiRouter")
-      expect(Hanami::Utils::String.new(:'hanami-router').classify).to eq("HanamiRouter")
-      expect(Hanami::Utils::String.new(:'hanami/router').classify).to eq("Hanami::Router")
-      expect(Hanami::Utils::String.new(:'hanami::router').classify).to eq("Hanami::Router")
-    end
-  end
-
   describe "#underscore" do
     it "returns an instance of Hanami::Utils::String", silence_deprecations: true do
       expect(Hanami::Utils::String.new("Hanami").underscore).to be_kind_of(Hanami::Utils::String)

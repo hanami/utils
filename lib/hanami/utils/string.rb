@@ -346,29 +346,6 @@ module Hanami
         @string = string.to_s
       end
 
-      # Returns a CamelCase version of the string
-      #
-      # @return [Hanami::Utils::String] the transformed string
-      #
-      # @since 0.1.0
-      # @deprecated Use {Hanami::Utils::String.classify}
-      #
-      # @example
-      #   require 'hanami/utils/string'
-      #
-      #   string = Hanami::Utils::String.new 'hanami_utils'
-      #   string.classify # => 'HanamiUtils'
-      def classify
-        words = underscore.split(CLASSIFY_WORD_SEPARATOR).map!(&:capitalize)
-        delimiters = underscore.scan(CLASSIFY_WORD_SEPARATOR)
-
-        delimiters.map! do |delimiter|
-          delimiter == CLASSIFY_SEPARATOR ? EMPTY_STRING : NAMESPACE_SEPARATOR
-        end
-
-        self.class.new words.zip(delimiters).join
-      end
-
       # Returns a downcased and underscore separated version of the string
       #
       # Revised version of `ActiveSupport::Inflector.underscore` implementation
