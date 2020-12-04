@@ -370,22 +370,6 @@ module Hanami
 
       alias_method :eql?, :==
 
-      # Replaces the given pattern with the given replacement
-      #
-      # @return [::String]
-      #
-      # @see http://www.ruby-doc.org/core/String.html#method-i-gsub
-      #
-      # @since 0.3.0
-      # @deprecated
-      def gsub(pattern, replacement = nil, &blk)
-        if block_given?
-          @string.gsub(pattern, &blk)
-        else
-          @string.gsub(pattern, replacement)
-        end
-      end
-
       # Iterates through the string, matching the pattern.
       # Either return all those patterns, or pass them to the block.
       #
