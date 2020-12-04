@@ -8,7 +8,7 @@ module Hanami
     # String on steroids
     #
     # @since 0.1.0
-    class String
+    module String
       # Empty string for #classify
       #
       # @since 0.6.0
@@ -26,18 +26,6 @@ module Hanami
       # @since 0.3.0
       # @api private
       CLASSIFY_SEPARATOR  = "_"
-
-      # Regexp for #tokenize
-      #
-      # @since 0.3.0
-      # @api private
-      TOKENIZE_REGEXP     = /\((.*)\)/.freeze
-
-      # Separator for #tokenize
-      #
-      # @since 0.3.0
-      # @api private
-      TOKENIZE_SEPARATOR  = "|"
 
       # Separator for #underscore
       #
