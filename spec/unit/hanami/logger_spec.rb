@@ -627,6 +627,9 @@ RSpec.describe Hanami::Logger do
           end
 
           expect(output).to eq("[hanami] [INFO] [2017-01-15 16:00:23 +0100] #{expected}\n")
+
+          expect(params[:params]["password"]).to eq "password"
+          expect(params[:params]["password_confirmation"]).to eq "password"
         end
       end
 
@@ -659,6 +662,33 @@ RSpec.describe Hanami::Logger do
       expect(output).to eql(Hash["password" => "[FILTERED]", foo: Hash[password: "[FILTERED]"]])
     end
 
+    it "doesn't mutate the input hash" do
+      input = Hash[password: "azerty", foo: Hash[password: "bar"]]
+      described_class.new(%w[password]).call(input)
+      expect(input).to eql(Hash[password: "azerty", foo: Hash[password: "bar"]])
+    end
+
+    it "doesn't mutate the input array" do
+      input = Array[Hash[password: "azerty", foo: Hash[password: "bar"]]]
+      described_class.new(%w[password]).call(input)
+      expect(input).to eql(Array[Hash[password: "azerty", foo: Hash[password: "bar"]]])
+    end
+
+    it "filters an array of hash" do
+      input = Array[
+        Hash[user: Hash[name: "foo", password: "abc"], password: "foo"],
+        Hash[user: Hash[name: "bar", password: "xyz"], password: "bar"]
+      ]
+
+      expect_output = Array[
+        Hash[user: Hash[name: "foo", password: "[FILTERED]"], password: "foo"],
+        Hash[user: Hash[name: "bar", password: "[FILTERED]"], password: "bar"]
+      ]
+
+      output = described_class.new(%w[user.password]).call(input)
+      expect(output).to eql(expect_output)
+    end
+
     it "filters with multiple filters" do
       input = Hash[password: "azerty", number: "12345"]
       output = described_class.new(%i[password number]).call(input)
@@ -672,9 +702,10 @@ RSpec.describe Hanami::Logger do
     end
 
     context "when input has Tempfile" do
-      it "filters with out errors with closed stream" do
+      it "filters without errors with closed stream" do
         tempfile = Tempfile.new("filter_test")
         tempfile.close!
+
         input = Hash[password: "password", file: tempfile]
         output = described_class.new(%i[password file]).call(input)
         expect(output).to eql(Hash[password: "[FILTERED]", file: "[FILTERED]"])
