@@ -353,27 +353,51 @@ module Hanami
       #   end
       #
       #   Signup.new.call # => NoMethodError
-      def call(*args)
-        @__result = ::Hanami::Interactor::Result.new
-        _call(*args) { super }
+      if RUBY_VERSION >= "3.0"
+        def call(*args, **kwargs)
+          @__result = ::Hanami::Interactor::Result.new
+          _call(*args, **kwargs) { super }
+        end
+      else
+        def call(*args)
+          @__result = ::Hanami::Interactor::Result.new
+          _call(*args) { super }
+        end
       end
 
       private
 
       # @api private
       # @since 1.1.0
-      def _call(*args)
-        catch :fail do
-          validate!(*args)
-          yield
-        end
+      if RUBY_VERSION >= "3.0"
+        def _call(*args, **kwargs)
+          catch :fail do
+            validate!(*args, **kwargs)
+            yield
+          end
 
-        _prepare!
+          _prepare!
+        end
+      else
+        def _call(*args)
+          catch :fail do
+            validate!(*args)
+            yield
+          end
+
+          _prepare!
+        end
       end
 
       # @since 1.1.0
-      def validate!(*args)
-        fail! unless valid?(*args)
+      if RUBY_VERSION >= "3.0"
+        def validate!(*args, **kwargs)
+          fail! unless valid?(*args, **kwargs)
+        end
+      else
+        def validate!(*args)
+          fail! unless valid?(*args)
+        end
       end
     end
 
