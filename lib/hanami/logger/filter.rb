@@ -9,7 +9,7 @@ module Hanami
     # @since 1.1.0
     # @api private
     class Filter
-      # @since x.x.x
+      # @since 1.3.7
       # @api private
       FILTERED_VALUE = "[FILTERED]"
 
@@ -30,7 +30,7 @@ module Hanami
       # @api private
       attr_reader :filters
 
-      # @since x.x.x
+      # @since 1.3.7
       # @api private
       attr_reader :mask
 
@@ -39,7 +39,7 @@ module Hanami
       #
       # It only deep-merges if the conflict values are both hashes.
       #
-      # @since x.x.x
+      # @since 1.3.7
       # @api private
       def _deep_merge(original_hash, filtered_hash)
         original_hash.merge(filtered_hash) do |_key, original_item, filtered_item|
@@ -96,7 +96,7 @@ module Hanami
         value.is_a?(Enumerable) && !value.is_a?(File)
       end
 
-      # @since x.x.x
+      # @since 1.3.7
       # @api private
       def _deep_dup(hash)
         hash.map do |key, value|
@@ -111,7 +111,7 @@ module Hanami
         end.to_h
       end
 
-      # @since x.x.x
+      # @since 1.3.7
       # @api private
       def _copy_params(params)
         case params
@@ -122,7 +122,7 @@ module Hanami
         end
       end
 
-      # @since x.x.x
+      # @since 1.3.7
       # @api private
       def _filter_hash(hash)
         _filtered_keys(hash).each do |key|
@@ -132,7 +132,7 @@ module Hanami
         hash
       end
 
-      # @since x.x.x
+      # @since 1.3.7
       # @api private
       def _filter(params)
         case params

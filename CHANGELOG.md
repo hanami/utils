@@ -1,6 +1,14 @@
 # Hanami::Utils
 Ruby core extentions and class utilities for Hanami
 
+## v1.3.7 - 2021-01-04
+### Added
+- [Luca Guidi] Official support for Ruby: MRI 3.0
+- [Khai Le] Allow `Hanami::Logger` to filter sensitive data for an array of hashes
+
+### Fixed
+- [Hiếu Nguyễn] Ensure `Hanami::Logger` to not mutate `Hash` input when filtering sensitive data
+
 ## v1.3.6 - 2020-01-07
 ### Added
 - [Luca Guidi] Official support for Ruby: MRI 2.7
