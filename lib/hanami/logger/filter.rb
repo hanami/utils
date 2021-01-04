@@ -9,21 +9,19 @@ module Hanami
     # @since 1.1.0
     # @api private
     class Filter
-      # @since 1.1.0
+      # @since 1.3.7
       # @api private
-      def initialize(filters = [])
+      FILTERED_VALUE = "[FILTERED]"
+
+      def initialize(filters = [], mask: FILTERED_VALUE)
         @filters = filters
+        @mask = mask
       end
 
       # @since 1.1.0
       # @api private
-      def call(hash)
-        _filtered_keys(hash).each do |key|
-          *keys, last = _actual_keys(hash, key.split("."))
-          keys.inject(hash, :fetch)[last] = "[FILTERED]"
-        end
-
-        hash
+      def call(params)
+        _filter(_copy_params(params))
       end
 
       private
@@ -31,6 +29,29 @@ module Hanami
       # @since 1.1.0
       # @api private
       attr_reader :filters
+
+      # @since 1.3.7
+      # @api private
+      attr_reader :mask
+
+      # This is a simple deep merge to merge the original input
+      # with the filtered hash which contains '[FILTERED]' string.
+      #
+      # It only deep-merges if the conflict values are both hashes.
+      #
+      # @since 1.3.7
+      # @api private
+      def _deep_merge(original_hash, filtered_hash)
+        original_hash.merge(filtered_hash) do |_key, original_item, filtered_item|
+          if original_item.is_a?(Hash) && filtered_item.is_a?(Hash)
+            _deep_merge(original_item, filtered_item)
+          elsif filtered_item == FILTERED_VALUE
+            filtered_item
+          else
+            original_item
+          end
+        end
+      end
 
       # @since 1.1.0
       # @api private
@@ -73,6 +94,53 @@ module Hanami
       # @see https://github.com/hanami/utils/pull/342
       def _key_paths?(value)
         value.is_a?(Enumerable) && !value.is_a?(File)
+      end
+
+      # @since 1.3.7
+      # @api private
+      def _deep_dup(hash)
+        hash.map do |key, value|
+          [
+            key,
+            if value.is_a?(Hash)
+              _deep_dup(value)
+            else
+              _key_paths?(value) ? value.dup : value
+            end
+          ]
+        end.to_h
+      end
+
+      # @since 1.3.7
+      # @api private
+      def _copy_params(params)
+        case params
+        when Hash
+          _deep_dup(params)
+        when Array
+          params.map { |hash| _deep_dup(hash) }
+        end
+      end
+
+      # @since 1.3.7
+      # @api private
+      def _filter_hash(hash)
+        _filtered_keys(hash).each do |key|
+          *keys, last = _actual_keys(hash, key.split("."))
+          keys.inject(hash, :fetch)[last] = mask
+        end
+        hash
+      end
+
+      # @since 1.3.7
+      # @api private
+      def _filter(params)
+        case params
+        when Hash
+          _filter_hash(params)
+        when Array
+          params.map { |hash| _filter_hash(hash) }
+        end
       end
     end
   end
