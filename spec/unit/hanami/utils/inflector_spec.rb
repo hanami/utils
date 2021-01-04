@@ -72,6 +72,8 @@ RSpec.describe Hanami::Utils::Inflector do
       end
 
       it %(pluralizes titleized "#{Hanami::Utils::String.titleize(singular)}" to "#{plural}"), silence_deprecations: true do
+        skip if RUBY_VERSION >= "3.0"
+
         actual = Hanami::Utils::Inflector.pluralize(Hanami::Utils::String.new(singular).titleize)
         expect(actual).to eq Hanami::Utils::String.new(plural).titleize
       end
@@ -124,6 +126,8 @@ RSpec.describe Hanami::Utils::Inflector do
       end
 
       it %(singularizes titleized "#{Hanami::Utils::String.titleize(plural)}" to "#{singular}"), silence_deprecations: true do
+        skip if RUBY_VERSION >= "3.0"
+
         actual = Hanami::Utils::Inflector.singularize(Hanami::Utils::String.new(plural).titleize)
         expect(actual).to eq Hanami::Utils::String.new(singular).titleize
       end
