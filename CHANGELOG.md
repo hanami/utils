@@ -1,6 +1,11 @@
 # Hanami::Utils
 Ruby core extentions and class utilities for Hanami
 
+## v2.0.0.alpha2 - 2021-05-04
+### Changed
+- [Luca Guidi] Drop support for Ruby: MRI 2.5.
+- [Luca Guidi] Transform `Utils::String` from class to module
+
 ## v2.0.0.alpha1 - 2019-01-30
 ### Added
 - [Gustavo Caso] Introduce `Hanami::Middleware` namespace
@@ -21,7 +26,6 @@ Ruby core extentions and class utilities for Hanami
 ## v1.3.8 - 2021-05-03
 ### Fixed
 - [Hiếu Nguyễn] Ensure `Hanami::Interactor#initialize` to accept keyword arguments while working with Ruby 3
->>>>>>> develop
 
 ## v1.3.7 - 2021-01-04
 ### Added
