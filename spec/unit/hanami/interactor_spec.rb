@@ -274,8 +274,8 @@ class LegacyCreateUser
   include Hanami::Interactor
   expose :user
 
-  def initialize(params)
-    @user = User.new(params)
+  def initialize(**params)
+    @user = User.new(**params)
   end
 
   def call
@@ -317,8 +317,8 @@ class CreateUser
 end
 
 class LegacyUpdateUser < LegacyCreateUser
-  def initialize(_user, params)
-    super(params)
+  def initialize(_user, **params)
+    super(**params)
     @user.name = params.fetch(:name)
   end
 end
