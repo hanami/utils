@@ -181,10 +181,18 @@ module Hanami
       #       # ...
       #     end
       #   end
-      def initialize(*args)
-        super
-      ensure
-        @__result = ::Hanami::Interactor::Result.new
+      if RUBY_VERSION >= "3.0"
+        def initialize(*args, **kwargs)
+          super
+        ensure
+          @__result = ::Hanami::Interactor::Result.new
+        end
+      else
+        def initialize(*args)
+          super
+        ensure
+          @__result = ::Hanami::Interactor::Result.new
+        end
       end
 
       # Triggers the operation and return a result.
