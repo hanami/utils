@@ -1,6 +1,10 @@
 # Hanami::Utils
 Ruby core extentions and class utilities for Hanami
 
+## v1.3.8 - 2021-05-03
+### Fixed
+- [Hiếu Nguyễn] Ensure `Hanami::Interactor#initialize` to accept keyword arguments while working with Ruby 3
+
 ## v1.3.7 - 2021-01-04
 ### Added
 - [Luca Guidi] Official support for Ruby: MRI 3.0
