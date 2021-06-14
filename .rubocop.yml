@@ -1,13 +1,13 @@
 # Please keep AllCops, Bundler, Style, Metrics groups and then order cops
 # alphabetically
 inherit_from:
-  - https://raw.githubusercontent.com/hanami/devtools/master/.rubocop.yml
+  - https://raw.githubusercontent.com/hanami/devtools/master/.rubocop-unstable.yml
 Layout/LineLength:
   Exclude:
     - "lib/hanami/utils/escape.rb"
     - "spec/**/*"
+Lint/MissingSuper:
+  Enabled: false
 Style/CommentedKeyword:
   Exclude:
     - "spec/**/*"
-Style/MethodMissingSuper:
-  Enabled: false

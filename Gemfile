@@ -4,7 +4,7 @@ source "https://rubygems.org"
 gemspec
 
 unless ENV["CI"]
-  gem "byebug", require: false, platforms: :mri if RUBY_VERSION >= "2.3.0"
+  gem "byebug", require: false, platforms: :mri
   gem "yard",   require: false
 end
 
@@ -12,9 +12,5 @@ group :multi_json do
   gem "multi_json", "~> 1.0", require: false
 end
 
-group :inflecto do
-  gem "inflecto", "~> 0.0.2", require: false
-end
-
-gem "gson", ">= 0.6", require: false, platforms: :jruby
 gem "codecov", require: false, group: :test
+gem "gson", ">= 0.6", require: false, platforms: :jruby

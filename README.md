@@ -5,8 +5,8 @@ Ruby core extensions and class utilities for [Hanami](http://hanamirb.org)
 ## Status
 
 [![Gem Version](https://badge.fury.io/rb/hanami-utils.svg)](https://badge.fury.io/rb/hanami-utils)
-[![CI](https://github.com/hanami/utils/workflows/ci/badge.svg?branch=master)](https://github.com/hanami/utils/actions?query=workflow%3Aci+branch%3Amaster)
-[![Test Coverage](https://codecov.io/gh/hanami/utils/branch/master/graph/badge.svg)](https://codecov.io/gh/hanami/utils)
+[![CI](https://github.com/hanami/utils/workflows/ci/badge.svg?branch=unstable)](https://github.com/hanami/utils/actions?query=workflow%3Aci+branch%3Aunstable)
+[![Test Coverage](https://codecov.io/gh/hanami/utils/branch/unstable/graph/badge.svg)](https://codecov.io/gh/hanami/utils)
 [![Depfu](https://badges.depfu.com/badges/a8545fb67cf32a2c75b6227bc0821027/overview.svg)](https://depfu.com/github/hanami/utils?project=Bundler)
 [![Inline Docs](http://inch-ci.org/github/hanami/utils.svg)](http://inch-ci.org/github/hanami/utils)
 
@@ -21,7 +21,7 @@ Ruby core extensions and class utilities for [Hanami](http://hanamirb.org)
 
 ## Rubies
 
-__Hanami::Utils__ supports Ruby (MRI) 2.3+, JRuby 9.1.5.0+
+__Hanami::Utils__ supports Ruby (MRI) 2.6+
 
 ## Installation
 
@@ -78,11 +78,6 @@ Inheritable class attributes. [[API doc](http://www.rubydoc.info/gems/hanami-uti
 
 Deprecate Hanami features. [[API doc](http://www.rubydoc.info/gems/hanami-utils/Hanami/Utils/Deprecation)]
 
-### Hanami::Utils::Duplicable
-
-Safe `#dup` logic for Ruby objects. [[API doc](http://www.rubydoc.info/gems/hanami-utils/Hanami/Utils/Duplicable)]
-
-
 ### Hanami::Utils::Escape
 
 Safe and fast escape for URLs, HTML content and attributes. Based on OWASP/ESAPI code. [[API doc](http://www.rubydoc.info/gems/hanami-utils/Hanami/Utils/Escape)]
@@ -97,15 +92,11 @@ File utilities to manipulate files and directories. [[API doc](http://www.rubydo
 
 ### Hanami::Utils::Hash
 
-Enhanced version of Ruby's `Hash`. [[API doc](http://www.rubydoc.info/gems/hanami-utils/Hanami/Utils/Hash)]
+`Hash` transformations. [[API doc](http://www.rubydoc.info/gems/hanami-utils/Hanami/Utils/Hash)]
 
 ### Hanami::Utils::IO
 
 Silence Ruby warnings. [[API doc](http://www.rubydoc.info/gems/hanami-utils/Hanami/Utils/IO)]
-
-### Hanami::Utils::Inflector
-
-Complete and customizable english inflections (pluralization and singularization). [[API doc](http://www.rubydoc.info/gems/hanami-utils/Hanami/Utils/Inflector)]
 
 ### Hanami::Utils::Json
 

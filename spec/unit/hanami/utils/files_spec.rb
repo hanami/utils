@@ -65,50 +65,6 @@ RSpec.describe Hanami::Utils::Files do
     end
   end
 
-  describe ".rewrite" do
-    it "is deprecated" do
-      path = root.join("rewrite")
-      described_class.write(path, "Hello\nWorld")
-      expect { described_class.rewrite(path, "Ciao Mondo") }.to output(
-        include("`.rewrite' is deprecated, please use `.write' - called from: #{__FILE__}:#{__LINE__ - 1}:in `block")
-      ).to_stderr
-    end
-
-    it "rewrites an existing file with given contents" do
-      Hanami::Utils::IO.silence_warnings do
-        path = root.join("rewrite")
-        described_class.write(path, "Hello\nWorld")
-        described_class.rewrite(path, "Ciao Mondo")
-
-        expect(path).to     exist
-        expect(path).to     have_content("Ciao Mondo")
-        expect(path).to_not have_content("Hello\nWorld")
-      end
-    end
-
-    it "raises an error when intermediate directories aren't present" do
-      Hanami::Utils::IO.silence_warnings do
-        path = root.join("path", "to", "file", "rewrite")
-
-        expect { described_class.rewrite(path, "Hello") }.to raise_error do |exception|
-          expect(exception).to be_kind_of(Errno::ENOENT)
-          expect(exception.message).to match("No such file or directory")
-        end
-      end
-    end
-
-    it "raises an error when the file was not found" do
-      Hanami::Utils::IO.silence_warnings do
-        path = root.join("rewrite_not_found")
-
-        expect { described_class.rewrite(path, "Hello") }.to raise_error do |exception|
-          expect(exception).to be_kind_of(Errno::ENOENT)
-          expect(exception.message).to match("No such file or directory")
-        end
-      end
-    end
-  end
-
   describe ".cp" do
     let(:source) { root.join("..", "source") }
 
