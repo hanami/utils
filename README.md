@@ -5,8 +5,8 @@ Ruby core extensions and class utilities for [Hanami](http://hanamirb.org)
 ## Status
 
 [![Gem Version](https://badge.fury.io/rb/hanami-utils.svg)](https://badge.fury.io/rb/hanami-utils)
-[![CI](https://github.com/hanami/utils/workflows/ci/badge.svg?branch=unstable)](https://github.com/hanami/utils/actions?query=workflow%3Aci+branch%3Aunstable)
-[![Test Coverage](https://codecov.io/gh/hanami/utils/branch/unstable/graph/badge.svg)](https://codecov.io/gh/hanami/utils)
+[![CI](https://github.com/hanami/utils/workflows/ci/badge.svg?branch=main)](https://github.com/hanami/utils/actions?query=workflow%3Aci+branch%3Amain)
+[![Test Coverage](https://codecov.io/gh/hanami/utils/branch/main/graph/badge.svg)](https://codecov.io/gh/hanami/utils)
 [![Depfu](https://badges.depfu.com/badges/a8545fb67cf32a2c75b6227bc0821027/overview.svg)](https://depfu.com/github/hanami/utils?project=Bundler)
 [![Inline Docs](http://inch-ci.org/github/hanami/utils.svg)](http://inch-ci.org/github/hanami/utils)
 
