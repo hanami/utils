@@ -10,6 +10,11 @@ Ruby core extensions and class utilities for [Hanami](http://hanamirb.org)
 [![Depfu](https://badges.depfu.com/badges/a8545fb67cf32a2c75b6227bc0821027/overview.svg)](https://depfu.com/github/hanami/utils?project=Bundler)
 [![Inline Docs](http://inch-ci.org/github/hanami/utils.svg)](http://inch-ci.org/github/hanami/utils)
 
+
+## Version
+
+**This branch contains the code for `hanami-utils` 2.x.**
+
 ## Contact
 
 * Home page: http://hanamirb.org
