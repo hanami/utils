@@ -266,7 +266,7 @@ RSpec.describe Hanami::Logger do
 
     describe "#close" do
       it "does not close STDOUT output for other code" do
-        logger = Hanami::Logger.new(stream: STDOUT)
+        logger = Hanami::Logger.new(stream: STDOUT) # rubocop:disable Style/GlobalStdStream
         logger.close
 
         expect { print "in STDOUT" }.to output("in STDOUT").to_stdout

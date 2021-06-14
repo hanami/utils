@@ -18,13 +18,13 @@ Gem::Specification.new do |spec|
   spec.executables   = spec.files.grep(%r{^bin/}) { |f| File.basename(f) }
   spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
   spec.require_paths = ["lib"]
-  spec.required_ruby_version = ">= 2.3.0"
+  spec.required_ruby_version = ">= 2.6.0"
 
-  spec.add_dependency "transproc",       "~> 1.0"
+  spec.add_dependency "dry-transformer", "~> 0.1"
   spec.add_dependency "concurrent-ruby", "~> 1.0"
 
   spec.add_development_dependency "bundler", ">= 1.6", "< 3"
   spec.add_development_dependency "rake",    "~> 13"
   spec.add_development_dependency "rspec",   "~> 3.9"
-  spec.add_development_dependency "rubocop", "0.81" # rubocop 0.81+ removed support for Ruby 2.3
+  spec.add_development_dependency "rubocop", "0.91"
 end

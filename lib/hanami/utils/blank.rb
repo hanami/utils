@@ -21,7 +21,6 @@ module Hanami
       #   Hanami::Utils::Blank.blank?(Hanami::Utils::String.new('')) # => true
       #   Hanami::Utils::Blank.blank?('  ')                          # => true
       #   Hanami::Utils::Blank.blank?(nil)                           # => true
-      #   Hanami::Utils::Blank.blank?(Hanami::Utils::Hash.new({}))   # => true
       #   Hanami::Utils::Blank.blank?(true)                          # => false
       #   Hanami::Utils::Blank.blank?(1)                             # => false
       #
@@ -34,8 +33,8 @@ module Hanami
       def self.blank?(object)
         case object
         when String, ::String
-          STRING_MATCHER === object # rubocop:disable Style/CaseEquality
-        when Hash, ::Hash, ::Array
+          STRING_MATCHER === object
+        when ::Hash, ::Array
           object.empty?
         when TrueClass, Numeric
           false
@@ -56,7 +55,6 @@ module Hanami
       #   Hanami::Utils::Blank.filled?(Hanami::Utils::String.new('')) # => false
       #   Hanami::Utils::Blank.filled?('  ')                          # => false
       #   Hanami::Utils::Blank.filled?(nil)                           # => false
-      #   Hanami::Utils::Blank.filled?(Hanami::Utils::Hash.new({}))   # => false
       #
       # @param object the argument
       #

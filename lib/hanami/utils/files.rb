@@ -34,24 +34,6 @@ module Hanami
         open(path, ::File::CREAT | ::File::WRONLY | ::File::TRUNC, *content) # rubocop:disable Security/Open - this isn't a call to `::Kernel.open`, but to `self.open`
       end
 
-      # Rewrites the contents of an existing file.
-      # If the path already exists, it replaces the contents.
-      #
-      # @param path [String,Pathname] the path to file
-      # @param content [String, Array<String>] the content to write
-      #
-      # @raise [Errno::ENOENT] if the path doesn't exist
-      #
-      # @since 1.1.0
-      def self.rewrite(path, *content)
-        Hanami::Utils::Deprecation.new(
-          "`.rewrite' is deprecated, please use `.write'"
-        )
-        raise Errno::ENOENT unless File.exist?(path)
-
-        write(path, *content)
-      end
-
       # Copies source into destination.
       # All the intermediate directories are created.
       # If the destination already exists, it overrides the contents.
@@ -331,8 +313,8 @@ module Hanami
         starting = index(content, path, target)
         line     = content[starting]
         size     = line[/\A[[:space:]]*/].bytesize
-        closing  = (" " * size) + (target =~ /{/ ? "}" : "end")
-        ending   = starting + index(content[starting..-1], path, closing)
+        closing  = (" " * size) + (/{/.match?(target) ? "}" : "end")
+        ending   = starting + index(content[starting..], path, closing)
 
         content.slice!(starting..ending)
         write(path, content)

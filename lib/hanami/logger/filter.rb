@@ -99,16 +99,13 @@ module Hanami
       # @since 1.3.7
       # @api private
       def _deep_dup(hash)
-        hash.map do |key, value|
-          [
-            key,
-            if value.is_a?(Hash)
-              _deep_dup(value)
-            else
-              _key_paths?(value) ? value.dup : value
-            end
-          ]
-        end.to_h
+        hash.transform_values do |value|
+          if value.is_a?(Hash)
+            _deep_dup(value)
+          else
+            _key_paths?(value) ? value.dup : value
+          end
+        end
       end
 
       # @since 1.3.7
