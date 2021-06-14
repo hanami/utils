@@ -2,6 +2,10 @@
 
 Ruby core extensions and class utilities for [Hanami](http://hanamirb.org)
 
+## Version
+
+**This branch contains the code for `hanami-utils` 1.3.x.**
+
 ## Status
 
 [![Gem Version](https://badge.fury.io/rb/hanami-utils.svg)](https://badge.fury.io/rb/hanami-utils)
