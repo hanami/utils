@@ -1,6 +1,9 @@
 # Hanami::Utils
 Ruby core extentions and class utilities for Hanami
 
+## v2.0.0.alpha3 - 2021-11-09
+No changes.
+
 ## v2.0.0.alpha2 - 2021-05-04
 ### Changed
 - [Luca Guidi] Drop support for Ruby: MRI 2.5.
@@ -205,7 +208,7 @@ Ruby core extentions and class utilities for Hanami
 - [Grachev Mikhail] Introduced `Hanami::Interactor::Result#failure?`
 
 ### Fixed
-- [Paweł Świątkowski] `Utils::Inflector.pluralize` Pluralize -en to -ens instead of -ina 
+- [Paweł Świątkowski] `Utils::Inflector.pluralize` Pluralize -en to -ens instead of -ina
 
 ### Changed
 - [Grachev Mikhail] Deprecate `Hanami::Interactor::Result#failing?` in favor of `#failure?`
@@ -225,7 +228,7 @@ Ruby core extentions and class utilities for Hanami
 ### Added
 – [Luca Guidi] Introduced `Utils.require!` to recursively require Ruby files with an order that is consistent across platforms
 – [Luca Guidi] Introduced `Utils::FileList` as cross-platform ordered list of files, alternative to `Dir.glob`
-- [Luca Guidi] Make `Utils::BasicObject` pretty printable 
+- [Luca Guidi] Make `Utils::BasicObject` pretty printable
 - [Grachev Mikhail] Added `Interactor::Result#successful?` and `#failing?`
 
 ### Fixed
@@ -429,7 +432,7 @@ Ruby core extentions and class utilities for Hanami
 ## v0.1.0 - 2014-01-23
 ### Added
 - [Luca Guidi] Introduced `Lotus::Utils::String#demodulize`
-- [Luca Guidi] Introduced `Lotus::Utils::IO.silence_warnings` 
+- [Luca Guidi] Introduced `Lotus::Utils::IO.silence_warnings`
 - [Luca Guidi] Introduced class loading mechanism from a string: `Utils::Class.load!`
 - [Luca Guidi] Introduced callbacks support for classes
 - [Luca Guidi] Introduced inheritable class level attributes
