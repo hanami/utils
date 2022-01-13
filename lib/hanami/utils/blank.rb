@@ -11,7 +11,7 @@ module Hanami
       #
       # @since 0.8.0
       # @api private
-      STRING_MATCHER = /\A[[:space:]]*\z/.freeze
+      STRING_MATCHER = /\A[[:space:]]*\z/
 
       # Checks if object is blank
       #

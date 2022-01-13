@@ -722,7 +722,7 @@ RSpec.describe Hanami::Interactor::Result do
     end
 
     it "reports the object_id" do
-      object_id = format("%x", (result.__id__ << 1)) # rubocop:disable Style/FormatStringToken
+      object_id = format("%x", (result.__id__ << 1))
       expect(result.inspect).to match object_id
     end
 

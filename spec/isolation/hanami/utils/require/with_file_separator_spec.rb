@@ -9,7 +9,7 @@ RSpec.describe "Hanami::Utils.require!" do
       #
       #   * on *NIX systems, instead of having /, we get \
       #   * on Windows systems, instead of having \, we get /
-      separator = File::SEPARATOR == "/" ? '\\' : "/"
+      separator = File::SEPARATOR == "/" ? '\\' : "/" # rubocop:disable Style/StringLiterals
       directory = %w[spec support fixtures file_list].join(separator)
       Hanami::Utils.require!(directory)
 

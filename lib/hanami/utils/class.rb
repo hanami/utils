@@ -91,7 +91,7 @@ module Hanami
       #
       # @since 1.3.0
       # @api private
-      TOKENIZE_REGEXP = /\((.*)\)/.freeze
+      TOKENIZE_REGEXP = /\((.*)\)/
 
       # Separator for .tokenize
       #

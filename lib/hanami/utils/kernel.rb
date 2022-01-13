@@ -28,7 +28,7 @@ module Hanami
       # @api private
       #
       # @see Hanami::Utils::Kernel.Integer
-      NUMERIC_MATCHER = %r{\A([\d/.+iE]+|NaN|Infinity)\z}.freeze
+      NUMERIC_MATCHER = %r{\A([\d/.+iE]+|NaN|Infinity)\z}
 
       # @since 0.8.0
       # @api private
@@ -1015,7 +1015,7 @@ module Hanami
         case arg
         when "" then raise TypeError.new "can't convert #{inspect_type_error(arg)}into Symbol"
         when ->(a) { a.respond_to?(:to_sym) } then arg.to_sym
-        else
+        else # rubocop:disable Lint/DuplicateBranch
           raise TypeError.new "can't convert #{inspect_type_error(arg)}into Symbol"
         end
       rescue NoMethodError
@@ -1043,7 +1043,7 @@ module Hanami
       # @since 0.4.3
       # @api private
       def self.inspect_type_error(arg)
-        "#{(arg.respond_to?(:inspect) ? arg.inspect : arg.to_s)} "
+        "#{arg.respond_to?(:inspect) ? arg.inspect : arg.to_s} "
       rescue NoMethodError
         # missing the #respond_to? method, fall back to returning the class' name
         begin

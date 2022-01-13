@@ -61,7 +61,7 @@ module Hanami
       #
       # @since 0.3.4
       # @api private
-      CLASSIFY_WORD_SEPARATOR = /#{CLASSIFY_SEPARATOR}|#{NAMESPACE_SEPARATOR}|#{UNDERSCORE_SEPARATOR}|#{DASHERIZE_SEPARATOR}/.freeze # rubocop:disable Layout/LineLength
+      CLASSIFY_WORD_SEPARATOR = /#{CLASSIFY_SEPARATOR}|#{NAMESPACE_SEPARATOR}|#{UNDERSCORE_SEPARATOR}|#{DASHERIZE_SEPARATOR}/ # rubocop:disable Layout/LineLength
 
       @__transformations__ = Concurrent::Map.new
 

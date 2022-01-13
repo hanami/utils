@@ -117,9 +117,9 @@ RSpec.describe Hanami::Utils::String do
       expect(Hanami::Utils::String.capitalize("one-two-three")).to eq("One two three")
 
       expect(Hanami::Utils::String.capitalize(:HanamiUtils)).to eq("Hanami utils")
-      expect(Hanami::Utils::String.capitalize(:'hanami utils')).to eq("Hanami utils")
+      expect(Hanami::Utils::String.capitalize(:"hanami utils")).to eq("Hanami utils")
       expect(Hanami::Utils::String.capitalize(:hanami_utils)).to eq("Hanami utils")
-      expect(Hanami::Utils::String.capitalize(:'hanami-utils')).to eq("Hanami utils")
+      expect(Hanami::Utils::String.capitalize(:"hanami-utils")).to eq("Hanami utils")
     end
   end
 
@@ -150,9 +150,9 @@ RSpec.describe Hanami::Utils::String do
     it "returns a classified string from symbol" do
       expect(Hanami::Utils::String.classify(:hanami)).to eq("Hanami")
       expect(Hanami::Utils::String.classify(:hanami_router)).to eq("HanamiRouter")
-      expect(Hanami::Utils::String.classify(:'hanami-router')).to eq("HanamiRouter")
-      expect(Hanami::Utils::String.classify(:'hanami/router')).to eq("Hanami::Router")
-      expect(Hanami::Utils::String.classify(:'hanami::router')).to eq("Hanami::Router")
+      expect(Hanami::Utils::String.classify(:"hanami-router")).to eq("HanamiRouter")
+      expect(Hanami::Utils::String.classify(:"hanami/router")).to eq("Hanami::Router")
+      expect(Hanami::Utils::String.classify(:"hanami::router")).to eq("Hanami::Router")
     end
   end
 
@@ -209,7 +209,7 @@ RSpec.describe Hanami::Utils::String do
     end
 
     it "handles symbols" do
-      string = Hanami::Utils::String.underscore(:'Hanami::Utils')
+      string = Hanami::Utils::String.underscore(:"Hanami::Utils")
       expect(string).to eq("hanami/utils")
     end
   end
@@ -262,7 +262,7 @@ RSpec.describe Hanami::Utils::String do
     end
 
     it "handles symbols" do
-      string = Hanami::Utils::String.dasherize(:'Hanami Utils')
+      string = Hanami::Utils::String.dasherize(:"Hanami Utils")
       expect(string).to eq("hanami-utils")
     end
   end
@@ -335,7 +335,7 @@ RSpec.describe Hanami::Utils::String do
     end
 
     it "returns accepts a symbol initial string no match" do
-      result = Hanami::Utils::String.rsub(:'authors/books/index', %r{/}, "#")
+      result = Hanami::Utils::String.rsub(:"authors/books/index", %r{/}, "#")
       expect(result).to eq("authors/books#index")
     end
   end

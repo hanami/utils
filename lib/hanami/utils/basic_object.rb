@@ -39,12 +39,9 @@ module Hanami
       # @since 0.3.5
       #
       # @see http://ruby-doc.org/core/Object.html#method-i-inspect
-      #
-      # rubocop:disable Style/FormatStringToken
       def inspect
         "#<#{self.class}:#{'0x0000%x' % (__id__ << 1)}#{__inspect}>"
       end
-      # rubocop:enable Style/FormatStringToken
 
       # @!macro [attach] instance_of?(class)
       #

@@ -75,13 +75,13 @@ module Hanami
         def class_attribute(*attributes)
           attributes.each do |attr|
             singleton_class.class_eval %(
-              def #{attr}
-                class_attributes[:#{attr}]
-              end
-
-              def #{attr}=(value)
-                class_attributes[:#{attr}] = value
-              end
+              def #{attr}                           # def foo
+                class_attributes[:#{attr}]          #   class_attributes[:foo]
+              end                                   # end
+                                                    #
+              def #{attr}=(value)                   # def foo=(value)
+                class_attributes[:#{attr}] = value  #   class_attributes[:foo] = value
+              end                                   # end
             ), __FILE__, __LINE__ - 8
           end
         end

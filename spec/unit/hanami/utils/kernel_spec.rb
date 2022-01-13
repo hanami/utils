@@ -5,6 +5,7 @@ require "bigdecimal"
 require "securerandom"
 require "hanami/utils/kernel"
 
+# rubocop:disable Style/OpenStructUse
 RSpec.describe Hanami::Utils::Kernel do
   describe ".Array" do
     describe "successful operations" do
@@ -2477,7 +2478,7 @@ RSpec.describe Hanami::Utils::Kernel do
       end
 
       describe "when a numeric in symbol is given" do
-        let(:input) { :'123' }
+        let(:input) { :"123" }
 
         it "returns a true" do
           expect(@result).to eq true
@@ -2518,3 +2519,4 @@ RSpec.describe Hanami::Utils::Kernel do
     end
   end
 end
+# rubocop:enable Style/OpenStructUse

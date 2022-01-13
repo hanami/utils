@@ -345,6 +345,7 @@ RSpec.describe Hanami::Logger do
     it "infers apptag from namespace" do
       module App2
         class TestLogger < Hanami::Logger; end
+
         class Bar
           def hoge
             TestLogger.new.application_name
@@ -618,7 +619,7 @@ RSpec.describe Hanami::Logger do
 
       describe "with filters" do
         it "filters values for keys in the filters array" do
-          expected = %s({"password"=>"[FILTERED]", "password_confirmation"=>"[FILTERED]", "credit_card"=>{"number"=>"[FILTERED]", "name"=>"[FILTERED]"}, "user"=>{"login"=>"[FILTERED]", "name"=>"John"}})
+          expected = :"{\"password\"=>\"[FILTERED]\", \"password_confirmation\"=>\"[FILTERED]\", \"credit_card\"=>{\"number\"=>\"[FILTERED]\", \"name\"=>\"[FILTERED]\"}, \"user\"=>{\"login\"=>\"[FILTERED]\", \"name\"=>\"John\"}}"
 
           output = with_captured_stdout do
             class TestLogger < Hanami::Logger; end
@@ -635,7 +636,7 @@ RSpec.describe Hanami::Logger do
 
       describe "without filters" do
         it "outputs unfiltered params" do
-          expected = %s({"password"=>"password", "password_confirmation"=>"password", "credit_card"=>{"number"=>"4545 4545 4545 4545", "name"=>"John Citizen"}, "user"=>{"login"=>"John", "name"=>"John"}})
+          expected = :"{\"password\"=>\"password\", \"password_confirmation\"=>\"password\", \"credit_card\"=>{\"number\"=>\"4545 4545 4545 4545\", \"name\"=>\"John Citizen\"}, \"user\"=>{\"login\"=>\"John\", \"name\"=>\"John\"}}"
 
           output = with_captured_stdout do
             class TestLogger < Hanami::Logger; end
