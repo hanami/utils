@@ -1319,14 +1319,8 @@ RSpec.describe Hanami::Utils::Kernel do
       describe "when a big decimal is given" do
         let(:input) { BigDecimal(7944.2343, 10) }
 
-        if RUBY_VERSION >= "2.4"
-          it "returns the string representation" do
-            expect(@result).to eq "0.79442343e4"
-          end
-        else
-          it "returns the string representation" do
-            expect(@result).to eq "0.79442343E4"
-          end
+        it "returns the string representation" do
+          expect(@result).to eq "0.79442343e4"
         end
       end
 
@@ -1459,16 +1453,9 @@ RSpec.describe Hanami::Utils::Kernel do
       end
 
       describe "when a class is given" do
-        if RUBY_VERSION >= "2.4"
-          let(:input) { Integer }
-          it "returns the string representation" do
-            expect(@result).to eq "Integer"
-          end
-        else
-          let(:input) { Fixnum } # rubocop:disable Lint/UnifiedInteger
-          it "returns the string representation" do
-            expect(@result).to eq "Fixnum"
-          end
+        let(:input) { Integer }
+        it "returns the string representation" do
+          expect(@result).to eq "Integer"
         end
       end
 

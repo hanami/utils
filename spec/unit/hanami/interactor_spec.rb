@@ -293,16 +293,9 @@ class CreateUser
   include Hanami::Interactor
   expose :user
 
-  if RUBY_VERSION >= "3.0"
-    def call(**params)
-      build_user(**params)
-      persist
-    end
-  else
-    def call(**params)
-      build_user(params)
-      persist
-    end
+  def call(**params)
+    build_user(**params)
+    persist
   end
 
   private

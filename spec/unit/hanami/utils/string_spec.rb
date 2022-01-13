@@ -52,7 +52,7 @@ RSpec.describe Hanami::Utils::String do
     it "raises error when try to apply unknown transformation" do
       input = "Sakura"
 
-      expect { Hanami::Utils::String.transform(input, :unknown) }.to raise_error(NoMethodError, %(undefined method `:unknown' for "Sakura":String))
+      expect { Hanami::Utils::String.transform(input, :unknown) }.to raise_error(NoMethodError)
     end
 
     it "raises error when given proc has arity not equal to 1" do

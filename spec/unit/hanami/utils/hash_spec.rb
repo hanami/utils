@@ -210,7 +210,7 @@ RSpec.describe Hanami::Utils::Hash do
 
   describe ".deep_serialize" do
     let(:input) do
-      klass = Class.new(OpenStruct) do
+      klass = Class.new(OpenStruct) do # rubocop:disable Style/OpenStructUse
         def to_hash
           to_h
         end

@@ -181,18 +181,10 @@ module Hanami
       #       # ...
       #     end
       #   end
-      if RUBY_VERSION >= "3.0"
-        def initialize(*args, **kwargs)
-          super
-        ensure
-          @__result = ::Hanami::Interactor::Result.new
-        end
-      else
-        def initialize(*args)
-          super
-        ensure
-          @__result = ::Hanami::Interactor::Result.new
-        end
+      def initialize(*args, **kwargs)
+        super
+      ensure
+        @__result = ::Hanami::Interactor::Result.new
       end
 
       # Triggers the operation and return a result.
@@ -361,51 +353,27 @@ module Hanami
       #   end
       #
       #   Signup.new.call # => NoMethodError
-      if RUBY_VERSION >= "3.0"
-        def call(*args, **kwargs)
-          @__result = ::Hanami::Interactor::Result.new
-          _call(*args, **kwargs) { super }
-        end
-      else
-        def call(*args)
-          @__result = ::Hanami::Interactor::Result.new
-          _call(*args) { super }
-        end
+      def call(*args, **kwargs)
+        @__result = ::Hanami::Interactor::Result.new
+        _call(*args, **kwargs) { super }
       end
 
       private
 
       # @api private
       # @since 1.1.0
-      if RUBY_VERSION >= "3.0"
-        def _call(*args, **kwargs)
-          catch :fail do
-            validate!(*args, **kwargs)
-            yield
-          end
-
-          _prepare!
+      def _call(*args, **kwargs)
+        catch :fail do
+          validate!(*args, **kwargs)
+          yield
         end
-      else
-        def _call(*args)
-          catch :fail do
-            validate!(*args)
-            yield
-          end
 
-          _prepare!
-        end
+        _prepare!
       end
 
       # @since 1.1.0
-      if RUBY_VERSION >= "3.0"
-        def validate!(*args, **kwargs)
-          fail! unless valid?(*args, **kwargs)
-        end
-      else
-        def validate!(*args)
-          fail! unless valid?(*args)
-        end
+      def validate!(*args, **kwargs)
+        fail! unless valid?(*args, **kwargs)
       end
     end
 

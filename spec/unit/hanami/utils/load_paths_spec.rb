@@ -49,7 +49,7 @@ RSpec.describe Hanami::Utils::LoadPaths do
     it "raises an error if a path is unknown" do
       paths = Hanami::Utils::LoadPaths.new "unknown/path"
 
-      expect { paths.each {} }.to raise_error(Errno::ENOENT)
+      expect { paths.each }.to raise_error(Errno::ENOENT)
     end
   end
 
