@@ -26,7 +26,7 @@ Ruby core extensions and class utilities for [Hanami](http://hanamirb.org)
 
 ## Rubies
 
-__Hanami::Utils__ supports Ruby (MRI) 2.6+
+__Hanami::Utils__ supports Ruby (MRI) 3.0+
 
 ## Installation
 
