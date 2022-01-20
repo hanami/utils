@@ -354,6 +354,8 @@ module Hanami
     # @since 1.2.0
     # @api private
     def tty?
+      return false if @logdev.nil?
+
       @logdev.dev.tty?
     end
   end

@@ -251,6 +251,17 @@ RSpec.describe Hanami::Logger do
         end
       end
 
+      describe "when File::NULL" do
+        let(:stream) { File::NULL }
+
+        it "does not throw error" do
+          expect {
+            logger = Hanami::Logger.new(stream: stream)
+            logger.info("in null file")
+          }.not_to raise_error
+        end
+      end
+
       describe "when StringIO" do
         let(:stream) { StringIO.new }
 
