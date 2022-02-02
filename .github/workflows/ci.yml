@@ -30,9 +30,10 @@ jobs:
       - uses: ravsamhq/notify-slack-action@v1
         if: always()
         with:
-          status: ${{ job.status }} # required
+          status: ${{ job.status }}
+          notify_when: "failure"
         env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }} # required
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
       - uses: actions/checkout@v1
       - name: Install package dependencies
         run: "[ -e $APT_DEPS ] || sudo apt-get install -y --no-install-recommends $APT_DEPS"
