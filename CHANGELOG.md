@@ -1,6 +1,16 @@
 # Hanami::Utils
 Ruby core extentions and class utilities for Hanami
 
+## v2.0.0.alpha6 - 2022-02-10
+### Added
+- [Luca Guidi] Official support for Ruby: MRI 3.0 and 3.1
+
+### Fixed
+- [Rob Jacoby] Allow `Hanami::Logger#initialize` to accept `File::NULL` as `stream:` argument
+
+### Changed
+- [Luca Guidi] Drop support for Ruby: MRI 2.6 and 2.7.
+
 ## v2.0.0.alpha3 - 2021-11-09
 No changes.
 

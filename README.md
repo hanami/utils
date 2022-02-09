@@ -145,6 +145,4 @@ __Hanami::Utils__ uses [Semantic Versioning 2.0.0](http://semver.org)
 
 ## Copyright
 
-Copyright © 2014-2021 Luca Guidi – Released under MIT License
-
-This project was formerly known as Lotus (`lotus-utils`).
+Copyright © 2014-2022 Hanami Team – Released under MIT License
