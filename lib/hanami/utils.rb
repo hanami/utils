@@ -41,6 +41,28 @@ module Hanami
       RUBY_ENGINE == HANAMI_RUBINIUS
     end
 
+    # Returns symbolized HANAMI_ENV or defaults to `:development`
+    #
+    # @return [Symbol] env
+    #
+    # @since 2.0.0
+    # @api private
+    def self.env
+      ENV.fetch("HANAMI_ENV", "development").to_sym
+    end
+
+    # Checks whether current Hanami env is matching one of the given names
+    #
+    # @param [Array<String, Symbol>] list of environment names
+    #
+    # @return [TrueClass,FalseClass]
+    #
+    # @since 2.0.0
+    # @api private
+    def self.env?(*names)
+      names.map(&:to_sym).include?(env)
+    end
+
     # Recursively requires Ruby files under the given directory.
     #
     # If the directory is relative, it implies it's the path from current directory.
