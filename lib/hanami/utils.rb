@@ -46,7 +46,6 @@ module Hanami
     # @return [Symbol] env
     #
     # @since 2.0.0
-    # @api private
     def self.env
       ENV.fetch("HANAMI_ENV", "development").to_sym
     end
@@ -55,10 +54,9 @@ module Hanami
     #
     # @param [Array<String, Symbol>] list of environment names
     #
-    # @return [TrueClass,FalseClass]
+    # @return [Boolean]
     #
     # @since 2.0.0
-    # @api private
     def self.env?(*names)
       names.map(&:to_sym).include?(env)
     end
