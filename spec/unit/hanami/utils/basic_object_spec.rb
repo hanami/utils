@@ -32,7 +32,7 @@ RSpec.describe Hanami::Utils::BasicObject do
   describe "#respond_to_missing?" do
     it "raises an exception if respond_to? method is not implemented" do
       expect { TestClass.new.respond_to?(:no_existing_method) }
-        .to raise_error(NotImplementedError)
+        .to raise_error(NoMethodError)
     end
 
     it "returns true given respond_to? method was implemented" do

@@ -129,7 +129,7 @@ module Hanami
       # @since 0.3.5
       # @api private
       def respond_to_missing?(_method_name, _include_all)
-        ::Kernel.raise ::NotImplementedError
+        ::Kernel.raise ::NoMethodError
       end
 
       # @since 0.3.5
