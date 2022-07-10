@@ -10,23 +10,22 @@ Ruby core extensions and class utilities for [Hanami](http://hanamirb.org)
 [![Depfu](https://badges.depfu.com/badges/a8545fb67cf32a2c75b6227bc0821027/overview.svg)](https://depfu.com/github/hanami/utils?project=Bundler)
 [![Inline Docs](http://inch-ci.org/github/hanami/utils.svg)](http://inch-ci.org/github/hanami/utils)
 
-
 ## Version
 
 **This branch contains the code for `hanami-utils` 2.x.**
 
 ## Contact
 
-* Home page: http://hanamirb.org
-* Mailing List: http://hanamirb.org/mailing-list
-* API Doc: http://rdoc.info/gems/hanami-utils
-* Bugs/Issues: https://github.com/hanami/utils/issues
-* Support: http://stackoverflow.com/questions/tagged/hanami
-* Chat: http://chat.hanamirb.org
+- Home page: http://hanamirb.org
+- Mailing List: http://hanamirb.org/mailing-list
+- API Doc: http://rdoc.info/gems/hanami-utils
+- Bugs/Issues: https://github.com/hanami/utils/issues
+- Support: http://stackoverflow.com/questions/tagged/hanami
+- Chat: http://chat.hanamirb.org
 
 ## Rubies
 
-__Hanami::Utils__ supports Ruby (MRI) 3.0+
+**Hanami::Utils** supports Ruby (MRI) 3.0+
 
 ## Installation
 
@@ -46,22 +45,14 @@ Or install it yourself as:
 
 ## Usage
 
-__Hanami::Utils__ is designed to enhance Ruby's code and stdlib.
+**Hanami::Utils** is designed to enhance Ruby's code and stdlib.
 **By default this gem doesn't load any code, you must require what you need.**
 
 ## Features
 
-### Hanami::Interactor
-
-Standardized Service Object with small interface and rich returning result. [[API doc](http://www.rubydoc.info/gems/hanami-utils/Hanami/Interactor)]
-
 ### Hanami::Logger
 
 Enhanced version of Ruby's `Logger`. [[API doc](http://www.rubydoc.info/gems/hanami-utils/Hanami/Logger)]
-
-### Hanami::Utils::BasicObject
-
-Enhanced version of Ruby's `BasicObject`. [[API doc](http://www.rubydoc.info/gems/hanami-utils/Hanami/Utils/BasicObject)]
 
 ### Hanami::Utils::Blank
 
@@ -133,7 +124,7 @@ Enhanced version of Ruby's `String`. [[API doc](http://www.rubydoc.info/gems/han
 
 ## Versioning
 
-__Hanami::Utils__ uses [Semantic Versioning 2.0.0](http://semver.org)
+**Hanami::Utils** uses [Semantic Versioning 2.0.0](http://semver.org)
 
 ## Contributing
 

@@ -93,7 +93,7 @@ RSpec.describe Hanami::Logger do
 
             describe "and it does not exist" do
               before do
-                File.delete(stream) if File.exist?(stream)
+                FileUtils.rm_rf(stream)
               end
 
               it "writes to file" do
