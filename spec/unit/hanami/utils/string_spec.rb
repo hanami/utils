@@ -537,6 +537,11 @@ RSpec.describe Hanami::Utils::String do
       expect(string.underscore).to eq("hanami_utils")
     end
 
+    it "handles periods" do
+      string = Hanami::Utils::String.new("hanami.utils")
+      expect(string.underscore).to eq("hanami_utils")
+    end
+
     it "handles spaces", silence_deprecations: true do
       string = Hanami::Utils::String.new("Hanami Utils")
       expect(string.underscore).to eq("hanami_utils")
