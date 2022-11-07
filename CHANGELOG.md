@@ -2,6 +2,16 @@
 
 Ruby core extensions and class utilities for Hanami
 
+## v2.0.0.rc1 - 2022-11-08
+
+### Fixed
+
+- [Benjamin Klotz] Ensure `Hanami::Utils::String.underscore` to replace `"."` (dot character) into underscore
+
+### Changed
+
+- [Luca Guidi] Removed `Hanami::Logger` in favor of `Dry::Logger`
+
 ## v2.0.0.beta1 - 2022-07-20
 
 ### Changed
