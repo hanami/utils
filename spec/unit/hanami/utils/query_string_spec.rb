@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require "hanami/utils/query_string"
 require "bigdecimal"
 
 RSpec.describe Hanami::Utils::QueryString do

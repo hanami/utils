@@ -1,3 +1,3 @@
 # frozen_string_literal: true
 
-require "hanami/utils"
+require_relative "hanami/utils"

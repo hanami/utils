@@ -1,8 +1,5 @@
 # frozen_string_literal: true
 
-require "hanami/utils/kernel"
-require "hanami/utils/blank"
-
 RSpec.describe Hanami::Utils::Blank do
   describe ".blank?" do
     [nil, false, "", "   ", "  \n\t  \r ", "　", "\u00a0", [], {}, Set.new,

@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require "hanami/utils"
-
 module Hanami
   module Utils
     # Prints a deprecation warning when initialized

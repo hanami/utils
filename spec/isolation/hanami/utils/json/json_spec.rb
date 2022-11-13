@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require_relative "#{__dir__}../../../../../support/isolation_spec_helper"
-require "hanami/utils/json"
 
 RSpec.describe Hanami::Utils::Json do
   describe "with JSON" do

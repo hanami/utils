@@ -2,7 +2,6 @@
 
 require "pathname"
 require "fileutils"
-require "hanami/utils/deprecation"
 
 module Hanami
   module Utils

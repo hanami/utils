@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require "hanami/utils/class_attribute"
-
 RSpec.describe Hanami::Utils::ClassAttribute do
   before do
     class ClassAttributeTest

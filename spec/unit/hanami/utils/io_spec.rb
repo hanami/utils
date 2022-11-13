@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require "hanami/utils/io"
-
 class IOTest
   TEST_CONSTANT = "initial"
 end

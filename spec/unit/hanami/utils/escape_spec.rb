@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require "hanami/utils"
-require "hanami/utils/escape"
 require "date"
 
 RSpec.describe Hanami::Utils::Escape do

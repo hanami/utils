@@ -5,8 +5,6 @@ require "date"
 require "time"
 require "pathname"
 require "bigdecimal"
-require "hanami/utils"
-require "hanami/utils/string"
 
 unless defined?(Boolean)
   # Defines top level constant Boolean, so it can be easily used by other libraries

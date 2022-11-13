@@ -1,18 +1,33 @@
 # frozen_string_literal: true
 
 require "pathname"
+require "zeitwerk"
 
 # Hanami - The web, with simplicity
 #
 # @since 0.1.0
 module Hanami
-  require "hanami/utils/version"
-  require "hanami/utils/file_list"
-
   # Ruby core extentions and Hanami utilities
   #
   # @since 0.1.0
   module Utils
+    # @since 2.0.0
+    # @api private
+    def self.gem_loader
+      @gem_loader ||= Zeitwerk::Loader.new.tap do |loader|
+        root = File.expand_path("..", __dir__)
+        loader.tag = "hanami-utils"
+        loader.inflector = Zeitwerk::GemInflector.new("#{root}/hanami-utils.rb")
+        loader.push_dir(root)
+        loader.ignore(
+          "#{root}/hanami-utils.rb"
+        )
+        loader.inflector.inflect("io" => "IO")
+      end
+    end
+
+    gem_loader.setup
+
     # @since 0.3.1
     # @api private
     HANAMI_JRUBY = "java"

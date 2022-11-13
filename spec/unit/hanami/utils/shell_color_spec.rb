@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require "hanami/utils/shell_color"
-
 RSpec.describe Hanami::Utils::ShellColor do
   describe ".call" do
     it "returns a string wrapped with black's code" do

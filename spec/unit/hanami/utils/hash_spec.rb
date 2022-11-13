@@ -2,7 +2,6 @@
 
 require "bigdecimal"
 require "ostruct"
-require "hanami/utils/hash"
 
 RSpec.describe Hanami::Utils::Hash do
   describe ".symbolize" do

@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require "hanami/utils/path_prefix"
-
 RSpec.describe Hanami::Utils::PathPrefix do
   it "exposes itself as a string" do
     prefix = Hanami::Utils::PathPrefix.new

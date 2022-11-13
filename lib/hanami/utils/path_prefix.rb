@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require "hanami/utils/kernel"
-
 module Hanami
   module Utils
     # Prefixed string

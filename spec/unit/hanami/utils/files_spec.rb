@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
-require "hanami/utils/files"
 require "securerandom"
-require "hanami/utils/io"
 
 RSpec.describe Hanami::Utils::Files do
   let(:root) { Pathname.new(Dir.pwd).join("tmp", SecureRandom.uuid).tap(&:mkpath) }

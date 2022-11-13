@@ -3,7 +3,6 @@
 require "ostruct"
 require "bigdecimal"
 require "securerandom"
-require "hanami/utils/kernel"
 
 # rubocop:disable Style/OpenStructUse
 RSpec.describe Hanami::Utils::Kernel do

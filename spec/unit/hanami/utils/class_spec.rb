@@ -1,8 +1,5 @@
 # frozen_string_literal: true
 
-require "hanami/utils/class"
-require "hanami/utils/io"
-
 RSpec.describe Hanami::Utils::Class do
   before do
     Hanami::Utils::IO.silence_warnings do
