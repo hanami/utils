@@ -35,10 +35,20 @@ module Hanami
 
       # rubocop:disable Style/ClassVars
       if defined?(MultiJson)
+        # @since 0.8.0
+        # @api private
         @@engine    = MultiJsonAdapter.new
+
+        # @since 0.8.0
+        # @api private
         ParserError = MultiJson::ParseError
       else
+        # @since 0.8.0
+        # @api private
         @@engine    = ::JSON
+
+        # @since 0.8.0
+        # @api private
         ParserError = ::JSON::ParserError
       end
       # rubocop:enable Style/ClassVars

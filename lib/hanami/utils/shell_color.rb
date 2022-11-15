@@ -7,12 +7,16 @@ module Hanami
     # It doesn't check if you're writing to a file or anything, so you have to
     # check that yourself before using this module.
     #
+    # @api public
     # @since 1.2.0
     module ShellColor
-      # Unknown color code error
+      # Error raised for unknown color codes.
       #
       # @since 1.2.0
+      # @api public
       class UnknownColorCodeError < ::StandardError
+        # @since 1.2.0
+        # @api private
         def initialize(code)
           super("unknown color code: `#{code.inspect}'")
         end

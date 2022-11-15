@@ -71,33 +71,6 @@ module Hanami
       def self.load(name, namespace = Object)
         load!(name, namespace) if namespace.const_defined?(name.to_s, false)
       end
-
-      def self.tokenize(pattern)
-        if match = TOKENIZE_REGEXP.match(pattern)
-          pre  = match.pre_match
-          post = match.post_match
-          tokens = match[1].split(TOKENIZE_SEPARATOR)
-          tokens.each do |token|
-            yield("#{pre}#{token}#{post}")
-          end
-        else
-          yield(pattern)
-        end
-
-        nil
-      end
-
-      # Regexp for .tokenize
-      #
-      # @since 1.3.0
-      # @api private
-      TOKENIZE_REGEXP = /\((.*)\)/
-
-      # Separator for .tokenize
-      #
-      # @since 1.3.0
-      # @api private
-      TOKENIZE_SEPARATOR = "|"
     end
   end
 end
