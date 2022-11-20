@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "dry-transformer"
+require "dry/transformer"
 
 module Hanami
   module Utils
