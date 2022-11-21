@@ -5,6 +5,7 @@ require "date"
 require "time"
 require "pathname"
 require "bigdecimal"
+require "bigdecimal/util"
 require "hanami/utils"
 require "hanami/utils/string"
 
