@@ -279,7 +279,7 @@ RSpec.describe Hanami::Utils::Callbacks::Chain do
     end
 
     it "raises an error if try to add a callback when frozen" do
-      expect {  @chain.append :authenticate! }.to raise_error RuntimeError
+      expect { @chain.append :authenticate! }.to raise_error RuntimeError
     end
   end
 
