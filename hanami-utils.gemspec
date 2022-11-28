@@ -20,6 +20,7 @@ Gem::Specification.new do |spec|
   spec.metadata["rubygems_mfa_required"] = "true"
   spec.required_ruby_version = ">= 3.0"
 
+  spec.add_dependency "dry-core", "~> 1.0", "< 2"
   spec.add_dependency "dry-transformer", "~> 1.0", "< 2"
   spec.add_dependency "concurrent-ruby", "~> 1.0"
 

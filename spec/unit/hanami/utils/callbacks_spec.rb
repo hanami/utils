@@ -282,6 +282,17 @@ RSpec.describe Hanami::Utils::Callbacks::Chain do
       expect {  @chain.append :authenticate! }.to raise_error RuntimeError
     end
   end
+
+  describe "#==" do
+    it "is equal to another chain based on its contents" do
+      @chain.append :callback_a, :callback_b
+
+      other = @chain.class.new
+      other.append :callback_a, :callback_b
+
+      expect(@chain).to eq other
+    end
+  end
 end
 
 RSpec.describe Hanami::Utils::Callbacks::Factory do
