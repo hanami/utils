@@ -252,7 +252,7 @@ module Hanami
         string.gsub!(NAMESPACE_SEPARATOR, UNDERSCORE_SEPARATOR)
         string.gsub!(/([A-Z\d]+)([A-Z][a-z])/, UNDERSCORE_DIVISION_TARGET)
         string.gsub!(/([a-z\d])([A-Z])/, UNDERSCORE_DIVISION_TARGET)
-        string.gsub!(/[[:space:]]|\-/, UNDERSCORE_DIVISION_TARGET)
+        string.gsub!(/[[:space:]]|\-|\./, UNDERSCORE_DIVISION_TARGET)
         string.downcase
       end
 
@@ -485,7 +485,7 @@ module Hanami
         new_string = gsub(NAMESPACE_SEPARATOR, UNDERSCORE_SEPARATOR)
         new_string.gsub!(/([A-Z\d]+)([A-Z][a-z])/, UNDERSCORE_DIVISION_TARGET)
         new_string.gsub!(/([a-z\d])([A-Z])/, UNDERSCORE_DIVISION_TARGET)
-        new_string.gsub!(/[[:space:]]|\-/, UNDERSCORE_DIVISION_TARGET)
+        new_string.gsub!(/[[:space:]]|\-|\./, UNDERSCORE_DIVISION_TARGET)
         new_string.downcase!
         self.class.new new_string
       end
