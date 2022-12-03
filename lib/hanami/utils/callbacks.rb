@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "concurrent/array"
+require "dry/core"
 
 module Hanami
   module Utils
@@ -14,6 +15,8 @@ module Hanami
       # @since 0.1.0
       # @private
       class Chain
+        include Dry.Equalizer(:chain)
+
         # Returns a new chain
         #
         # @return [Hanami::Utils::Callbacks::Chain]
@@ -235,6 +238,8 @@ module Hanami
       # @since 0.1.0
       # @api private
       class Callback
+        include Dry.Equalizer(:callback)
+
         # @api private
         attr_reader :callback
 
