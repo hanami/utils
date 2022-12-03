@@ -2,9 +2,9 @@
 
 Ruby core extensions and class utilities for Hanami
 
-## Unreleased
+## v2.0.1 - 2022-12-06
 
-### Changed
+### Fixed
 
 - [Tim Riley] Make `Hanami::Utils::Callbacks::Chain` and `Hanami::Utils::Callbacks::Callback` comparable via `#==` based on their contents, rather than their object identity
 
