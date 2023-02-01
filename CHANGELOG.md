@@ -2,6 +2,12 @@
 
 Ruby core extensions and class utilities for Hanami
 
+## v2.0.3 - 2023-02-01
+
+### Fixed
+
+- [hi-tech-jazz] `Hanami::Utils::Blank.blank?` to check if the current object is non-nil
+
 ## v2.0.2 - 2022-12-25
 
 ### Added
