@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 require "ostruct"
 require "bigdecimal"
 require "securerandom"

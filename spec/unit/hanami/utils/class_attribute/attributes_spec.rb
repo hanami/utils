@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 require "hanami/utils/class_attribute/attributes"
 
 RSpec.describe Hanami::Utils::ClassAttribute::Attributes do

@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 require "hanami/utils/callbacks"
 
 Hanami::Utils::Callbacks::Chain.class_eval do

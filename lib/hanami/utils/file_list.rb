@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module Hanami
   module Utils
     # Ordered file list, consistent across operating systems

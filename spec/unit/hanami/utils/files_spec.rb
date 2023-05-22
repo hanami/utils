@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 require "hanami/utils/files"
 require "securerandom"
 require "hanami/utils/io"
@@ -193,10 +191,8 @@ RSpec.describe Hanami::Utils::Files do
       EOF
 
       described_class.write(path, content)
-      described_class.unshift(path, "# frozen_string_literal: true")
 
       expected = <<~EOF
-        # frozen_string_literal: true
         class Unshift
         end
       EOF

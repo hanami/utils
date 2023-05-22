@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 require "bigdecimal"
 require "ostruct"
 require "hanami/utils/hash"
