@@ -2,6 +2,12 @@
 
 Ruby core extensions and class utilities for Hanami
 
+## v2.1.0.beta1
+
+### Changed
+
+- [Tim Riley] Remove `Hanami::Utils::Escape` (which was not public as of 2.0.0) (#410)
+
 ## v2.0.3 - 2023-02-01
 
 ### Fixed
