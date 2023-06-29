@@ -50,10 +50,6 @@ Or install it yourself as:
 
 ## Features
 
-### Hanami::Logger
-
-Enhanced version of Ruby's `Logger`. [[API doc](http://www.rubydoc.info/gems/hanami-utils/Hanami/Logger)]
-
 ### Hanami::Utils::Blank
 
 Checks for blank. [[API doc](http://www.rubydoc.info/gems/hanami-utils/Hanami/Utils/Blank)]
@@ -73,10 +69,6 @@ Inheritable class attributes. [[API doc](http://www.rubydoc.info/gems/hanami-uti
 ### Hanami::Utils::Deprecation
 
 Deprecate Hanami features. [[API doc](http://www.rubydoc.info/gems/hanami-utils/Hanami/Utils/Deprecation)]
-
-### Hanami::Utils::Escape
-
-Safe and fast escape for URLs, HTML content and attributes. Based on OWASP/ESAPI code. [[API doc](http://www.rubydoc.info/gems/hanami-utils/Hanami/Utils/Escape)]
 
 ### Hanami::Utils::FileList
 
@@ -136,4 +128,4 @@ Enhanced version of Ruby's `String`. [[API doc](http://www.rubydoc.info/gems/han
 
 ## Copyright
 
-Copyright © 2014-2022 Hanami Team – Released under MIT License
+Copyright © 2014 Hanami Team – Released under MIT License
