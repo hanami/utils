@@ -2,6 +2,8 @@
 
 Ruby core extensions and class utilities for Hanami
 
+## v2.1.0 - 2023-11-14
+
 ## v2.1.0.rc2 - 2023-11-08
 
 ## v2.1.0.beta1 - 2023-06-29
