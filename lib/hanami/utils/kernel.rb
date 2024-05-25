@@ -93,7 +93,7 @@ module Hanami
       #   response = Response.new(200, {}, 'hello')
       #   Hanami::Utils::Kernel.Array(response)         # => [200, {}, "hello"]
       def self.Array(arg)
-        super(arg).dup.tap do |a|
+        super.dup.tap do |a|
           a.flatten!
           a.compact!
           a.uniq!
@@ -215,7 +215,7 @@ module Hanami
         if arg.respond_to?(:to_h)
           arg.to_h
         else
-          super(arg)
+          super
         end
       rescue NoMethodError
         raise TypeError.new "can't convert #{inspect_type_error(arg)}into Hash"
@@ -329,7 +329,7 @@ module Hanami
       #   input = Complex(2, 3)
       #   Hanami::Utils::Kernel.Integer(input) # => TypeError
       def self.Integer(arg)
-        super(arg)
+        super
       rescue ArgumentError, TypeError, NoMethodError
         begin
           case arg
@@ -549,7 +549,7 @@ module Hanami
       #   input = Complex(2, 3)
       #   Hanami::Utils::Kernel.Float(input) # => TypeError
       def self.Float(arg)
-        super(arg)
+        super
       rescue ArgumentError, TypeError
         begin
           case arg
@@ -654,7 +654,7 @@ module Hanami
       #   Hanami::Utils::Kernel.String(input) # => TypeError
       def self.String(arg)
         arg = arg.to_str if arg.respond_to?(:to_str)
-        super(arg)
+        super
       rescue NoMethodError
         raise TypeError.new "can't convert #{inspect_type_error(arg)}into String"
       end

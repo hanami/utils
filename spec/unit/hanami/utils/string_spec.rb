@@ -24,7 +24,7 @@ RSpec.describe Hanami::Utils::String do
 
     it "applies transformations from proc" do
       input = "Hanami"
-      actual = Hanami::Utils::String.transform(input, ->(i) { i.upcase })
+      actual = Hanami::Utils::String.transform(input, ->(i) { i.upcase }) # rubocop:disable Style/SymbolProc
 
       expect(input).to  eq("Hanami")
       expect(actual).to eq("HANAMI")
