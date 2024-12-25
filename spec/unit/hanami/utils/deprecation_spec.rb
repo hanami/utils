@@ -29,7 +29,16 @@ RSpec.describe Hanami::Utils::Deprecation do
   end
 
   it "prints a deprecation warning for nested call" do
-    expect { DeprecationWrapperTest.new.run }
-      .to output(include("old_method is deprecated, please use new_method - called from: #{__FILE__}:21:in `run'.")).to_stderr
+    if RUBY_VERSION < "3.4"
+      expect { DeprecationWrapperTest.new.run }
+        .to output(
+          include("old_method is deprecated, please use new_method - called from: #{__FILE__}:21:in `run'.")
+        ).to_stderr
+    else
+      expect { DeprecationWrapperTest.new.run }
+        .to output(
+          include("old_method is deprecated, please use new_method - called from: #{__FILE__}:21:in 'DeprecationWrapperTest#run'.")
+        ).to_stderr
+    end
   end
 end
