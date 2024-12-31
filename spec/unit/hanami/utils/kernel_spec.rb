@@ -1400,7 +1400,11 @@ RSpec.describe Hanami::Utils::Kernel do
         let(:input) { {a: 1, "b" => 2} }
 
         it "returns the string representation" do
-          expect(@result).to eq '{:a=>1, "b"=>2}'
+          if RUBY_VERSION < "3.4"
+            expect(@result).to eq '{:a=>1, "b"=>2}'
+          else
+            expect(@result).to eq '{a: 1, "b" => 2}'
+          end
         end
       end
 
