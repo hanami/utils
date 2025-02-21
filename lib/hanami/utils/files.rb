@@ -31,7 +31,8 @@ module Hanami
       # @since 1.1.0
       def self.write(path, *content)
         mkdir_p(path)
-        open(path, ::File::CREAT | ::File::WRONLY | ::File::TRUNC, *content) # rubocop:disable Security/Open - this isn't a call to `::Kernel.open`, but to `self.open`
+        # This isn't a call to `::Kernel.open`, but to `self.open`
+        open(path, ::File::CREAT | ::File::WRONLY | ::File::TRUNC, *content) # rubocop:disable Security/Open
       end
 
       # Copies source into destination.
