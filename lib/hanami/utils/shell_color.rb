@@ -34,7 +34,7 @@ module Hanami
         blue: 34,
         magenta: 35,
         cyan: 36,
-        gray: 37,
+        gray: 37
       ].freeze
 
       # Colorizes output
