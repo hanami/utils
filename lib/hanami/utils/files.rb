@@ -375,7 +375,7 @@ module Hanami
       # @api private
       def self.open(path, mode, *content)
         ::File.open(path, mode) do |file|
-          file.write(Array(content).flatten.join)
+          file.write(Array(content).join)
         end
       end
 
