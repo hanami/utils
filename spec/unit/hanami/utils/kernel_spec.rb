@@ -1502,7 +1502,7 @@ RSpec.describe Hanami::Utils::Kernel do
   describe ".Boolean" do
     before do
       Answer = Struct.new(:answer) do
-        def to_bool
+        def to_bool # rubocop:disable Naming/PredicateMethod
           case answer
           when "yes" then true
           else false
