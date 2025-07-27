@@ -8,6 +8,7 @@ module Hanami
     # @since 0.1.0
     module Hash
       extend Dry::Transformer::Registry
+
       import Dry::Transformer::HashTransformations
 
       # Symbolize the given hash

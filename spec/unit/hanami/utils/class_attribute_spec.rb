@@ -6,6 +6,7 @@ RSpec.describe Hanami::Utils::ClassAttribute do
   before do
     class ClassAttributeTest
       include Hanami::Utils::ClassAttribute
+
       class_attribute :callbacks, :functions, :values, :initial
       self.callbacks = [:a]
       self.values    = [1]
@@ -22,6 +23,7 @@ RSpec.describe Hanami::Utils::ClassAttribute do
 
     class Vehicle
       include Hanami::Utils::ClassAttribute
+
       class_attribute :engines, :wheels
 
       self.engines = 0
@@ -45,10 +47,12 @@ RSpec.describe Hanami::Utils::ClassAttribute do
 
     class DoubleInclude
       include Hanami::Utils::ClassAttribute
+
       class_attribute :foo
       self.foo = 1
 
       include Hanami::Utils::ClassAttribute
+
       class_attribute :bar
       self.bar = 2
     end
@@ -106,6 +110,7 @@ RSpec.describe Hanami::Utils::ClassAttribute do
             class Resource
               class Action
                 include Hanami::Utils::ClassAttribute
+
                 class_attribute :verb
               end
 
